@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n formtags %}
+{% block title %}{{block.super}} | {% trans "Contact" %}{%endblock%}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<span>{% trans "Contact" %}</span>
+{% endblock %}
+{% block content %}
+<div id="contact" class="center-box">
+<form class="form-style" action="{% url contact_form %}" method="post" accept-charset="utf-8">
+<input type="hidden" name="username" value="{{ username }}" />
+<fieldset>
+	<legend>{% trans "Contact" %}</legend>
+	<ol>
+		<li>{% formfield form.subject %}</li>
+		<li>{% formfield form.message %}</li>
+		<li>{% formfield form.sender %}</li>
+	</ol>    
+    {% if settings.USE_CAPTCHA and not user.is_authenticated %}
+	{% include "registration/captcha.html" %}
+	{% endif %}
+</fieldset>
+<div id="form-action" class="text-right">
+	<input class="icon email" type="submit" value="{% trans "Send" %}" />
+</div>
+</form>
+</div>
+
+{% endblock %}

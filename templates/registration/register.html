@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Sign up" %}{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<div id="register" class="center">
+{% include "registration/register_box.html" %}
+</div>
+{% endblock %}

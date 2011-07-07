@@ -1,0 +1,7 @@
+{% load i18n %}
+<h1>{% trans "Latest Projects" %}</h1>
+<div class="simple">
+	{% for project in latest_projects %}
+	{% include "projects/project_list_entry.html" %}
+	{% endfor %}
+</div>

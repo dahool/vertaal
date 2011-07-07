@@ -1,0 +1,61 @@
+{# % extends "files/file_base.html" % #}
+{% comment %}
+<script type="text/javascript">
+$(document).ready(function() 
+	    { 
+			$('a[rel*=facebox]').facebox(); 
+	    });
+</script>
+{% endcomment %}
+{% load i18n extendtags pagination_tags timezone_filters %}
+{% set pofile.filename as filename %}
+<b>{% blocktrans %}{{ filename }} log{% endblocktrans %}</b> 
+{% block content %}
+<div id="log-file-table">
+	{% with pofile.log.all as logs %}
+	{% if logs %}
+	{% autopaginate logs 40 %} {# PONGO 40 HASTA QUE VEA COMO PAGINAR TODO CON LA VENTANA #}
+	<table class="stats-table">
+		<thead>
+			<tr>
+				<th class="title-center">{% trans "Action" %}</th>
+				<th class="title-center">{% trans "Date" %}</th>
+				<th class="title-center">{% trans "User" %}</th>
+				<th class="title-center">{% trans "Comments" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for log in logs %}
+			<tr>
+				<td>{{ log.get_action_display }}</td>
+				<td>{% if user.is_authenticated %}
+					{{ log.created|localtime:request.user.get_profile.timezone }}
+					{% else %}
+					{{ log.created }}
+					{% endif %}	
+				</td>
+				<td>
+					{% if log.user.get_full_name %}
+					{{ log.user.get_full_name }} ({{ log.user.username }})
+					{% else %}
+					{{ log.user.username }}
+					{% endif %}					
+				</td>
+				<td>{{ log.comment }}</td>
+			</tr>
+			{% endfor %}			
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">
+					<div class="pagination_box">{# % paginate disable until I find a way to paginate with the popup % #}</div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	{% else %}
+	<p>{% trans "No actions registered yet" %}</p>
+	{% endif %}
+	{% endwith %}
+</div>
+{% endblock %}

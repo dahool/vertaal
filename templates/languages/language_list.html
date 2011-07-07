@@ -1,0 +1,22 @@
+{% extends "languages/language_base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Languages" %}{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+<span>{% trans "Languages" %}</span>
+{% endblock %}
+{% block content %}
+<h1>{% trans "Languages" %}</h1>
+<div class="languages_list multicolumn5">
+  <ul class="simple">
+  {% for language in language_list %}<li class="icon language"><a href="{{ language.get_absolute_url }}">{{ language }}</a></li>{% endfor %}
+  </ul>
+</div>
+{% if not language_list %}
+<p>{% trans "No languages registered yet." %}</p>
+{% endif %}
+{% url contact_form as contact %}
+<div class="content_footer_center">
+<p><span>{% blocktrans %}Couldn't find your language? <a href="{{ contact }}">Let us know</a>!{% endblocktrans %}</span></p>
+</div>
+{% endblock %}

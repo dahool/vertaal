@@ -1,0 +1,10 @@
+{% load i18n %}
+<ul class="simple scroll-box">
+{% if users %}
+{% for user in users %}
+<li><span class="icon add link">{{ user.username }}</span>{% if user.get_full_name %} ({{user.get_full_name}}){%endif%}</li>
+{% endfor %}
+{% else %}
+<li>{% trans "User matching query does not exist." %}</li>
+{% endif %}
+</ul>

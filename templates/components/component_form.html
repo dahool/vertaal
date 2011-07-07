@@ -1,0 +1,58 @@
+{% extends "components/component_base.html" %}
+{% load i18n formtags %}
+{% load extendtags %}
+{% block title %}
+{{ block.super }} | 
+{% if component %}{% set component.name as name %}{%blocktrans%}Editing component {{ name }}{%endblocktrans%}
+{% else %}{%trans "New Component"%}{% endif %}
+{% endblock%}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+{% if component %}
+<span>{{ component.name }}</span>
+{%else%}
+<span>{%trans "New Component"%}</span>
+{%endif%}
+{% endblock %}
+{% block content %}
+{% if component %}
+	{% url component_edit component.slug as form_url %}
+{% else %}
+	{% url component_create project.slug as form_url %}
+{% endif %}
+<div id="project-form" class="center">
+	<form id="component_form" class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
+		<input type="hidden" name="project" value="{{project.id}}" id="id_project" />
+		<fieldset>
+		<legend>{{ project.name }} - {% if component %}{{component.name}}{%else%}{% trans "New Component" %}{%endif%}</legend>
+		{% if form.non_field_errors %}
+		{{ form.non_field_errors.as_ul }}
+		{% endif %}
+		<ol>
+			<li>{% formfield form.name %}</li>
+			<li>{% formfield form.vcspath %}</li>
+			<li>{% formfield form.format %}</li>
+			<li>{% formfield form.potlocation %}</li>
+		</ol>
+		<br/>
+		<span class="help_text"><em>*</em> {% trans "required" %}</span>		
+		</fieldset>
+	<div id="form-action">
+		<input class="icon save" type="submit" value="{% trans "Save" %}"/>
+		{% if component %}
+			{% iftrue project.is_maintainer request.user %}
+			{% url component_delete component.slug as delete_url %}
+			<input name="confirm_href" rel="{{ delete_url }}" class="icon delete" type="button" value="{% trans "Delete" %}"/>
+			{% endiftrue %}
+		{% endif %}
+	</div>
+	</form>
+</div>
+{% endblock %}

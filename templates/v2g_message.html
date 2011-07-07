@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block favs %}
+{% endblock %}
+{% load i18n settingstag extendtags %}
+{% block content %}
+{% captureas ticket_url %}{% setting "TICKET_URL" %}{% endcaptureas %}
+{% url user_signin as user_signin %}
+{% url user_signup as user_signup %}
+<pre style="font-size: 12px; font-family: Verdana,Helvetica,Arial,sans-serif; line-height:20px;">
+{% blocktrans %}
+Hi former Verbum user!. You expected to see verbum and got this instead? Scroll to the end if you want the short version or continue reading.
+
+I'm Gabriel, I developed Verbum (V2G, previously POAT) to help the community translators of the openSUSE project to organize the process.
+Because of the lack of an own server, I wrote the first versions using PHP (so I had more chances to find a free hosting service).
+But V2G depends a lot on javascript for the UI (mainly because I wanted to learn extjs and it was a good opportunity),
+and is a bit slow with todays javascript engines (even with new TraceMonkey from FF 3.5).
+
+While working on the translations for openSUSE 11.1, I got a server, so I hosted V2G there.
+Having this server to work with, I started looking for other options. I put my focus on transifex, they are rewritting it from scratch using Django
+instead of Turbogears. But at that time they had a lot of work to do yet.
+As I had some experience with Django, I found this as a good chance to increase my skills with it, so I started a new project, Vertaal.
+
+After 2 months of heavy development, featuring a simpler interface, here we are :)
+
+
+Your previous account was migrated, just click <a href="{{ user_signin }}">here</a> to login (I recommend you to change your password -even if is the same-
+to generate a new encription salt).
+If you didn't have a V2G account, create one by clicking <a href="{{user_signup }}">here</a>. After that, contact the team coordinator to join.
+ 
+
+If you have any suggestion or found a bug, don't hesitate to <a href="{{ ticket_url }}">let me know :)</a>
+
+If you are a coordinator, and need to know how to work with this site, click <a href="http://code.google.com/p/vertaal/wiki/CoordQuickGuid" target="_blank">here</a>
+{% endblocktrans %}
+</pre>
+{% endblock %}

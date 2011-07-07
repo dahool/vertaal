@@ -1,0 +1,61 @@
+{% extends "projects/project_base.html" %}
+{% load i18n formtags extendtags %}
+{% block title %}
+{{ block.super }} | 
+{% if project %}{% set project.name as name %}{%blocktrans%}Editing project {{ name }}{%endblocktrans%}
+{% else %}{%trans "New Project"%}{% endif %}
+{% endblock%}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+{% if project %}
+<a href="{% url project_detail project.slug %}">{{ project.name }}</a>
+{% else %}
+<span>{% trans "New Project" %}</span>
+{% endif %}
+{% endblock %}
+{% block content %}
+{% if project %}
+	{% url project_edit project.slug as form_url %}
+{% else %}
+	{% url project_create as form_url %}
+{% endif %}
+<div id="project-form" class="center">
+	<form class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
+		<fieldset>
+		<legend>{% if project %}{{project.name}}{%else%}{% trans "New" %}{%endif%}</legend>
+		{% if form.non_field_errors %}
+		{{ form.non_field_errors.as_ul }}
+		{% endif %}
+		<ol>
+			<li>{% formfield form.name %}</li>
+			<li>{% formfield form.description %}</li>
+			<li>{% formfield form.enabled %}</li>
+			<li>{% formfield form.read_only %}</li>
+			<li>{% formfield form.vcsurl %}</li>
+			<li>{% formfield form.viewurl %}</li>
+			<li>{% formfield form.viewurlparams %}</li>
+			<li>{% formfield form.repo_type %}</li>
+			<li>{% formfield form.repo_user %}</li>
+			<li>{% formfield form.password %}</li>
+			<li>{% formfield form.maintainers %}</li>
+		</ol>
+		<br/>
+		<span class="help_text"><em>*</em> {% trans "required" %}</span>		
+		</fieldset>
+		<div id="form-action">
+			<input class="icon save" type="submit" value="{% trans "Save" %}"/>
+			{% if perms.project.can_delete and project %}
+			{% url project_delete project.slug as delete_url %}
+			<input name="confirm_href" rel="{{ delete_url }}" class="icon delete" type="button" value="{% trans "Delete" %}"/>
+			{% endif %}
+		</div>
+	</form>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n extendtags %}
+{% block title %}{{ block.super }} | {{ team.language.name }} ({{ team.project.name }}){% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url language_list %}">{% trans "Languages" %}</a>
+<a href="{% url language_detail team.language.code %}">{{ team.language.name }}</a>
+<span>{{ team.project.name }}</span>
+{% endblock %}
+{% block content %}
+{% block content_title %}<h1>{{ team.language.name }} ({{ team.project.name }})</h1>{% endblock %}
+
+{% iftrue team.can_manage request.user %}
+{% set 'true' as can_manage %}
+{% endiftrue %}
+
+{% iftrue team.is_member user %}
+{% set 'true' as is_member %}
+{% endiftrue %}
+
+{% if is_member or can_manage %}
+<div id="form-action">
+<input type="button" name="href" class="icon team" rel="{% url team_admin team.pk %}" value="{% trans "Manage" %}"/>
+<input type="button" name="href" class="icon email" rel="{% url team_contact team.pk %}" value="{% trans "Contact" %}"/>
+</div>
+{% else %}
+<div class="buttons">
+<input type="button" name="href" class="icon join" rel="{% url join_request team.id %}" value="{% trans "Join this team" %}"/>
+</div>
+<br/>
+{% endif %}
+
+<div class="left-layout" style="width: 40%">
+{# COORDINATORS #}
+{% with team.coordinators.all as coordinators %}
+{% if coordinators %}
+<h3>{% blocktrans count coordinators|length as counter %}Coordinator:{% plural %}Coordinators:{% endblocktrans %}</h3>
+<table>
+<tr>
+  <td class="detail_value">
+    {% for m in coordinators %}
+      {% if m.get_full_name %}
+        <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+      {% else %}
+      	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+        {% endif %}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+</tr>
+</table>
+{% endif %}
+{% endwith %}
+
+{# MEMBERS #}
+{% with team.team_members|dictsort:"username" as members %}
+{% if members %}
+<h3>{% trans "Members:" %}</h3>
+<table>
+<tr>
+  <td class="detail_value">
+    {% for m in members %}
+      {% if not m.is_coord %}
+      {% if m.get_full_name %}
+        <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+      {% else %}
+      	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+        {% endif %}{% if not forloop.last %},{% endif %}
+      {% endif %}
+    {% endfor %}
+  </td>
+</tr>
+</table>
+{% endif %}
+{% endwith %}
+</div>
+
+{% iftrue team.can_commit request.user %}
+<div class="right-layout" style="width: 60%">
+<h3>{% trans "Submission Queue:" %}</h3>
+{% if submit_files %}
+{% url file_submit team.id as form_url %}
+{% include "files/submit_table.html" %}
+{% else %}
+<span class="help_text">{% trans "No files submitted" %}</span>
+{% endif %}
+</div>
+{% endiftrue %}
+
+{% endblock %}

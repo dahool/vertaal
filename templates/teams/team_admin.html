@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load i18n extendtags timezone_filters %}
+{% block title %}{{ block.super }} | {% trans "Manage" %} {{ team.language.name }} ({{ team.project.name }}){% endblock %}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#user-search').keypress(function (e) {
+		if (e.which == 13) {
+			if ($(this).val().length>=3) {
+				do_query($(this).val());
+			}
+		}
+	});
+
+	$('#button_reject').click(function() {
+		
+	})
+})
+
+function confirmReject(url) {
+	confirmSimple(function(r){
+		if (r) {
+			window.location = url;
+		}
+	});
+}
+function do_query(text) {
+	$.post('{% url user_query %}',
+			{'search': text},
+			process_query_response,
+			"xml");			
+}
+ 
+function process_query_response(data) {
+	$(data).find('response').each(function(){
+		var m = $(this).find('message');
+		if (m.length>0) {
+			show_ok_dialog('query_d', m.text());
+		}
+		var c = $(this).find('content');
+		if (c.length>0) {
+			$("#search-results").html(c.text());
+			add_listener();
+		}
+	});	
+}	
+function add_user(id) {
+	$.post('{% url add_member team.id %}',
+			{'id': id},
+			process_table_response,
+			"xml");			
+}
+function process_table_response(data) {
+	$(data).find('response').each(function(){
+		var m = $(this).find('message');
+		if (m.length>0) {
+			show_ok_dialog('table_d', m.text());
+		}
+		var c = $(this).find('content');
+		if (c.length>0) {
+			$("#team_manage_table").replaceWith(c.text());
+		}
+	});
+}
+function add_listener() {
+	$(".link").click(function() {
+		add_user($(this).text());
+	});
+}
+
+function update_member_cnf(url) {
+	confirmSimple(function(r){
+		if (r) {
+			update_member(url);
+		}
+	});		
+}
+function update_member(url) {
+	$.post(url,
+		process_table_response,
+		"xml");
+}
+--></script>
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url language_list %}">{% trans "Languages" %}</a>
+<a href="{% url language_detail team.language.code %}">{{ team.language.name }}</a>
+<a href="{% url team_detail team.project.slug,team.language.code %}">{{ team.project.name }}</a>
+<span>{% trans "Manage" %}</span>
+{% endblock %}
+{% block content %}
+{% include "loading.html" %}
+{% block content_title %}<h1>{{ team.language.name }} ({{ team.project.name }})</h1>{% endblock %}
+
+<div class="left-layout">
+{% with team.join_requests.all as joins %}
+{% if joins %}
+<h3>{% trans "Join requests:" %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "User" %}</th>
+			<th>{% trans "Request date" %}</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for req in joins %}
+		<tr>
+			<td>
+				{% with req.user as m %}
+				<a href="{% url contact_me m.username %}">
+				{% if m.get_full_name %}
+				{{ m.get_full_name }} ({{ m.username }})
+				{% else %}
+				{{ m.username }}
+				{% endif %}
+				</a>
+				{% endwith %}
+			</td>
+			<td>{{ req.created|localtime:user.get_profile.timezone }}</td>
+			<td>
+			<a href="{% url join_accept req.id %}" class="nodecoration_icon icon submit link" title="{% trans "Accept" %}"></a>
+			<span id="button_reject" onclick="confirmReject('{% url join_reject req.id %}');" class="nodecoration_icon icon delete link" title="{% trans "Reject" %}"></span>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<br/>
+{% endif %}
+{% endwith %}
+
+{% if team.project.repo_user %}
+<div class="grid">
+<form class="form-style" action="{% url team_admin team.id %}" method="post" accept-charset="utf-8">
+{{ form }}
+<input class="icon save" type="submit" value="{% trans "Save" %}" />
+</form>
+</div>
+<br/>
+{% endif %}
+
+{% call team.project.is_maintainer request.user as maintainer %}
+{% include "teams/team_admin_table.html" %}
+{% if not request.user.is_staff and not maintainer %}
+<p class="information">{% trans "only a maintainer can remove users from the coordinators group." %}</p>
+{% endif %}
+<p class="information warn">{% trans "Users with submit permissions must already have repository write access. This permission is not team related, the user will have it on all teams on which is member. Coordinators are authorized by default." %}</p>
+
+
+</div>
+<div class="right-layout">
+	<div id="admin-search-form">
+		<p class="help_text">{% trans "Type 3 or more letters and press ENTER" %}</p>
+		<div class="icon search">
+			<input type="text" id="user-search"/>
+			<img id="spinner" src="/site_media/images/loading_lt.gif" alt=""/>
+		</div>
+		<div id="search-results"></div>
+	</div>
+</div>
+{% endblock %}

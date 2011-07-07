@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n formtags %}
+{% load extendtags %}
+{% block favs %}
+{% endblock %}
+{% block title %}{{block.super}} | {% trans "Editing Glossary" %} {{ project.name }} ({{ lang.name }}){% endblock %}}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url gloss_list project.slug,lang.code %}">{% trans "Glossary" %} [{{ project.name }} ({{ lang.name }})]</a>
+<span>{% trans "Editing" %}</span>
+{% endblock %}
+{% block content %}
+{% if id %}
+	{% url gloss_edit id as form_url %}
+{% else %}
+	{% url gloss_add project.slug, lang.code as form_url %}
+{% endif %}
+<div id="glossary-form" class="center">
+	<form class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
+		<fieldset>
+		<legend>{% if id %}{% trans "Edit" %}{%else%}{% trans "New" %}{%endif%}</legend>
+		{% if form.non_field_errors %}
+		{{ form.non_field_errors.as_ul }}
+		{% endif %}
+		<ol>
+			<li>{% formfield form.word %}</li>
+			<li>{% formfield form.translation %}</li>
+			<li>{% formfield form.comment %}</li>
+		</ol>
+		<br/>
+		<span class="help_text"><em>*</em> {% trans "required" %}</span>		
+		</fieldset>
+	<div id="form-action">
+		<input class="icon save" type="submit" value="{% trans "Save" %}">
+		{% if id %}
+			{% if user.is_staff %}
+			<a class="icon delete" href="{% url gloss_remove id %}">{% trans "Delete" %}</a>
+			{% endif %}
+		{% endif %}
+	</div>
+	</form>
+</div>
+<script type="text/javascript"><!--
+{% if id %}
+document.getElementById("id_translation").focus();
+{% else %}
+document.getElementById("id_word").focus();
+{% endif %}
+-->
+</script>
+{% endblock %}

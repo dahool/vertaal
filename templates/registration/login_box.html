@@ -1,0 +1,11 @@
+{% load i18n settingstag %}
+{% include "registration/simple_login.html" %}
+{% ifsetting ENABLE_OPENID %}
+{% include "authopenid/login.html" %}
+{% endifsetting %}
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$("#id_username").focus();
+})
+-->
+</script>

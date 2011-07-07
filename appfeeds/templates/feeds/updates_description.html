@@ -1,0 +1,14 @@
+{% load i18n extendtags %}
+{% with obj.pofile as pofile %}
+{% ifequal pofile.total pofile.trans %}
+{% with pofile.trans as translated %}
+{% blocktrans %} The file is fully completed. With {{translated}} messages.{% endblocktrans %}
+{% endwith %} 
+{% else %}
+{% set pofile.trans as translated %}
+{% set pofile.fuzzy as fuzzy %}
+{% set pofile.untrans as untranslated %}
+{% set pofile.trans_perc as complete_status %}
+{% blocktrans %}The file is {{complete_status}}% complete. With {{translated}} translated messages, {{fuzzy}} fuzzy and {{untranslated}} untranslated.{% endblocktrans %}
+{% endifequal %}
+{% endwith %}

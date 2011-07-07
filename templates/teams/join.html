@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n extendtags %}
+{% block title %}{{ block.super }} | {% trans "Join" %} {{ team.language.name }} ({{ team.project.name }}){% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url language_list %}">{% trans "Languages" %}</a>
+<a href="{% url language_detail team.language.code %}">{{ team.language.name }}</a>
+<a href="{{ team.get_absolute_url }}">{{ team.project.name }}</a>
+<span>{% trans "Join" %}</span>
+{% endblock %}
+{% block content %}
+{% set team.language.name as teamname %}
+{% set team.project.name as projectname %}
+{% block content_title %}
+<h1>{% blocktrans %}Join the team {{teamname}} ({{projectname}})" {% endblocktrans %}</h1>
+{% endblock %}
+
+<div id="contact" class="center-box">
+<form class="form-style" action="{% url join_request team.id %}" method="post" accept-charset="utf-8">
+<fieldset>
+	<legend>{% trans "Join" %}</legend>
+	{% blocktrans %}You are about to send a request to join<br/>the <b>{{teamname}}</b> team of the <b>{{projectname}}</b> project.{% endblocktrans %}
+    {% if use_captcha %}
+	{% include "registration/captcha.html" %}
+	{% endif %}
+</fieldset>
+<div id="form-action" class="text-right">
+	<input class="icon submit" type="submit" value="{% trans "Confirm" %}" />
+</div>
+</form>
+</div>
+
+{% endblock %}

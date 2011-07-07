@@ -1,0 +1,55 @@
+{% extends "components/component_base.html" %}
+{% load i18n %}
+{% load pagination_tags %}
+{% load stats extendtags %}
+{% block title %}{{block.super}} | {{ component.name }} ({{ component.project.name }}){% endblock %}}
+{% block quick_menu %}
+{{ block.super }}
+<span>{{ component.name }}</span>
+{% endblock %}
+{% block content %}
+{% block content_title %}<h1>{{ component.name }} ({{ component.project.name }})</h1>{% endblock %}
+
+{% iftrue component.project.is_maintainer request.user %}
+<div id="form-action">
+<input type="button" name="href" class="icon edit" rel="{% url component_edit component.slug %}" value="{% trans "Edit" %}"/>
+<input type="button" name="href" class="icon add" rel="{% url component_create component.project.slug %}" value="{% trans "Add" %}"/>
+</div>
+<br/>
+{% endiftrue %}
+
+<div class="details">
+	<table class="definition">
+		<tr>
+			<th class="icon path">{% trans "Component:" %}</th>
+			<td>{{ component.vcspath }}</td>
+		</tr>
+	</table>
+</div>
+
+<div class="details">
+	<table class="stats-table">
+		<thead>
+			<tr>
+				<th>{% trans "Release" %}</th>
+				<th class="title-center">{% trans "Complete" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stat in stats %}
+			<tr>
+				<td><a href="{% url release_detail stat.release.slug %}">{{ stat.release.name }}</a></td>
+				<td>
+					<div class="graph_comp">
+					  <div class="translated_comp" style="width: {{stat.trans_perc}}px;"></div>
+					  <div class="fuzzy_comp" style="left: {{stat.trans_perc}}px; width: {{stat.fuzzy_perc}}px;"></div>
+					  <div class="untranslated_comp" style="left: {{stat|sum_trans_fuzzy}}px; width: {{stat.untrans_perc}}px;"></div>
+					</div>
+					<div class="stats_string_comp" title="{% trans "Trans:" %}{{stat.trans}}, {% trans "Fuzzy:" %}{{stat.fuzzy}}, {% trans "Untrans:" %}{{stat.untrans}}" >{{stat.trans_perc}}%</div>					
+				</td>
+			</tr>
+			{% endfor %}			
+		</tbody>
+	</table>
+</div>
+{% endblock %}

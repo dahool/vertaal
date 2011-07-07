@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n formtags %}
+{% load errors %}
+{% block title %}{{ block.super }} | {% trans "OpenID Registration" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<div class="message center-box">
+<ul class="simple">
+	<li>{% trans "Your OpenID can now be associated with a new or existing membership." %}</li>
+</ul>
+</div>
+<div class="center-box" style="width:400px;" >
+<form class="form-style" action="{% url user_register %}" method="post" accept-charset="utf-8">
+<input type="hidden" name="next" value="{{ next }}" />
+<fieldset>
+	<legend>{% trans "Associate with a new account" %}</legend>
+	<ol>
+		<li>{% formfield form1.username %}</li>
+		<li>{% formfield form1.email %}</li>
+	</ol>    
+</fieldset>
+<div id="form-action" class="text-right">
+	<input class="icon signup" type="submit" value="{% trans "Create account" %}" />
+</div>
+</form>
+
+<form class="form-style" action="{% url user_register %}" method="post" accept-charset="utf-8">
+<input type="hidden" name="next" value="{{ next }}" />
+<fieldset>
+	<legend>{% trans "Associate with an existing account" %}</legend>
+	<ol>
+		<li>{% formfield form2.username %}</li>
+		<li>{% formfield form2.password %}</li>
+	</ol>
+	{{ form2.non_field_errors }}
+</fieldset>
+<div id="form-action" class="text-right">
+	<input class="icon signup" type="submit" value="{% trans "Verify" %}" />
+</div>
+</form>
+</div>
+{% endblock %}

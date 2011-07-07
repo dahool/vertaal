@@ -1,0 +1,15 @@
+{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull home as home %}{% urlfull team_admin teamid as join_link %} 
+{% blocktrans %}
+Hello,
+
+The user '{{username}}' wants to join the {{project}}'s {{team}} team. 
+
+Go to {{join_link}} to approve or reject this request.
+
+The reply-to address has been set with the user's e-mail, you can reply this message to contact him/her.
+
+Sincerely,
+
+The {{ product_name }} team
+{{ home }}
+{% endblocktrans %}

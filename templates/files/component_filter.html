@@ -1,0 +1,95 @@
+{% load i18n extendtags %}
+{% block extra_head %}
+{{ block.super }}
+<script type="text/javascript"><!--
+	$(document).ready(function() {
+		/*$("input[name='cfilter']").change(function() {
+			if (!($(this).is(':checked'))) {
+				if ($("input[name='cfilter']:checked").length==0) {
+					($(this).attr('checked', true));
+					show_ok_dialog('{% trans "You cannot hide all components." %}');
+				}
+			}
+		})*/
+		$("#submit_filter").click(function() {
+			var ok = false;
+			$("input[name='cfilter']").each(function(){
+				if ($(this).is(':checked')) {
+					ok = true;
+				}
+			});
+			if (!ok) {
+				show_ok_dialog('{% trans "You cannot hide all components." %}');
+			} else {
+				$("#filter_form").submit();
+			}
+		});
+		
+		$("input[name='extraFunc']").change(function() {
+			elem = "#val_" + $(this).attr('id').substr(3);
+			if ($(this).is(':checked')) {
+				$(elem).val('true');
+			} else {
+				$(elem).val('false');
+			}
+		});
+				
+	});
+--></script>
+{% endblock %}
+<div class="filter-box">
+	<form id="filter_form" action="{% url list_files release.slug,language.code %}"
+		method="post">
+		<fieldset>
+			<legend>{% trans "Components" %}</legend>
+			{% with release.project.components.all as components %}
+			<ul class="simple">
+			{% for component in components %}
+				<li>
+				<input id="cfilter_{{ component.pk }}" type="checkbox" value="{{ component.pk }}" name="cfilter"
+				{% if cfilter %}
+					{% ifinlist component.pk cfilter %}
+						checked
+					{% endifinlist %}
+				{% else %}
+					checked
+				{% endif %}
+				>
+				<label for="cfilter_{{ component.pk }}">{{ component.name }}</label>
+				</li>
+			{% endfor %}
+			</ul>
+			{% endwith %}
+			<input id="submit_filter" type="button" class="icon submit right" value="{% trans "Filter" %}">
+			<span class="help_text">{% trans "Uncheck to hide a component" %}</span>
+		</fieldset> 
+	</form> 
+</div>
+<div class="filter-box">
+	<form id="extrafunc_form" action="{% url list_files release.slug,language.code %}"
+		method="post">
+		<fieldset>
+			<ul class="simple">
+				<li>
+				<input id="val_hidetranslated" type="hidden" name="hideTranslated" value="{% if hideTranslated %}true{%else%}false{%endif%}"/>
+				<input name="extraFunc" id="id_hidetranslated" type="checkbox"
+				{% if hideTranslated %}
+					checked
+				{% endif %}
+				>
+				<label for="id_hidetranslated">{% trans "Hide fully translated files" %}</label>
+				</li>
+				<li>
+				<input id="val_onlySelf" type="hidden" name="onlySelf" value="{% if onlySelf %}true{%else%}false{%endif%}"/>
+				<input name="extraFunc" id="id_onlySelf" type="checkbox" 
+				{% if onlySelf %}
+					checked
+				{% endif %}
+				>
+				<label for="id_onlySelf">{% trans "My files only" %}</label>
+				</li>
+			</ul>
+			<input type="submit" class="icon submit right" value="{% trans "Apply" %}">
+		</fieldset> 
+	</form> 
+</div>

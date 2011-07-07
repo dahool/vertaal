@@ -1,0 +1,4 @@
+{% load i18n timezone_filters %}
+{% trans "Component:" %} <b>{{ obj.pofile.component.name }}</b><br/>
+{% trans "Release:" %} <b>{{ obj.pofile.release.name }}</b><br/>
+{% trans "Submitted on:" %} <b>{{ obj.created|localtime:"UTC" }}</b>

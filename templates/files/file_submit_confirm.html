@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n formtags %}
+{% block title %}{{ block.super }} | {% trans "Confirm action" %}{%endblock%}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block quick_menu %}
+<span>{% trans "Confirm" %}</span>
+{% endblock %}
+{% block content %}
+<form class="form-style" action="{% url confirm_submit %}" method="post">
+<input type="hidden" name="back" value="{{ back }}">
+<input type="hidden" name="reject" value="{{ reject }}">
+<input type="hidden" name="needuser" value="{{ needuser }}">
+<input type="hidden" name="p" value="{{ project }}">
+<div id="submit_user" class="center-box" style="padding-top: 0; width: 350px">
+{% if needuser %}
+	<fieldset>
+	<legend>{% trans "Enter your repository credentials" %}</legend> 
+	<ol>
+		<li>{% formfield form.user %}</li>
+		<li>{% formfield form.password %}</li>
+		<li>{% formfield form.message %}</li>
+	</ol>
+	</fieldset>
+{% else %}
+	<fieldset>
+	<ol>
+		<li>{% formfield form.message %}</li>
+	</ol>
+	</fieldset>
+{% endif %}
+</div>
+<table id="submit_table" class="grid center-box">
+	<thead>
+		<th>{% trans "File" %}</th>
+		<th>{% trans "Component" %}</th>
+		<th>{% trans "Release" %}</th>
+		<th>{% trans "Project" %}</th>
+	</thead>
+	<tbody>
+	{% for sfile in files %}
+	<tr>
+		<input type="hidden" name="file" value="{{ sfile.id }}">
+		<td><a href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a></td>
+		<td>{{ sfile.pofile.component.name }}</td>
+		<td>{{ sfile.pofile.release.name }}</td>
+		<td>{{ sfile.pofile.release.project.name }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4" class="table-action">
+				<input class="icon submit" type="submit" onclick="popoverlay('{% trans "Please wait, this could take some time..." %}')" name="submit" value="{% trans "Confirm" %}">
+				<input name="href" rel="{{ back }}" type="button" class="icon cancel" value="{% trans "Cancel" %}">
+			</td>	
+		</tr>
+	</tfoot>
+</table>
+</form>
+{% endblock %}

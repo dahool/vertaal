@@ -1,0 +1,19 @@
+{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% captureas ticket_url %}{% setting "TICKET_URL" %}{% endcaptureas %}{% urlfull language_list as language_list %}{% urlfull home as home %}{% urlfull user_signin  as user_signin %}
+{% blocktrans %}
+Hello,
+
+Thank you for registering with us. We are pleased you have chosen to join this community and would like to welcome you to {{ product_name }}. 
+
+Your username is {{ username }} and it will be used, along with your password, to log in at {{ user_signin }}. 
+
+To join a team, please contact the team coordinator using the contact form. You can access the team list through the language list page ({{ language_list }}).  
+
+We hope that {{ product_name }} is of good use to you.
+
+Please do not respond to this e-mail. If you have specific questions or would like to provide feedback on how we can better serve your needs, please fill a ticket ({{ ticket_url }}).
+
+Sincerely,
+
+The {{ product_name }} team
+{{ home }}
+{% endblocktrans %}

@@ -1,0 +1,89 @@
+{% extends "releases/release_base.html" %}
+{% load i18n stats extendtags %}
+{% block title %}{{ block.super }} | {{ release.name }} ({{release.project.name}}){% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+<a name="top" href="{% url release_detail release.slug %}">{{ release.name }}</a>
+<span>{% trans "Merge" %}</span>
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/jquery.tablesorter.js"></script>
+<script type="text/javascript"><!--
+
+$(document).ready(function() 
+    { 
+        $("#file_list_table").tablesorter({
+            headers: { 0: { sorter: false },},
+		});
+
+		$("#file_list_table").bind("sortStart",function() { 
+            $("#loading").show(); 
+        }).bind("sortEnd",function() { 
+            $("#loading").hide(); 
+        });
+
+		$("#submit_button").click(function() {
+			var ok = false;
+			$("input[name='file']").each(function(){
+				if ($(this).is(':checked')) {
+					ok = true;
+				}
+			});
+			if (!ok) {
+				show_ok_dialog('{% trans "Please, select one or more files." %}');
+			} else {
+				confirmDialog(function(r){
+					if (r) {
+						$("#submit_form_merge").submit();
+					}
+				},'{% trans "The process could take some time, are you sure?" %}');
+			}			
+		});
+    } 
+); 
+ 
+
+--></script>
+{% endblock %}
+{% block content %}
+{% load pagination_tags %}
+{% block content_title %}<h1>{{ release.name }}</h1>{% endblock %}
+
+{% if not files|length_is:"0" %}
+<form id="submit_form_merge" method="post" action="{% url multimerge release.slug %}">
+<div id="form-action">
+<input type="button" id="submit_button" class="icon submit" value="{% trans "Submit" %}"/>
+</div>
+<div class="details">
+	<table id="file_list_table" class="stats-table">
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="selector" rel="submit_form_merge"/></th>
+				<th>{% trans "File" %}</th>
+				<th>{% trans "Team" %}</th>
+				<th>{% trans "Component" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for file in files %}
+			<tr>
+				<td><input type="checkbox" name="file" value="{{ file.pk }}"></td>
+				<td class="filename">
+					<a name="{{ file.slug }}" href="{% url file_detail file.slug %}">
+					{{file.filename}}
+					</a>
+				</td>
+				<td>{{file.language.name}}</td>
+				<td>{{file.component.name}}</td>
+			</tr>
+			{% endfor %}			
+		</tbody>
+	</table>
+</div>
+</form>
+{% else %}
+<br/>
+{% trans "There is no need to merge any files." %}
+{% endif %}
+
+{% endblock %}

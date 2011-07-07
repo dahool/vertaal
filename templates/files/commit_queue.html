@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n extendtags %}
+{% block title %}{{ block.super }} | {% trans "Submission Queue" %}{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<span>{% trans "Submission Queue" %}</span>
+{% endblock %}
+{% block content %}
+{% block content_title %}<h1>{% trans "Submission Queue Manager" %}</h1>{% endblock %}
+
+{% if teams %}
+	{% for team in teams %}
+		{% set team.project.name as projectname %}
+		{% set team.language.name as teamname %}
+		<h3>{% blocktrans %}Submission Queue for Project {{ projectname }} - Team {{ teamname }}{% endblocktrans %}</h3>
+		{% with team.submits as submit_files %}
+			{% if submit_files %}
+					{% url file_qsubmit team.id as form_url %}
+					{% include "files/submit_table.html" %}
+				{% else %}
+					<br/>
+					<span class="help_text">{% trans "The submission queue is empty." %}</span>
+			{% endif %}
+		{% endwith %}
+	{% endfor %}
+{% else %}
+<span class="help_text">{% trans "The queue is empty." %}</span>
+{% endif %}
+{% endblock %}

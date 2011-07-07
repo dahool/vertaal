@@ -1,0 +1,224 @@
+{% extends "files/file_base.html" %}
+{% load i18n extendtags timezone_filters settingstag %}
+{% block title %}{{block.super}} | {{ language.name }} -{{ release.name }}- ({{ release.project.name }}){% endblock %}
+{% block extra_head %}
+{% include "browser_fixes.html" %}
+{% ifsetting ENABLE_RSS %}
+<link rel="alternate" type="application/rss+xml" title="{% trans "Latest updates" %}" href="{% url language_release_feed release.slug, language.code %}">
+{% if user.is_authenticated %}
+<link rel="alternate" type="application/rss+xml" title="{% trans "Latest updates for you" %}" href="{% url language_release_feed release.slug, language.code %}?user={{user.username}}">
+{% endif %}
+{% endifsetting %}
+{% iftrue team.can_manage user %}
+{% set 'true' as can_manage %}
+{% endiftrue %}
+{% ifsetting ENABLE_RSS %}
+{% if can_manage or perms.teams.can_commit %}
+<link rel="alternate" type="application/rss+xml" title="{% trans "Submission queue" %}" href="{% url language_project_queue_feed release.project.slug, language.code %}">
+{% endif %}
+{% endifsetting %}
+<script type="text/javascript" src="/site_media/js/filemanipulation.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.metadata.min.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.json.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.cookiejar.pack.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.tablesorter.cookie.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.aop.min.js"></script>
+<link href="/site_media/facebox/facebox.css" media="screen" rel="stylesheet" type="text/css"/>
+<script src="/site_media/facebox/facebox.js" type="text/javascript"></script>
+<script src="/site_media/facebox/facebox.img.fix.js" type="text/javascript"></script>
+<style type="text/css">
+#facebox .body {
+  width: 750px;
+}
+</style>
+<script type="text/javascript"><!--
+function init_select_events() {
+	var div = $('#user-selection-list');
+    $(document).keyup(function(event){
+	    if (event.keyCode == 27) {
+	    	$(div).hide();
+	    }
+	});
+	$(div).bind("hide",function(){
+		$(div).unbind("submit");
+	});	
+}
+
+function select_user(elem, callback, param) {
+    var topOffset = -10;
+    var leftOffset = 10;
+
+    var div = $('#user-selection-list');
+    $(div).submit(function(){
+		$(this).hide();
+		callback(param,{userid:$('#user-select').val()});
+	});
+	
+	var p = $(elem).position();
+	div.css("position","absolute");
+	div.css("top",(p.top+topOffset)+"px");
+	div.css("left",(p.left+leftOffset)+"px");
+	div.show();
+}
+
+$(document).ready(function() 
+    { 
+
+		//$('a[rel*=facebox]').facebox();
+		/*$('.highlight').live("click",function() {
+			ref = $(this).attr('rel');
+			$.facebox(function() {
+				$.get(ref, function(data) {
+				    $.facebox(data);
+				})
+			})
+		});*/
+		
+    	jQuery.aop.before({target: jQuery.fn, method: "hide"},
+		function(){
+			this.trigger("hide");
+		});
+    
+	    $.tablesorter.addParser({ 
+	        id: 'percentbars', 
+	        is: function(s) { 
+	            return false; 
+	        }, 
+	        format: function(s) {
+		        re = s.match(new RegExp(/(\d*%)/g));
+	        	if (re) {
+		        	s = re[0];
+	        	}
+	        	return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));
+	        }, 
+	        type: 'numeric' 
+	    });     
+
+        $("#file_list_table").tablesorter({
+            headers: { 0: { sorter: false }, 3: { sorter: 'percentbars'},},
+            widgets: ['cookie'],
+		});
+// 4: { sorter: false }, 5: { sorter: false }
+		$("#file_list_table").bind("sortStart",function() { 
+            $("#loading").show(); 
+        }).bind("sortEnd",function() { 
+            $("#loading").hide(); 
+        });
+
+		$(document).keyup(function(event){
+		    if (event.keyCode == 27) {
+		    	check_current();
+		    }
+		});
+		init_select_events();
+    } 
+); 
+ 
+
+--></script>
+{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+<span>{{ language.name }}</span>
+{% endblock %}
+{% block content %}
+
+{% iftrue team.can_manage user %}
+{% set 'true' as can_manage %}
+{% endiftrue %}
+
+{% include "loading.html" %}
+{% block content_title %}<h1>{{ language.name }}&nbsp;<sup>({{ language.code }})</sup>
+{% ifsetting ENABLE_RSS %}
+&nbsp;&nbsp;<a class="icon feed" title="{% trans "Latest updates" %}" href="{% url language_release_feed release.slug, language.code %}">&nbsp;</a>
+{% if user.is_authenticated %}
+<a class="icon feed_user" title="{% trans "Latest updates for you" %}" href="{% url language_release_feed release.slug, language.code %}?user={{user.username}}">&nbsp;</a>
+{% endif %}
+{% endifsetting %}
+</h1>{% endblock %}
+
+<div class="details">
+	<table class="definition">
+		{% if can_manage or perms.teams.can_commit %}		
+		<tr>
+		<td colspan="2">
+		  {% ifsetting ENABLE_RSS %}
+			<a class="icon feed soft_text" href="{% url language_project_queue_feed release.project.slug, language.code %}">{% trans "Submission queue" %}</a>
+		  {% endifsetting %}
+		</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		{% endif %}		
+		<tr>
+			<th class="icon project">{% trans "Project:" %}</th>
+			<td>{{ release.project.name }}</td>
+		</tr>
+		<tr>
+			<th class="icon release">{% trans "Release:" %}</th>
+			<td>{{ release.name }}</td>
+		</tr>
+	</table>
+</div>
+{% if release.enabled and release.project.enabled %}
+	{% set 'enabled' as enabled %}
+{% endif %}
+{% if release.read_only or release.project.read_only %}
+	{% set 'read_only' as readonly %}
+{% endif %}	
+{% if user.is_authenticated and enabled and not readonly %}
+	{% include "files/upload_box.html" %}
+{% endif %}
+{% include "files/component_filter.html" %}
+<div class="details">
+	<table class="stats-table" id="file_list_table">
+		<thead>
+			<tr>
+				<th class="actions"></th>
+				<th>{% trans "File" %}</th>
+				<th>{% trans "Component" %}</th>
+				<th class="title-center">{% trans "Progress" %}</th>
+				<th title="{% trans "Translator" %}">{% trans "Trans." %}</th>
+				<th title="{% trans "Reviewer" %}">{% trans "Rev." %}</th>
+				<th>{% trans "Status" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for file_item in file_list %}
+			{# <!--  I'm using 'with' to isolate all the variables created inside the include --> #}
+			{% with file_item as file %}
+			<tr id="file_row_{{ file.slug }}">
+				{% include "files/file_list_row.html" %}
+			</tr>
+			{% endwith %}
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% if user.is_authenticated %}
+<br/>
+<div class="details">
+    <h2>{% trans "Recent activity" %}</h2>
+    <ul class="simple">
+	{% for log in last_actions %}
+	{% with log.pofile.filename as filename %}
+	{% with log.get_action_display|lower as log_action %}
+	{% with log.user.username as username %}
+	{% with log.created|localtime:request.user.get_profile.timezone|timesince as updated %}
+	<li class="icon info">{% blocktrans %}File <b>{{filename}}</b> {{log_action}} by <b>{{username}}</b> {{updated}} ago.{% endblocktrans %}</li>
+	{% endwith %}{% endwith %}{% endwith %}{% endwith %} 
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}
+<div id="user-selection-list" class="floating-box">
+<select id="user-select">
+{% for user in team.team_members %}
+	<option value="{{user.id}}">{{user.username}}{%if user.get_full_name%} ({{user.get_full_name}}){%endif%}</option>
+{% endfor %}
+</select>
+<span id="select_ok" onclick="$('#user-selection-list').submit()" class="nodecoration_icon action_icon submit link" style="padding-right: 0px;">&nbsp;</span>
+<span id="select_nok" onclick="$('#user-selection-list').hide()" class="nodecoration_icon action_icon cancel link" style="padding-right: 0px; margin-left: 0px;">&nbsp;</span>
+</div>
+{% endblock %}

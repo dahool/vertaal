@@ -1,0 +1,15 @@
+{% load i18n %}
+<div id="captchadiv">
+	<p>{% trans "Prove you're human:" %}</p>
+	{% get_current_language as LANGUAGE_CODE %}
+	<script type="text/javascript">
+		var RecaptchaOptions = {theme : 'white', lang: '{{LANGUAGE_CODE}}'};
+	</script>  
+	<script type="text/javascript" src="http://api.recaptcha.net/challenge?k={{ settings.RECAPTCHA_PUBLIC_KEY }}{{ captcha_error }}"></script>  
+	<noscript>  
+	   <iframe src="http://api.recaptcha.net/noscript?k={{ settings.RECAPTCHA_PUBLIC_KEY }}{{ captcha_error }}"  
+	          height="300" width="500" frameborder="0"></iframe><br />  
+	 <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>  
+	 <input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>  
+	</noscript>
+</div>

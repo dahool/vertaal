@@ -1,0 +1,21 @@
+{% load i18n %}
+<fieldset>
+	<legend>{% trans "Sign in" %}</legend>
+	<div class="form-block">
+	<form id="form_auth" action="{% url user_signin %}" method="post">
+		<div class="form-row">
+			<label for="id_username">{% trans "Username:" %}</label>
+			<input id="id_username" class="required login" name="username" maxlength="30" size="15" type="text"/>
+		</div>
+		<div class="form-row">
+			<label for="id_password">{% trans "Password:" %}</label>
+			<input id="id_password" class="required login" name="password" maxlength="128" size="15" type="password"/>
+		</div>
+		<div class="submit-row">
+			<input type="hidden" name="next" value="{{ next }}" />
+			<input class="icon signin" type="submit" value="{% trans "Sign in" %}" />
+		</div>
+	</form>
+	<div class="lost_passwd compact">&nbsp;&nbsp;<a href="{% url password_reset %}">{% trans "Lost your password?" %}</a></div>
+	</div>
+</fieldset>

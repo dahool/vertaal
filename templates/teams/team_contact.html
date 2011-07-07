@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n extendtags timezone_filters formtags %}
+{% block title %}{{ block.super }} | {% trans "Contact" %} {{ team.language.name }} ({{ team.project.name }}){% endblock %}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('#submit_button').click(function(){
+		var n = $("input[name='contact_user']:checked").length;
+		if (n==0) {
+			show_ok_dialog('{% trans "Please select an user" %}');
+		} else {
+			$('#form_user_contact').submit();
+		}
+	});
+})
+--></script>
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url language_list %}">{% trans "Languages" %}</a>
+<a href="{% url language_detail team.language.code %}">{{ team.language.name }}</a>
+<a href="{% url team_detail team.project.slug,team.language.code %}">{{ team.project.name }}</a>
+<span>{% trans "Contact" %}</span>
+{% endblock %}
+{% block content %}
+{% include "loading.html" %}
+{% block content_title %}<h1>{{ team.language.name }} ({{ team.project.name }})</h1>{% endblock %}
+
+<form id="form_user_contact" class="form-style" action="{% url team_contact team.pk %}" method="post" accept-charset="utf-8">
+<div class="left-layout" style="width: 40%;">
+<fieldset>
+	<legend>{% trans "Contact" %}</legend>
+	<ol>
+		<li>{% formfield form.subject %}</li>
+		<li>{% formfield form.message %}</li>
+	</ol>    
+</fieldset>
+<div id="form-action" class="text-right">
+	<input id="submit_button" class="icon email" type="button" value="{% trans "Send" %}" />
+</div>
+</div>
+
+<div class="right-layout" style="width: 55%;">
+<table id="team_contact_table" class="grid">
+	<thead>
+		<tr>
+			<th><input type="checkbox" name="selector" rel="form_user_contact"/></th>
+			<th>{% trans "User" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+    {% for m in team.team_members|dictsort:"username" %}
+    {% ifnotequal m user %}
+    <tr>
+        <td><input type="checkbox" name="contact_user" value="{{m.username}}" {% ifinlist m.username selected %}checked="checked"{% endifinlist %}/></td>
+        <td class="icon {% if m.is_coord %}coordinator{%else%}{%if m.is_committer%}committer{%else%}member{%endif%}{%endif%}">
+            {% if m.get_full_name %}
+            {{ m.get_full_name }} ({{ m.username }})
+            {% else %}
+            {{ m.username }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endifnotequal %}
+    {% endfor %}    
+	</tbody>
+</table>
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% load i18n %}
+{% block extra_head %}
+{{ block.super }}
+<link href="/site_media/openid/css/style.css" media="screen" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/site_media/openid/js/jquery.openid.min.js"></script>
+<script type="text/javascript"><!--//
+ $(function() {
+   $('#openid_form').openid({
+     txt: {
+       label: '{% trans "Enter your {provider} {username}" %}',
+       username: '{% trans "username" %}',
+       title: '{% trans "Select your OpenID provider" %}',
+       sign: '{% trans "Sign in" %}'
+     }
+   });
+ });
+ //--></script>
+{% endblock %}
+<fieldset>
+	<legend>{% trans "Sign in with your OpenID" %}</legend>
+	<div class="form-block">
+	<form id="openid_form" action="{% url openid_signin %}" method="post">
+	    <input type="hidden" name="action" value="verify" />
+    	<input type="hidden" name="next" value="{{ next }}" />
+	</form>
+	</div>
+</fieldset>

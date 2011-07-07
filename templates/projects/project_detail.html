@@ -1,0 +1,153 @@
+{% extends "projects/project_base.html" %}
+{% load i18n %}
+{% load pagination_tags %}
+{% load extendtags %}
+{% block title %}{{block.super}} | {{ project.name }}{% endblock %}
+{% block extra_head %}
+<script type="text/javascript"><!--
+function add_lang(url) {
+	$.post(url,
+			{'code': $('#language-list').val()},
+			process_response,
+			"xml");			
+}
+function process_response(data) {
+	$(data).find('response').each(function(){
+		var m = $(this).find('message');
+		if (m.length>0) {
+			show_ok_dialog(m.text());
+		}
+		var url = $(this).find('url');
+		var name = $(this).find('name');
+		var code = $(this).find('code');
+		if (url.length>0 && name.length>0) {
+			var li = $("#team-list");
+			html = '<p class="icon team indent"><a href="' + url.text() + '">' + name.text() + '</a></p>';
+			if (!$(li).hasClass('multicolumn2')) {
+				$(li).html(html);
+				$(li).addClass('multicolumn2');
+			} else {
+				$(li).append(html);
+			}
+			$("option[value='" + code.text() + "']").remove();
+		}
+	});	
+}
+--></script>
+{% endblock %}
+
+{% block quick_menu %}
+{{ block.super }}
+<span>{{ project.name }}</span>
+{% endblock %}
+{% block content %}
+{% block content_title %}<h1>{{ project.name }}</h1>{% endblock %}
+<p class="description">{{ project.description }}</p>
+
+{% iftrue project.is_maintainer request.user %}
+<div id="form-action">
+<input name="href" type="button" class="icon edit" rel="{% url project_edit project.slug %}" value="{% trans "Edit" %}"/>
+<input name="href" type="button" class="icon add" rel="{% url release_create project.slug %}" value="{% trans "Add Release" %}"/>
+<input name="href" type="button" class="icon add" rel="{% url component_create project.slug %}" value="{% trans "Add Component" %}"/>
+</div>
+<br/>
+{% endiftrue %}
+
+<div class="details">
+	<table class="definition">
+		<tr>
+			<th class="icon repository">{% trans "Repository:" %}</th>
+			<td>{{ project.vcsurl }}</td>
+		</tr>
+		{% if project.viewurl %}
+		<tr>
+			<th class="icon view-url">{% trans "Repository View URL:" %}</th>
+			<td>{{ project.viewurl }}</td>
+		</tr>		
+		{% endif %}
+	</table>
+</div>
+
+<div class="left-layout">
+{% if user.is_authenticated %}
+{# MAINTEINERS #}
+{% with project.maintainers.all as maintainers %}
+{% if maintainers %}
+<h3>{% blocktrans count maintainers|length as counter %}Maintainer:{% plural %}Maintainers:{% endblocktrans %}</h3>
+<table>
+<tr>
+  <td class="detail_value">
+    {% for m in maintainers %}
+      {% if m.get_full_name %}
+        <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+      {% else %}
+      	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+        {% endif %}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+</tr>
+</table>
+{% endif %}
+{% endwith %}
+{% endif %}
+
+{# RELEASES #}
+{% with project.releases.all as releases %}
+{% if releases %}
+<h3>{% trans "Releases:" %}</h3>
+<div class="releases-box">
+{% for release in releases %}
+<p class="icon release indent"><a href="{{ release.get_absolute_url }}">{{ release.name }}</a></p>
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+{# COMPONENTS #}
+{% with project.components.all as components %}
+{% if components %}
+<h3>{% trans "Components:" %}</h3>
+<div class="releases-box">
+{% for component in components %}
+<p class="icon component indent"><a href="{{ component.get_absolute_url }}">{{ component.name }}</a></p>
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+</div>
+
+<div class="right-layout">
+{# TEAMS #}
+
+<h3>{% trans "Teams:" %}</h3>
+{% iftrue project.is_maintainer request.user %}
+<div>
+<select id="language-list" style="display: inline; margin-bottom: 5px; margin-right: 5px;">
+{% for lang in languages %}
+<option value="{{ lang.code }}">{{ lang.name }}</option>
+{% endfor %}
+</select>
+<span class="icon add link" onclick="add_lang('{% url team_create project.slug %}')">&nbsp;</span>
+</div>
+{% endiftrue %}
+
+{% with project.teams.all as teams %}
+{% if teams %}
+<div id="team-list" class="multicolumn2 detail-box">
+{% for t in teams %}
+<p class="icon team indent"><a href="{{ t.get_absolute_url }}">{{ t.language.name }}</a></p>
+{% endfor %}
+</div>
+{% else %}
+<div id="team-list" class="detail-box">
+<ul class="simple">
+<li>{% trans "No teams associated with this project." %}</li>
+</ul>
+</div>
+{% endif %}
+{% endwith %}
+
+</div>
+
+{% endblock %}

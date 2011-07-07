@@ -1,0 +1,9 @@
+{{ obj }}
+{% comment %}
+{% load extendtags %}
+{% ifinlist obj.action list=[M,FA,FR] %}
+{{ obj.pofile.filename }} :: {{ obj.get_action_display }}
+{% else %}
+{{ obj }}
+{% endifinlist %}
+{% endcomment %}

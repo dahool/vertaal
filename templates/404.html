@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n settingstag extendtags %}
+{% block favs %}
+{% endblock %}
+{% block title %}{{ block.super }} | {% trans "Page not found" %}{% endblock %}
+{% block content %}
+{% if reason %}
+<h2>{% trans "Not found" %}</h2>
+<div class="message center-box warn">
+<ul class="simple">
+<li>{{ reason }}</li>
+</ul>
+</div>
+{% else %}
+<h2>{% trans "Page not found" %}</h2>
+{% captureas ticket_url %}{% setting "TICKET_URL" %}{% endcaptureas %}
+<p>{% blocktrans %}Looks like you followed a bad link. If you think it's our fault, please <a href='{{ ticket_url }}'>let us know</a>.{% endblocktrans %}</p>
+{% url home as home %}
+<p>{% blocktrans %}Here's a link to the <a href="{{ home }}">homepage</a>. You know, just in case.{% endblocktrans %}</p>
+{% endif %}
+{% endblock %}

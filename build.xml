@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<project name="Vertaal" default="build" basedir=".">
+<!-- makemessages -a -e html -e mail -->
+	<!--
+	<target name="update_locale">
+		<exec executable="/usr/bin/python">
+			<arg value="manage.py"/>
+			<arg value="makemessages"/>
+			<arg value="-a"/>
+			<arg value="-e html"/>
+			<arg value="-e mail"/>
+		</exec>		
+	</target>
+-->
+	<target name="compile_locale">
+		<exec executable="/usr/bin/python">
+			<arg value="${dest}/manage.py"/>
+			<arg value="compilemessages"/>
+		</exec>	
+	</target>
+
+	<target name="hudson">
+		<antcall target="build">
+			<param name="dest" value="${env.DEST}"/>
+		</antcall>
+	</target>
+
+	<target name="hudson-locales">
+		<antcall target="buid-locale">
+			<param name="dest" value="${env.DEST}"/>
+		</antcall>
+	</target>
+				
+	<target name="buid-locale">
+		<antcall target="compile_locale"></antcall>
+		<copy overwrite="true" verbose="true" todir="${dest}/locale" includeemptydirs="false">
+			<fileset dir="./locale">
+				<exclude name=".svn"/>
+			</fileset>
+		</copy>
+		<echo message="Reload"/>
+		<touch file="${dest}/../apache/django.wsgi"/>
+		<echo message="Finished."/>	
+	</target>
+	
+	<target name="build">
+		<echo message="Deploying to ${dest}..."/>
+<!--
+		<copy overwrite="true" verbose="true" todir="${dest}" includeemptydirs="false">
+			<fileset dir=".">
+				<exclude name=".svn"/>
+				<exclude name="*.pyc"/>
+				<exclude name="settings_local.py"/>
+			</fileset>
+		</copy>
+-->
+		<!-- COMPILE LOCALE FIRST BECAUSE IT IS EXECUTED ON THE WORKSPACE PATH -->
+		<antcall target="compile_locale"></antcall>
+		<sync todir="${dest}" includeemptydirs="false" verbose="true" overwrite="true">
+			<fileset dir=".">
+				<exclude name=".project"/>
+				<exclude name=".pydevproject"/>
+				<exclude name=".svn"/>
+				<exclude name="*.pyc"/>
+				<exclude name="settings_local.py"/>
+			</fileset>
+			<preserveintarget>
+				<include name="settings_local.py"/>
+				<include name="**/media/**"/>
+			</preserveintarget>
+		</sync>
+		<echo message="Setting up environment..."/>
+		<exec executable="/usr/bin/python">
+			<arg value="-mcompileall"/>
+			<arg value="${dest}"/>
+		</exec>
+		<!--
+		<exec executable="/usr/bin/python">
+			<arg value="${dest}/manage.py"/>
+			<arg value="cleanup"/>
+		</exec>
+		-->
+		<exec executable="/usr/bin/python">
+			<arg value="${dest}/manage.py"/>
+			<arg value="syncdb"/>
+			<arg value="--noinput"/>
+		</exec>
+		<exec executable="/usr/bin/python">
+			<arg value="${dest}/manage.py"/>
+			<arg value="evolve"/>
+			<!-- arg value="- -hint"/-->
+			<arg value="--execute"/>
+			<arg value="--noinput"/>
+		</exec>
+		<exec executable="/usr/bin/python">
+			<arg value="${dest}/update.py"/>
+		</exec>		
+		<!--
+		<echo message="Reload apache"/>
+		<exec executable="/etc/init.d/apache2">
+			<arg value="reload"/>
+		</exec>
+		-->
+		<echo message="Reload."/>
+        <exec executable="/usr/bin/python">
+            <arg value="${dest}/reload.py"/>
+        	<arg value="${dest}/../apache/django.wsgi"/>
+        </exec> 		
+		<!-- touch file="${dest}/../apache/django.wsgi"/-->
+		<echo message="Finished."/>
+	</target>
+
+</project>

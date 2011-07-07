@@ -1,0 +1,62 @@
+{% extends "releases/release_base.html" %}
+{% load i18n formtags %}
+{% load extendtags %}
+{% block title %}
+{{ block.super }} | 
+{% with release.name as name %}{%blocktrans%}Populate release {{ name }}{%endblocktrans%}{% endwith %}
+{% endblock%}
+{% block favs %}
+{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+<a href="{% url release_detail release.slug %}">{{release.name}}</a>
+<span>{%trans "Populate"%}</span>
+{% endblock %}
+{% block content %}
+
+<div id="populate-form" class="center">
+
+<div class="message center-box">
+<ul class="simple">
+{% trans "Copy all the assignations from the selected release." %}
+</ul>
+
+</div>
+	<form class="form-style" action="{% url release_populate release.slug %}" method="post" accept-charset="utf-8">
+		<fieldset>
+		<legend>Populate</legend>
+		<ol>
+			<li>
+				<label for="id_copy_from">{% trans "Populate from:" %}</label>
+				<select id="id_copy_from" name="copy_from">
+					{% for rel in releases %}
+					<option value="{{rel.pk}}">{{rel.name}}</option>
+					{% endfor %}
+				</select>
+			</li>
+			{% if languages %}
+			<li>
+				<label for="id_language">{% trans "Language:" %}</label>
+				{% if languages|length_is:"1" %}
+				{% with languages|first as lang %}
+				<input type="hidden" value="{{lang.id}}" name="language_id">
+				<span id="id_language" style="font-weight: bold; vertical-align: middle;">{{lang}}</span>
+				{% endwith %}
+				{% else %}
+				<ol>
+				{% for lang in languages %}
+					<li><input type="checkbox" name="language_id" value="{{lang.id}}">{{lang}}</li>
+				{% endfor %}
+				<ol>				
+				{% endif %}
+			</li>
+			{% endif %}
+		</ol>
+		</fieldset>
+	</form>
+	<div id="form-action" class="text-right">
+		<a class="icon submit" href="#" onclick="document.forms[0].submit()">{% trans "Start" %}</a>
+	</div>
+	<p class="information warn">{% trans "The process could take some time to perform. Please be patient." %}</p>
+</div>
+{% endblock %}

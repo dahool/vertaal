@@ -1,0 +1,23 @@
+{% load i18n formtags %}
+{% load errors %}
+<form id="signup_form" class="form-style" action="{% url user_signup %}" method="post" accept-charset="utf-8">
+<fieldset>
+	<legend>{% trans "Sign up" %}</legend>
+	<ol>
+		<li>{% formfield form.username %}</li>
+		<li>{% formfield form.email %}</li>
+		<li>{% formfield form.password1 %}</li>
+		<li>{% formfield form.password2 %}</li>
+	</ol>    
+    {% if settings.USE_CAPTCHA %}
+	{% include "registration/captcha.html" %}
+	{% endif %}
+</fieldset>
+<div id="form-action" class="text-right">
+	<input class="icon signup" type="submit" value="{% trans "Sign up" %}" />
+</div>
+<script type="text/javascript"><!--
+	document.getElementById("id_username").focus();
+-->
+</script>
+</form>

@@ -1,0 +1,13 @@
+{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull home as home %} 
+{% blocktrans %}
+Hello,
+
+Your request to join the {{project}}'s {{team}} team was rejected. 
+
+If you are unsure of the reason for this rejection, contact the team coordinator.
+
+Sincerely,
+
+The {{ product_name }} team
+{{ home }}
+{% endblocktrans %}

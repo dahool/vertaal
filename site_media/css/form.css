@@ -1,0 +1,32 @@
+input, textarea, select {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;		
+	background:#FFFFFF url(../images/form/text-bg.gif) repeat-x scroll 0 0;
+	border: 1px solid #B5B8C8;
+	padding: 2px 3px;
+	-x-system-font:none;
+	font-family:tahoma,arial,helvetica,sans-serif;
+	font-size:12px;
+	font-size-adjust:none;
+	font-stretch:normal;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:normal;
+}
+
+input:focus, textarea:focus, select:focus {
+	border: 1px solid #7EADD9;
+}
+input[readonly],textarea[readonly],select[readonly] {
+	background-image: url(../images/form/text-bg-ro.gif);
+}
+input[readonly]:focus, textarea[readonly]:focus, select[readonly]:focus {
+	border: 1px solid #B5B8C8;
+}
+
+.error input, .error textarea, .error select {
+	background:#FFFFFF url(../images/form/invalid_line.gif) repeat-x scroll center bottom;
+	border:1px solid #DD7870;	
+}

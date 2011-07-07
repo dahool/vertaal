@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url project_list %}">{% trans "Projects" %}</a>
+{% if component %}
+<a href="{% url project_detail component.project.slug %}">{{ component.project.name }}</a>
+{% if release %}
+<a href="{% url release_detail release.slug %}">{{ release.name }}</a>
+{% endif %}
+{% else %}
+<a href="{% url project_detail project.slug %}">{{ project.name }}</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Forbidden" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<h2>{% trans "Forbidden" %}</h2>
+<div class="message center-box warn">
+<ul class="simple">
+<li>{% trans "Sorry, you don't have enough permissions to access here." %}</li>
+</ul>
+</div>
+{% endblock %}

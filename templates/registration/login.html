@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Sign in" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<div class="center-box">
+{% if form.errors %}
+<div class="message center-box warn">
+<ul class="simple">
+<li>{% trans "Your username and password didn't match. Please try again." %}</li>
+</ul>
+</div>
+{% endif %}
+{% if form2.errors %}
+<div class="message center-box warn">
+<ul class="simple">
+<li>{% trans "Your username and password didn't match. Please try again." %}</li>
+</ul>
+</div>
+{% endif %}
+{% if msg %}
+<div class="message center-box warn">
+<ul class="simple">
+<li>{{msg}}</li>
+</ul>
+</div>
+{% endif %}
+<div id="login" class="form-box center-box" style="padding-top:10px;">
+{% include "registration/login_box.html" %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block favs %}
+{% endblock %}
+{% block title %}{{block.super}} | {% trans "Glossary" %}{% endblock %}}
+{% block extra_head %}
+<script type="text/javascript">
+pro_pat = /(-P0)/gi;
+lan_pat = /(-L0)/gi;
+var url = "{% url gloss_list "-P0","-L0" %}";
+$(document).ready(function(){
+	$("#submit_button").click(function() {
+		var project = $("#project_selection option:selected");
+		var language = $("#language_selection option:selected");
+		url = url.replace(pro_pat,project.val()).replace(lan_pat,language.val());
+		window.location.replace(url);
+	});
+});
+</script>
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<span>{% trans "Glossary" %}</span>
+{% endblock %}
+{% block content %}
+<h1>{% trans "Glossary" %}</h1>
+<div class="center-box language-selection-dialog">
+<ul class="simple">
+<li>
+	{% trans "Project:" %}
+	<select id="project_selection">
+	{% for prj in projects %}
+	<option value="{{prj.slug}}">{{ prj.name }}</option>
+	{% endfor %}
+	</select>
+</li>
+<li>
+	{% trans "Language:" %}
+	<select id="language_selection">
+	{% for language in languages %}
+	<option value="{{language.code}}">{{ language.name }}</option>
+	{% endfor %}
+	</select>
+</li>
+<li class="submit-row"><input id="submit_button" class="icon submit" type="button" value="{% trans "Ok" %}"></li>
+</ul>
+</div>
+{% endblock %}

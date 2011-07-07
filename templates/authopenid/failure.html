@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n formtags %}
+{% load errors %}
+{% block title %}{{ block.super }} | {% trans "Failed" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<h1>OpenID authentication failed</h1>
+<div class="error center-box">
+<ul class="simple">
+	<li>{{ message|escape }}</li>
+</ul>
+</div>
+{% endblock %}

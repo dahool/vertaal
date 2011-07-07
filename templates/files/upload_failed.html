@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<div class="message center-box upload-failed text-left">
+<p>{% trans "Please, fix the following errors and upload the file again." %}</p>
+<ul class="simple">
+{% for m in message %}
+<li class="icon warn">{{ m }}</l>
+{% endfor %}
+</li>
+</ul>
+<a class="icon back" href="{{ back }}">{% trans "Back" %}</a>
+</div>
+{% endblock %}

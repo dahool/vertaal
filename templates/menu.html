@@ -1,0 +1,24 @@
+{% load i18n %}
+{% block menu %}
+<ul id="menu">
+	{% if user.is_authenticated %}
+	<li><a href="{% url user_profile %}">{% trans "My Profile" %}</a></li>
+	{% with user.user_favorites.all as favs %}
+	<li class="drop"><a href="" target="_self" >Bookmarks</a>
+		<ul id="bookmark_container">
+		{% for fav in favs %}
+		<li id="bookmark_{{ fav.id }}"><a href="{{ fav.url }}">{{ fav.name }}</a></li>
+		{% endfor %}
+		</ul>
+	</li>
+	{% endwith %}
+	{% if user.team_coordinator.all or user.committer.all %}
+	<li><a href="{% url commit_queue %}">{% trans "Submission Queue" %}</a></li>
+	{% endif %}
+	{% endif %}
+	<li><a href="{% url gloss_home %}">{% trans "Glossary" %}</a></li>
+	<li><a href="{% url language_list %}">{% trans "Languages" %}</a></li>	
+	<li><a href="{% url project_list %}">{% trans "Projects" %}</a></li>
+	<li><a href="{% url home %}">{% trans "Home" %}</a></li>
+</ul>
+{% endblock %}

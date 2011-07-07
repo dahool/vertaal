@@ -1,0 +1,48 @@
+{% load i18n extendtags timezone_filters %}
+<form id="submit_form_{{team.id}}" method="post" action="{{ form_url }}">
+<table id="submit_table" class="grid">
+	<thead>
+		<tr>
+			<th><input type="checkbox" name="selector" rel="submit_form_{{team.id}}"/></th>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Component" %}</th>
+			<th>{% trans "Release" %}</th>
+			<th>{% trans "Submitted on" %}</th>
+			<th>{% trans "by" %}</th>
+			<th>{% trans "Comment" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for sfile in submit_files %}
+	<tr>
+		<td>
+			{% if sfile.locked %}
+			<span class="nodecoration_icon action_icon on-submit" title="{% trans "The file is in the submission queue" %}"></span>
+			{% else %}
+			<input type="checkbox" name="file" value="{{ sfile.pk }}">
+			{% endif %}
+		</td>
+		<td>
+		<a href="{% url get_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a>
+		<a href="{% url view_file_diff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-diff" title="{% trans "View Diff" %}" style="padding-right: 0px;"></a>
+		<a href="{% url edit_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon file-edit" title="{% trans "Edit" %}"></a>
+		<a href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a>
+		</td>
+		<td>{{ sfile.pofile.component.name }}</td>
+		<td>{{ sfile.pofile.release.name }}</td>
+		<td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+		<td>{{ sfile.owner }}</td>
+		<td>{{ sfile.log_message }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6" class="table-action">
+				<input class="icon submit" type="submit" name="submit" value="{% trans "Submit" %}">
+				<input class="icon remove" type="submit" name="reject" value="{% trans "Reject" %}">
+			</td>	
+		</tr>
+	</tfoot>
+</table>
+</form>

@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url project_list %}">{% trans "Projects" %}</a>
+{% endblock %}

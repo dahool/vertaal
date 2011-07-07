@@ -1,0 +1,68 @@
+{% extends "releases/release_base.html" %}
+{% load i18n stats extendtags %}
+{% block title %}{{ block.super }} | {{ release.name }} ({{release.project.name}}){% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+<span>{{ release.name }}</span>
+{% endblock %}
+{% block content %}
+{% load pagination_tags %}
+{% block content_title %}<h1>{{ release.name }}</h1>{% endblock %}
+{% iftrue release.project.is_maintainer request.user %}
+<div id="form-action">
+<input type="button" name="href" class="icon edit" rel="{% url release_edit release.slug %}" value="{% trans "Edit" %}"/>
+<input type="button" name="href" class="icon add" rel="{% url release_create release.project.slug %}" value="{% trans "Add" %}"/>
+<input type="button" name="href" class="icon populate" rel="{% url release_populate release.slug %}" value="{% trans "Populate" %}"/>
+<input type="button" name="href" class="icon build" rel="{% url project_build release.slug %}" value="{% trans "Build cache" %}"/>
+{% if build_log %}
+<input type="button" name="href" class="icon build-log" rel="{% url build_log release.project.slug, release.slug %}" value="{% trans "View console" %}"/>
+{% endif %}
+<input type="button" name="href" class="icon merge" rel="{% url multimerge release.slug %}" value="{% trans "POT Merge" %}"/>
+</div>
+<br/>
+{% else %}
+{% if is_coord %}
+<div id="form-action">
+<input type="button" name="href" class="icon populate" rel="{% url release_populate release.slug %}" value="{% trans "Populate" %}"/>
+<input type="button" name="href" class="icon merge" rel="{% url multimerge release.slug %}" value="{% trans "POT Merge" %}"/>
+</div>
+<br/>
+{% endif %}
+{% endiftrue %}
+
+<div class="details">
+	<table class="definition">
+		<tr>
+			<th class="icon branch">{% trans "Branch:" %}</th>
+			<td>{{ release.vcsbranch }}</td>
+		</tr>
+	</table>
+</div>
+
+<div class="details">
+	<table class="stats-table">
+		<thead>
+			<tr>
+				<th>{% trans "Language" %}</th>
+				<th class="title-center">{% trans "Complete" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stat in stats %}
+			<tr>
+				<td><a href="{% url list_files release.slug,stat.language.code %}">{{ stat.language.name }}</a></td>
+				<td>
+					<div class="graph_comp">
+					  <div class="translated_comp" style="width: {{stat.trans_perc}}px;"></div>
+					  <div class="fuzzy_comp" style="left: {{stat.trans_perc}}px; width: {{stat.fuzzy_perc}}px;"></div>
+					  <div class="untranslated_comp" style="left: {{stat|sum_trans_fuzzy}}px; width: {{stat.untrans_perc}}px;"></div>
+					</div>
+					<div class="stats_string_comp" title="{% trans "Trans:" %}{{stat.trans}}, {% trans "Fuzzy:" %}{{stat.fuzzy}}, {% trans "Untrans:" %}{{stat.untrans}}" >{{stat.trans_perc}}%</div>					
+				</td>
+			</tr>
+			{% endfor %}			
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

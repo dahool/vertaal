@@ -1,0 +1,13 @@
+{% load i18n %}
+{% block auth %}     
+	{% if user.is_authenticated %}
+		{% url user_profile as profile %}
+		{% trans "Welcome" %} <a title="{% trans "Profile settings" %}" href="{{ profile }}">{{ user.username }}</a>
+		&nbsp;|&nbsp;
+		<a href="{% url user_signout %}">{% trans "Sign out" %}</a>
+	{% else %}
+		<a class="menu_link" href="{% url user_signin %}">{% trans "Sign in" %}</a>
+		&nbsp;|&nbsp;
+		<a class="menu_link" href="{% url user_signup %}">{% trans "Register" %}</a>
+	{% endif %}
+{% endblock %}

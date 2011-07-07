@@ -1,0 +1,57 @@
+{% extends "releases/release_base.html" %}
+{% load i18n %}
+{% block favs %}
+{% endblock %}
+{% block title %}{{block.super}} | {% trans "Build log" %} {{ release.name }} ({{ release.project.name }}){% endblock %}}
+{% block quick_menu %}
+{{ block.super }}
+<a name="top" href="{% url release_detail release.slug %}">{{ release.name }}</a>
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript">
+
+	var url = '{% url build_log release.project.slug, release.slug %}';
+	
+	$(document).ready(function(){
+		request_log(0);
+	});
+
+	function request_log(offset) {
+		$.post(url,
+				{'offset': offset},
+				process_console_response,
+				"xml");
+	}
+	
+	function process_console_response(data) {
+		$(data).find('response').each(function(){
+			var c = $(this).find('text');
+			if (c.length>0) {
+				$('#console').append(c.text());
+				window.scrollTo( 0, document.getElementById('console').clientHeight );
+			}
+			var o = $(this).find('offset');
+			if (o.length>0) {
+				offset = o.text();
+				if (offset!='END') {
+					refreshdelay = setTimeout('request_log('+offset+')',2000);
+				} else {
+					clearTimeout(refreshdelay);
+				}
+					
+			} 
+		});	
+		
+	}
+</script>
+{% endblock %}
+{% block content %}
+<div id="console">
+</div>
+<br/>
+<div class="right">
+<a class="icon back" href="{% url release_detail release.slug %}">{% trans "Back"%}</a>
+&nbsp;
+<a class="icon go-top" href="#top">{% trans "Go top"%}</a>
+</div>
+{% endblock %}

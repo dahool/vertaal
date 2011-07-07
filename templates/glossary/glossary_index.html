@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{block.super}} | {% trans "Glossary" %} [{{ project.name }} ({{ lang.name }})]{% endblock %}}
+{% block extra_head %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$("select[name='item_selection']").change(function() {
+		window.location.replace($(this).val());
+	});
+});
+</script>
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<span>{% trans "Glossary" %} [{{ project.name }} ({{ lang.name }})]</span>
+{% endblock %}
+{% block content %}
+<div class="right language-selection-box">
+	<span>{% trans "Project:" %}</span>
+	<select name="item_selection">
+	{% for prj in projects %}
+	<option {% ifequal prj.id project.id %}selected{% endifequal %} value="{% url gloss_list prj.slug,lang.code %}">{{ prj.name }}</option>
+	{% endfor %}
+	</select>
+	<span>{% trans "Language:" %}</span>
+	<select name="item_selection">
+	{% for language in languages %}
+	<option {% ifequal language.code lang.code %}selected{% endifequal %} value="{% url gloss_list project.slug,language.code %}">{{ language.name }}</option>
+	{% endfor %}
+	</select>
+</div>
+<h1>{% trans "Glossary" %}</h1>
+<div id="form-action">
+{% if perms.glossary %}
+<a href="{% url gloss_add project.slug, lang.code %}" class="icon add">{% trans "New" %}</a>
+{% endif %}
+<a href="{% url export_tbx project.slug, lang.code %}" class="icon glossaryexport">{% trans "Download TBX" %}</a>
+</div>
+<br/>
+<table id="quick-index">
+<tr>
+<td><a href="#a">A</a></td>
+<td><a href="#b">B</a></td>
+<td><a href="#c">C</a></td>
+<td><a href="#d">D</a></td>
+<td><a href="#e">E</a></td>
+<td><a href="#f">F</a></td>
+<td><a href="#g">G</a></td>
+<td><a href="#h">H</a></td>
+<td><a href="#i">I</a></td>
+<td><a href="#j">J</a></td>
+<td><a href="#k">K</a></td>
+<td><a href="#l">L</a></td>
+<td><a href="#m">M</a></td>
+<td><a href="#n">N</a></td>
+<td><a href="#o">O</a></td>
+<td><a href="#p">P</a></td>
+<td><a href="#q">Q</a></td>
+<td><a href="#r">R</a></td>
+<td><a href="#s">S</a></td>
+<td><a href="#t">T</a></td>
+<td><a href="#u">U</a></td>
+<td><a href="#v">V</a></td>
+<td><a href="#w">W</a></td>
+<td><a href="#x">X</a></td>
+<td><a href="#y">Y</a></td>
+<td><a href="#z">Z</a></td>
+</tr>
+</table>
+{% regroup list by initial as word_list %}
+<br/>
+<table id="glossary-list">
+	{% if word_list %}
+	{% for term in word_list %}
+	<tr class="title">
+		<td class="group" id="{{ term.grouper }}">{{ term.grouper|upper }}</td>
+		<td colspan="2"><a class="icon go-top" href="#quick-index">[{% trans "Go top"%}]</a></td>
+	</tr>
+	<tr class="header">
+		<td>{% trans "Word" %}</td>
+		<td>{% trans "Translation" %}</td>
+		<td>{% trans "Comments" %}</td>
+	</tr>
+	{% for item in term.list %}
+	<tr class="body">
+		<td class="word"><a href="{% url gloss_log item.id %}">{{ item.word }}</a>:</td>
+		<td class="translation">
+		{% if perms.glossary %}
+		<a href="{% url gloss_edit item.id %}" class="nodecoration_icon action_icon edit" title="{% trans "Edit" %}"></a>&nbsp;
+		{% endif %}
+		{{ item.translation }}</td>
+		<td class="comment">{{ item.comment }}</td>
+		
+	</tr>
+	{% endfor %}
+	{% endfor %}
+	{% else %}
+	<p class="help_text" style="text-align: center;">{% trans "The database is empty :-(" %}</p>
+	{% endif %}
+</table>
+<br/>
+<div id="license">
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png" /></a><!-- <br/><span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Noncommercial-Share Alike 3.0</a>.</span> -->
+</div>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% load i18n extendtags timezone_filters stats smartiftag %}
+
+{% if not release %}
+	{% if file.release.enabled and file.release.project.enabled %}
+		{% set 'enabled' as enabled %}
+	{% endif %}
+	{% if file.release.read_only or file.release.project.read_only %}
+		{% set 'read_only' as readonly %}
+	{% endif %}
+	{% iftrue team.can_manage user %}
+		{% set 'true' as can_manage %}
+	{% endiftrue %}
+{% endif %}
+
+{% set file.assigns.get as assign %}
+{% if assign %}
+	{% ifequal user assign.translate %}
+		{% set 'translate' as translate %}
+	{% else %}	
+		{% ifequal user assign.review %}
+			{% set 'review' as review %}
+		{% endifequal %} 
+	{% endifequal %}
+	{# % if translate  or review % #}
+		{% set file.locks.get as lock %}
+		{% if lock %}
+		    {% if user == lock.owner %}
+				{% set 'editable' as editable %}
+				{% set 'owner' as lockowner %}
+			{% endif %}
+		{% else %}
+			{% if translate  or review %}
+			{% set 'editable' as editable %}
+			{% set 'owner' as owner %}
+			{% endif %}
+		{% endif %}
+	{# % endif % #}
+{% endif %}
+
+{% url toggle_lock file.slug as toggle_lock_url %}
+{% url remove_assigned_translator file.slug as remove_translate_url %}
+{% url remove_assigned_reviewer file.slug as remove_review_url %}
+{% url set_assigned_translator file.slug as set_assigned_translator %}
+{% url set_assigned_reviewer file.slug as set_assigned_reviewer %}
+{% url toggle_mark file.slug as toggle_mark_url %}
+
+{% if file.submits.all %}
+	{% url view_submit_file file.slug as view_url %}
+{% else %}
+	{% url view_file file.slug as view_url %}
+{% endif %}
+<td class="actions">
+	<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view" title="{% with file.filename as filename %}{% blocktrans %}View {{filename}}{% endblocktrans %}{% endwith %}"></a>
+	<a href="{% url get_file file.slug %}" class="nodecoration_icon action_icon download" title="{% with file.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
+	{% if user.is_authenticated %}
+		{% if enabled and not readonly %}
+			{% if editable or can_manage %}
+				<a href="{% url edit_file file.slug %}" class="nodecoration_icon action_icon file-edit" title="{% with file.filename as filename %}{% blocktrans %}Edit {{filename}}{% endblocktrans %}{% endwith %}"></a>
+				{% if lock %}				
+					{% if lockowner or can_manage %}
+						<span onclick="add_comment('{{file.id}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
+					{% endif %}
+				{% else %}
+				{% if owner %}
+					<span onclick="try_toggle('{{ toggle_lock_url }}')" class="nodecoration_icon action_icon lock-open link" title="{% trans "Lock the file to notify others you're working on it." %}"></span>
+				{% endif %}
+				{% endif %}
+
+		        {% switch file.status %}
+		            {% case 0 %}
+		            	{% captureas status_message %}{% trans "Mark the file as Translated." %}{% endcaptureas %}
+		            	{% set 'mark-translated' as status_icon %}
+		            {% case 1 %}
+		            	{% captureas status_message %}{% trans "Mark the file as Reviewed." %}{% endcaptureas %}
+		            	{% set 'mark-reviewed' as status_icon %}		            
+		            {% case 2 %}
+		            	{% captureas status_message %}{% trans "Mark the file as Completed." %}{% endcaptureas %}
+		            	{% set 'mark-completed' as status_icon %}		            
+		        {% endswitch %}
+		        <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+			{% endif %}			
+		{% endif %}
+	{% endif %}
+	<!-- FIX SAFARI -->
+	<span>&nbsp;</span>
+</td>
+<td class="filename">
+	{% comment %}<a class="highlight" title="{% trans "View history" %}" name="{{ file.slug }}" rel="{% url file_log file.slug %}">{{ file.filename }}</a>{% endcomment %}
+	<a class="highlight" name="{{ file.slug }}" href="{% url file_detail file.slug %}">
+	{% if file.potfile.all %}
+	{% with file.potfile.get as potfile %}
+	{% if file.need_merge %}
+		<span class="icon warn">&nbsp;</span>
+	{% endif %}
+	{% endwith %}
+	{% endif %}
+	{{ file.filename }}</a>
+	{% with file.submits.get as submit %}
+		{% if  submit %}
+			{% if submit.enabled %}
+			<a href="{% url get_submit_file file.slug %}" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
+			{% else %}
+			<span class="action_icon nodecoration_icon file-submit-edit" title="{% trans "This file is being edited" %}"></span>
+			{% endif %}
+		{% endif %}
+	{% endwith %}
+</td>
+<td>{{ file.component.name }}</td>
+<td>
+	<div class="graph_comp">
+	  <div class="translated_comp" style="width: {{file.trans_perc}}px;"></div>
+	  <div class="fuzzy_comp" style="left: {{file.trans_perc}}px; width: {{file.fuzzy_perc}}px;"></div>
+	  <div class="untranslated_comp" style="left: {{file|sum_trans_fuzzy}}px; width: {{file.untrans_perc}}px;"></div>
+	</div>
+	<div class="stats_string_comp" title="{% trans "Total:" %}{{file.total}}, {% trans "Trans:" %}{{file.trans}}, {% trans "Untrans:" %}{{file.untrans}}, {% trans "Fuzzy:" %}{{file.fuzzy}}" >{{file.total}}/{{file.untrans}}/{{file.fuzzy}} [{{file.trans_perc}}%]</div>					
+</td>
+<td class="assigns">
+{% with file.assigns.get as assign %}
+	{% if assign.translate %}
+		{% if can_manage or translate %}
+			<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove translator" %}"></span>
+		{% endif %}	
+		{% if translate %}
+			{% trans "(you)" %}
+		{% else %}
+			<a href="{% url contact_me assign.translate.username %}">{{ assign.translate }}</a>
+		{% endif %}
+	{% else %}
+		{% if user.is_authenticated %}
+			{% if can_manage %}
+				<span onclick="select_user(this,try_toggle,'{{ set_assigned_translator }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign translator" %}">&nbsp;</span>
+			{% else %}
+				<span onclick="try_toggle('{{ set_assigned_translator }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign translator" %}">&nbsp;</span>
+			{% endif %}
+		{% else %}
+			{% trans "None" %}
+		{% endif %}
+	{% endif %}
+</td>
+<td class="assigns">
+	{% if assign.review %}
+		{% if can_manage or review %}
+			<span onclick="try_toggle_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove reviewer" %}"></span>
+		{% endif %}	
+		{% if review %}
+			{% trans "(you)" %}
+		{% else %}
+			<a href="{% url contact_me assign.review.username %}">{{ assign.review }}</a>
+		{% endif %}
+	{% else %}
+		{% if user.is_authenticated %}
+			{% if can_manage %}
+				<span onclick="select_user(this,try_toggle,'{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+			{% else %}
+				<span onclick="try_toggle('{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+			{% endif %}
+		{% else %}
+			{% trans "None" %}
+		{% endif %}
+	{% endif %}
+{% endwith %}
+</td>
+<td>
+<span class="stat_message" id="lock_break_{{file.id}}">
+{% if lock and user.is_authenticated %}
+	<b>
+	{% captureas created %}{{ lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" }}{% endcaptureas %}
+	{% if lockowner %}
+		{% blocktrans %}Locked{% endblocktrans %}
+	{% else %}
+		{% with lock.owner as owner %}{% blocktrans %}Locked by {{owner}}{% endblocktrans %}{% endwith %}
+	{% endif %}
+	<span style="font-size:80%"> ({{created}})</span>
+	</b>
+{% else %}
+	{% ifnotequal file.untrans 0 %}
+		{% set "display_untrans" as display_class %}
+	{% else %}
+		{% ifnotequal file.fuzzy 0 %}
+			{% set "display_fuzzy" as display_class %}
+		{% else %}
+			{% set "display_trans" as display_class %}
+		{% endifnotequal %}
+	{% endifnotequal %}
+	<span class="{{ display_class }}">{{ file.get_status_display }}</span>
+{% endif %}
+</span>
+<div id="lock_comment_{{file.id}}" style="display: none; width: 100%;">
+	<span class="help_text">{% trans "Comments" %}:</span><input id="comment_{{file.id}}" maxlength="255" size="15" type="text">
+	<span id="submit_{{file.id}}" onclick="try_toggle('{{ toggle_lock_url }}',{'text': $('#comment_{{file.id}}').val()})" class="nodecoration_icon action_icon submit link" style="margin-left: 0px;">&nbsp;</span>
+	<!-- span onclick="check_current()" class="nodecoration_icon action_icon cancel link">&nbsp;</span-->
+</div>
+</td>

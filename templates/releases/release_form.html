@@ -1,0 +1,58 @@
+{% extends "releases/release_base.html" %}
+{% load i18n formtags %}
+{% load extendtags %}
+{% block title %}
+{{ block.super }} | 
+{% if release %}{% set release.name as name %}{%blocktrans%}Editing release {{ name }}{%endblocktrans%}
+{% else %}{%trans "New Release"%}{% endif %}
+{% endblock%}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+{% if release %}
+<a href="{% url release_detail release.slug %}">{{release.name}}</a>
+{%else%}
+<span>{%trans "New Release"%}</span>
+{%endif%}
+{% endblock %}
+{% block content %}
+{% if release %}
+	{% url release_edit release.slug as form_url %}
+{% else %}
+	{% url release_create project.slug as form_url %}
+{% endif %}
+<div id="project-form" class="center">
+	<form class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
+		<input type="hidden" name="project" value="{{project.id}}" id="id_project" />
+		<fieldset>
+		<legend>{{ project.name }} - {% if release %}{{release.name}}{%else%}{% trans "New Release" %}{%endif%}</legend>
+		{% if form.non_field_errors %}
+		{{ form.non_field_errors.as_ul }}
+		{% endif %}
+		<ol>
+			<li>{% formfield form.name %}</li>
+			<li>{% formfield form.enabled %}</li>
+			<li>{% formfield form.read_only %}</li>
+			<li>{% formfield form.vcsbranch %}</li>
+		</ol>
+		<br/>
+		<span class="help_text"><em>*</em> {% trans "required" %}</span>		
+		</fieldset>
+		<div id="form-action">
+			<input class="icon save" type="submit" value="{% trans "Save" %}"/>
+			{% if release %}
+				{% iftrue project.is_maintainer request.user %}
+				{% url release_delete release.slug as delete_url %}
+				<input name="confirm_href" rel="{{ delete_url }}" class="icon delete" type="button" value="{% trans "Delete" %}"/>
+				{% endiftrue %}
+			{% endif %}
+		</div>
+	</form>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "files/file_base.html" %}
+{% block title %}
+{{ block.super }} | {{ pofile.filename }}  
+({{ pofile.language.name }} -{{ pofile.component.name }}/{{ pofile.release.name }}- ({{ pofile.component.project.name }}))
+{% endblock %}
+{% load i18n extendtags %}
+{% block extra_head %}
+<style type="text/css">
+{{ style }}
+</style>
+{% endblock %}
+{% block quick_menu %}
+{% set pofile.component as component %}
+{% set pofile.release as release %}
+{{ block.super }}
+<a href="{% url list_files pofile.release.slug, pofile.language.code %}">{{ pofile.language.name }}</a>
+<span>{{ pofile.filename }}</span>
+{% endblock %}
+{% block content %}
+{% if pofile.submits.all %}
+<div class="message">
+<ul class="simple">
+{% if submit %}
+{% url view_file pofile.slug as view_url %}
+<li>{% blocktrans %}You are viewing the uploaded version of this file. To view the original one, click <a href="{{view_url}}">here</a>{% endblocktrans %}</li>
+{% else %}
+{% url view_submit_file pofile.slug as submit_url %}
+<li>{% blocktrans %}You are viewing the original version of this file. To view the uploaded one, click <a href="{{submit_url}}">here</a>{% endblocktrans %}</li>
+{% endif %}
+</ul>
+</div>
+{% endif %}
+{{ body|safe }}
+{% endblock %}

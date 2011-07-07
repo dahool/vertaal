@@ -1,0 +1,13 @@
+<div class="entry-list">
+	<p class="projects title"><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></p>
+	<div class="description">{%if project.description %}{{project.description}}{% endif %}</div>
+	{% with project.releases.all as releases %}
+		{% if releases %}
+			<div class="project-releases">
+			{% for release in releases %}
+				<a class="icon release" href="{{ release.get_absolute_url }}">{{ release.name }}</a>&nbsp;
+			{% endfor %}
+			</div>
+		{% endif %}
+	{% endwith %}
+</div>

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n timezone_filters %}
+{% block title %}{{block.super}} | {% trans "User Profile" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+<script><!--
+$(document).ready(function(){
+    $("#tabs").tabs();
+});
+
+function remove_pro_fav(id) {
+	$.post('{% url profile_remove_fav %}',
+			{id: id},
+			process_remove_pro_fav_response,
+			  "xml");	
+}
+function process_remove_pro_fav_response(data) {
+	$(data).find('response').each(function(){
+		var c = $(this).find('id');
+		if (c.length>0) {
+			$("#fav_"+c.text()).remove();
+			$("#bookmark_"+c.text()).remove();
+		}
+	});	
+}
+function startup_set(id, remove) {
+	if (remove == undefined) {
+		url = '{% url add_startup %}';
+		proc = process_set_startup 
+	} else {
+		url = '{% url remove_startup %}';
+		proc = process_remove_startup
+	}
+	$.post(url,
+			{id: id},
+			proc,
+			  "xml");	
+}
+
+function process_remove_startup(data) {
+	$(data).find('response').each(function(){
+		var c = $(this).find('id');
+		if (c.length>0) {
+			$("#start_del_"+c.text()).hide();
+			$("#start_set_"+c.text()).show();
+		}
+	});	
+}
+function process_set_startup(data) {
+	$(data).find('response').each(function(){
+		var c = $(this).find('id');
+		if (c.length>0) {
+			$("#start_del_"+c.text()).show();
+			$("#start_set_"+c.text()).hide();
+		}
+	});	
+}
+
+--></script>
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<span>{% trans "Profile" %}</span>
+{% endblock %}
+{% block content %}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tab-1"><span>{% trans "Settings" %}</span></a></li>
+        <li><a href="#tab-2"><span>{% trans "Workpanel" %}</span></a></li>
+    </ul>
+    <div id="tab-1">
+    	{% include "registration/profile_box.html" %}
+    </div>
+    <div id="tab-2">
+    	{% include "registration/profile_workarea_box.html" %}
+    </div>
+</div>
+
+{% endblock %}

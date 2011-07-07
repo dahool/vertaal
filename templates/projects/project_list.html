@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load pagination_tags %}
+{% block title %}{{block.super}} | {% trans "Project List" %}{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<span>{% trans "Projects" %}</span>
+{% endblock %}
+{% block content %}
+{% block content_title %}<h1>{% trans "Projects" %}</h1>{% endblock %}
+{% if perms.project.can_add %}
+<div id="form-action">
+  <input name="href" type="button" class="icon add" rel="{% url project_create %}" value="{% trans "Add" %}"/>
+</div>
+{% endif %} 
+{% autopaginate project_list %}
+<div class="simple">
+	{% for project in project_list %}
+	{% include "projects/project_list_entry.html" %}
+	{% endfor %}
+	
+</div>
+<div class="pagination_box">{% paginate %}</div>
+{% endblock %}

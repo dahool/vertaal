@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+{{ block.super }} | {{ pofile.filename }}  
+({{ pofile.language.name }} -{{ pofile.component.name }}/{{ pofile.release.name }}- ({{ pofile.component.project.name }}))
+{% endblock %}
+{% load i18n extendtags %}
+{% block extra_head %}
+<style type="text/css">
+  .diff_add {background-color:#aaffaa}
+  .diff_chg {background-color:#ffff77}
+  .diff_sub {background-color:#ffaaaa}
+</style>
+{% endblock %}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url commit_queue %}">{% trans "Submission Queue" %}</a>
+<span>{{ pofile.filename }}</span>
+{% endblock %}
+{% block favs %}{% endblock %}
+{% block content %}
+<pre>{{ body|safe }}</pre>
+{% endblock %}

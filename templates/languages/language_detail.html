@@ -1,0 +1,32 @@
+{% extends "languages/language_base.html" %}
+{% load i18n extendtags %}
+{% load pagination_tags %}
+{% block title %}
+{% set language.name as language_name %}
+{{ block.super }} | {% blocktrans %}Projects for {{ language_name }}{% endblocktrans %}{% endblock %}
+{% block quick_menu %}
+{{ block.super }}
+<a href="{% url language_list %}">{% trans "Languages" %}</a>
+<span>{{ language.name }}</span>
+{% endblock %}
+{% block content %}
+{% block content_title %}<h1>{{ language.name }} <sup>({{language.code}})</sup></h1>{% endblock %}
+{% with language.teams.all as teams %}
+{% if teams %}
+{% autopaginate teams %}
+	<div class="simple">
+		{% for team in teams %}
+		<p class="projects title"><a href="{{ team.get_absolute_url }}">{{ team.project.name }}</a></p>
+		<div class="description">{%if team.project.description %}{{team.project.description}}{% endif %}</div>
+		{% endfor %}
+	</div>
+<div class="pagination_box">{% paginate %}</div>
+{% else %}
+<p class="help_text">{% trans "No teams associated to this language" %}</p> 
+{% endif %}
+{% endwith %}
+{% url contact_form as contact %}
+<div class="content_footer_center">
+<p><span>{% blocktrans %}If the project you are looking for is not listed, there is no team for this language yet. If you think this is incorrect, <a href="{{ contact }}">contact us</a>.{% endblocktrans %}</span></p>
+</div>
+{% endblock %}

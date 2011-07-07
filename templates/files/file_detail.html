@@ -1,0 +1,181 @@
+{% extends "files/file_base.html" %}
+{% load i18n extendtags timezone_filters pagination_tags smartiftag settingstag %}
+{% block title %}
+{{ block.super }} | {{ pofile.filename }}  
+({{ pofile.language.name }} -{{ pofile.component.name }}/{{ pofile.release.name }}- ({{ pofile.component.project.name }}))
+{% endblock %}
+{% block extra_head %}
+{{ block.super }}
+{% set pofile.filename as filename %}
+{% ifsetting ENABLE_RSS %}
+<link rel="alternate" type="application/rss+xml" title="{% blocktrans %}Latest actions on {{filename}}{% endblocktrans %}" href="{% url file_feed pofile.slug %}">
+{% endifsetting %}
+{% endblock %}
+{% block quick_menu %}
+{% set pofile.component as component %}
+{% set pofile.release as release %}
+{{ block.super }}
+<a href="{% url list_files pofile.release.slug, pofile.language.code %}">{{ pofile.language.name }}</a>
+<span>{{ pofile.filename }}</span>
+{% endblock %}
+{% block content %}
+{% ifsetting ENABLE_RSS %}
+<h1>{{ pofile.filename }}&nbsp;&nbsp;<a class="icon feed" href="{% url file_feed pofile.slug %}">&nbsp;</a></h1>
+{% endifsetting %}
+<div class="details">
+	<table class="definition">
+		<tbody>
+			<tr>
+				<th class="icon release">{% trans "Release" %}</th>
+				<td>{{pofile.release.name}}</td>
+			</tr>		
+			<tr>
+				<th class="icon component">{% trans "Component" %}</th>
+				<td>{{pofile.component.name}}</td>
+			</tr>
+			{% if pofile.potfile.all %}
+			{% with pofile.potfile.get as potfile %}
+			<tr>
+				<th>
+				<a href="{% url get_pot_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+				{% trans "POT file:" %}
+				</th>
+				<td>
+				{% blocktrans count potfile.total as counter %}
+				{{ counter }} message
+				{% plural %}
+				{{ counter }} messages
+				{% endblocktrans %}
+				{% if potfile.updated %}
+				-
+				{% if user.is_authenticated %}
+					{% captureas updated %}{{ potfile.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" }}{% endcaptureas %}
+				{% else %}
+					{% captureas updated %}{{ potfile.updated|date:"M d, Y H:i O" }}{% endcaptureas %}
+				{% endif %}
+				{% captureas since %}{{ potfile.updated|timesince }}{% endcaptureas %}
+				{% blocktrans %}updated on {{updated}} ({{since}} ago){% endblocktrans %}
+				{% endif %}
+				</td>
+			</tr>
+			{% if pofile.need_merge %} 
+			<tr>
+				<td colspan="2" class="icon warn">{% trans "The PO file differs from the source POT file." %}
+				<input class="icon merge" type="button" value="{% trans "Force merge" %}" rel="{% url file_merge pofile.slug %}" name="confirm_href"/>
+				</td>
+			</tr>
+			{% endif %}
+			{% endwith %}
+			{% endif %}
+			<tr>
+				<th>
+				<a href="{% url get_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+				{% trans "Translated:" %}</th>
+				<td><span title="{% trans "Total/Translated/Untranslated/Fuzzy" %}"/>{{pofile.trans_perc}}% ({{pofile.total}}/{{pofile.trans}}/{{pofile.untrans}}/{{pofile.fuzzy}})</span>
+                {% if pofile.potupdated %}
+                - 				
+				{% if user.is_authenticated %}
+				    {% captureas updated %}{{ pofile.potupdated|localtime:user.get_profile.timezone|date:"M d, Y H:i" }}{% endcaptureas %}
+				{% else %}
+				    {% captureas updated %}{{ pofile.potupdated|date:"M d, Y H:i O" }}{% endcaptureas %}
+				{% endif %}
+				{% captureas since %}{{ pofile.potupdated|timesince }}{% endcaptureas %}
+				{% blocktrans %}source updated on {{updated}} ({{since}} ago){% endblocktrans %}
+				{% endif %}				
+				</td>
+			</tr>
+			{% if pofile.release.project.viewurl %}
+			<tr>
+				<th>
+					<a target="_blank" href="{{ pofile.viewurl }}" class="nodecoration_icon action_icon svnlog" title="{% trans "View repository log" %}"></a>{% trans "Repository log:" %}
+				</th>
+				<td>
+					{% if pofile.buildcachedata %}
+						{% with pofile.buildcachedata as cache %}
+							{% if user.is_authenticated %}
+								{% captureas updated %}{{ cache.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" }}{% endcaptureas %}
+							{% else %}
+								{% captureas updated %}{{ cache.updated|date:"M d, Y H:i O" }}{% endcaptureas %}
+							{% endif %}
+							{% if cache.rev %}
+								{% with cache.rev as rev %}
+								{% blocktrans %}Revision {{rev}}{% endblocktrans %}
+								{% endwith %}
+							{% endif %}
+							{% captureas since %}{{ cache.updated|timesince }}{% endcaptureas %}
+							{% blocktrans %}(updated {{updated}} - {{since}} ago){% endblocktrans %} 
+						{% endwith %}
+						<span class="help_text">{% trans "The information displayed is local and may be out dated." %}</span>
+					{% endif %}
+				</td>
+			</tr>	
+			{% endif %}
+			{% with pofile.submits.get as submit %}
+			{% if submit %}
+			<tr>
+				<th colspan="2">
+				<a href="{% url get_submit_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+				{% if user.is_authenticated %}
+					{% captureas created %}{{ submit.created|localtime:user.get_profile.timezone|date:"M d, H:i" }}{% endcaptureas %}
+				{% else %}
+					{% captureas created %}{{ submit.created|date:"M d, H:i O" }}{% endcaptureas %}
+				{% endif %}
+				{% captureas since %}{{ submit.created|timesince }}{% endcaptureas %}
+				{% blocktrans %}Pending submit, in queue since {{created}} ({{since}} ago){%endblocktrans%}
+				</th>
+			</tr>
+			{% endif %}
+			{% endwith %}			
+		</tbody>
+		
+				
+	</table>
+</div>
+<div id="log-file-table">
+	{% with pofile.log.all as logs %}
+	{% if logs %}
+	{% autopaginate logs %}
+	<table class="stats-table">
+		<thead>
+			<tr>
+				<th class="title-center">{% trans "Action" %}</th>
+				<th class="title-center">{% trans "Date" %}</th>
+				<th class="title-center">{% trans "User" %}</th>
+				<th class="title-center">{% trans "Comments" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for log in logs %}
+			<tr>
+				<td>{{ log.get_action_display }}</td>
+				<td>{% if user.is_authenticated %}
+					{{ log.created|localtime:request.user.get_profile.timezone|date:"M d, H:i" }}
+					{% else %}
+					{{ log.created|date:"M d, H:i O" }}
+					{% endif %}	
+				</td>
+				<td>
+					{% if log.user.get_full_name %}
+					{{ log.user.get_full_name }} ({{ log.user.username }})
+					{% else %}
+					{{ log.user.username }}
+					{% endif %}					
+				</td>
+				<td>{{ log.comment }}</td>
+			</tr>
+			{% endfor %}			
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">
+					<div class="pagination_box">{% paginate %}</div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	{% else %}
+	<p>{% trans "No actions registered yet" %}</p>
+	{% endif %}
+	{% endwith %}
+</div>
+{% endblock %}

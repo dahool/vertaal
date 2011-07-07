@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load news_tag %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<div class="divright">
+{% if not user.is_authenticated %}
+<div id="login" class="form-box">
+{% include "registration/login_box.html" %}
+</div>
+{% endif %}
+<div id="news-box">
+{% latest_news %}
+</div>
+</div>
+{% include "projects/project_latests.html" %}
+{% endblock %}

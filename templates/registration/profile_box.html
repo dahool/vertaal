@@ -1,0 +1,89 @@
+{% load i18n formtags extendtags %}
+{% block extra_head %}
+{{ block.super }}
+<script type="text/javascript"><!--
+function confirmDelete(url) {
+	confirmSimple(function(r){
+		if (r) {
+			$("#openid_url").val(url);
+			$("#dissociateurl").submit();
+		}
+	});
+}
+--></script>
+{% endblock %}
+<div class="left-layout">
+<div id="profile-box">
+	<form class="form-style" action="{% url user_profile %}" method="post" accept-charset="utf-8">
+	<fieldset>
+		<legend>{% trans "Profile" %}</legend>
+		<ol>
+			<li>{% formfield form.first_name %}</li>
+			<li>{% formfield form.last_name %}</li>
+			<li>{% formfield form.email %}</li>
+			<li>{% formfield form.language %}</li>
+			<li>{% formfield form.timezone %}</li>
+			{% if user.userassociation_set.all and not user.has_usable_password %}
+			{% url openid_password_change as change_pass_url %}
+			<br/>
+			<span class="icon info">&nbsp;{% blocktrans %}You are logged in with OpenID. Click <a href="{{ change_pass_url }}">here</a> to setup a local password.{% endblocktrans %}</span>
+			<br/>
+			{% else %}
+			<li>{% formfield form.old_password %}</li>
+			<li>{% formfield form.new_password1 %}</li>
+			<li>{% formfield form.new_password2 %}</li>
+			{% endif %}
+			{% if user.userassociation_set.all %}
+			<br/>
+			{% with user.userassociation_set.all as openidurls %}
+			<span class="icon openid-icon">&nbsp;{% trans "OpenID URLs:" %}</span>
+			<ul>
+				{% for idurl in openidurls %}
+				<li><span onclick="confirmDelete('{{idurl.openid_url}}')" class="action_icon link nodecoration_icon remove" title="{% trans "Remove" %}"></span>
+				{{idurl.openid_url}}
+				</li>
+				{% endfor %}
+			</ul>
+			{% endwith %}
+			<br/>
+			<span class="icon add">&nbsp;<a href="{% url user_associate %}">{% trans "Add another OpenID" %}</a></span>
+			{% endif %}
+		</ol>    
+	</fieldset>
+	<div id="form-action" class="text-right">
+		<input class="icon save" type="submit" value="{% trans "Save" %}" />
+	</div>
+	</form>
+</div>
+<form id="dissociateurl" style="display: none;" action="{% url user_dissociate %}" method="post">
+	<input type="hidden" id="openid_url" name="openid_url" value="">
+</form>
+</div>
+<div class="right-layout" style="width:45%;">
+	{% with request.user.user_favorites.all as favs %}
+	{% if favs %}
+	<h3>{% trans "Bookmarks" %}</h3>
+	<table class="grid">
+		<tbody>
+		{% url remove_favorites as removefavorites %}
+		{% for fav in favs %}
+		<tr>
+			<td id="fav_{{fav.id}}">
+				{% ifequal fav request.user.get_profile.startup %}
+					<span id='start_set_{{fav.id}}' style="display: none;" onclick="startup_set('{{fav.id}}')" class="nodecoration_icon action_icon startup-add link" title="{% trans "Set as startup page" %}"></span>
+					<span id='start_del_{{fav.id}}' onclick="startup_set('{{fav.id}}', true)" class="nodecoration_icon action_icon startup-del link" title="{% trans "Unset startup page" %}"></span>
+				{% else %}
+					<span id='start_set_{{fav.id}}' onclick="startup_set('{{fav.id}}')" class="nodecoration_icon action_icon startup-add link" title="{% trans "Set as startup page" %}"></span>
+					<span id='start_del_{{fav.id}}' style="display: none;" onclick="startup_set('{{fav.id}}', true)" class="nodecoration_icon action_icon startup-del link" title="{% trans "Unset startup page" %}"></span>
+				{% endifequal %}
+				<span onclick="remove_pro_fav('{{fav.id}}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove" %}"></span>
+				&nbsp;&nbsp;
+				<a href="{{ fav.url }}">{{ fav.name }}</a>
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
+	{% endwith %}
+</div>

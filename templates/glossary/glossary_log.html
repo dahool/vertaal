@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n pagination_tags timezone_filters %}
+{% block title %}{{block.super}} | {% trans "Glossary" %} [{{ term.project.name }} ({{ term.language.name }})]{% endblock %}}
+{% block quick_menu %}
+<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a href="{% url gloss_list term.project.slug, term.language.code %}">{% trans "Glossary" %}</a>
+<span>{{ term.word }}</span>
+{% endblock %}
+{% block content %}
+<div id="log-file-table">
+	{% with term.history.all as logs %}
+	{% if logs %}
+	{% autopaginate logs %}
+	<table class="stats-table">
+		<thead>
+			<tr>
+				<th class="title-center">{% trans "Action" %}</th>
+				<th class="title-center">{% trans "Date" %}</th>
+				<th class="title-center">{% trans "User" %}</th>
+				<th class="title-center">{% trans "Change" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for log in logs %}
+			<tr>
+				<td>{{ log.get_action_flag_display }}</td>
+				<td>{{ log.created|localtime:request.user.get_profile.timezone }}</td>
+				<td>
+					{% if log.user.get_full_name %}
+					{{ log.user.get_full_name }} ({{ log.user.username }})
+					{% else %}
+					{{ log.user.username }}
+					{% endif %}					
+				</td>
+				<td>{{ log.translation }}</td>
+			</tr>
+			{% endfor %}			
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">
+					<div class="pagination_box">{% paginate %}</div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	{% else %}
+	<p>{% trans "No actions registered yet" %}</p>
+	{% endif %}
+	{% endwith %}
+</div>
+{% endblock %}

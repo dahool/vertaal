@@ -1,0 +1,164 @@
+{% load i18n timezone_filters %}
+<div class="left-layout">
+{% with request.user.translator_of.all as files %}
+{% if files %}
+<h3>{% trans "You are assigned as translator of:" %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Last update" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for file in files %}
+	<tr>
+		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}#{{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
+		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+
+{% with request.user.reviewer_of.all as files %}
+{% if files %}
+<h3>{% trans "You are assigned as reviewer of:" %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Last update" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for file in files %}
+	<tr>
+		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}#{{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
+		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+
+{% comment %} <!-- COMMENTED -->
+{% with request.user.user_files.all as files %}
+{% if files %}
+<h3>{% trans "Files I've been working on" %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Last update" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for file in files %}
+	<tr>
+		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}#{{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
+		<td>{{ file.last_update|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+{% endcomment %}
+
+
+
+</div>
+<div class="right-layout">
+
+{% with request.user.files_submitted.all as submits %}
+{% if submits %}
+<h3>{% trans "Submission Queue" %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Submitted on" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for sfile in submits %}
+	<tr>
+		<td><a href="{% url list_files sfile.pofile.release.slug, sfile.pofile.language.code %}#{{ sfile.pofile.slug }}">{{ sfile.pofile.filename }}</a></td>
+		<td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}{% if not sfile.enabled %}&nbsp;<span class="stat-message">{% trans "This file is locked, which means it won't be submitted. It looks like you forgot to save the changes after editing it."%}{% endif %}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+
+{% with request.user.team_coordinator.all as teams %}
+{% if teams %}
+<h3>{% blocktrans count teams|length as counter %}You are the coordinator of the following team:{% plural %}You are the coordinator of the following teams:{% endblocktrans %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "Project" %}</th>
+			<th>{% trans "Language" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for team in teams %}
+	<tr>
+		<td><a href="{% url project_detail team.project.slug %}">{{ team.project.name }}</a></td>
+		<td><a href="{% url team_detail team.project.slug, team.language.code %}">{{ team.language.name }}</a></td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+
+{% with request.user.team_member.all as teams %}
+{% if teams %}
+<h3>{% blocktrans count teams|length as counter %}You are member of the following team:{% plural %}You are member of the following teams:{% endblocktrans %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "Project" %}</th>
+			<th>{% trans "Language" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for team in teams %}
+	<tr>
+		<td><a href="{% url project_detail team.project.slug %}">{{ team.project.name }}</a></td>
+		<td><a href="{% url team_detail team.project.slug, team.language.code %}">{{ team.language.name }}</a></td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+
+{% with request.user.files_locked.all as locks %}
+{% if locks %}
+<h3>{% trans "Locked Files" %}</h3>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Locked on" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for lfile in locks %}
+	<tr>
+		<td><a href="{% url list_files lfile.pofile.release.slug,lfile.pofile.language.code %}#{{ lfile.pofile.slug }}">{{ lfile.pofile.filename }}</a></td>
+		<td>{{ lfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endwith %}
+
+</div>

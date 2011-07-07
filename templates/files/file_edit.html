@@ -1,0 +1,46 @@
+{% extends "files/file_base.html" %}
+{% load i18n extendtags errors %}
+{% block extra_head %}
+<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
+<script type="text/javascript" src="/site_media/js/errors.js"></script>
+{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block title %}
+{% set file.filename as fname %}
+{{ block.super }} | 
+{% blocktrans %}Edit {{ fname }} {% endblocktrans %} 
+({{ file.language.name }} -{{ file.component.name }}/{{ file.release.name }}- ({{ file.component.project.name }}))
+{% endblock %}
+{# % if messages % #}
+{% block quick_menu %}
+{% set file.component as component %}
+{% set file.release as release %}
+{{ block.super }}
+<a href="{% url list_files file.release.slug, file.language.code %}">{{ file.language.name }}</a>
+<span>{{ file.filename }}</span>
+{% endblock %}
+{# % endif % #}
+{% block content %}
+<form id="file_editor" class="form-style" action="{% if action %}{{action}}{%else%}{% url edit_file file.slug %}{%endif%}" method="post" accept-charset="utf-8">
+<div class="button-menu">
+	<span class="help_text">{% trans "Comments" %}:&nbsp;<em>*</em></span>
+	{% if form.comment.errors %}<span class="error">{% endif %}
+	<input id="id_comment" name="comment" maxlength="255" type="text">
+	{% if form.comment.errors %}
+	</span>
+	{% error form.comment %}
+	{% endif %}	
+	<input class="icon save" type="submit" name="_save" value="{% trans "Save and submit" %}"/>
+	<input class="icon cancel" type="submit" name="_cancel" value="{% trans "Cancel" %}"/>
+	{% with file.filename as fname %}
+	<span>{% trans "Editing:" %}&nbsp;<span class="emphasize">{{ fname }}</span></span>
+	{% endwith %}
+	{% if form.content.errors %}
+	<p>{{ form.content.errors }}</p>
+	{% endif %}
+</div>
+{{form.content}}
+</form>
+{% endblock %}
