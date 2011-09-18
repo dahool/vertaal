@@ -11,6 +11,7 @@
 {% endblock %}
 {% block content %}
 <form class="form-style" action="{% url confirm_submit %}" method="post">
+{% csrf_token %}
 <input type="hidden" name="back" value="{{ back }}">
 <input type="hidden" name="reject" value="{{ reject }}">
 <input type="hidden" name="needuser" value="{{ needuser }}">

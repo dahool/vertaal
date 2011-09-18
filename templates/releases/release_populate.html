@@ -23,6 +23,7 @@
 
 </div>
 	<form class="form-style" action="{% url release_populate release.slug %}" method="post" accept-charset="utf-8">
+{% csrf_token %}
 		<fieldset>
 		<legend>Populate</legend>
 		<ol>

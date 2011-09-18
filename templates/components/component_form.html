@@ -29,6 +29,7 @@
 {% endif %}
 <div id="project-form" class="center">
 	<form id="component_form" class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
+{% csrf_token %}
 		<input type="hidden" name="project" value="{{project.id}}" id="id_project" />
 		<fieldset>
 		<legend>{{ project.name }} - {% if component %}{{component.name}}{%else%}{% trans "New Component" %}{%endif%}</legend>

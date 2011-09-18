@@ -15,6 +15,7 @@ function confirmDelete(url) {
 <div class="left-layout">
 <div id="profile-box">
 	<form class="form-style" action="{% url user_profile %}" method="post" accept-charset="utf-8">
+	{% csrf_token %}
 	<fieldset>
 		<legend>{% trans "Profile" %}</legend>
 		<ol>

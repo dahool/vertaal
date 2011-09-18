@@ -28,6 +28,7 @@
 {% endif %}
 <div id="project-form" class="center">
 	<form class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
+	{% csrf_token %}
 		<fieldset>
 		<legend>{% if project %}{{project.name}}{%else%}{% trans "New" %}{%endif%}</legend>
 		{% if form.non_field_errors %}

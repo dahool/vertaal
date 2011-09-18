@@ -24,6 +24,7 @@
 {# % endif % #}
 {% block content %}
 <form id="file_editor" class="form-style" action="{% if action %}{{action}}{%else%}{% url edit_file file.slug %}{%endif%}" method="post" accept-charset="utf-8">
+{% csrf_token %}
 <div class="button-menu">
 	<span class="help_text">{% trans "Comments" %}:&nbsp;<em>*</em></span>
 	{% if form.comment.errors %}<span class="error">{% endif %}

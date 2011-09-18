@@ -51,6 +51,7 @@ $(document).ready(function()
 
 {% if not files|length_is:"0" %}
 <form id="submit_form_merge" method="post" action="{% url multimerge release.slug %}">
+{% csrf_token %}
 <div id="form-action">
 <input type="button" id="submit_button" class="icon submit" value="{% trans "Submit" %}"/>
 </div>

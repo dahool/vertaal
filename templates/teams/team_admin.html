@@ -137,6 +137,7 @@ function update_member(url) {
 {% if team.project.repo_user %}
 <div class="grid">
 <form class="form-style" action="{% url team_admin team.id %}" method="post" accept-charset="utf-8">
+{% csrf_token %}
 {{ form }}
 <input class="icon save" type="submit" value="{% trans "Save" %}" />
 </form>

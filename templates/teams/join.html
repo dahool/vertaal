@@ -17,6 +17,7 @@
 
 <div id="contact" class="center-box">
 <form class="form-style" action="{% url join_request team.id %}" method="post" accept-charset="utf-8">
+{% csrf_token %}
 <fieldset>
 	<legend>{% trans "Join" %}</legend>
 	{% blocktrans %}You are about to send a request to join<br/>the <b>{{teamname}}</b> team of the <b>{{projectname}}</b> project.{% endblocktrans %}

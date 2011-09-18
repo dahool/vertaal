@@ -1,5 +1,6 @@
 {% load i18n extendtags timezone_filters %}
 <form id="submit_form_{{team.id}}" method="post" action="{{ form_url }}">
+{% csrf_token %}
 <table id="submit_table" class="grid">
 	<thead>
 		<tr>

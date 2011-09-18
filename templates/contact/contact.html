@@ -15,6 +15,7 @@
 {% block content %}
 <div id="contact" class="center-box">
 <form class="form-style" action="{% url contact_form %}" method="post" accept-charset="utf-8">
+{% csrf_token %}
 <input type="hidden" name="username" value="{{ username }}" />
 <fieldset>
 	<legend>{% trans "Contact" %}</legend>

@@ -31,6 +31,7 @@
 	<legend>{% trans "Add OpenID" %}</legend>
 	<div class="form-block">
 	<form id="openid_form" action="{% url user_associate %}" method="post">
+	{% csrf_token %}
 	    <input type="hidden" name="action" value="verify" />
     	<input type="hidden" name="next" value="{{ next }}" />
 	</form>
