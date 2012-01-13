@@ -5,9 +5,9 @@
 {% endblock %}
 {% block title %}{{block.super}} | {% trans "Editing Glossary" %} {{ project.name }} ({{ lang.name }}){% endblock %}}
 {% block extra_head %}
-<script type="text/javascript" src="/site_media/js/simpletooltip.js"></script>
-<script type="text/javascript" src="/site_media/js/errors.js"></script>
-<link media="screen" href="/site_media/css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="{{STATIC_URL}}js/simpletooltip.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/errors.js"></script>
+<link media="screen" href="{{STATIC_URL}}css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
 {% endblock %}
 {% block quick_menu %}
 <a class="none" href="{% url home %}">{% trans 'Home' %}</a>

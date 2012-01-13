@@ -17,17 +17,23 @@
 <link rel="alternate" type="application/rss+xml" title="{% trans "Submission queue" %}" href="{% url language_project_queue_feed release.project.slug, language.code %}">
 {% endif %}
 {% endifsetting %}
-<script type="text/javascript" src="/site_media/js/filemanipulation.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.metadata.min.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.json.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.cookiejar.pack.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.tablesorter.cookie.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery.aop.min.js"></script>
-<link href="/site_media/facebox/facebox.css" media="screen" rel="stylesheet" type="text/css"/>
-<script src="/site_media/facebox/facebox.js" type="text/javascript"></script>
-<script src="/site_media/facebox/facebox.img.fix.js" type="text/javascript"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/filemanipulation.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.metadata.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.json.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookiejar.pack.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.cookie.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.aop.min.js"></script>
+<link href="{{STATIC_URL}}facebox/facebox.css" media="screen" rel="stylesheet" type="text/css"/>
+<script src="{{STATIC_URL}}facebox/facebox.js" type="text/javascript"></script>
+<!--  script src="{{STATIC_URL}}facebox/facebox.img.fix.js" type="text/javascript"></script-->
+<<script type="text/javascript">
+<!--
+$.facebox.settings.loadingImage = '{{STATIC_URL}}facebox/loading.gif';
+$.facebox.settings.closeImage = '{{STATIC_URL}}facebox/close.gif';
+//-->
+</script>
 <style type="text/css">
 #facebox .body {
   width: 750px;

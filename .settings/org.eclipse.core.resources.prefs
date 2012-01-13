@@ -1,6 +1,7 @@
-#Wed Oct 14 13:03:46 GMT 2009
+#Fri Jan 13 13:45:03 ART 2012
 eclipse.preferences.version=1
 encoding//django_authopenid/urls.py=utf-8
 encoding//django_authopenid/views.py=utf-8
 encoding//files/models.py=utf-8
 encoding//versioncontrol/tests.py=utf-8
+encoding/urls.py=utf-8

@@ -1,8 +1,6 @@
 {% load i18n %}
-{% block extra_head %}
-{{ block.super }}
-<link href="/site_media/openid/css/style.css" media="screen" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="/site_media/openid/js/jquery.openid.min.js"></script>
+<link href="{{STATIC_URL}}openid/css/style.css" media="screen" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="{{STATIC_URL}}openid/js/jquery.openid.min.js"></script>
 <script type="text/javascript"><!--//
  $(function() {
    $('#openid_form').openid({
@@ -15,7 +13,6 @@
    });
  });
  //--></script>
-{% endblock %}
 <fieldset>
 	<legend>{% trans "Sign in with your OpenID" %}</legend>
 	<div class="form-block">

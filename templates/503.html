@@ -4,12 +4,12 @@
 <head>
 	<title>{% block title %}{% setting "PROJECT_NAME" %}{% endblock %}</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="/site_media/images/favicon.ico" />
+	<link rel="shortcut icon" href="{{STATIC_URL}}images/favicon.ico" />
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="expires" content="-1" />
 	<meta name="keywords" content="Vertaal" />
 	<meta name="description" content="Vertaal" />
-	<link media="screen" href="/site_media/css/styles.css" type="text/css" rel="stylesheet" />
+	<link media="screen" href="{{STATIC_URL}}css/styles.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div id="header">
@@ -39,7 +39,7 @@
 </div>
 <div id="powered">
 <p>
-<a href="http://www.djangoproject.com/"><img style="border:0;width:72px;height:31px" src="/site_media/images/djangopowered.png" alt="Django powered" /></a>
+<a href="http://www.djangoproject.com/"><img style="border:0;width:72px;height:31px" src="{{STATIC_URL}}images/djangopowered.png" alt="Django powered" /></a>
 </p>
 <p>
 <a href="http://jigsaw.w3.org/css-validator/check/referer">

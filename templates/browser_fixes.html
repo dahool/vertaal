@@ -1,7 +1,7 @@
 {% load extendtags %}
 {% ifmatch request.META.HTTP_USER_AGENT "AppleWebKit" %}
-<link media="screen" href="/site_media/css/styles_safari.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{STATIC_URL}}css/styles_safari.css" type="text/css" rel="stylesheet" />
 {% else %}
 	{% ifmatch request.META.HTTP_USER_AGENT "Opera" %}
-		<link media="screen" href="/site_media/css/styles_opera.css" type="text/css" rel="stylesheet" />
+		<link media="screen" href="{{STATIC_URL}}css/styles_opera.css" type="text/css" rel="stylesheet" />
 	{% endifmatch %}{% endifmatch %}

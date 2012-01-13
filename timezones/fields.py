@@ -30,11 +30,11 @@ class TimeZoneField(models.CharField):
             return None # null=True
         return pytz.timezone(value)
         
-    def get_db_prep_save(self, value):
+    def get_db_prep_save(self, value, connection):
         # Casts timezone into string format for entry into database.
         if value is not None:
             value = smart_unicode(value)
-        return super(TimeZoneField, self).get_db_prep_save(value)
+        return super(TimeZoneField, self).get_db_prep_save(value, connection)
 
     def flatten_data(self, follow, obj=None):
         value = self._get_val_from_obj(obj)
@@ -70,7 +70,7 @@ class LocalizedDateTimeField(models.DateTimeField):
         defaults.update(kwargs)
         return super(LocalizedDateTimeField, self).formfield(**defaults)
         
-    def get_db_prep_save(self, value):
+    def get_db_prep_save(self, value, connection):
         "Returns field's value prepared for saving into a database."
         ## convert to settings.TIME_ZONE
         if value is not None:
@@ -78,16 +78,16 @@ class LocalizedDateTimeField(models.DateTimeField):
                 value = default_tz.localize(value)
             else:
                 value = value.astimezone(default_tz)
-        return super(LocalizedDateTimeField, self).get_db_prep_save(value)
+        return super(LocalizedDateTimeField, self).get_db_prep_save(value, connection)
         
-    def get_db_prep_lookup(self, lookup_type, value):
+    def get_db_prep_lookup(self, lookup_type, value, connection, prepared=False):
         "Returns field's value prepared for database lookup."
         ## convert to settings.TIME_ZONE
         if value.tzinfo is None:
             value = default_tz.localize(value)
         else:
             value = value.astimezone(default_tz)
-        return super(LocalizedDateTimeField, self).get_db_prep_lookup(lookup_type, value)
+        return super(LocalizedDateTimeField, self).get_db_prep_lookup(lookup_type, value, connection, prepared=False)
 
 def prep_localized_datetime(sender, **kwargs):
     for field in sender._meta.fields:

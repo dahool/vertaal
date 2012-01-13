@@ -1,7 +1,6 @@
 {% load i18n formtags extendtags %}
-{% block extra_head %}
-{{ block.super }}
-<script type="text/javascript"><!--
+<script type="text/javascript">
+<!--
 function confirmDelete(url) {
 	confirmSimple(function(r){
 		if (r) {
@@ -10,9 +9,9 @@ function confirmDelete(url) {
 		}
 	});
 }
---></script>
-{% endblock %}
-<div class="left-layout">
+//-->
+</script>
+<div class="left-layout" style="display: inline;">
 <div id="profile-box">
 	<form class="form-style" action="{% url user_profile %}" method="post" accept-charset="utf-8">
 	{% csrf_token %}
@@ -88,3 +87,4 @@ function confirmDelete(url) {
 	{% endif %}
 	{% endwith %}
 </div>
+<div style="clear: both;"></div>

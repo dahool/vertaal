@@ -1,6 +1,4 @@
 {% load i18n extendtags %}
-{% block extra_head %}
-{{ block.super }}
 <script type="text/javascript"><!--
 	$(document).ready(function() {
 		/*$("input[name='cfilter']").change(function() {
@@ -36,11 +34,10 @@
 				
 	});
 --></script>
-{% endblock %}
 <div class="filter-box">
 	<form id="filter_form" action="{% url list_files release.slug,language.code %}"
 		method="post">
-{% csrf_token %}
+	{% csrf_token %}
 		<fieldset>
 			<legend>{% trans "Components" %}</legend>
 			{% with release.project.components.all as components %}

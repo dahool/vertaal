@@ -26,9 +26,15 @@ V2G_DB_USER = 'root'
 V2G_DB_PWD = 'root'
 V2G_DB_NAME = 'poat_v2g'
 
-DATABASE_HOST = '166.40.231.124'
-DATABASE_USER = 'vertaal'    
-DATABASE_PASSWORD = 'vertaal'  
+DATABASES = {
+    'default': {
+        'NAME': 'vertaal',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'vertaal',
+        'PASSWORD': 'vertaal',
+        'HOST': '166.40.231.124',
+    },
+}
 
 SITE_DOMAIN = 'localhost:8000'
 
