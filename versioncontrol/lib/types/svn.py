@@ -174,7 +174,7 @@ class SvnBrowser(browser.RepositoryBrowser):
                     self.cleanup()
                     self.client.update(self.location)
                 else:
-                    raise                    
+                    raise
         return getattr(self.revision_update_complete,'number',0)
 
     @need_repo
@@ -190,7 +190,10 @@ class SvnBrowser(browser.RepositoryBrowser):
             self.set_login(auth)
         logger.debug("Perform submit %s [%s]" % (self.location, msg))
         self._send_callback(self.callback_on_action_notify,_('Checking in'))
-        rev = self.client.checkin([self.location], msg.encode('utf-8'), recurse=True, keep_locks=False)
+        try:
+            rev = self.client.checkin([self.location], msg.encode('utf-8'), recurse=True, keep_locks=False)
+        except:
+            raise
         #Subversion seems to return 0 rather then the actual revision
         self.client.update(self.location)
         return getattr(self.revision_update_complete,'number',0)

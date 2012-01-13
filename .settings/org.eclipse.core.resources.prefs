@@ -1,5 +1,10 @@
-#Fri Jan 13 13:45:03 ART 2012
+#Fri Jan 13 15:51:08 ART 2012
 eclipse.preferences.version=1
+encoding//app/management/commands/cleanuploads.py=utf-8
+encoding//app/management/commands/messagecheck.py=utf-8
+encoding//app/management/commands/refreshrepo.py=utf-8
+encoding//app/management/commands/submitqueuenotify.py=utf-8
+encoding//app/management/commands/updatestats.py=utf-8
 encoding//django_authopenid/urls.py=utf-8
 encoding//django_authopenid/views.py=utf-8
 encoding//files/models.py=utf-8

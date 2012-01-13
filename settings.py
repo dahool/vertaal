@@ -150,7 +150,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
+    #'django.contrib.messages.context_processors.messages',
     'django_authopenid.context_processors.authopenid',
 )
 
@@ -158,7 +158,8 @@ MIDDLEWARE_CLASSES = (
     'common.middleware.agentdetect.AgentRejectMiddleware',                            
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.gzip.GZipMiddleware',
-#    'debug_toolbar.middleware.DebugToolbarMiddleware',                      
+#    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'django.contrib.messages.middleware.MessageMiddleware',                      
     'django.contrib.sessions.middleware.SessionMiddleware',
     #'django_openidconsumer.middleware.OpenIDMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -184,6 +185,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    #'django.contrib.messages',
     'django.contrib.auth',
     'django.contrib.admin',     
     'django.contrib.contenttypes',

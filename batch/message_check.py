@@ -1,6 +1,9 @@
 import os
 import sys
 
+print "This module is deprecated. Use: manage messagecheck instead"
+sys.exit(1)
+
 PATH = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 root, path = os.path.split(PATH)
 sys.path.append(root)

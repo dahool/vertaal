@@ -3,6 +3,9 @@ from __future__ import with_statement
 import os
 import sys, traceback
 
+print "This module is deprecated. Use: manage refreshrepo instead"
+sys.exit(1)
+
 PATH = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 root, path = os.path.split(PATH)
 sys.path.append(root)
