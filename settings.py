@@ -186,6 +186,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     #'django.contrib.messages',
+    'django.contrib.staticfiles',
     'django.contrib.auth',
     'django.contrib.admin',     
     'django.contrib.contenttypes',
