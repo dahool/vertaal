@@ -23,7 +23,7 @@ from django.contrib import admin
 
 admin.autodiscover()
 
-handler404 = 'common.middleware.views.not_found'
+#handler404 = 'common.middleware.views.not_found'
 handler500 = 'common.middleware.views.server_error'
 
 urlpatterns = patterns('',
