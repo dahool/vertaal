@@ -411,6 +411,7 @@ def get_pot_file(request, slug):
     response['Content-Disposition'] = '%s filename=%s' % (attach, potfile.name)        
     return response
 
+@login_required
 def get_file(request, slug, view=False, submit=False):
     file = get_object_or_404(POFile, slug=slug)
     logger.debug("Get file - View: %s" % view)
