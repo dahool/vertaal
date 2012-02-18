@@ -432,7 +432,17 @@ def get_file(request, slug, view=False, submit=False):
         encoding = 'UTF-8'
         if m:
             encoding = m.group(1)
-        context = Context({'body': pygments.highlight(content.decode(
+            
+        #context = Context({'body': pygments.highlight(content.decode(
+        #                                encoding), lexer, formatter),
+        #                   'style': formatter.get_style_defs(),
+        #                   'pofile': file,
+        #                   'submit': submit,
+        #                   'user': request.user,
+        #                   'request': request,
+        #                   'title': "%s: %s" % (file.component.name,
+        #                                        file.filename)})
+        data = {'body': pygments.highlight(content.decode(
                                         encoding), lexer, formatter),
                            'style': formatter.get_style_defs(),
                            'pofile': file,
@@ -440,9 +450,12 @@ def get_file(request, slug, view=False, submit=False):
                            'user': request.user,
                            'request': request,
                            'title': "%s: %s" % (file.component.name,
-                                                file.filename)})
-        content = loader.get_template('files/file_view.html').render(context)
-        response = HttpResponse(content, mimetype='text/html; charset=UTF-8')
+                                                file.filename)}
+        response = render_to_response('files/file_view.html',
+                              data,
+                              context_instance = RequestContext(request))    
+        #content = loader.get_template('files/file_view.html').render(context)
+        #response = HttpResponse(content, mimetype='text/html; charset=UTF-8')
     else:
         response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
         attach = "attachment;"
