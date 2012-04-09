@@ -5,3 +5,4 @@ settings_local.py
 local.conf
 settings/60-local.pyconf
 .settings
+logs
