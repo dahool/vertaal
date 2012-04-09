@@ -34,6 +34,7 @@ from django.conf import settings
 from common.view.decorators import render
 import difflib
 import StringIO
+from django.utils.html import escape
 
 def check_status(fn):
     """check if the project is enabled"""
@@ -442,8 +443,8 @@ def get_file(request, slug, view=False, submit=False):
         #                   'request': request,
         #                   'title': "%s: %s" % (file.component.name,
         #                                        file.filename)})
-        data = {'body': pygments.highlight(content.decode(
-                                        encoding), lexer, formatter),
+        text = escape(content.decode(encoding))
+        data = {'body': pygments.highlight(text, lexer, formatter),
                            'style': formatter.get_style_defs(),
                            'pofile': file,
                            'submit': submit,
