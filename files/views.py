@@ -445,7 +445,8 @@ def get_file(request, slug, view=False, submit=False):
         #                   'request': request,
         #                   'title': "%s: %s" % (file.component.name,
         #                                        file.filename)})
-        text = escape(content.decode(encoding))
+        #text = escape(content.decode(encoding))
+        text = content.decode(encoding)
         data = {'body': pygments.highlight(text, lexer, formatter),
                            'style': formatter.get_style_defs(),
                            'pofile': file,
