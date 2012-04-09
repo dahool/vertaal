@@ -28,8 +28,8 @@ ENABLE_OPENID = True
 ENABLE_RSS = False
 
 PROJECT_NAME = 'Vertaal'
-VERSION = '1.3.16'
-VERSION_HIST = ('1.3.13','1.3.14','1.3.15',)
+VERSION = '1.3.17'
+VERSION_HIST = ('1.3.13','1.3.14','1.3.15','1.3.16',)
 
 LANGUAGE_COOKIE_NAME = 'vertaal_language'
 
