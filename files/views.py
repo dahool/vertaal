@@ -34,7 +34,9 @@ from django.conf import settings
 from common.view.decorators import render
 import difflib
 import StringIO
-from django.utils.html import escape
+
+def escape(text):
+    return text.replace("<", "&lt;").replace(">","&gt;")
 
 def check_status(fn):
     """check if the project is enabled"""
@@ -777,8 +779,8 @@ def view_file_diff(request, slug):
     
     if file.submits.all():
         s = file.submits.get()
-        content_new = s.handler.get_content().decode('utf-8')
-        content_old = file.handler.get_content().decode('utf-8')
+        content_new = escape(s.handler.get_content().decode('utf-8'))
+        content_old = escape(file.handler.get_content().decode('utf-8'))
         content = make_diff(content_old, content_new)
 #        context = Context({'pofile': file,
 #                           'user': request.user,
