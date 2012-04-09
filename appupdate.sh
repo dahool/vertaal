@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Applying update ... (this could take some time)"
-python -mcompileall
+python -mcompileall .
 python manage.py syncdb --noinput
 python manage.py appupdate
 python manage.py collectstatic --noinput
