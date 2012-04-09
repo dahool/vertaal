@@ -1,0 +1,84 @@
+import os
+
+PROJECT_PATH = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    #'django.contrib.messages.context_processors.messages',
+    'django_authopenid.context_processors.authopenid',
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_PATH, 'templates'),
+)
+
+MIDDLEWARE_CLASSES = (
+    'common.middleware.agentdetect.AgentRejectMiddleware',                            
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'django.contrib.messages.middleware.MessageMiddleware',                      
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    #'django_openidconsumer.middleware.OpenIDMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'userprofileapp.middleware.UserLocaleMiddleware',
+    'auditor.middleware.AuditMiddleware',
+    'django.middleware.cache.CacheMiddleware', ## use for CACHE_ANON_ONLY
+    #'django.middleware.locale.LocaleMiddleware',
+    'maintenancemode.middleware.MaintenanceModeMiddleware',
+    'pagination.middleware.PaginationMiddleware',
+    'exceptionlogger.middleware.ExceptionLoggerMiddleware',
+    'common.middleware.http.HttpErrorMiddleware',
+    'django_authopenid.middleware.OpenIDMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+)
+
+INSTALLED_APPS = (
+    #'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.auth',
+    'django.contrib.admin',     
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.markup',
+    'django_evolution',
+    'django_authopenid',
+    #'django_openidconsumer',
+    'app',
+    'vertaalevolve',
+    'auditor',
+    'projects',
+    'releases',
+    'components',
+    'files',
+    'languages',
+    'registration',
+    'contact',
+    'teams',
+    'userprofileapp',
+    'versioncontrol',
+    'timezones',
+    'pagination',
+    'maintenancemode',
+    'glossary',
+    'appfeeds',
+    'notifications',
+    'exceptionlogger',
+    'news',
+#    'debug_toolbar',
+)
+
+ROOT_URLCONF = 'vertaal.urls'
+
+AUTH_PROFILE_MODULE = 'userprofileapp.UserProfile'
+
+TEST_RUNNER = 'tests.test_runner.run_tests'
+
+LANGUAGE_COOKIE_NAME = 'vertaal_language'

@@ -1,0 +1,50 @@
+from django.contrib.messages import constants as message_constants
+# default message level to show
+MESSAGE_LEVEL = message_constants.INFO
+
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/profile/startup'
+STARTUP_REDIRECT_URL = '/'
+
+TICKET_URL = 'http://code.google.com/p/vertaal/issues'
+
+PAGINATION_DEFAULT_PAGINATION = 10
+SHOW_LATEST_PROJECTS = 8
+MESSAGE_DAYS_AGE = 15
+LOG_EXCEPTION_DB = True
+AUTO_UNLOCK_BUILD = 30 # in minutes
+
+FEED_CACHE = 7200
+
+ADMIN_USER = 'admin'
+
+USE_CAPTCHA = True
+CONTACT_USE_CAPTCHA = True
+JOIN_USE_CAPTCHA = True
+
+ENABLE_RPC = False
+BACKUP_UPLOADS = True
+ENABLE_OPENID = True
+ENABLE_RSS = False
+
+RECAPTCHA_PRIVATE_KEY = '-'
+RECAPTCHA_PUBLIC_KEY = '-'
+
+MAINTENANCE_MODE = False
+BOT_USERNAME = 'bot'
+
+FILE_UPLOAD_PERMISSIONS = 0644
+MAX_FILE_SIZE = 1048576
+
+REPOSITORIES = (
+                ('svn','subversion'),
+                #('git','git'),
+                )
+
+XMLRPC_METHODS = (
+    #('desktop.server.views.do_test', 'do_test',),
+)
+XMLRPC_VIEWS = (
+    'rpc.views',
+)
