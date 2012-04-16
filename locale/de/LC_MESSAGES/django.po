@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Michael Skiba <transl@michael-skiba.de>, 2009.
-# Michael Skiba <trans@michael-skiba.de>, 2009.
+# Michael Skiba <trans@michael-skiba.de>, 2009, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-13 14:28+0000\n"
-"PO-Revision-Date: 2009-08-25 18:00+0200\n"
+"PO-Revision-Date: 2012-04-13 23:53+0200\n"
 "Last-Translator: Michael Skiba <trans@michael-skiba.de>\n"
 "Language-Team: German <opensuse-translation-de@opensuse.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.2\n"
+"Language: de\n"
 
 #: appfeeds/feeds.py:44
 #, python-format
@@ -24,9 +25,9 @@ msgid "%(project)s: Release %(release)s :: %(language)s"
 msgstr "%(project)s: Veröffentlichung %(release)s :: %(language)s"
 
 #: appfeeds/feeds.py:49
-#, fuzzy, python-format
+#, python-format
 msgid "%(project)s: Release %(release)s"
-msgstr "%(project)s: Veröffentlichung %(release)s :: %(language)s"
+msgstr "%(project)s: Veröffentlichung %(release)s"
 
 #: appfeeds/feeds.py:55
 #, python-format
@@ -45,24 +46,23 @@ msgid "Submission queue status for %(project)s :: %(language)s"
 msgstr "Warteschlangen Status für %(project)s :: %(language)s"
 
 #: appfeeds/feeds.py:117
-#, fuzzy, python-format
+#, python-format
 msgid "Submission queue status for %(project)s"
-msgstr "Warteschlangen Status für (project)s"
+msgstr "Warteschlangenstatus für %(project)s"
 
 #: appfeeds/feeds.py:121
 msgid "Files in the submission queue."
 msgstr "Datein in der Warteschlange."
 
 #: appfeeds/feeds.py:155
-#, fuzzy, python-format
+#, python-format
 msgid "%(file)s ::  %(project)s %(release)s"
-msgstr "%(pofile)s :: %(action)s von %(user)s"
+msgstr "%(file)s ::  %(project)s %(release)s"
 
 #: appfeeds/feeds.py:161
-#, fuzzy, python-format
+#, python-format
 msgid "Latest actions for %(file)s in %(project)s %(release)s"
-msgstr ""
-"Letzte Aktion von %(language)s Sprache in Veröffentlichung %(release)s."
+msgstr "Letzte Aktion von %(file)s in %(project)s %(release)s"
 
 #: appfeeds/templates/feeds/commit_queue_description.html:2
 #: templates/components/component_detail.html:24
@@ -89,6 +89,9 @@ msgid ""
 "The file is %(complete_status)s% complete. With %(translated)s translated "
 "messages, %(fuzzy)s fuzzy and %(untranslated)s untranslated."
 msgstr ""
+"Diese Datei ist zu %(complete_status)s% vollständig. Mit %(translated)s "
+"übersetzten, %(fuzzy)s unfertigen und %(untranslated)s nicht übersetzten "
+"Nachrichten."
 
 #: auditor/models.py:11 glossary/models.py:16
 msgid "Addition"
@@ -122,12 +125,11 @@ msgstr "Dateien verändert"
 #: common/notification.py:75 files/views.py:296
 #, python-format
 msgid "File %s ready for review."
-msgstr ""
+msgstr "Datei %s ist bereit zum Korrekturlesen."
 
 #: common/notification.py:103
-#, fuzzy
 msgid "POT files updated"
-msgstr "Profil aktualisiert."
+msgstr "POT-Dateien aktualisiert"
 
 #: components/models.py:34 releases/models.py:52
 msgid "A short label to be used in the URL, containing only "
@@ -160,12 +162,12 @@ msgstr "Standardformat ist $PATH/$LANG/po."
 
 #: components/models.py:46
 msgid "POT Path"
-msgstr ""
+msgstr "POT-Pfad"
 
 #: components/models.py:50
-#, fuzzy, python-format
+#, python-format
 msgid "Component: %(component)s - Project: %(project)s"
-msgstr "%(site_name)s: Veröffentlichung %(release)s"
+msgstr "Komponente: %(component)s - Projekt: %(project)s"
 
 #: components/views.py:79 projects/util.py:11 projects/views.py:228
 #: releases/views.py:90
@@ -226,12 +228,15 @@ msgstr ""
 #: django_authopenid/forms.py:77
 msgid "This username is already taken. Please choose another."
 msgstr ""
+"Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen."
 
 #: django_authopenid/forms.py:87
 msgid ""
 "There is already more than one account registered with that e-mail address. "
 "Please try another."
 msgstr ""
+"Es gibt bereits mehr als ein Benutzerkonto mit dieser E-Mail-Adresse. Bitte "
+"probieren Sie eine andere."
 
 #: django_authopenid/forms.py:88
 msgid ""
@@ -245,10 +250,12 @@ msgid ""
 "This OpenID is already registered in our database by another account. Please "
 "choose another."
 msgstr ""
+"Diese OpenID ist bereits auf einen anderes Konto in unserer Datenbank "
+"registriert. Bitte wählen Sie eine andere."
 
 #: django_authopenid/forms.py:118
 msgid "You already associated this OpenID to your account."
-msgstr ""
+msgstr "Sie haben diese OpenID bereits mit ihrem Konto verknüpft."
 
 #: django_authopenid/models.py:66 templates/files/file_detail.html:143
 #: templates/files/file_log.html:23 templates/glossary/glossary_log.html:19
@@ -260,7 +267,7 @@ msgstr "Benutzer"
 #: django_authopenid/views.py:87
 #, python-format
 msgid "The OpenID %s was invalid"
-msgstr ""
+msgstr "Die OpenID %s ist ungültig"
 
 #: django_authopenid/views.py:497
 msgid "Password changed"
@@ -269,6 +276,8 @@ msgstr "Passwort wurde geändert"
 #: django_authopenid/views.py:617
 msgid "You can't remove this openid. You should set a password first."
 msgstr ""
+"Sie können diese OpenID nicht entfernen. Sie müssen erst ein Passwort "
+"festlegen."
 
 #: django_authopenid/views.py:629
 #, python-format
@@ -281,7 +290,7 @@ msgstr "OpenID entfernt."
 
 #: django_authopenid/views.py:642
 msgid "Invalid OpenID url."
-msgstr ""
+msgstr "Ungültige OpenID-URL."
 
 #: files/forms.py:7
 msgid "Please select a file to upload."
@@ -324,69 +333,57 @@ msgid "Locked"
 msgstr "Gesperrt"
 
 #: files/models.py:61
-#, fuzzy
 msgid "Unlocked"
-msgstr "Gesperrt"
+msgstr "Entsperrt"
 
 #: files/models.py:62
-#, fuzzy
 msgid "Uploaded"
-msgstr "Hochladen"
+msgstr "Hochgeladen"
 
 #: files/models.py:63
-#, fuzzy
 msgid "Submitted"
-msgstr "Abgeschickt am"
+msgstr "Abgeschickt"
 
 #: files/models.py:64
-#, fuzzy
 msgid "Rejected"
-msgstr "Ablehnen"
+msgstr "Abgelehnt"
 
 #: files/models.py:65 teams/views.py:54
-#, fuzzy
 msgid "Updated"
-msgstr "Hochladen"
+msgstr "Aktualisiert"
 
 #: files/models.py:66
-#, fuzzy
 msgid "Added"
-msgstr "Hinzufügen"
+msgstr "Hinzugefügt"
 
 #: files/models.py:67
-#, fuzzy
 msgid "Removed"
-msgstr "Entfernen"
+msgstr "Entfernt"
 
 #: files/models.py:71
-#, fuzzy
 msgid "Need Review"
-msgstr "Korrekturleser entfernen"
+msgstr "Korrekturlesung benötigt"
 
 #: files/models.py:72
-#, fuzzy
 msgid "Assigned Translator"
-msgstr "Übersetzer zuweisen"
+msgstr "Zugewiesener Übersetzer"
 
 #: files/models.py:73
-#, fuzzy
 msgid "Assigned Reviewer"
-msgstr "Korrekturleser zuweisen"
+msgstr "Zugewiesener Korrekturleser"
 
 #: files/models.py:74
-#, fuzzy
 msgid "Removed Translator"
-msgstr "Übersetzter entfernen"
+msgstr "Übersetzter entfernt"
 
 #: files/models.py:75
-#, fuzzy
 msgid "Removed Reviewer"
-msgstr "Korrekturleser entfernen"
+msgstr "Korrekturleser entfernt"
 
 #: files/models.py:324
-#, fuzzy, python-format
+#, python-format
 msgid "%(file)s (Component: %(component)s - Release: %(release)s)"
-msgstr "%(site_name)s: Veröffentlichung %(release)s"
+msgstr "%(file)s (Component: %(component)s - Veröffentlichung: %(release)s)"
 
 #: files/models.py:646
 #, python-format
@@ -442,42 +439,42 @@ msgstr ""
 "befindet. Klicken Sie hier wenn Sie diese runterladen wollen."
 
 #: files/views.py:176 files/views.py:189
-#, fuzzy, python-format
+#, python-format
 msgid "Removed %s"
-msgstr "Entfernen"
+msgstr "Entfernt %s"
 
 #: files/views.py:179 files/views.py:192 files/views.py:298 files/views.py:543
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht autorisiert diese Aktion durchzuführen."
 
 #: files/views.py:212
-#, fuzzy
 msgid "This file already has an assigned translator."
-msgstr "Dieser Datei ist bereits ein Übersetzer zugewiesen."
+msgstr "Dieser Datei bereits einen zugewiesenen Übersetzer."
 
 #: files/views.py:219
 #, python-format
 msgid "You had been designated as translator of %(file)s"
-msgstr ""
+msgstr "Sie wurden als Übersetzer für die Datei %(file)s zugewiesen"
 
 #: files/views.py:221 files/views.py:235
 #, python-format
 msgid "Assigned to %s"
-msgstr ""
+msgstr "Zugewiesen zu %s"
 
 #: files/views.py:226
-#, fuzzy
 msgid "This file already has an assigned reviewer."
-msgstr "Dieser Datei ist bereits ein Korrekturleser zugewiesen."
+msgstr "Dieser Datei bereits einen zugewiesenen Korrekturleser."
 
 #: files/views.py:232
 #, python-format
 msgid "You had been designated as reviewer of %(file)s"
-msgstr ""
+msgstr "Sie wurden als Korrekturleser für die Datei %(file)s zugewiesen"
 
 #: files/views.py:239
 msgid "Sorry, the translator and the reviewer cannot be the same user."
 msgstr ""
+"Entschuldigung, der/die Übersetzer(in) und der/die Korrekturleser(in) können "
+"nicht derselbe Benutzer sein."
 
 #: files/views.py:316
 msgid "This component is read only."
@@ -527,9 +524,11 @@ msgid "Complete the form and try again."
 msgstr "Füllen Sie das Formular vollständig aus und probieren es nochmal."
 
 #: files/views.py:633
-#, fuzzy, python-format
+#, python-format
 msgid "The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]"
-msgstr "Die Datei %(file)s (%(project)s) wurde von %(user)s abgelehnt "
+msgstr ""
+"Die Datei %(file)s (%(project)s) wurde von %(user)s abgelehnt. Begründung: %"
+"(comment)s"
 
 #: files/views.py:654
 msgid "The files were rejected."
@@ -540,31 +539,27 @@ msgid "The files were submitted."
 msgstr "Die Dateien wurde abgeschickt."
 
 #: files/views.py:687
-#, fuzzy, python-format
+#, python-format
 msgid "Failed. Reason: %s"
-msgstr "Fehlgeschlagen. Grund: %s."
+msgstr "Fehlgeschlagen. Grund: %s"
 
 #: files/views.py:724
-#, fuzzy
 msgid "The file was added back to the submission queue."
-msgstr "Ihre Datei wurde in die Warteschlange eingereiht."
+msgstr "Ihre Datei wurde wider in die Warteschlange eingereiht."
 
 #: files/views.py:814
-#, fuzzy
 msgid "The file has a pending submit. You can't force a merge right now."
 msgstr ""
 "Diese Datei hat eine Version die sich zur Zeit in der Warteschlange "
-"befindet. Klicken Sie hier wenn Sie diese runterladen wollen."
+"befindet. Sie können sie im Moment nicht nicht zwangsweise zusammenführen."
 
 #: files/views.py:819
-#, fuzzy
 msgid "POT file not found."
-msgstr "Datei wurde nicht gefunden."
+msgstr "POT-Datei wurde nicht gefunden."
 
 #: files/views.py:828
-#, fuzzy
 msgid "File merged and added to the submission queue."
-msgstr "Ihre Datei wurde in die Warteschlange eingereiht."
+msgstr "Datei wurde zusammengeführt und in die Warteschlange eingereiht."
 
 #: files/lib/handlers.py:26
 #, python-format
@@ -592,7 +587,6 @@ msgid "Unable to open the file %s."
 msgstr ""
 
 #: files/lib/handlers.py:177
-#, fuzzy
 msgid "The tar file should not contain any directories."
 msgstr "Die tar-Datei sollte keine Verzeichnisse beinhalten."
 
@@ -603,7 +597,7 @@ msgstr ""
 
 #: files/lib/handlers.py:241
 msgid "Merged."
-msgstr ""
+msgstr "Zusammengeführt."
 
 #: glossary/forms.py:9 glossary/models.py:27
 msgid "Recommended translations"
@@ -659,7 +653,7 @@ msgstr ""
 
 #: news/models.py:13
 msgid "Body"
-msgstr ""
+msgstr "Körper"
 
 #: news/templates/news/editor.html:3
 msgid "News"
@@ -704,9 +698,8 @@ msgid "Subversion repository URL"
 msgstr "Subversion repository URL"
 
 #: projects/forms.py:15 projects/models.py:49
-#, fuzzy
 msgid "View Repository URL"
-msgstr "Repository-URL"
+msgstr "Repository-URL anzeigen"
 
 #: projects/forms.py:19
 msgid "Some repositories requires authentication to perform checkout."
@@ -776,9 +769,9 @@ msgstr ""
 "werden können"
 
 #: projects/models.py:70
-#, fuzzy, python-format
+#, python-format
 msgid "Project: %s"
-msgstr "Projekte"
+msgstr "Projekt: %s"
 
 #: projects/views.py:82
 msgid "Build is already running."
@@ -789,9 +782,9 @@ msgid "Build started."
 msgstr ""
 
 #: projects/views.py:125
-#, fuzzy, python-format
+#, python-format
 msgid "Component %s is locked at this moment."
-msgstr "Komponente %s ist zur Zeit gesperrt."
+msgstr "Komponente %s ist im Moment gesperrt."
 
 #: projects/views.py:154
 #, python-format
@@ -820,14 +813,12 @@ msgid "Finished build cache for component %(component)s."
 msgstr ""
 
 #: projects/views.py:192
-#, fuzzy
 msgid ""
 "Project locked. Try again in a few minutes. If the problem persist contact "
 "the administrator."
 msgstr ""
-"Projekt ist für %(team)s gesperrt. Bitte probieren Sie es in ein paar "
-"Minuten nochmal. Falls das Problem weiterhin existiert kontaktieren Sie "
-"bitte den Administrator."
+"Projekt gesperrt. Bitte probieren Sie es in ein paar Minuten nochmal. Falls "
+"das Problem weiterhin existiert kontaktieren Sie den Administrator."
 
 #: projects/views.py:197
 #, fuzzy, python-format
@@ -898,9 +889,8 @@ msgid "There are no available releases to populate from."
 msgstr ""
 
 #: releases/views.py:238
-#, fuzzy
 msgid "The files could not be merged."
-msgstr "Die Datei ist bereits von einem anderen Benutzer."
+msgstr "Die Dateien konnten nicht zusammengeführt werden."
 
 #: releases/views.py:241
 msgid "Some files could not be merged."
@@ -924,9 +914,8 @@ msgid "Failed: [%s]."
 msgstr "Fehlgeschlagen. Grund: [%s]."
 
 #: teams/models.py:9
-#, fuzzy
 msgid "Review all submits"
-msgstr "Speichern und abschicken"
+msgstr "Alle Einsendungen prüfen"
 
 #: teams/models.py:10
 msgid "Allow users to submit to repository"
@@ -935,7 +924,7 @@ msgstr ""
 #: teams/models.py:114
 #, python-format
 msgid "<User: %(user)s - Team: %(project)s (%(language)s)>"
-msgstr ""
+msgstr "<Benutzer: %(user)s - Team: %(project)s (%(language)s)>"
 
 #: teams/views.py:29
 #, fuzzy
@@ -957,9 +946,10 @@ msgstr "Sie sind bereits ein Mitglied dieses Teams."
 
 #: teams/views.py:176
 msgid "You have already sent a join request."
-msgstr ""
+msgstr "Sie haben bereits eine Beitrittsanfrage gestellt."
 
 #: teams/views.py:202
+#, fuzzy
 msgid "Request to join the team"
 msgstr ""
 
@@ -1016,12 +1006,16 @@ msgstr "Seite nicht verfügbar"
 #: templates/500.html:9
 msgid "The <b>bad news</b> is that Vertaal has just encountered an error."
 msgstr ""
+"Die <b>schlechte Nachricht</b> ist, dass Vertaal gerade ein Fehler "
+"unterlaufen ist."
 
 #: templates/500.html:10
 msgid ""
 "The <b>good news</b> is that you've helped us find a bug, which we are now "
 "looking into."
 msgstr ""
+"Die <b>gute Nachricht</b> ist, dass Sie uns geholfen haben einen Fehler zu "
+"finden, den wir uns jetzt anschauen werden."
 
 #: templates/500.html:12
 msgid "We're sorry, a server error occurred. Please wait a bit and try again."
@@ -1284,9 +1278,8 @@ msgid "Apply"
 msgstr "Anwenden"
 
 #: templates/authopenid/password_change_form.html:35
-#, fuzzy
 msgid "Password change"
-msgstr "Passwort"
+msgstr "Passwortwechsel"
 
 #: templates/components/component_build_console.html:5
 #: templates/releases/release_build_console.html:5
@@ -1417,9 +1410,9 @@ msgid "My files only"
 msgstr "Nur meine Dateien"
 
 #: templates/files/file_detail.html:11
-#, fuzzy, python-format
+#, python-format
 msgid "Latest actions on %(filename)s"
-msgstr "Letzte Aktion in Veröffentlichung %(release)s."
+msgstr "Letzte Aktion in %(filename)s."
 
 #: templates/files/file_detail.html:33 templates/files/file_list.html:180
 #: templates/files/file_submit_confirm.html:39
@@ -1434,9 +1427,8 @@ msgid "Download"
 msgstr "Herunterladen "
 
 #: templates/files/file_detail.html:41
-#, fuzzy
 msgid "POT file:"
-msgstr "Profil"
+msgstr "POT-Datei:"
 
 #: templates/files/file_detail.html:44
 #, python-format
@@ -1452,9 +1444,9 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: templates/files/file_detail.html:57
-#, fuzzy, python-format
+#, python-format
 msgid "updated on %(updated)s (%(since)s ago)"
-msgstr "(Sie) am"
+msgstr "aktualisiert auf %(updated)s (%(since)s her)"
 
 #: templates/files/file_detail.html:63
 msgid "The PO file differs from the source POT file."
@@ -1465,38 +1457,35 @@ msgid "Force merge"
 msgstr ""
 
 #: templates/files/file_detail.html:73
-#, fuzzy
 msgid "Translated:"
-msgstr "Übersetzt"
+msgstr "Übersetzt:"
 
 #: templates/files/file_detail.html:74
 msgid "Total/Translated/Untranslated/Fuzzy"
 msgstr ""
 
 #: templates/files/file_detail.html:83
-#, fuzzy, python-format
+#, python-format
 msgid "source updated on %(updated)s (%(since)s ago)"
-msgstr "(Sie) am"
+msgstr "Quelle aktualisiert auf %(updated)s (%(since)s her)"
 
 #: templates/files/file_detail.html:90
-#, fuzzy
 msgid "View repository log"
-msgstr "Historie ansehen"
+msgstr "Repository-Log ansehen"
 
 #: templates/files/file_detail.html:90
-#, fuzzy
 msgid "Repository log:"
-msgstr "Repository:"
+msgstr "Repository-Log:"
 
 #: templates/files/file_detail.html:102
-#, fuzzy, python-format
+#, python-format
 msgid "Revision %(rev)s"
-msgstr "Bei Revision %s."
+msgstr "Revision %(rev)s"
 
 #: templates/files/file_detail.html:106
 #, fuzzy, python-format
 msgid "(updated %(updated)s - %(since)s ago)"
-msgstr "Letzte Aktualisierung"
+msgstr "(aktualisiert %(updated)s - %(since)s ago)"
 
 #: templates/files/file_detail.html:108
 msgid "The information displayed is local and may be out dated."
@@ -1611,9 +1600,9 @@ msgid "Download %(filename)s"
 msgstr "%(filename)s herunterladen"
 
 #: templates/files/file_list_row.html:57
-#, fuzzy, python-format
+#, python-format
 msgid "Edit %(filename)s"
-msgstr "%(fname)s bearbeiten"
+msgstr "%(filename)s bearbeiten"
 
 #: templates/files/file_list_row.html:60
 msgid "Unlock the file when you finish working on it."
@@ -1735,18 +1724,16 @@ msgid "Submitted on"
 msgstr "Abgeschickt am"
 
 #: templates/files/submit_table.html:12
-#, fuzzy
 msgid "Comment"
-msgstr "Kommentare"
+msgstr "Kommentar"
 
 #: templates/files/submit_table.html:20
 msgid "The file is in the submission queue"
 msgstr "Die Datei ist in der Warteschlange"
 
 #: templates/files/submit_table.html:27
-#, fuzzy
 msgid "View Diff"
-msgstr "Ansehen "
+msgstr "Diff ansehen "
 
 #: templates/files/submit_table.html:42
 #: templates/releases/release_merge.html:55
@@ -1805,9 +1792,8 @@ msgid "Language:"
 msgstr "Sprache:"
 
 #: templates/glossary/glossary_index.html:37
-#, fuzzy
 msgid "Download TBX"
-msgstr "Herunterladen "
+msgstr "TBX herunterladen "
 
 #: templates/glossary/glossary_index.html:77
 #: templates/releases/release_build_console.html:55
@@ -1874,7 +1860,7 @@ msgstr "Repository:"
 #: templates/projects/project_detail.html:64
 #, fuzzy
 msgid "Repository View URL:"
-msgstr "Repository-URL"
+msgstr "Repository-"
 
 #: templates/projects/project_detail.html:76
 msgid "Maintainer:"
@@ -2196,25 +2182,21 @@ msgid "New Release"
 msgstr "Neue Veröffentlichung"
 
 #: templates/releases/release_merge.html:7
-#, fuzzy
 msgid "Merge"
-msgstr "Nachricht"
+msgstr "Zusammenführen"
 
 #: templates/releases/release_merge.html:39
-#, fuzzy
 msgid "The process could take some time, are you sure?"
 msgstr ""
-"Dieser Vorgang kann etwas Zeit in Anspruch nehmen. Bitte seien Sie geduldig."
+"Dieser Vorgang kann etwas Zeit in Anspruch nehmen. Wollen Sie fortfahren?"
 
 #: templates/releases/release_merge.html:63
-#, fuzzy
 msgid "Team"
-msgstr "Teams:"
+msgstr "Team"
 
 #: templates/releases/release_merge.html:86
-#, fuzzy
 msgid "There is no need to merge any files."
-msgstr "Bitte wählen Sie eine oder mehrere Dateien."
+msgstr "Es gibt keinen Grund irgendeine Datei zusammenzuführen."
 
 #: templates/releases/release_populate.html:6
 #, fuzzy, python-format
@@ -2240,9 +2222,8 @@ msgstr ""
 
 #: templates/teams/join.html:3 templates/teams/join.html.py:9
 #: templates/teams/join.html:21
-#, fuzzy
 msgid "Join"
-msgstr "Anmelden"
+msgstr "Beitreten"
 
 #: templates/teams/join.html:15
 #, python-format
@@ -2357,14 +2338,12 @@ msgid "Coordinator"
 msgstr "Koordinator"
 
 #: templates/teams/team_admin_table.html:30
-#, fuzzy
 msgid "Remove coordinator"
-msgstr "Übersetzter entfernen"
+msgstr "Koordinator entfernen"
 
 #: templates/teams/team_admin_table.html:43
-#, fuzzy
 msgid "Committer"
-msgstr "Warteschlange"
+msgstr "Committer"
 
 #: templates/teams/team_admin_table.html:55
 #: templates/teams/team_admin_table.html:84
@@ -2372,7 +2351,6 @@ msgid "Set as coordinator"
 msgstr "Als Koordinator einsetzen"
 
 #: templates/teams/team_admin_table.html:56
-#, fuzzy
 msgid "Remove submit grants"
 msgstr "Entziehe die Rechte zum einspielen"
 
@@ -2391,14 +2369,12 @@ msgid "Member"
 msgstr "Mitglied"
 
 #: templates/teams/team_admin_table.html:85
-#, fuzzy
 msgid "Add repository submit grants"
 msgstr "Gewähre Rechte zum einspielen ins Repository"
 
 #: templates/teams/team_contact.html:15
-#, fuzzy
 msgid "Please select an user"
-msgstr "Bitte wählen Sie eine Datei, die Sie hochladen möchten."
+msgstr "Bitte wählen Sie einen Benutzer"
 
 #: templates/teams/team_detail.html:28
 msgid "Join this team"
@@ -2485,7 +2461,7 @@ msgstr ""
 "%(home)s\n"
 
 #: templates/updater/pot_changed.mail:2
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Hello,\n"
@@ -2503,7 +2479,8 @@ msgstr ""
 "\n"
 "Hello,\n"
 "\n"
-"Die folgenden Dateien wurden aktualisiert:\n"
+"Die folgenden Dateien könnten eine Zusammenführung gebrauchen, weil ihre "
+"POT-Dateien vor kurzem aktualisiert wurden:\n"
 "\n"
 "%(files)s\n"
 "\n"
@@ -2513,7 +2490,7 @@ msgstr ""
 "%(home)s\n"
 
 #: templates/updater/queuestatus.mail:4
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "The submission queue contains one pending file:"
@@ -2522,7 +2499,7 @@ msgid_plural ""
 "The submission queue contains %(counter)s pending files:"
 msgstr[0] ""
 "\n"
-"Die Warteschlange enthält eine unbearbeitete Datei:"
+"Die Warteschlange enthält eine noch ausstehende Datei:"
 msgstr[1] ""
 "\n"
 "Die Warteschlange enthält %(counter)s unbearbeitete Dateien:"
@@ -2539,12 +2516,11 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: templates/updater/unread_messages.mail:8
-#, fuzzy
 msgid "Latest messages:"
-msgstr "Letzte Aktualisierung"
+msgstr "Letzte Nachrichten:"
 
 #: templates/updater/unread_messages.mail:14
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Login to check your messages.\n"
@@ -2554,6 +2530,8 @@ msgid ""
 "The %(product_name)s team\n"
 "%(home)s\n"
 msgstr ""
+"\n"
+"Melden Sie sich an, um Ihre Nachrichten anzusehen.\n"
 " \n"
 "Mit freundlichen Grüßen,\n"
 "\n"
@@ -2581,7 +2559,6 @@ msgid "Time Zone"
 msgstr "Zeitzone"
 
 #: userprofileapp/forms.py:18
-#, fuzzy
 msgid "Preferred language"
 msgstr "Bevorzugte Sprache"
 
@@ -2627,9 +2604,9 @@ msgid "%(message)s (Committed revision %(revision)s)"
 msgstr ""
 
 #: versioncontrol/manager.py:176
-#, fuzzy, python-format
+#, python-format
 msgid "Committed revision %s"
-msgstr "Bei Revision %s."
+msgstr "Abgeschickte Revision %s"
 
 #: versioncontrol/manager.py:205
 #, fuzzy, python-format
@@ -2654,9 +2631,9 @@ msgstr ""
 "an den Repository-Administrator."
 
 #: versioncontrol/manager.py:315
-#, fuzzy, python-format
+#, python-format
 msgid "Processing %s"
-msgstr "Profileinstellungen"
+msgstr "Verarbeite %s"
 
 #: versioncontrol/manager.py:387 versioncontrol/manager.py:431
 #, python-format
@@ -2698,7 +2675,7 @@ msgid "At revision %s."
 msgstr "Bei Revision %s."
 
 #: versioncontrol/lib/types/svn.py:123
-#, fuzzy, python-format
+#, python-format
 msgid "URL has changed. Relocate from %(prior)s to %(actual)s"
 msgstr "URL hat sich geändert. Ziehe um vom %(prior)s to %(actual)s"
 
