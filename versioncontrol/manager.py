@@ -127,20 +127,22 @@ class SubmitClient():
                         for smfile in component:
                             sfilename = smart_unicode(smfile.file)
                             if os.path.exists(sfilename):
-                                try:
-                                    pot = smfile.pofile.potfile.get()
-                                except:
-                                    pot = None
-                                if pot:
-                                    logger.debug("Merge file %s with %s." % (sfilename, pot.file))
-                                    out = msgfmt.msgmerge(sfilename, pot.file, smfile.pofile.file)
-                                else: 
-                                    logger.debug("Replace existing file %s" % smfile.pofile.file)
-                                    try:
-                                        shutil.copy(str(smfile.file), str(smfile.pofile.file))
-                                        out = ''
-                                    except Exception, e:
-                                        out = str(e)
+                                if smfile.pofile.need_merge:
+                                    logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
+                                    # merge first the current file with the pot file
+                                    out = msgfmt.msgmerge(smfile.pofile.file, pot.file)
+                                    if not len(out) > 1:
+                                        logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                        out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                else:
+                                    logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                    out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                    #logger.debug("Replace existing file %s" % smfile.pofile.file)
+                                    #try:
+                                    #    shutil.copy(str(smfile.file), str(smfile.pofile.file))
+                                    #    out = ''
+                                    #except Exception, e:
+                                    #    out = str(e)
                                 if len(out)>1:
                                     raise Exception(_('An error occurred while performing file merge. %s' % ";".join(out)))
                                 # create a backup, just in case
