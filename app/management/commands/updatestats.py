@@ -57,6 +57,13 @@ def update_callback(sender, **kwargs):
 
 class Command(BaseCommand):
     help = 'Refresh Repositories And Update Stats'
+    option_list = BaseCommand.option_list + (
+        make_option('--stats-only',
+            action='store_true',
+            dest='statsonly',
+            default=False,
+            help='Do not refresh repository, update stats only'),
+        )
 
     def handle(self, *args, **options):
         global notification, potnotification
@@ -67,6 +74,8 @@ class Command(BaseCommand):
 
         init_env()
         
+        dorefresh = not options['statsonly']
+
         BOT_USERNAME = getattr(settings, 'BOT_USERNAME', 'bot')
         BOT_USER = User.objects.get(username=BOT_USERNAME)
             
@@ -115,8 +124,8 @@ class Command(BaseCommand):
                                                   release.slug,
                                                   component.slug,
                                                   team.language.code) as lock:        
-                                        b.setrev(man.refresh())
-                                    man.update_stats(False)
+                                        if dorefresh: b.setrev(man.refresh())
+                                        man.update_stats(False)
                                 except Exception, e:
                                     failedProjects.append(project.slug)
                                     logger.error(e)
@@ -128,7 +137,7 @@ class Command(BaseCommand):
                                 logger.info("Processing POT")
                                 repo = POTUpdater(project, release, component)
                                 try:
-                                    repo.update_stats(True)
+                                    repo.update_stats(dorefresh)
                                 except Exception, e:
                                     logger.error(e)
                                     traceback.print_exc(file=sys.stdout)
