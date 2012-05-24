@@ -180,7 +180,7 @@ class POFileManager(models.Manager):
         list = []
         for row in cursor.fetchall():
             if release:
-                r = release:
+                r = release
             else:
                 r = cache_rel.get(long(id=row[2]), Release.objects.get(id=row[2]))
                 cache_rel[long(id=row[2])] = r
