@@ -33,7 +33,6 @@ from files.lib.handlers import handle_uploaded_file, handle_text_file
 from app.log import (logger)
 from django.conf import settings
 from common.view.decorators import render
-import difflib
 import StringIO
 
 try:
@@ -44,6 +43,8 @@ except ImportError:
     hash = sha.new
     
 from common.cache.file import FileCache
+
+from files.lib.diff_match_patch import diff_match_patch
 
 def escape(text):
     return text.replace("<", "&lt;").replace(">","&gt;")
@@ -93,7 +94,7 @@ def upload(request, release, language):
                 if r.project.repo_user and team.submittype == 1 and team.can_commit(request.user):
                     do_commit(submits, request.user, r.project.repo_user, r.project.get_repo_pwd())
                 else:
-                    thread.start_new_thread(create_diff_cache, (submits,))
+                    #thread.start_new_thread(create_diff_cache, (submits,))
                     request.user.message_set.create(
                                 message=_("Your file was uploaded and added to the submission queue."))
             except Exception, e:
@@ -805,6 +806,22 @@ def make_file_diff(file_old, file_new):
     return make_diff(content_old, content_new)
     
 def make_diff(a, b):
+    dif = diff_match_patch()
+    diffs = dif.diff_main(a,b)
+    out = []
+    for (op, data) in diffs:
+      text = (data.replace("&", "&amp;").replace("<", "&lt;")
+                 .replace(">", "&gt;").replace("\n", "<br>"))
+      if op == diff_match_patch.DIFF_INSERT:
+        out.append("<ins class=\"diff_add\">%s</ins>" % text)
+      elif op == diff_match_patch.DIFF_DELETE:
+        out.append("<del class=\"diff_sub\">%s</del>" % text)
+      elif op == diff_match_patch.DIFF_EQUAL:
+        out.append("<span>%s</span>" % text)
+    return "".join(out)
+    
+def make_diff_old(a, b):
+    import difflib
     filename = hash(b.encode('utf-8')).hexdigest()
     fc = FileCache(filename, expireInMinutes = None, tempdir = settings.TEMP_UPLOAD_PATH, prefix = '')
     try:
