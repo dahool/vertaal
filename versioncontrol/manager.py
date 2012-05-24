@@ -128,13 +128,22 @@ class SubmitClient():
                             sfilename = smart_unicode(smfile.file)
                             if os.path.exists(sfilename):
                                 if smfile.pofile.need_merge:
-                                    pot = smfile.pofile.potfile.get()
-                                    logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
-                                    # merge first the current file with the pot file
-                                    out = msgfmt.msgmerge(smfile.pofile.file, pot.file)
-                                    if not len(out) > 1:
-                                        logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                        out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                    # check current dates, if they match, is because they were already merged
+                                    if extract_creation_date(sfilename) == extract_creation_date(smfile.pofile.file):
+                                        try:
+                                            logger.debug("File already merged %s." % (smfile.pofile.file))
+                                            shutil.copy(sfilename, str(smfile.pofile.file))
+                                            out = ''
+                                        except Exception, e:
+                                            out = str(e)
+                                    else:
+                                        pot = smfile.pofile.potfile.get()
+                                        logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
+                                        # merge first the current file with the pot file
+                                        out = msgfmt.msgmerge(smfile.pofile.file, pot.file)
+                                        if not len(out) > 1:
+                                            logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                            out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
                                 else:
                                     logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
                                     out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
