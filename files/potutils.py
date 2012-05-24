@@ -1,9 +1,9 @@
 from dateutil.parser import *
 import datetime
 import re
+from app.log import (logger)
 
-#_CREATION_DATE = re.compile('.(POT-Creation-Date:)[ ](?P<date>[0-9]{4}[-][0-9]{2}[-][0-9]{2}[ ][0-9]{2}[:][0-9]{2}[+|-][0-9]{0,4})')
-_CREATION_DATE = re.compile('^"POT-Creation-Date:\s(?P<date>[0-9]{4}[-][0-9]{2}[-][0-9]{2}[\s][0-9]{2}[:][0-9]{2}[+|-][0-9]{0,4})\s"')
+_CREATION_DATE = re.compile('.(POT-Creation-Date:)[ ](?P<date>[0-9]{4}[-][0-9]{2}[-][0-9]{2}[ ][0-9]{2}[:][0-9]{2}[+|-][0-9]{0,4})')
 
 def extract_creation_date(filename):
     o = open(filename,'r')
@@ -18,8 +18,7 @@ def extract_creation_date(filename):
             dt = potdate_to_datetime(dateval)
             return dt
         except Exception, e:
-            #logger.error("Date conversion failed (%s)" % str(e))
-            pass
+            logger.error("Date conversion failed (%s)" % str(e))
     return None
 
 def potdate_to_datetime(value):
