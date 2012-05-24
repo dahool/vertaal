@@ -128,6 +128,7 @@ class SubmitClient():
                             sfilename = smart_unicode(smfile.file)
                             if os.path.exists(sfilename):
                                 if smfile.pofile.need_merge:
+                                    pot = smfile.pofile.potfile.get()
                                     logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
                                     # merge first the current file with the pot file
                                     out = msgfmt.msgmerge(smfile.pofile.file, pot.file)
