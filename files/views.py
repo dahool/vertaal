@@ -806,8 +806,9 @@ def make_file_diff(file_old, file_new):
     return make_diff(content_old, content_new)
     
 def make_diff(a, b):
-    dif = diff_match_patch()
-    diffs = dif.diff_main(a,b)
+    dm = diff_match_patch()
+    diffs = dm.diff_main(a,b)
+    dm.diff_cleanupSemantic(diffs)
     out = []
     for (op, data) in diffs:
       text = (data.replace("&", "&amp;").replace("<", "&lt;")
