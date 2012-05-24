@@ -89,7 +89,7 @@ def get_upload_path(pofile):
     """
     return os.path.join(settings.UPLOAD_PATH,pofile.component.project.slug, pofile.slug + ".po")
     
-def add_submit(pofile, owner, temp_file, comment=''):
+def add_submit(pofile, owner, temp_file, comment='', merge=True):
     posubmit = None
     try:
         posubmit = sub = POFileSubmit.objects.get(pofile=pofile)
@@ -97,7 +97,7 @@ def add_submit(pofile, owner, temp_file, comment=''):
         sub.save()
         newsubmit = False
     except POFileSubmit.DoesNotExist:
-        posubmit = POFileSubmit.objects.create(pofile=pofile, owner=owner, file=temp_file, log_message=comment)
+        posubmit = POFileSubmit.objects.create(pofile=pofile, owner=owner, file=temp_file, log_message=comment, merge=merge)
     except Exception, e:
         logger.error("Add submit failed [%s]" % smart_unicode(e))
         raise Exception, _("Failed. Please try again. If the problem persist fill a ticket.")
@@ -238,4 +238,4 @@ def process_merge(pofile, user):
 #        logger.error(";".join(out))
 #        raise Exception, _('An error occurred while performing file merge. %s' % ";".join(out)) 
 
-    return add_submit(pofile, user, new_file, _('Merged.'))
+    return add_submit(pofile, user, new_file, _('Merged.'), merge=False)

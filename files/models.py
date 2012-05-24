@@ -701,7 +701,7 @@ class POFileSubmit(models.Model):
     file = models.FileField(max_length=500,
                             storage=FileSystemStorage(location=settings.UPLOAD_PATH),
                             upload_to=get_upload_path) 
-    
+    merge = models.BooleanField(default=True)
     objects = POFileSubmitManager()
     
     class Meta:

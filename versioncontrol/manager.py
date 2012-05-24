@@ -127,16 +127,8 @@ class SubmitClient():
                         for smfile in component:
                             sfilename = smart_unicode(smfile.file)
                             if os.path.exists(sfilename):
-                                if smfile.pofile.need_merge:
-                                    # check current dates, if they match, is because they were already merged
-                                    if extract_creation_date(sfilename) == extract_creation_date(smfile.pofile.file):
-                                        try:
-                                            logger.debug("File already merged %s." % (smfile.pofile.file))
-                                            shutil.copy(sfilename, str(smfile.pofile.file))
-                                            out = ''
-                                        except Exception, e:
-                                            out = str(e)
-                                    else:
+                                if smfile.merge:
+                                    if smfile.pofile.need_merge:
                                         pot = smfile.pofile.potfile.get()
                                         logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
                                         # merge first the current file with the pot file
@@ -144,15 +136,16 @@ class SubmitClient():
                                         if not len(out) > 1:
                                             logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
                                             out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                    else:
+                                        logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                        out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
                                 else:
-                                    logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                    out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
-                                    #logger.debug("Replace existing file %s" % smfile.pofile.file)
-                                    #try:
-                                    #    shutil.copy(str(smfile.file), str(smfile.pofile.file))
-                                    #    out = ''
-                                    #except Exception, e:
-                                    #    out = str(e)
+                                    try:
+                                        logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
+                                        shutil.copy(sfilename, str(smfile.pofile.file))
+                                        out = ''
+                                    except Exception, e:
+                                        out = str(e)
                                 if len(out)>1:
                                     raise Exception(_('An error occurred while performing file merge. %s' % ";".join(out)))
                                 # create a backup, just in case
