@@ -30,7 +30,7 @@ from batch.log import (logger)
 from projects.models import Project
 from files.models import POFile
 from django.db.models.signals import pre_save
-
+from optparse import make_option
 from common.notification import FileUpdateNotification, POTFileChangeNotification
 
 global notification, potnotification
