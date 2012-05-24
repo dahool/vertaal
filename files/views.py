@@ -801,8 +801,8 @@ def view_file_diff(request, slug):
         return redirect
 
 def make_file_diff(file_old, file_new):
-    content_new = escape(file_new.handler.get_content().decode('utf-8'))
-    content_old = escape(file_old.handler.get_content().decode('utf-8'))
+    content_new = file_new.handler.get_content().decode('utf-8')
+    content_old = file_old.handler.get_content().decode('utf-8')
     return make_diff(content_old, content_new)
     
 def make_diff(a, b):
