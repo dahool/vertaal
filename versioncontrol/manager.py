@@ -434,8 +434,7 @@ class POTUpdater(Manager):
         for potfile in potfiles:
             try:
                 self.notify_callback(_('Update statistics for %s') % potfile.name)
-                self.__fill_extrafile_data(potfile)
-                potfile.save()
+                potfile.update_file_stats()
             except Exception, e:
                 logger.error(e)
  
@@ -458,11 +457,6 @@ class POTUpdater(Manager):
                 logger.error(e.args)
                 raise
     
-    def __fill_extrafile_data(self, potfile):
-        potfile.updated = extract_creation_date(potfile.file)
-        stats = msgfmt.get_file_stats(potfile.file)
-        potfile.total = stats['untranslated']
-        
     def add_pofiles(self, potfile):
         basename = os.path.splitext(potfile.name)[0] + "."
         inpo = [pofile.pk for pofile in potfile.pofiles.all()]

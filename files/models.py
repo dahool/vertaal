@@ -478,7 +478,14 @@ class POTFile(models.Model):
     @property
     def handler(self):
         return POTFileHandler(self)
-        
+
+    def update_file_stats(self, save=True):
+        stats = msgfmt.get_file_stats(self.file)
+        self.total = stats['translated'] +  stats['fuzzy'] + stats['untranslated']
+        self.updated = extract_creation_date(self.file)
+        if save:
+            self.save()
+       
     class Meta:
         unique_together = ("component", "release", "name")
         db_table = 'pofile_pot'
