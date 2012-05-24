@@ -152,37 +152,42 @@ class POFileManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
 
-        langids = ",".join([str(lang.id) for lang in languages])
-
-        if not release:
-            sql = "SELECT p.language_id,p.component_id, p.release_id, "\
-                "p.slug, p.total, p.filename, p.status, p.id FROM pofile p, language l, components c "\
-                "WHERE p.language_id = l.id AND p.component_id = c.id "\
-                "AND l.id IN (%s) AND c.id IN (SELECT id from components "\
-                "WHERE project_id = %s AND NOT (potlocation IS NULL OR potlocation = '')) "\
-                "AND (p.total <> (select pot.total from pofile_pot pot "\
-                "INNER JOIN pofile_pot_pofiles po ON po.potfile_id = pot.id WHERE p.id = po.pofile_id) "\
-                "OR p.potupdated <> (select COALESCE(pot.updated,p.potupdated) from pofile_pot pot "\
-                "INNER JOIN pofile_pot_pofiles po ON po.potfile_id = pot.id WHERE p.id = po.pofile_id))" % (langids, project.id)
-        else:
-            sql = "SELECT p.language_id,p.component_id, p.release_id, "\
-                "p.slug, p.total, p.filename, p.status, p.id FROM pofile p, language l, components c "\
-                "WHERE p.language_id = l.id AND p.component_id = c.id "\
-                "AND l.id IN (%s) AND c.id IN (SELECT id from components "\
-                "WHERE project_id = %s AND NOT (potlocation IS NULL OR potlocation = '')) "\
-                "AND p.release_id = %s AND (p.total <> (select pot.total from pofile_pot pot "\
-                "INNER JOIN pofile_pot_pofiles po ON po.potfile_id = pot.id WHERE p.id = po.pofile_id) "\
-                "OR p.potupdated <> (select COALESCE(pot.updated,p.potupdated) from pofile_pot pot "\
-                "INNER JOIN pofile_pot_pofiles po ON po.potfile_id = pot.id WHERE p.id = po.pofile_id))" % (langids, project.id, release.id)
+        cache_lang = {}
+        cache_rel = {}
+        cache_comp = {}
+        
+        langq = ''
+        for lang in languages:
+            cache_lang[lang.id] = lang
+            if len(langq) > 0: langq += ' OR '
+            langq += str(lang)
+            
+        sql = "SELECT p.language_id,p.component_id, p.release_id, p.slug, p.total, p.filename, p.status, p.id "\
+                "FROM pofile p INNER JOIN pofile_pot_pofiles pol ON pol.pofile_id = p.id "\
+                "INNER JOIN pofile_pot pot ON pol.potfile_id = pot.id "\
+                "INNER JOIN language l ON p.language_id = l.id "\
+                "INNER JOIN components c ON p.component_id = c.id WHERE "
+        if release:
+            sql += "p.release_id = %s AND " % release.id
+        if languages:
+            sql += "(%s) AND " % langq
+        sql += "c.project_id = %(project_id)s AND NOT (c.potlocation IS NULL OR c.potlocation = '') "\
+                "AND pot.updated IS NOT NULL AND p.potupdated < pot.updated" % {'project_id': project.id}
         
         logger.debug(sql)
         logger.debug(cursor.execute(sql))
         
         list = []
         for row in cursor.fetchall():
-            l = Language.objects.get(id=row[0])
-            c = Component.objects.get(id=row[1])
-            r = Release.objects.get(id=row[2])
+            if release:
+                r = release:
+            else:
+                r = cache_rel.get(long(id=row[2]), Release.objects.get(id=row[2]))
+                cache_rel[long(id=row[2])] = r
+            l = cache_lang.get(long(row[0]), Language.objects.get(id=row[0]))
+            cache_lang[long(row[0])] = l
+            c = cache_comp.get(long(row[1]), Component.objects.get(id=row[1]))
+            cache_comp[long(row[1])] = c
             po = self.model(slug=row[3]
                             ,total=row[4]
                             ,language=l
