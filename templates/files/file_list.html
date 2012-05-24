@@ -212,7 +212,8 @@ $(document).ready(function()
 	{% with log.get_action_display|lower as log_action %}
 	{% with log.user.username as username %}
 	{% with log.created|localtime:request.user.get_profile.timezone|timesince as updated %}
-	<li class="icon info">{% blocktrans %}File <b>{{filename}}</b> {{log_action}} by <b>{{username}}</b> {{updated}} ago.{% endblocktrans %}</li>
+    {% url file_detail log.pofile.slug as logfileurl %}
+	<li class="icon info">{% blocktrans %}File <b><a href="{{logfileurl}}">{{filename}}</a></b> {{log_action}} by <b>{{username}}</b> {{updated}} ago.{% endblocktrans %}</li>
 	{% endwith %}{% endwith %}{% endwith %}{% endwith %} 
 	{% endfor %}
 	</ul>
