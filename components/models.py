@@ -44,7 +44,7 @@ class Component(models.Model):
                                       default='$PATH/$LANG/po')
     project = models.ForeignKey(Project, related_name="components")
     potlocation = models.CharField(max_length=50,verbose_name=_('POT Path'),
-                                   blank=True, null=True)
+                                   blank=True, null=True, dbindex=True)
     
     def __unicode__(self):
         return _('Component: %(component)s - Project: %(project)s') % {'component': self.name, 'project': self.project.name}

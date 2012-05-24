@@ -160,7 +160,7 @@ class POFileManager(models.Manager):
         for lang in languages:
             cache_lang[lang.id] = lang
             if len(langq) > 0: langq += ' OR '
-            langq += str(lang)
+            langq += str(lang.id)
             
         sql = "SELECT p.language_id,p.component_id, p.release_id, p.slug, p.total, p.filename, p.status, p.id "\
                 "FROM pofile p INNER JOIN pofile_pot_pofiles pol ON pol.pofile_id = p.id "\
