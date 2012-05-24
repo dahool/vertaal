@@ -227,8 +227,8 @@ def process_merge(pofile, user):
         pofile.handler.update_repo()
         # as the file actually is merged also during submit, I don't really need to do this here.
         # just adding the file to the submission queue should be enought.
-        #out = msgmerge(pofile.file, pofile.potfile.get().file, new_file)
-        shutil.copy(pofile.file, new_file)
+        out = msgmerge(pofile.file, pofile.potfile.get().file, new_file)
+        #shutil.copy(pofile.file, new_file)
     except Exception, e:
         logger.error(e)
         raise Exception, _('An error occurred while performing file merge. %s' % str(e))        
