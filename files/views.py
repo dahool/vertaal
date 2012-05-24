@@ -4,6 +4,7 @@ import pygments.lexers
 import pygments.formatters
 import traceback
 import os
+import thread
 
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
@@ -34,6 +35,15 @@ from django.conf import settings
 from common.view.decorators import render
 import difflib
 import StringIO
+
+try:
+    import hashlib
+    hash = hashlib.sha1
+except ImportError:
+    import sha
+    hash = sha.new
+    
+from common.cache.file import FileCache
 
 def escape(text):
     return text.replace("<", "&lt;").replace(">","&gt;")
@@ -83,6 +93,7 @@ def upload(request, release, language):
                 if r.project.repo_user and team.submittype == 1 and team.can_commit(request.user):
                     do_commit(submits, request.user, r.project.repo_user, r.project.get_repo_pwd())
                 else:
+                    thread.start_new_thread(create_diff_cache, (submits,))
                     request.user.message_set.create(
                                 message=_("Your file was uploaded and added to the submission queue."))
             except Exception, e:
@@ -780,16 +791,7 @@ def view_file_diff(request, slug):
     
     if file.submits.all():
         s = file.submits.get()
-        content_new = escape(s.handler.get_content().decode('utf-8'))
-        content_old = escape(file.handler.get_content().decode('utf-8'))
-        content = make_diff(content_old, content_new)
-#        context = Context({'pofile': file,
-#                           'user': request.user,
-#                           'request': request})
-#        content = loader.get_template('files/file_diff.html').render(context)
-#        content = content.replace('<!--CONTENT_BODY-->', body)
-#        response = HttpResponse(content, mimetype='text/html; charset=UTF-8')
-#        return response
+        content = make_file_diff(file, s)
         return render_to_response("files/file_diff.html",
                                    {'body': content,
                                     'pofile': file},
@@ -797,21 +799,39 @@ def view_file_diff(request, slug):
     else:
         return redirect
 
+def make_file_diff(file_old, file_new):
+    content_new = escape(file_new.handler.get_content().decode('utf-8'))
+    content_old = escape(file_old.handler.get_content().decode('utf-8'))
+    return make_diff(content_old, content_new)
+    
 def make_diff(a, b):
-    out = []
-    s = difflib.SequenceMatcher(None, a, b)
-    for e in s.get_opcodes():
-        if e[0] == "replace":
-            out.append('<del class="diff_chg">'+''.join(a[e[1]:e[2]]) + '</del><ins class="diff_add">'+''.join(b[e[3]:e[4]])+"</ins>")
-        elif e[0] == "delete":
-            out.append('<del class="diff_sub">'+ ''.join(a[e[1]:e[2]]) + "</del>")
-        elif e[0] == "insert":
-            out.append('<ins class="diff_add">'+''.join(b[e[3]:e[4]]) + "</ins>")
-        elif e[0] == "equal":
-            out.append(''.join(b[e[3]:e[4]]))
-        else: 
-            raise "Um, something's broken. I didn't expect a '" + `e[0]` + "'."
-    return ''.join(out)    
+    filename = hash(b).hexdigest()
+    fc = FileCache(filename, expireInMinutes = None, tempdir = settings.TEMP_UPLOAD_PATH, prefix = '')
+    try:
+        content = fc.load()
+    except:
+        logger.exception('load')
+        content = None
+    if not content:
+        out = []
+        s = difflib.SequenceMatcher(None, a, b)
+        for e in s.get_opcodes():
+            if e[0] == "replace":
+                out.append('<del class="diff_chg">'+''.join(a[e[1]:e[2]]) + '</del><ins class="diff_add">'+''.join(b[e[3]:e[4]])+"</ins>")
+            elif e[0] == "delete":
+                out.append('<del class="diff_sub">'+ ''.join(a[e[1]:e[2]]) + "</del>")
+            elif e[0] == "insert":
+                out.append('<ins class="diff_add">'+''.join(b[e[3]:e[4]]) + "</ins>")
+            elif e[0] == "equal":
+                out.append(''.join(b[e[3]:e[4]]))
+            else: 
+                raise "Um, something's broken. I didn't expect a '" + `e[0]` + "'."
+        content = ''.join(out)
+        try:
+            fc.save(content)
+        except:
+            logger.exception('save')
+    return content
 
 @login_required
 def do_merge(request, slug):
@@ -851,3 +871,8 @@ def do_merge(request, slug):
 def file_detail(request, slug):
     pofile = get_object_or_404(POFile, slug=slug)
     return {'pofile': pofile}
+
+def create_diff_cache(submits):
+    for s in submits:
+        logger.debug("Processing diff for %s" % s.pofile.filename)
+        make_file_diff(s.pofile, s)
