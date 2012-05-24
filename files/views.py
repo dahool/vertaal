@@ -805,7 +805,7 @@ def make_file_diff(file_old, file_new):
     return make_diff(content_old, content_new)
     
 def make_diff(a, b):
-    filename = hash(b).hexdigest()
+    filename = hash(b.encode('utf-8')).hexdigest()
     fc = FileCache(filename, expireInMinutes = None, tempdir = settings.TEMP_UPLOAD_PATH, prefix = '')
     try:
         content = fc.load()
