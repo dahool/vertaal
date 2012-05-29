@@ -1,0 +1,42 @@
+{% load i18n extendtags timezone_filters settingstag %}
+
+{% iftrue team.can_manage user %}
+{% set 'true' as can_manage %}
+{% endiftrue %}
+{% if release.enabled and release.project.enabled %}
+	{% set 'enabled' as enabled %}
+{% endif %}
+{% if release.read_only or release.project.read_only %}
+	{% set 'read_only' as readonly %}
+{% endif %}	
+
+<div class="details">
+	<table class="stats-table file_list_table">
+		<thead>
+			<tr>
+				<th class="title-center">{% trans "File" %}</th>
+				<th class="title-center" style="width: 100px;">{% trans "Progress" %}</th>
+				{% if user.is_authenticated %}
+				<th>{% trans "Translator" %}</th>
+				<th>{% trans "Reviewer" %}</th>
+				{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for file_item in file_list %}
+			{# <!--  I'm using 'with' to isolate all the variables created inside the include --> #}
+			{% with file_item as file %}
+			<tr id="file_row_{{ file.slug }}" class="file-list-row">
+				{% include "files/file_list_row.html" %}
+			</tr>
+			{% endwith %}
+			{% empty %}
+			<tr><td>&nbsp;</td><td>&nbsp;</td>
+			{% if user.is_authenticated %}
+			<td>&nbsp;</td><td>&nbsp;</td>
+			{% endif %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

@@ -11,6 +11,7 @@
  * http://www.gnu.org/licenses/gpl.html
  * 
  * Jun 17, 2009 Sergio Gabriel Teves: fix incorrect sortStart on disabled columns
+ * May 28, 2012 SGT: fix error when disabling sort for last column
  */
 /**
  *
@@ -400,7 +401,9 @@
 				
 				var l = list.length; 
 				for(var i=0; i < l; i++) {
-					h[list[i][0]].addClass(css[list[i][1]]);
+                    if (!h[list[i][0]] == undefined) {
+                        h[list[i][0]].addClass(css[list[i][1]]);
+                    }
 				}
 			}
 			

@@ -1,14 +1,6 @@
 {% load i18n extendtags %}
 <script type="text/javascript"><!--
 	$(document).ready(function() {
-		/*$("input[name='cfilter']").change(function() {
-			if (!($(this).is(':checked'))) {
-				if ($("input[name='cfilter']:checked").length==0) {
-					($(this).attr('checked', true));
-					show_ok_dialog('{% trans "You cannot hide all components." %}');
-				}
-			}
-		})*/
 		$("#submit_filter").click(function() {
 			var ok = false;
 			$("input[name='cfilter']").each(function(){
@@ -22,7 +14,7 @@
 				$("#filter_form").submit();
 			}
 		});
-		
+	
 		$("input[name='extraFunc']").change(function() {
 			elem = "#val_" + $(this).attr('id').substr(3);
 			if ($(this).is(':checked')) {

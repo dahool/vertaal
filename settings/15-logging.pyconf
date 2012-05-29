@@ -1,8 +1,8 @@
 import logging
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 BATCH_LOG_LEVEL = LOG_LEVEL
 RPC_LOG_LEVEL = LOG_LEVEL
 

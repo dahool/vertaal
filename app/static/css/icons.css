@@ -204,3 +204,6 @@
 .glossaryexport {
     background-image: url(../images/icons/book_link.png);
 }
+.filelocked {
+	background-image: url(../images/icons/asterisk_yellow.png);
+}

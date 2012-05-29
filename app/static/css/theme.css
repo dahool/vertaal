@@ -821,7 +821,7 @@ form.form-style fieldset fieldset label {
 	padding-left: 0;	
 }
 input[type="submit"],
-input[type="button"] {
+input[type="button"], button {
 /*	background-color: transparent !important;*/
 	cursor: pointer;
 	color: #000;
@@ -841,7 +841,7 @@ input[type="button"] {
 /*	text-shadow:0 0 2px gray;*/
 }
 input[type="submit"]:hover,
-input[type="button"]:hover {
+input[type="button"]:hover, button:hover {
 	color: #999;
 }
 .left-layout {
@@ -942,7 +942,7 @@ input[type="button"]:hover {
 	-moz-border-radius:3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	width: 600px;
+	/*width: 600px;*/
 	margin-top: 1em;
 	padding-top:.75em;
 	padding-bottom: .75em;	
@@ -1226,3 +1226,21 @@ input.openid {
 #tabs {
 	border: 0 none !important;
 }
+#filestabs {
+	-webkit-box-shadow:  5px 5px 2px 2px rgba(0, 0, 0, 0.5);
+	box-shadow:  5px 5px 2px 2px rgba(0, 0, 0, 0.5);
+}
+#filestabs .ui-tabs-panel {
+	padding-left: 0;
+} 
+.tab-need-reload {
+	background-image: url(../images/icons/bullet_red.png);
+	padding-left: 8px !important;
+	background-repeat: no-repeat;
+}
+.file_list_table {
+	width: 100%;
+    margin-top: 0 !important;
+    margin-left: 8px !important;
+}
+fieldset { padding:0; border:0; margin-top:5px; }

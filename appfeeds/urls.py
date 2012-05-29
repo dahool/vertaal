@@ -1,5 +1,5 @@
 from django.views.decorators.cache import cache_page
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from django.conf import settings
 from appfeeds.feeds import *
 from appfeeds.views import common_feed

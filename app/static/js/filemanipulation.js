@@ -7,6 +7,7 @@ function check_current() {
 		$('#comment_'+current_id).unbind('keypress');
 	}
 }
+/*
 function add_comment(id) {
 	check_current();
 	current_id = id;
@@ -20,6 +21,35 @@ function add_comment(id) {
 		}
 	});
 	field.focus()
+}*/
+function init_select_events() {
+	var div = $('#user-selection-list');
+    $(document).keyup(function(event){
+	    if (event.keyCode == 27) {
+	    	$(div).hide();
+	    }
+	});
+	$(div).bind("hide",function(){
+		$(div).unbind("submit");
+	});	
+}
+
+function select_user(elem, callback, param) {
+    var topOffset = -40;
+    var leftOffset = 10;
+
+    var div = $('#user-selection-list');
+    $(div).hide();
+    $(div).submit(function(){
+		$(this).hide();
+		callback(param,{userid:$('#user-select').val()});
+	});
+	
+	var p = $(elem).offset();
+	div.css("position","absolute");
+	div.css("top",(p.top+topOffset)+"px");
+	div.css("left",(p.left+leftOffset)+"px");
+	div.show();
 }
 function try_toggle(url, opc) {
 	data = {}

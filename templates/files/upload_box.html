@@ -2,20 +2,12 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/simpletooltip.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/errors.js"></script>
 <link media="screen" href="{{STATIC_URL}}css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#facehelp").click(function() {
-		$.facebox($(this).attr('rel'));
-	})
-	
-})
-</script>
 <div id="upload-box">
 	<form id="upload_form" class="form-style" action="{% url file_upload release.slug, language.code %}"
 		method="post" enctype="multipart/form-data" accept-charset="utf-8">
 		{% csrf_token %}
 		<div class="icon upload">{% trans "Upload a file" %}</div>
-		<span class="help_text">{% trans "(.po or .tar, .tgz without directories)" %}</span><span id="facehelp" class="icon help link" rel="<span class='icon help'>{% trans "You can upload multiple files compressed into a tar. The tar file should not include directories." %}</span>">&nbsp;</span>
+		<span class="help_text">{% trans "(.po or .tar, .tgz without directories)" %}</span><span class="icon help" title="{% trans "You can upload multiple files compressed into a tar. The tar file should not include directories." %}">&nbsp;</span>
 		<div class="upload-control">
 			<table>
 				<tr>

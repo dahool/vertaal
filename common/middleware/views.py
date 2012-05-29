@@ -22,11 +22,9 @@ def not_found(request, exception, template_name='404.html'):
             tried = ''
 
     t = loader.get_template(template_name)
-    c = Context({
-        'request_path': request.path_info[1:], # Trim leading slash
-        'urlpatterns': tried,
+    c = RequestContext(request, {
+        'request_path': request.path_info[1:],
         'reason': smart_str(exception, errors='replace'),
-        'request': request,
         'settings': settings,
     })
     return HttpResponseNotFound(t.render(c))

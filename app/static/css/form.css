@@ -1,4 +1,4 @@
-input, textarea, select {
+input, textarea, select, button {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;		
@@ -16,7 +16,7 @@ input, textarea, select {
 	line-height:normal;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus, textarea:focus, select:focus, button:focus {
 	border: 1px solid #7EADD9;
 }
 input[readonly],textarea[readonly],select[readonly] {

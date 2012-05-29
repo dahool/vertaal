@@ -57,12 +57,6 @@ function process_update_favorites_response(data) {
 }
 
 $(document).ready(function() {
-	$("#loading").ajaxStart(function(){
-		   $(this).show();
-	});
-	$("#loading").ajaxStop(function(){
-		   $(this).hide();
-	});
 	$("body").ajaxError(function(event, request, settings){
 		show_ok_dialog(_ERR_MSG);
 	});
@@ -85,6 +79,12 @@ $(document).ready(function() {
     $("input[name='selector']").click( function() {
         $("#" + $(this).attr('rel') + " INPUT[type='checkbox']").attr('checked', $(this).attr('checked'));
     });	
+    $("*[title]").tipTip({delay: 200, defaultPosition: 'top'});
+    /*$(".tooltip").tipTip({delay: 200, defaultPosition: 'left'});*/
+    $('body').ajaxComplete(function() {
+    	$("*[title]").tipTip({delay: 200, defaultPosition: 'top'});
+    	/*$(".tooltip").tipTip({delay: 200, defaultPosition: 'left'});*/
+    });
 });
 
 function popoverlay(message) {
@@ -97,4 +97,34 @@ function popoverlay(message) {
 				'border-radius': '5px'
 			}
 		});  	
+}
+
+function updateTips( t ) {
+	$(".validateTips")
+		.text( t )
+		.addClass( "ui-state-highlight" );
+	setTimeout(function() {
+		$(".validateTips").removeClass( "ui-state-highlight", 1500 );
+	}, 500 );
+}
+
+function checkLength( o, n, min, max ) {
+	if ( o.val().length > max || o.val().length < min ) {
+		o.addClass( "ui-state-error" );
+		message = interpolate(gettext('Length of %s must be between %s and %s.'), [n, min, max])
+		updateTips(message);
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function checkRegexp( o, regexp, n ) {
+	if ( !( regexp.test( o.val() ) ) ) {
+		o.addClass( "ui-state-error" );
+		updateTips( n );
+		return false;
+	} else {
+		return true;
+	}
 }

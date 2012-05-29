@@ -49,7 +49,8 @@
 {% else %}
 	{% url view_file file.slug as view_url %}
 {% endif %}
-<td class="actions">
+<td class="filename">
+<!-- buttons -->
 	<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view" title="{% with file.filename as filename %}{% blocktrans %}View {{filename}}{% endblocktrans %}{% endwith %}"></a>
 	<a href="{% url get_file file.slug %}" class="nodecoration_icon action_icon download" title="{% with file.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
 	{% if user.is_authenticated %}
@@ -58,7 +59,7 @@
 				<a href="{% url edit_file file.slug %}" class="nodecoration_icon action_icon file-edit" title="{% with file.filename as filename %}{% blocktrans %}Edit {{filename}}{% endblocktrans %}{% endwith %}"></a>
 				{% if lock %}				
 					{% if lockowner or can_manage %}
-						<span onclick="add_comment('{{file.id}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
+						<span onclick="add_comment('{{file.filename}}', '{{toggle_lock_url}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
 					{% endif %}
 				{% else %}
 				{% if owner %}
@@ -66,6 +67,7 @@
 				{% endif %}
 				{% endif %}
 
+		        {% comment %}
 		        {% switch file.status %}
 		            {% case 0 %}
 		            	{% captureas status_message %}{% trans "Mark the file as Translated." %}{% endcaptureas %}
@@ -78,14 +80,13 @@
 		            	{% set 'mark-completed' as status_icon %}		            
 		        {% endswitch %}
 		        <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+		        {% endcomment %}
 			{% endif %}			
 		{% endif %}
 	{% endif %}
 	<!-- FIX SAFARI -->
-	<span>&nbsp;</span>
-</td>
-<td class="filename">
-	{% comment %}<a class="highlight" title="{% trans "View history" %}" name="{{ file.slug }}" rel="{% url file_log file.slug %}">{{ file.filename }}</a>{% endcomment %}
+	<span>&nbsp;</span>	
+<!-- end buttons -->
 	<a class="highlight" name="{{ file.slug }}" href="{% url file_detail file.slug %}">
 	{% if file.potfile.all %}
 	{% with file.potfile.get as potfile %}
@@ -105,15 +106,15 @@
 		{% endif %}
 	{% endwith %}
 </td>
-<td>{{ file.component.name }}</td>
 <td>
 	<div class="graph_comp">
 	  <div class="translated_comp" style="width: {{file.trans_perc}}px;"></div>
 	  <div class="fuzzy_comp" style="left: {{file.trans_perc}}px; width: {{file.fuzzy_perc}}px;"></div>
 	  <div class="untranslated_comp" style="left: {{file|sum_trans_fuzzy}}px; width: {{file.untrans_perc}}px;"></div>
 	</div>
-	<div class="stats_string_comp" title="{% trans "Total:" %}{{file.total}}, {% trans "Trans:" %}{{file.trans}}, {% trans "Untrans:" %}{{file.untrans}}, {% trans "Fuzzy:" %}{{file.fuzzy}}" >{{file.total}}/{{file.untrans}}/{{file.fuzzy}} [{{file.trans_perc}}%]</div>					
+	<div alt="{{file.trans_perc}}" row="file_row_{{ file.slug }}" class="stats_string_comp" title="{% trans "Total:" %}{{file.total}}, {% trans "Trans:" %}{{file.trans}}, {% trans "Untrans:" %}{{file.untrans}}, {% trans "Fuzzy:" %}{{file.fuzzy}}" >{{file.total}}/{{file.untrans}}/{{file.fuzzy}} [{{file.trans_perc}}%]</div>					
 </td>
+{% if user.is_authenticated %}
 <td class="assigns">
 {% with file.assigns.get as assign %}
 	{% if assign.translate %}
@@ -124,6 +125,12 @@
 			{% trans "(you)" %}
 		{% else %}
 			<a href="{% url contact_me assign.translate.username %}">{{ assign.translate }}</a>
+		{% endif %}
+		{% if lock and user.is_authenticated and lock.owner == assign.translate %}
+		<span class="icon filelocked tooltip" title="{% spaceless %}
+		{% blocktrans with lock.created|localtime:user.get_profile.timezone|timesince as locked %}
+			Locked {{locked}} ago.
+		{% endblocktrans %}{% endspaceless %}"></span>
 		{% endif %}
 	{% else %}
 		{% if user.is_authenticated %}
@@ -147,6 +154,12 @@
 		{% else %}
 			<a href="{% url contact_me assign.review.username %}">{{ assign.review }}</a>
 		{% endif %}
+		{% if lock and user.is_authenticated and lock.owner == assign.review %}
+		<span class="icon filelocked tooltip" title="{% spaceless %}
+		{% blocktrans with lock.created|localtime:user.get_profile.timezone|timesince as locked %}
+			Locked {{locked}} ago.
+		{% endblocktrans %}{% endspaceless %}"></span>
+		{% endif %}		
 	{% else %}
 		{% if user.is_authenticated %}
 			{% if can_manage %}
@@ -160,34 +173,4 @@
 	{% endif %}
 {% endwith %}
 </td>
-<td>
-<span class="stat_message" id="lock_break_{{file.id}}">
-{% if lock and user.is_authenticated %}
-	<b>
-	{% captureas created %}{{ lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" }}{% endcaptureas %}
-	{% if lockowner %}
-		{% blocktrans %}Locked{% endblocktrans %}
-	{% else %}
-		{% with lock.owner as owner %}{% blocktrans %}Locked by {{owner}}{% endblocktrans %}{% endwith %}
-	{% endif %}
-	<span style="font-size:80%"> ({{created}})</span>
-	</b>
-{% else %}
-	{% ifnotequal file.untrans 0 %}
-		{% set "display_untrans" as display_class %}
-	{% else %}
-		{% ifnotequal file.fuzzy 0 %}
-			{% set "display_fuzzy" as display_class %}
-		{% else %}
-			{% set "display_trans" as display_class %}
-		{% endifnotequal %}
-	{% endifnotequal %}
-	<span class="{{ display_class }}">{{ file.get_status_display }}</span>
 {% endif %}
-</span>
-<div id="lock_comment_{{file.id}}" style="display: none; width: 100%;">
-	<span class="help_text">{% trans "Comments" %}:</span><input id="comment_{{file.id}}" maxlength="255" size="15" type="text">
-	<span id="submit_{{file.id}}" onclick="try_toggle('{{ toggle_lock_url }}',{'text': $('#comment_{{file.id}}').val()})" class="nodecoration_icon action_icon submit link" style="margin-left: 0px;">&nbsp;</span>
-	<!-- span onclick="check_current()" class="nodecoration_icon action_icon cancel link">&nbsp;</span-->
-</div>
-</td>

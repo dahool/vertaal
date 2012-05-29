@@ -92,7 +92,7 @@ function update_member(url) {
 <span>{% trans "Manage" %}</span>
 {% endblock %}
 {% block content %}
-{% include "loading.html" %}
+
 {% block content_title %}<h1>{{ team.language.name }} ({{ team.project.name }})</h1>{% endblock %}
 
 <div class="left-layout">
@@ -159,7 +159,7 @@ function update_member(url) {
 		<p class="help_text">{% trans "Type 3 or more letters and press ENTER" %}</p>
 		<div class="icon search">
 			<input type="text" id="user-search"/>
-			<img id="spinner" src="{{STATIC_URL}}images/loading_lt.gif" alt=""/>
+			<img id="spinner" src="{{STATIC_URL}}images/metabox_loader.gif" alt=""/>
 		</div>
 		<div id="search-results"></div>
 	</div>

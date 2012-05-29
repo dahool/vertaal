@@ -569,7 +569,7 @@ class POFileLogManager(models.Manager):
         if bot:
             sql += " AND p.user_id<>%s" % bot.pk
             
-        sql += " ORDER BY p.created DESC LIMIT %s" % limit
+        sql += " ORDER BY id DESC LIMIT %s" % limit
                
         cursor.execute(sql)
               

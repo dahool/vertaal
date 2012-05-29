@@ -21,10 +21,15 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.contrib import admin
 
-admin.autodiscover()
-
-#handler404 = 'common.middleware.views.not_found'
+handler404 = 'common.middleware.views.not_found'
 handler500 = 'common.middleware.views.server_error'
+
+js_info_dict = {
+    'domain': 'djangojs',
+    'packages': ('vertaal',),
+}
+
+admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'app.views.index', name='home'),
@@ -42,6 +47,7 @@ urlpatterns = patterns('',
     url(r'^iterm/', include('glossary.urls')),
     url(r'^news/', include('news.urls')),
     url(r'^man/', include(admin.site.urls)),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 ) 
 
 def disabled(request):

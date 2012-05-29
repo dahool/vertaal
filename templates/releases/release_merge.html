@@ -16,12 +16,6 @@ $(document).ready(function()
             headers: { 0: { sorter: false },},
 		});
 
-		$("#file_list_table").bind("sortStart",function() { 
-            $("#loading").show(); 
-        }).bind("sortEnd",function() { 
-            $("#loading").hide(); 
-        });
-
 		$("#submit_button").click(function() {
 			var ok = false;
 			$("input[name='file']").each(function(){

@@ -233,8 +233,19 @@ class SubmitClient():
         logger.debug("end")
 
 def get_repository_location(project, release, component, lang):
-    return os.path.join(getattr(settings,'REPOSITORY_LOCATION'), project.slug, release.slug, component.slug, lang.code)
+    return os.path.join(getattr(settings,'REPOSITORY_LOCATION'), get_repository_path(project, release, component, lang))
 
+def get_repository_path(project, release, component, lang):
+    return os.path.join(project.slug, release.slug, component.slug, lang.code)
+
+def get_potrepository_path(project, release, component):
+    return os.path.join(project.slug, release.slug, component.slug, 'POT-CACHE')
+
+def normalize_path(basepath, filepath):
+    bp = basepath.replace('\\','/')
+    fp = filepath.replace('\\','/')
+    return fp[fp.find(bp):]
+    
 class Manager(object):
     
     def __init__(self, project, release, component, lang, log = None, user=None):
@@ -265,6 +276,7 @@ class Manager(object):
         
     def _init_location(self, project, release, component, lang):
         self.path = component.get_path(lang.code)
+        self.basepath = get_repository_path(project, release, component, lang)
         self.location = get_repository_location(project, release, component, lang)
 
         if not os.path.exists(self.location):
@@ -367,7 +379,7 @@ class Manager(object):
                                           component=self.component,
                                           release=self.release,
                                           language=self.language,
-                                          file=path)
+                                          file=normalize_path(self.basepath, path))
                 self.post_process.append(file)           
                 if self.user:
                     try:
@@ -418,7 +430,8 @@ class POTUpdater(Manager):
                 
     def _init_location(self, project, release, component, lang):
         self.path = '%s/%s' % (component.vcspath, component.potlocation)
-        self.location = os.path.join(getattr(settings,'REPOSITORY_LOCATION'), project.slug, release.slug, component.slug, 'POT-CACHE')
+        self.basepath = get_potrepository_path(project, release, component)
+        self.location = os.path.join(getattr(settings,'REPOSITORY_LOCATION'), self.basepath)
 
         if not os.path.exists(self.location):
             os.makedirs(self.location, 0777)
@@ -445,6 +458,7 @@ class POTUpdater(Manager):
         if path.endswith('.pot'):
             logger.debug("Process delete %s" % path)
             try:
+                filename = os.path.basename(path)
                 file = POTFile.objects.get(name=filename,
                                            component=self.component,
                                            release=self.release)
@@ -487,7 +501,7 @@ class POTUpdater(Manager):
                 file = POTFile.objects.create(name=filename,
                               component=self.component,
                               release=self.release,
-                              file=path)
+                              file=normalize_path(self.basepath, path))
                 self.add_pofiles(file)                
                 self.post_process.append(file)
             except Exception, e:

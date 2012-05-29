@@ -10,16 +10,26 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="expires" content="-1" />
 	<meta http-equiv="cache-control" content="no-cache" />
-	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css"/>
-	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css"/>
-	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/styles.css" />
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/themes/base/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/themes/smoothness/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/base.css" />
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/context.css" />
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/menu.css" />
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/form.css" />
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/icons.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.alerts.css" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-	<!-- script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.3.2.min.js"></script-->
-	<!-- script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.7.2.custom.min.js"></script-->
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/theme.css" />
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/tipTip.css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.alerts.src.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.blockui.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.measure.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.place.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.pulse.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.loading.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tiptip.min.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/base.js"></script>
 	<script type="text/javascript">
 		var _TITLE = '{% setting "PROJECT_NAME" %}';
@@ -30,14 +40,24 @@
 		var _CANCEL = '{% trans "Cancel" %}';
 		var _CONFIRM = '{% trans "Are you sure?" %}';
 		var _CONFIRM_T = '{% trans "Confirm" %}';
+		
+		$(document).ready(function() {
+		    $('body').ajaxStart(function() {
+		    	$.loading(true, {text: '{% trans "Working..." %}', loadingClass: 'context-loader', update: {texts: ['{% trans "Please, wait..." %}', '{% trans "Oops!, something went wrong." %}']}});
+		    }); 
+		    $('body').ajaxStop(function() {
+		        $.loading(false);      
+		    });
+		});
+		
 	</script>
 	{% block extra_head %}{% endblock %}
 </head>
 <body>
+<div id="context-loader" class="context-loader">{% trans "Loading..." %}</div>
 <div id="header">
 {% block header %}{% endblock %}
 </div>
-
 <div id="userbar">
 	{% block userbar %}
 	<div id="auth">
@@ -85,8 +105,8 @@
 <div id="footer">
 {% block footer %}
 {% endblock %}
-<p class="copyright">{% setting "PROJECT_NAME" %} v{% setting "VERSION" %} | &copy; 2009 Sergio Gabriel Teves - <a href="http://www.sgtdev.com.ar">SGT Dev</a>
-<span class="buggie"><a href="http://issues.vertaal.com.ar/" target="_blank">{% trans "Found a bug?" %}</a></span>
+<p class="copyright">{% setting "PROJECT_NAME" %} v{% setting "VERSION" %} | &copy; 2009-2012 Sergio Gabriel Teves - <a href="http://www.sgtdev.com.ar">SGT Dev</a>
+<span class="buggie"><a href="{% setting "TICKET_URL" %}" target="_blank">{% trans "Found a bug?" %}</a></span>
 </p>
 </div>
 <div id="powered">
@@ -109,5 +129,8 @@ alt="Valid CSS!" />
        alt="Valid XHTML 1.0 Transitional" height="31" width="88" /></a>
  </p>
 </div>
+<script type="text/javascript">
+$("#context-loader").hide();
+</script>
 </body>
 </html>

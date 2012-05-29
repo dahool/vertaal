@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth import views as auth_views
 from registration.views import *
 from django_authopenid.views import signin as openid_signin

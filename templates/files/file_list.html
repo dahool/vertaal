@@ -19,69 +19,53 @@
 {% endifsetting %}
 <script type="text/javascript" src="{{STATIC_URL}}js/filemanipulation.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.metadata.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.json.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookiejar.pack.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.cookie.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.aop.min.js"></script>
+<!-- 
 <link href="{{STATIC_URL}}facebox/facebox.css" media="screen" rel="stylesheet" type="text/css"/>
 <script src="{{STATIC_URL}}facebox/facebox.js" type="text/javascript"></script>
-<!--  script src="{{STATIC_URL}}facebox/facebox.img.fix.js" type="text/javascript"></script-->
 <script type="text/javascript">
-<!--
 $.facebox.settings.loadingImage = '{{STATIC_URL}}facebox/loading.gif';
 $.facebox.settings.closeImage = '{{STATIC_URL}}facebox/close.gif';
-//-->
 </script>
-<style type="text/css">
-#facebox .body {
-  width: 750px;
-}
-</style>
+-->
 <script type="text/javascript"><!--
-function init_select_events() {
-	var div = $('#user-selection-list');
-    $(document).keyup(function(event){
-	    if (event.keyCode == 27) {
-	    	$(div).hide();
-	    }
-	});
-	$(div).bind("hide",function(){
-		$(div).unbind("submit");
-	});	
+function add_comment(name, url) {
+	$("#lock_comment").attr('action', url);
+	$("#comment_text").text(interpolate(gettext('Unlocking file %s'), [name]));
+	$("#lock_comment").dialog('open');
 }
 
-function select_user(elem, callback, param) {
-    var topOffset = -10;
-    var leftOffset = 10;
+var tabCache = [];
+$(document).ready(function(){ 
 
-    var div = $('#user-selection-list');
-    $(div).submit(function(){
-		$(this).hide();
-		callback(param,{userid:$('#user-select').val()});
-	});
+	$("#filestabs").tabs({
+			cache: true,
+			cookie: {
+				expires: 1,
+				name: '{{release.project.slug}}'
+			},			
+			load: function(event, ui) {
+				$(ui.panel).find('.file_list_table').tablesorter({
+		            headers: { 1: { sorter: 'percentbars'}},
+		            widgets: ['cookie'],
+				});
+				tabCache.push(ui.index);
+			},
+			show: function(event, ui) {
+				var $elem = $("a[href="+$(ui.tab).attr('href')+"] > span");
+				if ($elem.hasClass('tab-need-reload')) {
+					$elem.removeClass('tab-need-reload');
+					$(this).tabs('load', ui.index);
+				}
+			},
+			spinner: '<img src="{{STATIC_URL}}images/loading_lt.gif"/>'
+		});
 	
-	var p = $(elem).position();
-	div.css("position","absolute");
-	div.css("top",(p.top+topOffset)+"px");
-	div.css("left",(p.left+leftOffset)+"px");
-	div.show();
-}
-
-$(document).ready(function() 
-    { 
-
-		//$('a[rel*=facebox]').facebox();
-		/*$('.highlight').live("click",function() {
-			ref = $(this).attr('rel');
-			$.facebox(function() {
-				$.get(ref, function(data) {
-				    $.facebox(data);
-				})
-			})
-		});*/
-		
     	jQuery.aop.before({target: jQuery.fn, method: "hide"},
 		function(){
 			this.trigger("hide");
@@ -102,27 +86,64 @@ $(document).ready(function()
 	        type: 'numeric' 
 	    });     
 
-        $("#file_list_table").tablesorter({
-            headers: { 0: { sorter: false }, 3: { sorter: 'percentbars'},},
-            widgets: ['cookie'],
-		});
-// 4: { sorter: false }, 5: { sorter: false }
-		$("#file_list_table").bind("sortStart",function() { 
-            $("#loading").show(); 
-        }).bind("sortEnd",function() { 
-            $("#loading").hide(); 
-        });
-
 		$(document).keyup(function(event){
 		    if (event.keyCode == 27) {
 		    	check_current();
 		    }
 		});
 		init_select_events();
+		
+		$("#filterbutton").click(function() {
+			$("input[name='extraFunc']").each(function() {
+				if ($(this).is(':checked')) {
+					$.cookie($(this).attr('alt'), 'true', { expires: 30, path: '/' });
+				} else {
+					$.cookie($(this).attr('alt'), null, {path: '/' });
+				}
+			});			
+			var current = $("#filestabs").tabs('option', 'selected');
+			tabCache.forEach(function(el, idx, arr) {
+				if (el != current) {
+					$("a[href=#ui-tabs-"+(el+1)+"] > span").addClass('tab-need-reload');
+				}
+			});
+			$("#filestabs").tabs( "load" , current);
+		});
+
+		$("#comment_input").keyup(function (e) {
+			if( e.keyCode == $.ui.keyCode.ENTER ) {
+				e.preventDefault();
+				$("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
+			}
+		});
+		
+		$( "#lock_comment" ).dialog({
+			autoOpen: false,
+			width: 350,
+			modal: true,
+			resizable: false,
+			buttons: {
+				'{% trans "Ok" %}': function() {
+					var bValid = true;
+					bValid = bValid && checkLength( $("#comment_input"), '{% trans "Comments" %}', 4, 255 );
+					if ( bValid ) {
+						try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
+						$( this ).dialog( "close" );
+					}
+				},
+			},
+			open: function() {
+				$(".validateTips").text('');
+				$("#comment_input").val('');
+			},
+			close: function() {
+				$("#comment_input").removeClass( "ui-state-error" );
+			}
+		});
+		
+		$("#filestabs").show();
     } 
 ); 
- 
-
 --></script>
 {% endblock %}
 {% block quick_menu %}
@@ -135,7 +156,6 @@ $(document).ready(function()
 {% set 'true' as can_manage %}
 {% endiftrue %}
 
-{% include "loading.html" %}
 {% block content_title %}<h1>{{ language.name }}&nbsp;<sup>({{ language.code }})</sup>
 {% ifsetting ENABLE_RSS %}
 &nbsp;&nbsp;<a class="icon feed" title="{% trans "Latest updates" %}" href="{% url language_release_feed release.slug, language.code %}">&nbsp;</a>
@@ -176,32 +196,39 @@ $(document).ready(function()
 {% if user.is_authenticated and enabled and not readonly %}
 	{% include "files/upload_box.html" %}
 {% endif %}
-{% include "files/component_filter.html" %}
-<div class="details">
-	<table class="stats-table" id="file_list_table">
-		<thead>
-			<tr>
-				<th class="actions"></th>
-				<th>{% trans "File" %}</th>
-				<th>{% trans "Component" %}</th>
-				<th class="title-center">{% trans "Progress" %}</th>
-				<th title="{% trans "Translator" %}">{% trans "Trans." %}</th>
-				<th title="{% trans "Reviewer" %}">{% trans "Rev." %}</th>
-				<th>{% trans "Status" %}</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for file_item in file_list %}
-			{# <!--  I'm using 'with' to isolate all the variables created inside the include --> #}
-			{% with file_item as file %}
-			<tr id="file_row_{{ file.slug }}">
-				{% include "files/file_list_row.html" %}
-			</tr>
-			{% endwith %}
-			{% endfor %}
-		</tbody>
-	</table>
+
+<br/>
+
+<div class="filter-box">
+	<fieldset>
+		<ul class="simple">
+			<li>
+			<input name="extraFunc" id="id_hidetranslated" type="checkbox" alt="shide_{{release.slug}}" {% if hideTranslated %}checked{% endif %}>
+			<label for="id_hidetranslated">{% trans "Hide fully translated files" %}</label>
+			</li>
+			<li>
+			<input name="extraFunc" id="id_onlySelf" type="checkbox" alt="onlys_{{release.slug}}" {% if onlySelf %}checked{% endif %}>
+			<label for="id_onlySelf">{% trans "Show my files only" %}</label>
+			</li>
+			<li>
+			<button id="filterbutton" class="icon submit right">{% trans "Apply" %}</button>
+			</li>			
+		</ul>
+	</fieldset> 
 </div>
+
+<br/>
+
+<div id="filestabs" style="display: none;">
+{% with release.project.components.all as components %}
+    <ul>
+	{% for component in components|dictsort:"pk" %}
+		<li><a href="{% url list_files_component release=release.slug language=language.code component=component.slug %}">{{ component.name }}<span style="padding-left: 5px;">&nbsp;</span></a></li>
+	{% endfor %}
+	</ul>
+{% endwith %}
+</div>
+
 {% if user.is_authenticated %}
 <br/>
 <div class="details">
@@ -228,4 +255,14 @@ $(document).ready(function()
 <span id="select_ok" onclick="$('#user-selection-list').submit()" class="nodecoration_icon action_icon submit link" style="padding-right: 0px;">&nbsp;</span>
 <span id="select_nok" onclick="$('#user-selection-list').hide()" class="nodecoration_icon action_icon cancel link" style="padding-right: 0px; margin-left: 0px;">&nbsp;</span>
 </div>
+
+<div id="lock_comment" style="display: none;">
+<fieldset>
+	<p class="validateTips help_text"></p>
+	<span id="comment_text"></span><br/><br/>
+	<label for="comment_input">{% trans "Comments" %}:</label>
+	<input id="comment_input" maxlength="255" size="15" type="text" value="" class="text ui-widget-content ui-corner-all">
+</fieldset>
+</div> 
+
 {% endblock %}

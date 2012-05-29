@@ -34,6 +34,7 @@ from app.log import (logger)
 from django.conf import settings
 from common.view.decorators import render
 import StringIO
+from django.core.cache import cache
 
 try:
     import hashlib
@@ -395,9 +396,16 @@ def list_files(request, component=None, release=None, language=None):
     res = get_file_list(request, component, release, language)
     
     cook = res.pop('cookjar',None)
-    response = render_to_response("files/file_list.html",
-                               res,
-                               context_instance = RequestContext(request))
+    
+    if component:
+        template = "files/file_list_table.html"
+    else:
+        template = "files/file_list.html"
+        
+    response = render_to_response(template,
+                                   res,
+                                   context_instance = RequestContext(request))
+    
     if cook:
         for k,v in cook.iteritems():
             if v is None:
@@ -440,38 +448,33 @@ def get_file(request, slug, view=False, submit=False):
         logger.error(e)
         raise Http404
     if view:
-        lexer = pygments.lexers.GettextLexer()
-        formatter = pygments.formatters.HtmlFormatter(linenos='inline')
-        encre = re.compile(r'"?Content-Type:.+? charset=([\w_\-:\.]+)')
-        m = encre.search(content)
-        encoding = 'UTF-8'
-        if m:
-            encoding = m.group(1)
-            
-        #context = Context({'body': pygments.highlight(content.decode(
-        #                                encoding), lexer, formatter),
-        #                   'style': formatter.get_style_defs(),
-        #                   'pofile': file,
-        #                   'submit': submit,
-        #                   'user': request.user,
-        #                   'request': request,
-        #                   'title': "%s: %s" % (file.component.name,
-        #                                        file.filename)})
-        #text = escape(content.decode(encoding))
-        text = content.decode(encoding)
-        data = {'body': pygments.highlight(text, lexer, formatter),
-                           'style': formatter.get_style_defs(),
-                           'pofile': file,
-                           'submit': submit,
-                           'user': request.user,
-                           'request': request,
-                           'title': "%s: %s" % (file.component.name,
-                                                file.filename)}
-        response = render_to_response('files/file_view.html',
+        if request.user.is_authenticated():
+            ckey = 'v-%s-%s' % (request.user.username, slug)    
+        else:
+            ckey = 'v-#NON#-%s' % slug
+        response = cache.get(ckey)
+        if not response:
+            lexer = pygments.lexers.GettextLexer()
+            formatter = pygments.formatters.HtmlFormatter(linenos='inline')
+            encre = re.compile(r'"?Content-Type:.+? charset=([\w_\-:\.]+)')
+            m = encre.search(content)
+            encoding = 'UTF-8'
+            if m:
+                encoding = m.group(1)
+            text = content.decode(encoding)
+            data = {'body': pygments.highlight(text, lexer, formatter),
+                               'style': formatter.get_style_defs(),
+                               'pofile': file,
+                               'submit': submit,
+                               'user': request.user,
+                               'request': request,
+                               'title': "%s: %s" % (file.component.name,
+                                                    file.filename)}
+            response = render_to_response('files/file_view.html',
                               data,
-                              context_instance = RequestContext(request))    
-        #content = loader.get_template('files/file_view.html').render(context)
-        #response = HttpResponse(content, mimetype='text/html; charset=UTF-8')
+                              context_instance = RequestContext(request))
+            cache.set(ckey, response)
+        return response   
     else:
         response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
         attach = "attachment;"

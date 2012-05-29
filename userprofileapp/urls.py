@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from userprofileapp.views import *
 
 urlpatterns = patterns('',
