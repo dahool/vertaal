@@ -49,5 +49,9 @@ urlpatterns = patterns('',
     url(
         regex = '^(?P<project>[-\w]+)/$',
         view = add_team,
-        name = 'team_create',),        
+        name = 'team_create',),
+    url(
+        regex = '^(?P<project>[-\w]+)/(?P<lang>[-_@\w]+)/remove/$',
+        view = team_delete,
+        name = 'team_remove',)                               
 )

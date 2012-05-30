@@ -1,10 +1,11 @@
-#Tue May 29 16:23:06 ART 2012
+#Wed May 30 10:36:05 ART 2012
 eclipse.preferences.version=1
 encoding//app/management/commands/appupdate.py=utf-8
 encoding//app/management/commands/cleanuploads.py=utf-8
-encoding//app/management/commands/fixfilepath.py=utf-8
 encoding//app/management/commands/messagecheck.py=utf-8
 encoding//app/management/commands/refreshrepo.py=utf-8
+encoding//app/management/commands/relocaterepo.py=utf-8
+encoding//app/management/commands/resetproject.py=utf-8
 encoding//app/management/commands/submitqueuenotify.py=utf-8
 encoding//app/management/commands/updatestats.py=utf-8
 encoding//django_authopenid/urls.py=utf-8

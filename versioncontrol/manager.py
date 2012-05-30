@@ -379,7 +379,7 @@ class Manager(object):
                                           component=self.component,
                                           release=self.release,
                                           language=self.language,
-                                          file=normalize_path(self.basepath, path))
+                                          file=path)
                 self.post_process.append(file)           
                 if self.user:
                     try:
@@ -501,7 +501,7 @@ class POTUpdater(Manager):
                 file = POTFile.objects.create(name=filename,
                               component=self.component,
                               release=self.release,
-                              file=normalize_path(self.basepath, path))
+                              file=path)
                 self.add_pofiles(file)                
                 self.post_process.append(file)
             except Exception, e:

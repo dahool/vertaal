@@ -22,15 +22,19 @@ from versioncontrol.manager import get_repository_path, normalize_path, get_potr
 from batch.log import (logger)
 from projects.models import Project
 from files.models import POFile
+import os
+from django.conf import settings
 
 class Command(BaseCommand):
-    help = 'File file absolute paths'
+    help = 'Relocate files to new repository location'
 
     def handle(self, *args, **options):
         self.stdout.write('Started.\n')
         logger.info("Start")
         t_start = time.time() 
 
+        total = POFile.objects.count()
+        proc = 0
         projects = Project.objects.all()
         for project in projects:
             self.stdout.write('Processing %s.\n' % project.name)
@@ -41,14 +45,16 @@ class Command(BaseCommand):
                         basepath = get_repository_path(project, release, component, team.language)
                         potbasepath = get_potrepository_path(project, release, component)
                         for pofile in POFile.objects.filter(release=release, component=component, language=team.language):
-                            pofile.file = normalize_path(basepath, pofile.file)
+                            pofile.file = os.path.join(settings.REPOSITORY_LOCATION,normalize_path(basepath, pofile.file)).replace('\\','/')
                             pofile.save()
+                            proc += 1
                             try:
                                 pot = pofile.potfile.get()
-                                pot.file = normalize_path(potbasepath, pot.file)
+                                pot.file = os.path.join(settings.REPOSITORY_LOCATION, normalize_path(potbasepath, pot.file)).replace('\\','/')
                                 pot.save()
                             except:
                                 pass
+                    self.stdout.write('Completed %s %%...\n' % str((proc * 100) / total))
 
         logger.info("End")
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))

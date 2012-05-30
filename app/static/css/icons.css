@@ -207,3 +207,6 @@
 .filelocked {
 	background-image: url(../images/icons/asterisk_yellow.png);
 }
+.disabled {
+	background-image: url(../images/icons/stop.png);
+}

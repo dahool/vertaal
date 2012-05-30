@@ -11,7 +11,7 @@ from django.template.defaultfilters import dictsort, dictsortreversed
 from django.db.models import permalink
 from django.core.files import storage
 from django.contrib.auth.models import User
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import post_save, pre_delete
 from django.db.models import Q
 
 from files.lib import msgfmt
@@ -761,8 +761,19 @@ def addsubmit_callback(sender, **kwargs):
         POFileLog.objects.create(pofile=obj.pofile, user=obj.owner, action='U')
     except:
         pass
+    
+def remove_pofile(sender, **kwargs):
+    obj = kwargs['instance']
+    if os.path.exists(obj.file):
+        try:
+            os.unlink(obj.file)
+        except:
+            pass
+    
 #post_delete.connect(unlock_callback, sender=POFileSubmit)
 #post_delete.connect(removelock_callback, sender=POFileLock)
 post_save.connect(createlock_callback, sender=POFileLock)
+pre_delete.connect(remove_pofile, sender=POFile)
+pre_delete.connect(remove_pofile, sender=POTFile)
 #post_save.connect(addsubmit_callback, sender=POFileSubmit)
 

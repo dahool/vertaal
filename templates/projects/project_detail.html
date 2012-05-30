@@ -11,6 +11,19 @@ function add_lang(url) {
 			process_response,
 			"xml");			
 }
+function remove_lang(url, elem) {
+	$.post(url, function(data) {
+		$(data).find('response').each(function(){
+			var m = $(this).find('success');
+			if (m.text()) {
+				$(elem).find('delete').tipTip('destroy');
+				$(elem).remove();
+			} else {
+				show_ok_dialog('{% trans "An error ocurred while removing this team" %}');
+			}
+		})
+	},"xml");			
+}
 function process_response(data) {
 	$(data).find('response').each(function(){
 		var m = $(this).find('message');
@@ -136,7 +149,7 @@ function process_response(data) {
 {% if teams %}
 <div id="team-list" class="multicolumn2 detail-box">
 {% for t in teams %}
-<p class="icon team indent"><a href="{{ t.get_absolute_url }}">{{ t.language.name }}</a></p>
+<p class="icon team indent" id="T{{t.pk}}"><a href="{{ t.get_absolute_url }}">{{ t.language.name }}</a>{% iftrue project.is_maintainer request.user %}<span onclick="remove_lang('{% url team_remove project.slug t.language.code %}','#T{{t.pk}}')" class="icon delete link" title='{% trans "Remove team" %}'>&nbsp;</span>{% endiftrue %}</p>
 {% endfor %}
 </div>
 {% else %}

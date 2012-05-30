@@ -15,11 +15,13 @@ from common.middleware.exceptions import Http403
 from common.simplexml import XMLResponse
 from projects.models import *
 from languages.models import *
-from files.models import *
+from files.models import POFile, POFileSubmit
 from teams.models import *
 from app.log import logger
 from common.i18n import set_user_language
 from django import forms
+import thread
+from django.utils.encoding import smart_unicode
 
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)
@@ -29,6 +31,7 @@ class SubmitTypeForm(forms.Form):
     type = forms.ChoiceField(SUBMISSION_TYPE, label=_('File submission'))
             
 def team_detail(request, project, lang):
+    logger.debug("Team detail %s - %s" % (project, lang))
     language = get_object_or_404(Language, code__iexact=lang)
     project = get_object_or_404(Project, slug=project)
     team = get_object_or_404(Team, project=project, language=language)
@@ -43,6 +46,7 @@ def team_detail(request, project, lang):
     
 @login_required
 def team_admin(request, id):
+    logger.debug("Team admin %s" % (id))
     team = get_object_or_404(Team, pk=id)
     if not team.can_manage(request.user):
         raise Http403
@@ -61,7 +65,7 @@ def team_admin(request, id):
 
 @login_required
 def team_contact(request, id):
-    
+    logger.debug("Team contact %s" % (id))
     team = get_object_or_404(Team, pk=id)
     
     if not team.is_member(request.user) and not request.user.is_superuser:
@@ -112,12 +116,37 @@ def team_create_update(request, slug=None):
     pass
 
 @login_required
-def team_delete(request, slug=None):
-    pass
+def team_delete(request, project, lang):
+    logger.debug("Team delete %s - %s" % (project, lang))
+    if request.method != 'POST':
+        raise Http403
+
+    p = Project.objects.get(slug=project)
+    if not p.is_maintainer(request.user):
+        return XMLResponse({'message': _('You are not authorized to perform this action')})
+    
+    l = get_object_or_404(Language, code=lang)
+    res = {'success': True}
+    try:
+        t = Team.objects.get(language=l, project=p)
+        t.delete()
+        # start a thread to delete all files for this team
+        thread.start_new_thread(_remove_team_files, (p, l))
+    except Team.DoesNotExist:
+        pass
+    except Exception, e:
+        raise
+    return XMLResponse(res)
+
+def _remove_team_files(project, language):
+    logger.debug("Remove team files %s - %s" % (project, language))
+    for pofile in POFile.objects.filter(language=language, release__project=project):
+        logger.debug("Delete %s" % (smart_unicode(pofile)))
+        pofile.delete()
 
 @login_required
 def join_accept(request, id, reject=False):
-    
+    logger.debug("Team petition management %s [%s]" % (id, str(reject)))
     joinreq = get_object_or_404(JoinRequest, id=id)
     team = joinreq.team
     
@@ -155,6 +184,7 @@ def join_accept(request, id, reject=False):
 
 @login_required
 def join_request(request, teamid):
+    logger.debug("Team join request %s" % (teamid))
     use_captcha = getattr(settings, 'JOIN_USE_CAPTCHA', True)
 
     if use_captcha:
@@ -231,6 +261,7 @@ def join_request(request, teamid):
         
 @login_required
 def add_member(request, teamid):
+    logger.debug("Team add member %s - %s" % (teamid, request.POST.get('id')))
     if request.method != 'POST':
         raise Http403
     
@@ -252,7 +283,7 @@ def add_member(request, teamid):
 
 @login_required
 def remove_member(request, teamid, userid):
-
+    logger.debug("Team remove member %s - %s" % (teamid, userid))
     if request.method != 'POST':
         raise Http403
     
@@ -272,6 +303,7 @@ def remove_member(request, teamid, userid):
 
 @login_required
 def update_permission(request, teamid, userid, codename, remove = False):
+    logger.debug("Team update permission %s - User %s - Codename %s - Remove %s" % (teamid, userid, codename, str(remove)))
     if request.method != 'POST':
         raise Http403
 
@@ -294,7 +326,7 @@ def update_permission(request, teamid, userid, codename, remove = False):
     
 @login_required
 def update_group(request, teamid, userid, group):
-
+    logger.debug("Team update group %s - User %s - Group %s" % (teamid, userid, group))
 #    if request.method != 'POST':
 #        raise Http403
     
@@ -334,6 +366,7 @@ def update_group(request, teamid, userid, group):
 
 @login_required
 def add_team(request, project):
+    logger.debug("Add team %s - %s" % (project, request.POST.get('code')))
     if request.method != 'POST':
         raise Http403
 

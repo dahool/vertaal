@@ -28,10 +28,11 @@ from versioncontrol.manager import Manager, LockRepo, POTUpdater
 from versioncontrol.models import BuildCache
 from batch.log import (logger)
 from projects.models import Project
-from files.models import POFile
+from files.models import POFile, POTFile, POFileSubmit
 from django.db.models.signals import pre_save
 from optparse import make_option
 from common.notification import FileUpdateNotification, POTFileChangeNotification
+import os
 
 global notification, potnotification
 
@@ -151,6 +152,7 @@ class Command(BaseCommand):
                                 logger.debug("POT skipped")
     
                             b.unlock()
+                            
         except Exception, e:
             logger.error(e.args)
             if b: b.unlock()
@@ -163,6 +165,34 @@ class Command(BaseCommand):
         self.stdout.write("Processing %d POT notifications " % len(potnotification.notifications))
         logger.info("Processing %d POT notifications " % len(potnotification.notifications))    
         potnotification.process_notifications()
+        
+        self.stdout.write("Clean orphaned files ...")
+        logger.info("Clean orphaned files ...")
+        
+        c = 0
+        for pofile in POFile.objects.all():
+            if not os.path.exists(pofile.file):
+                c +=1
+                logger.info("Remove %s. %s do no exists anymore." % (pofile.filename, pofile.file))
+                self.stdout.write("Remove %s. %s do no exists anymore." % (pofile.filename, pofile.file))
+                pofile.delete()
+                
+        for potfile in POTFile.objects.all():
+            if not os.path.exists(potfile.file):
+                c +=1
+                logger.info("Remove %s. %s do no exists anymore." % (potfile.name, potfile.file))
+                self.stdout.write("Remove %s. %s do no exists anymore." % (potfile.name, potfile.file))
+                potfile.delete()
+                
+        for submitfile in POFileSubmit.objects.all():
+            if not os.path.exists(submitfile.file):
+                c +=1
+                logger.info("Submitted file %s do no exists anymore." % (submitfile.file))
+                self.stdout.write("Submitted file %s do no exists anymore." % (submitfile.file))
+                submitfile.delete()
+                
+        self.stdout.write("Removed %d orphaned files" % c)
+        logger.info("Removed %d orphaned files" % c)    
         
         logger.info("End")
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))

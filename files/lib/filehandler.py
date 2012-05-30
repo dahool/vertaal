@@ -58,7 +58,7 @@ class POFileHandler():
         if update:
             self.update_repo()
             
-        filef = file(os.path.join(settings.REPOSITORY_LOCATION, self.pofile.file), 'rU')
+        filef = file(self.pofile.file, 'rU')
         file_content = filef.read()
         filef.close()
         return file_content
@@ -66,7 +66,7 @@ class POFileHandler():
 class POTFileHandler(POFileHandler):
 
     def get_content(self):
-        path = unicode(os.path.join(settings.REPOSITORY_LOCATION, self.pofile.file))
+        path = unicode(self.pofile.file)
         filef = file(path, 'rU')
         file_content = filef.read()
         filef.close()

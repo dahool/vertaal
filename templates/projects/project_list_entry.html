@@ -1,11 +1,12 @@
+{% load i18n %}
 <div class="entry-list">
-	<p class="projects title"><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></p>
+	<p class="projects title"><a href="{{ project.get_absolute_url }}">{{ project.name }}</a> {% if not project.enabled %}<span class="icon disabled" title='{% trans "Disabled." %}'>&nbsp;</span>{% endif %}</p>
 	<div class="description">{%if project.description %}{{project.description}}{% endif %}</div>
 	{% with project.releases.all as releases %}
 		{% if releases %}
 			<div class="project-releases">
 			{% for release in releases %}
-				<a class="icon release" href="{{ release.get_absolute_url }}">{{ release.name }}</a>&nbsp;
+				<a class="icon release" href="{{ release.get_absolute_url }}">{% if release.enabled %}{{ release.name }}{% else %}<del title='{% trans "Disabled."%}'>{{ release.name }}</del>{% endif %} </a>&nbsp;
 			{% endfor %}
 			</div>
 		{% endif %}

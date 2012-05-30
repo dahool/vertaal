@@ -1244,3 +1244,6 @@ input.openid {
     margin-left: 8px !important;
 }
 fieldset { padding:0; border:0; margin-top:5px; }
+#filterbutton {
+	margin-right: 10px;
+}
