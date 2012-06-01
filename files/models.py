@@ -326,13 +326,13 @@ class POFile(models.Model):
     objects = POFileManager()
 
     def __unicode__(self):
-        return ugettext(u"%(file)s (Component: %(component)s - Release: %(release)s)") % {
+        return ugettext(u"%(file)s (%(component)s - Release: %(release)s)") % {
             'file': self.filename,
             'component': self.component.name,
             'release': self.release.name,}
 
     def __repr__(self):
-        return '<%(file)s (Component: %(component)s - Release: %(release)s)>' % {'file': self.filename,
+        return '<%(file)s (%(component)s - Release: %(release)s)>' % {'file': self.filename,
                                                                                 'component': self.component.name,
                                                                                 'release': self.release.name,}
 

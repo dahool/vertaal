@@ -417,18 +417,40 @@ table.stats-table {
 	margin: 1.2em 1em 0;	
 	/*line-height:1.8em;*/
 }
+
 .stats-table td {
 	border-bottom:1px solid #E3EAEE;
 	/*padding-left: 0.5em;*/
 	padding-right: 0.7em;	
 }
-.stats-table th {
+tr.even {
+	background: none repeat scroll 0 0 #F8F8F8;
+}
+tr.odd {
+	background: none repeat scroll 0 0 #FFFFFF;	
+}
+tr.row_highlight {
+	background: none repeat scroll 0 0 #FFFFC6;
+}
+.stats-table tbody tr:hover {
+	background: #FFF url(../images/table-hover.png) repeat;
+}
+/*.stats-table th {
 	background-color:#F5F5F5;
 	border-bottom:3px solid #E3EAEE;
 	color:#444444;
 	font-size:95%;
 	padding:0.3em;
 }
+*/
+table.stats-table thead th,table.stats-table tbody th {
+	background:url("../images/table-hover.png") repeat scroll 0 0 #EFEFEF;
+	border-bottom:3px solid #E3EAEE;
+	color:#444444;
+	font-size:95%;
+	padding:0.3em;
+}
+
 div.graph_comp {
 	border-left:1px solid #DDDDDD;
 	float:left;
@@ -846,11 +868,11 @@ input[type="button"]:hover, button:hover {
 }
 .left-layout {
 	float: left;
-	width: 50%;
+	width: 49.5%;
 }
 .right-layout {
 	float: right;
-	width: 50%;
+	width: 49.5%;
 }
 .table-action {
 	background-color: #F2F2F2;

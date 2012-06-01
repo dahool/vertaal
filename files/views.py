@@ -393,6 +393,8 @@ def get_file_list(request, component=None, release=None, language=None):
     
 @check_status
 def list_files(request, component=None, release=None, language=None):
+    logger.debug('list_files %s - %s - %s ' % (component, release, language))
+    
     res = get_file_list(request, component, release, language)
     
     cook = res.pop('cookjar',None)
@@ -401,6 +403,17 @@ def list_files(request, component=None, release=None, language=None):
         template = "files/file_list_table.html"
     else:
         template = "files/file_list.html"
+    
+    if request.GET.get('h', None):
+        res['highlight'] = request.GET.get('h')
+        logger.debug('highlight %s' % res['highlight'])
+        if not component:
+            try:
+                p = POFile.objects.get(slug=request.GET.get('h'))
+            except:
+                pass
+            else:
+                res['default_component'] = p.component
         
     response = render_to_response(template,
                                    res,

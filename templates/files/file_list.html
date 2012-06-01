@@ -43,12 +43,19 @@ function add_comment(name, url) {
 var tabCache = [];
 $(document).ready(function(){ 
 
+	{% if default_component %}
+	var tidx = $("#{{default_component.slug}}").attr('index');
+	{% endif %}
+	
 	$("#filestabs").tabs({
 			cache: true,
+			{% if default_component %}
+			selected: parseInt(tidx),
+			{% endif %}
 			cookie: {
-				expires: 1,
-				name: '{{release.project.slug}}'
-			},			
+				expires: 7,
+				name: 'tab_{{release.project.slug}}'
+			},
 			load: function(event, ui) {
 				$(ui.panel).find('.file_list_table').tablesorter({
 		            headers: { 1: { sorter: 'percentbars'}},
@@ -142,6 +149,7 @@ $(document).ready(function(){
 		});
 		
 		$("#filestabs").show();
+	
     } 
 ); 
 --></script>
@@ -223,7 +231,7 @@ $(document).ready(function(){
 {% with release.project.components.all as components %}
     <ul>
 	{% for component in components|dictsort:"pk" %}
-		<li><a href="{% url list_files_component release=release.slug language=language.code component=component.slug %}">{{ component.name }}<span style="padding-left: 5px;">&nbsp;</span></a></li>
+		<li id="{{component.slug}}" index="{{forloop.counter0}}"><a href="{% url list_files_component release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}">{{ component.name }}<span style="padding-left: 5px;">&nbsp;</span></a></li>
 	{% endfor %}
 	</ul>
 {% endwith %}

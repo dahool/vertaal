@@ -24,9 +24,8 @@
 		</thead>
 		<tbody>
 			{% for file_item in file_list %}
-			{# <!--  I'm using 'with' to isolate all the variables created inside the include --> #}
 			{% with file_item as file %}
-			<tr id="file_row_{{ file.slug }}" class="file-list-row">
+			<tr id="file_row_{{ file.slug }}" class="file-list-row {% cycle "odd" "even" %} {% if highlight == file.slug %}row_highlight{%endif%}">
 				{% include "files/file_list_row.html" %}
 			</tr>
 			{% endwith %}

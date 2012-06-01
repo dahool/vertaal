@@ -10,15 +10,25 @@
 			<th>{% trans "Last update" %}</th>
 		</tr>
 	</thead>
-	<tbody>
-	{% for file in files %}
+	<tbody id="trans_table">
+	{% for file in files|dictsort:"pofile.filename" %}
+	{% if file.pofile.release.enabled and file.pofile.release.project.enabled %}
 	<tr>
-		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}#{{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
-		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile }}</a></td>
+		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y" }}</td>
 	</tr>
+	{% endif %}
 	{% endfor %}
 	</tbody>
+	<tfoot>
+	<tr style="text-align: right;">
+		<th colspan="2">
+			<div id="trans_table_pages" class="holder"></div>
+		</th>
+	</tr>
+	</tfoot>
 </table>
+
 {% endif %}
 {% endwith %}
 
@@ -32,14 +42,23 @@
 			<th>{% trans "Last update" %}</th>
 		</tr>
 	</thead>
-	<tbody>
-	{% for file in files %}
+	<tbody id="rev_table">
+	{% for file in files|dictsort:"pofile.filename" %}
+	{% if file.pofile.release.enabled and file.pofile.release.project.enabled %}
 	<tr>
-		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}#{{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
-		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile }}</a></td>
+		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y" }}</td>
 	</tr>
+	{% endif %}
 	{% endfor %}
 	</tbody>
+	<tfoot>
+	<tr style="text-align: right;">
+		<th colspan="2">
+			<div id="rev_table_pages" class="holder"></div>
+		</th>
+	</tr>
+	</tfoot>	
 </table>
 {% endif %}
 {% endwith %}
@@ -56,10 +75,10 @@
 		</tr>
 	</thead>
 	<tbody>
-	{% for file in files %}
+	{% for file in files|dictsort:"pofile.filename" %}
 	<tr>
-		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}#{{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
-		<td>{{ file.last_update|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
+		<td>{{ file.last_update|localtime:request.user.get_profile.timezone|date:"M d, Y" }}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
@@ -83,14 +102,21 @@
 			<th>{% trans "Submitted on" %}</th>
 		</tr>
 	</thead>
-	<tbody>
-	{% for sfile in submits %}
+	<tbody id="sub_table">
+	{% for sfile in submits|dictsort:"pofile.filename" %}
 	<tr>
-		<td><a href="{% url list_files sfile.pofile.release.slug, sfile.pofile.language.code %}#{{ sfile.pofile.slug }}">{{ sfile.pofile.filename }}</a></td>
-		<td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}{% if not sfile.enabled %}&nbsp;<span class="stat-message">{% trans "This file is locked, which means it won't be submitted. It looks like you forgot to save the changes after editing it."%}{% endif %}</td>
+		<td><a href="{% url list_files sfile.pofile.release.slug, sfile.pofile.language.code %}?h={{ sfile.pofile.slug }}">{{ sfile.pofile.filename }}</a></td>
+		<td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y" }}{% if not sfile.enabled %}&nbsp;<span class="stat-message">{% trans "This file is locked, which means it won't be submitted. It looks like you forgot to save the changes after editing it."%}{% endif %}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
+	<tfoot>
+	<tr style="text-align: right;">
+		<th colspan="2">
+			<div id="sub_table_pages" class="holder"></div>
+		</th>
+	</tr>
+	</tfoot>	
 </table>
 {% endif %}
 {% endwith %}
@@ -149,14 +175,21 @@
 			<th>{% trans "Locked on" %}</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="lock_table">
 	{% for lfile in locks %}
 	<tr>
-		<td><a href="{% url list_files lfile.pofile.release.slug,lfile.pofile.language.code %}#{{ lfile.pofile.slug }}">{{ lfile.pofile.filename }}</a></td>
+		<td><a href="{% url list_files lfile.pofile.release.slug,lfile.pofile.language.code %}?h={{ lfile.pofile.slug }}">{{ lfile.pofile }}</a></td>
 		<td>{{ lfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
+	<tfoot>
+	<tr style="text-align: right;">
+		<th colspan="2">
+			<div id="lock_table_pages" class="holder"></div>
+		</th>
+	</tr>
+	</tfoot>	
 </table>
 {% endif %}
 {% endwith %}

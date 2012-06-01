@@ -6,10 +6,43 @@
 {% block extra_head %}
 <script type="text/javascript" src="{{STATIC_URL}}js/simpletooltip.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/errors.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jpages.min.js"></script>
 <link media="screen" href="{{STATIC_URL}}css/widgets/simpletooltip.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{STATIC_URL}}css/jpag.css" type="text/css" rel="stylesheet" />
 <script><!--
 $(document).ready(function(){
-    $("#tabs").tabs();
+	var maxPages = 10;
+	$( "#tabs" ).tabs({
+		show: function(event, ui) {
+			if ($(".jp-current").length == 0) {
+				$("#trans_table_pages").jPages({
+			        containerID  : "trans_table",
+			        perPage      : maxPages,
+			        previous: '{% trans "previous" %}',
+			        next: '{% trans "next" %}',
+				});
+				$("#rev_table_pages").jPages({
+			        containerID  : "rev_table",
+			        perPage      : maxPages,
+			        previous: '{% trans "previous" %}',
+			        next: '{% trans "next" %}',
+				});				
+				$("#sub_table_pages").jPages({
+			        containerID  : "sub_table",
+			        perPage      : maxPages,
+			        previous: '{% trans "previous" %}',
+			        next: '{% trans "next" %}',
+				});
+				$("#lock_table_pages").jPages({
+			        containerID  : "lock_table",
+			        perPage      : maxPages,
+			        previous: '{% trans "previous" %}',
+			        next: '{% trans "next" %}',
+				});						
+			}
+		}
+	});	
+	
 });
 
 function remove_pro_fav(id) {

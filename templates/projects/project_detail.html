@@ -110,7 +110,7 @@ function process_response(data) {
 <h3>{% trans "Releases:" %}</h3>
 <div class="releases-box">
 {% for release in releases %}
-<p class="icon release indent"><a href="{{ release.get_absolute_url }}">{{ release.name }}</a></p>
+<p class="icon release indent"><a href="{{ release.get_absolute_url }}">{% if release.enabled %}{{ release.name }}{% else %}<del title='{% trans "Disabled."%}'>{{ release.name }}</del>{% endif %}</a></p>
 {% endfor %}
 </div>
 {% endif %}
