@@ -11,8 +11,6 @@ from glossary.models import Glossary
 from glossary.forms import GlossaryForm
 from django.conf import settings
 
-from glossary.lib import tbx
-
 lang_session_key = 'glossary_lang'
 project_session_key = 'glossary_project'
 
@@ -127,6 +125,14 @@ def show_all(request, project = None, lang = None):
             'cookjar': cookjar}
 
 def export_tbx(request, project, lang):
+
+    try:
+        from glossary.lib import tbx
+    except ImportError:
+        request.user.message_set.create(message=_("Sorry, export is not available at this time."))
+        return HttpResponseRedirect(reverse('gloss_list',
+                                        kwargs={'project': project,
+                                                'lang': lang}))        
     
     try:
         l = Language.objects.get(code=lang)
