@@ -13,6 +13,23 @@ def set_user_language(user):
             if not translation.get_language() == settings.LANGUAGE_CODE:
                 language = translation.to_locale(settings.LANGUAGE_CODE)
                 translation.activate(language)
+        return language
     except:
         # in case of fail do nothing
         pass
+        
+class UserLanguage(object)
+    '''Helper class to active/deactive language in with context
+    '''
+    
+    def __init__(self, user):
+        self.user = user
+        
+    def __enter__(self):
+        set_user_language(self.user)
+    
+    def __exit__(self):
+        translation.deactivate()
+        
+    def __del__(self):
+        translation.deactivate()

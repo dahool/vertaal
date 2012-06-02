@@ -37,7 +37,7 @@ from django.conf import settings
 from files.models import POFile, POFileLog, POTFile, LOG_ACTION
 from versioncontrol.lib.browser import BrowserAuth, RepositoryBrowserFactory, AuthException
 from common.utils.lock import Lock, LockException
-from common.i18n import set_user_language
+from common.i18n import set_user_language, UserLanguage
 from files.lib import msgfmt
 from versioncontrol.models import BuildCache
 from auditor import middleware
@@ -83,15 +83,18 @@ class SubmitClient():
     def __process_notifications(self):
         logger.debug("Init")
         mlist = []
-        for id in self.notifications.keys():
-            user = User.objects.get(pk=id)
-            set_user_language(user)
-            subject = getattr(settings, 'EMAIL_SUBJECT_PREFIX','') + _("Files submitted")
-            message = render_to_string('updater/confirmcommit.mail', {'files': self.notifications.get(id)})
-            mlist.append((subject, message, None, [user.email]))
-        send_mass_mail(mlist, True)
-        set_user_language(self.current)
-        self.notifier.process_notifications()
+        try:
+            for id in self.notifications.keys():
+                user = User.objects.get(pk=id)
+                with UserLanguage(user) as user_lang:
+                    subject = getattr(settings, 'EMAIL_SUBJECT_PREFIX','') + _("Files submitted")
+                    message = render_to_string('updater/confirmcommit.mail', {'files': self.notifications.get(id)})
+                    mlist.append((subject, message, None, [user.email]))
+            send_mass_mail(mlist, True)
+            set_user_language(self.current)
+            self.notifier.process_notifications()
+        except Exception, e:
+            logger.error(str(e))
         logger.debug("End")
         
     def run(self):
