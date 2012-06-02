@@ -24,6 +24,7 @@ import shutil
 import datetime
 import re
 import copy
+import thread
 
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
@@ -88,9 +89,9 @@ class SubmitClient():
             subject = getattr(settings, 'EMAIL_SUBJECT_PREFIX','') + _("Files submitted")
             message = render_to_string('updater/confirmcommit.mail', {'files': self.notifications.get(id)})
             mlist.append((subject, message, None, [user.email]))
-
         send_mass_mail(mlist, True)
         set_user_language(self.current)
+        self.notifier.process_notifications()
         logger.debug("End")
         
     def run(self):
@@ -250,8 +251,7 @@ class SubmitClient():
                         self.__unlock_submits(component)
                         exceps.append(str(e))
                 
-        self.__process_notifications()
-        self.notifier.process_notifications()
+        thread.start_new_thread(self.__process_notifications, ())
         set_user_language(self.user)
 
         if len(exceps)>0:
