@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Copyright (c) 2009-2012 Sergio Gabriel Teves
+All rights reserved.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+"""
 from __future__ import with_statement
 import os
 import os.path
@@ -124,6 +142,8 @@ class SubmitClient():
                                            component[0].pofile.language)
                         v.revert()
                         v.refresh()
+                        commit_files = []
+                        commit_files_notice = []
                         for smfile in component:
                             sfilename = smart_unicode(smfile.file)
                             if os.path.exists(sfilename):
@@ -154,7 +174,11 @@ class SubmitClient():
                                     logger.debug("Backup file %s" % newname)
                                     shutil.copy(sfilename, newname)
                                     os.chmod(newname, getattr(settings, 'FILE_UPLOAD_PERMISSIONS',0664))
-                                self.__add_notification(smfile.owner, smfile.pofile)
+                                
+                                # files to be commited
+                                commit_files.append(str(smfile.pofile.file))
+                                # notification list
+                                commit_files_notice.append((smfile.owner, smfile.pofile))
                                 message.append('%s: %s (%s)' % (smfile.pofile.filename,smfile.log_message, smfile.owner.username))
                                 message.append('\n\nCommitted with %s on behalf of %s' % (getattr(settings, 'PROJECT_NAME'),self.current))
                             else:
@@ -162,7 +186,10 @@ class SubmitClient():
                                 raise Exception(_('The system was unable to find the file id %(id)s. Please open a support ticket [%(url)s]') % 
                                                 {'id':smfile.id, 'url': getattr(settings, 'TICKET_URL','')})
                         commit_message = "\n".join(message)
-                        rev = v.commit(self.user, self.pword, commit_message)
+                        rev = v.commit(self.user, self.pword, commit_files, commit_message)
+                        
+                        for fowner, fpo in commit_files_notice:
+                            self.__add_notification(fowner, fpo)
                         
                         try:
                             bc = BuildCache.objects.get(component=component[0].pofile.component,
@@ -409,10 +436,10 @@ class Manager(object):
         self.notify_callback(_('Language %s complete.') % self.language.name)
         logger.debug("end")
         
-    def commit(self, user, password, message):
+    def commit(self, user, password, files, message):
         logger.debug("init")
         try:
-            rev = self.browser.submit(BrowserAuth(user, password), message)
+            rev = self.browser.submit(BrowserAuth(user, password), files, message)
         except:
             logger.debug("Error while commiting. Trying revert.")
             self.browser.cleanup()

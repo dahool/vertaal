@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Copyright (c) 2009-2012 Sergio Gabriel Teves
+All rights reserved.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+"""
 import os
 import os.path
 
@@ -185,15 +203,21 @@ class SvnBrowser(browser.RepositoryBrowser):
             logger.error("Revert %s failed: %s" % (self.location, str(e)))
             pass
 
-    def submit(self, auth, msg):
+    def submit(self, auth, files, msg):
         if auth:
             self.set_login(auth)
-        logger.debug("Perform submit %s [%s]" % (self.location, msg))
+        logger.debug("Perform submit %s (%s) [%s]" % (self.location, self.files, msg))
         self._send_callback(self.callback_on_action_notify,_('Checking in'))
         try:
-            rev = self.client.checkin([self.location], msg.encode('utf-8'), recurse=True, keep_locks=False)
+            if files:
+                rev = self.client.checkin(files, msg.encode('utf-8'), recurse=True, keep_locks=False)
+            else:
+                rev = self.client.checkin([self.location], msg.encode('utf-8'), recurse=True, keep_locks=False)
         except:
             raise
+        if rev and hasattr(rev, 'number'):
+            rvn = getattr(self.revision_update_complete,'number', 0)
+            if rvn > 0: return rvn
         #Subversion seems to return 0 rather then the actual revision
         self.client.update(self.location)
         return getattr(self.revision_update_complete,'number',0)
