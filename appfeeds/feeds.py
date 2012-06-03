@@ -71,12 +71,7 @@ class ReleaseUpdates(Feed):
             return release.get_absolute_url()
 
     def items(self, release):
-        #if self.language:
-            ##return POFileLog.objects.filter(pofile__release=release, pofile__language=self.language)[:self.total_feeds]
-        return POFileLog.objects.distinct_actions(user=self.user, release=release, language=self.language, limit=self.total_feeds)
-        #else:
-            ##return POFileLog.objects.filter(pofile__release=release)[:self.total_feeds]
-            #return POFileLog.objects.distinct_actions(release=release, limit=self.total_feeds)
+        return POFileLog.objects.last_actions(user=self.user, release=release, limit=self.total_feeds, language=self.language)
 
     def item_pubdate(self, item):
         return item.created

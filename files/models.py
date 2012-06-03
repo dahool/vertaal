@@ -549,27 +549,32 @@ class POFileLock(models.Model):
     
 class POFileLogManager(models.Manager):
     
-    def last_actions(self, release, limit, language):
+    def last_actions(self, release, limit, language=None, user=None):
         from django.db import connection
         cursor = connection.cursor()
         
-        try:
-            bot = User.objects.get(username=getattr(settings, 'BOT_USERNAME','bot'))
-        except:
-            bot = None
-        
         sql = "SELECT p.pofile_id, p.created, p.user_id, p.action, p.id "\
-            "FROM pofile_log as p INNER JOIN pofile as f ON "\
-            "p.pofile_id = f.id"
+              "FROM pofile_log p LEFT JOIN pofile_log p2 ON (p.pofile_id = p2.pofile_id AND p.id < p2.id)"\
+              "INNER JOIN pofile f ON p.pofile_id = f.id"\
+
+        if user:
+            sql += " LEFT OUTER JOIN pofile_assigns as a ON p.pofile_id = a.pofile_id"
+        else:
+            try:
+                bot = User.objects.get(username=getattr(settings, 'BOT_USERNAME','bot'))
+            except:
+                bot = None
             
-        sql += " WHERE f.release_id=%s" % release.id
+        sql += " WHERE p2.id IS NULL AND f.release_id=%s" % release.id
         
         if language:
             sql += " AND f.language_id=%s" % language.id 
-        if bot:
+        if user:
+            sql += " AND (a.translate_id=%(userid)s or a.review_id=%(userid)s)" % {'userid': user.id}
+        elif bot:
             sql += " AND p.user_id<>%s" % bot.pk
             
-        sql += " ORDER BY id DESC LIMIT %s" % limit
+        sql += " ORDER BY p.id DESC LIMIT %s" % limit
                
         cursor.execute(sql)
               
@@ -584,41 +589,6 @@ class POFileLogManager(models.Manager):
                             created=row[1])
             files.append(po)
         return files        
-        
-    def distinct_actions(self, release, limit, language=None, user=None):
-        from django.db import connection
-        cursor = connection.cursor()
-
-        sql = "SELECT p.pofile_id, p.created, p.user_id, p.action, p.id "\
-            "FROM pofile_log as p INNER JOIN pofile as f ON "\
-            "p.pofile_id = f.id"
-            
-        if user:
-            sql += " LEFT OUTER JOIN pofile_assigns as a ON p.pofile_id = a.pofile_id"
-
-        sql += " WHERE f.release_id=%s" % release.id
-        
-        if language:
-            sql += " AND f.language_id=%s" % language.id 
-        if user:
-            sql += " AND (a.translate_id=%s or a.review_id=%s)" % (user.id,user.id)
-            
-        sql += " AND p.id = (SELECT max(id) FROM pofile_log m WHERE "\
-            "m.pofile_id = p.pofile_id) LIMIT %s" % limit
-               
-        cursor.execute(sql)
-              
-        files = []
-        for row in cursor.fetchall():
-            pofile = POFile.objects.get(id=row[0])
-            user = User.objects.get(id=row[2])
-            po = self.model(id=row[4],
-                            pofile=pofile,
-                            user=user,
-                            action=row[3],
-                            created=row[1])
-            files.append(po)
-        return dictsortreversed(files, 'created')
     
     def latest_by_action(self):
         latest_by = self.model._meta.get_latest_by

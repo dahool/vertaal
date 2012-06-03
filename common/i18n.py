@@ -18,7 +18,7 @@ def set_user_language(user):
         # in case of fail do nothing
         pass
         
-class UserLanguage(object)
+class UserLanguage(object):
     '''Helper class to active/deactive language in with context
     '''
     
