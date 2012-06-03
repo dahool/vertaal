@@ -7,21 +7,6 @@ function check_current() {
 		$('#comment_'+current_id).unbind('keypress');
 	}
 }
-/*
-function add_comment(id) {
-	check_current();
-	current_id = id;
-	$('#lock_break_'+id).hide();
-	$('#lock_comment_'+id).show()
-	field = $('#comment_'+id)
-	field.keypress(function (e) {
-		if (e.which == 13) {
-			$(this).unbind('keypress');
-			$("#submit_"+id).click();
-		}
-	});
-	field.focus()
-}*/
 function init_select_events() {
 	var div = $('#user-selection-list');
     $(document).keyup(function(event){
@@ -35,7 +20,8 @@ function init_select_events() {
 }
 
 function select_user(elem, callback, param) {
-    var topOffset = -40;
+    var topOffset = -10;
+    //var leftOffset = $(elem).parent().width() * -1;
     var leftOffset = 10;
 
     var div = $('#user-selection-list');
@@ -45,11 +31,13 @@ function select_user(elem, callback, param) {
 		callback(param,{userid:$('#user-select').val()});
 	});
 	
-	var p = $(elem).offset();
+	var p = $(elem).position();
 	div.css("position","absolute");
 	div.css("top",(p.top+topOffset)+"px");
 	div.css("left",(p.left+leftOffset)+"px");
+    div.css("width","210px");
 	div.show();
+        
 }
 function try_toggle(url, opc) {
 	data = {}

@@ -350,7 +350,7 @@ def get_file_list(request, component=None, release=None, language=None):
                 q = q.filter(component=co)
                 res['cfilter'] = [int(co.pk)]
         filter_data = ",".join([ str(i) for i in res['cfilter']])
-        res['cookjar'][cook] = filter_data
+        #res['cookjar'][cook] = filter_data
     if language:
         l = res['language'] = get_object_or_404(Language, code=language)
         q = q.filter(language=res['language'])
@@ -392,14 +392,14 @@ def get_file_list(request, component=None, release=None, language=None):
     return res
     
 @check_status
-def list_files(request, component=None, release=None, language=None):
+def list_files(request, component=None, release=None, language=None, filter = False):
     logger.debug('list_files %s - %s - %s ' % (component, release, language))
     
     res = get_file_list(request, component, release, language)
     
     cook = res.pop('cookjar',None)
     
-    if component:
+    if filter:
         template = "files/file_list_table.html"
     else:
         template = "files/file_list.html"

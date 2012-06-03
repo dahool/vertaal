@@ -3,7 +3,8 @@ from files.views import *
 
 urlpatterns = patterns('',
     url(r'^(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/list/$', list_files, name="list_files"),
-    url(r'^(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/(?P<component>[-_@\w]+)/list/$', list_files, name="list_files_component"),
+    url(r'^(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/list/reload/$', list_files, name="reload_list_files", kwargs = {'filter': True }),
+    url(r'^(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/(?P<component>[-_@\w]+)/list/$', list_files, name="list_files_component", kwargs = {'filter': True }),
 #    url(r'^(?P<component>[-\w]+)/(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/$', list_files, name="list_files"),
 #    url(r'^(?P<component>[-\w]+)/(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/put/$', upload, name="file_upload"),
     url(r'^(?P<release>[-\w]+)/(?P<language>[-_@\w]+)/put/$', upload, name="file_upload"),

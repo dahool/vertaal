@@ -3,17 +3,26 @@ function escape_slug(slug) {
 	return slug.replace(/:/g,"\\:").replace(/\./g,"\\.").replace(/-/g,"\\-");	
 }
 */
+
+var _ERR_MSG = gettext("An error ocurred while executing your request.\nJust in case, press F5 to refresh the page before trying again.");
+var _NO = gettext("No");
+var _YES = gettext("Yes");
+var _OK = gettext("Ok");
+var _CANCEL = gettext("Cancel");
+var _CONFIRM = gettext("Are you sure?");
+var _CONFIRM_T = gettext("Confirm");
+
 function loading(show) {
 	if (show == undefined) {
 		show = true;
 	}
 	if (show) {
-		$("#loading").show()	
+		$.loading(true, {text: gettext("Working..."), loadingClass: 'context-loader', update: {texts: [gettext("Please, wait..."), gettext("Oops!, something went wrong.")]}});
 	} else {
-		$("#loading").hide()	
+		$.loading(false);
 	}
 }
-
+    
 function show_ok_dialog(msg) {
 	//msg = msg.replace(/\n/g,"<br/>");
 	$.alerts.okButton = '&nbsp;'+_OK+'&nbsp;'
@@ -57,6 +66,12 @@ function process_update_favorites_response(data) {
 }
 
 $(document).ready(function() {
+    $('body').ajaxStart(function() {
+        loading(true);
+    }); 
+    $('body').ajaxStop(function() {
+        loading(false);
+    });
 	$("body").ajaxError(function(event, request, settings){
 		show_ok_dialog(_ERR_MSG);
 	});

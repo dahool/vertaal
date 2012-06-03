@@ -33,23 +33,6 @@
 	<script type="text/javascript" src="{{STATIC_URL}}js/base.js"></script>
 	<script type="text/javascript">
 		var _TITLE = '{% setting "PROJECT_NAME" %}';
-		var _ERR_MSG = '{% trans "An error ocurred while executing your request.\nJust in case, press F5 to refresh the page before trying again." %}';
-		var _NO = '{% trans "No" %}';
-		var _YES = '{% trans "Yes" %}';
-		var _OK = '{% trans "Ok" %}';
-		var _CANCEL = '{% trans "Cancel" %}';
-		var _CONFIRM = '{% trans "Are you sure?" %}';
-		var _CONFIRM_T = '{% trans "Confirm" %}';
-		
-		$(document).ready(function() {
-		    $('body').ajaxStart(function() {
-		    	$.loading(true, {text: '{% trans "Working..." %}', loadingClass: 'context-loader', update: {texts: ['{% trans "Please, wait..." %}', '{% trans "Oops!, something went wrong." %}']}});
-		    }); 
-		    $('body').ajaxStop(function() {
-		        $.loading(false);      
-		    });
-		});
-		
 	</script>
 	{% block extra_head %}{% endblock %}
 </head>

@@ -445,7 +445,7 @@ tr.row_highlight {
 */
 table.stats-table thead th,table.stats-table tbody th {
 	background:url("../images/table-hover.png") repeat scroll 0 0 #EFEFEF;
-	border-bottom:3px solid #E3EAEE;
+	border-bottom: 2px solid #E3EAEE;
 	color:#444444;
 	font-size:95%;
 	padding:0.3em;
@@ -1255,15 +1255,19 @@ input.openid {
 #filestabs .ui-tabs-panel {
 	padding-left: 0;
 } 
+#filestabs .details {
+    padding-bottom: 10px;
+}
 .tab-need-reload {
 	background-image: url(../images/icons/bullet_red.png);
 	padding-left: 8px !important;
 	background-repeat: no-repeat;
 }
 .file_list_table {
-	width: 100%;
-    margin-top: 0 !important;
-    margin-left: 8px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 5px !important;
+    width: 99%;
 }
 fieldset { padding:0; border:0; margin-top:5px; }
 #filterbutton {

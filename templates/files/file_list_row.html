@@ -95,7 +95,7 @@
 	{% endif %}
 	{% endwith %}
 	{% endif %}
-	{{ file.filename }}</a>
+	<sortext>{{ file.filename }}</sortext></a>
 	{% with file.submits.get as submit %}
 		{% if  submit %}
 			{% if submit.enabled %}
@@ -106,6 +106,7 @@
 		{% endif %}
 	{% endwith %}
 </td>
+<td class="title-center">{{ file.component.name }}</td>
 <td>
 	<div class="graph_comp">
 	  <div class="translated_comp" style="width: {{file.trans_perc}}px;"></div>
@@ -122,9 +123,9 @@
 			<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove translator" %}"></span>
 		{% endif %}	
 		{% if translate %}
-			{% trans "(you)" %}
+			<sortext>{% trans "(you)" %}</sortext>
 		{% else %}
-			<a href="{% url contact_me assign.translate.username %}">{{ assign.translate }}</a>
+			<a href="{% url contact_me assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.translate %}
 		<span class="icon filelocked tooltip" title="{% spaceless %}
@@ -150,9 +151,9 @@
 			<span onclick="try_toggle_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove reviewer" %}"></span>
 		{% endif %}	
 		{% if review %}
-			{% trans "(you)" %}
+			<sortext>{% trans "(you)" %}</sortext>
 		{% else %}
-			<a href="{% url contact_me assign.review.username %}">{{ assign.review }}</a>
+			<a href="{% url contact_me assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.review %}
 		<span class="icon filelocked tooltip" title="{% spaceless %}

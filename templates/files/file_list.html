@@ -19,7 +19,7 @@
 {% endifsetting %}
 <script type="text/javascript" src="{{STATIC_URL}}js/filemanipulation.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.metadata.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.json.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookiejar.pack.js"></script>
@@ -39,119 +39,174 @@ function add_comment(name, url) {
 	$("#comment_text").text(interpolate(gettext('Unlocking file %s'), [name]));
 	$("#lock_comment").dialog('open');
 }
-
-var tabCache = [];
+function load_component(url,replace) {
+    if (replace==undefined) replace = false;
+    $.post(url, function(data) {
+        $(data).find('tbody').each(function() {
+            if (replace) {
+                $("#filestabs").find('tbody').html($(this).html());
+            } else {
+                $("#filestabs").find('tbody').append($(this).html());
+            }
+        });
+        $("#filestabs").find('table').trigger("update");
+    });    
+}
+function hide_component(name) {
+    loading(true);
+    $("#filestabs").find('tr[component="'+name+'"]').remove();
+    loading(false);
+}
+function check_filter_button() {
+    n = $("#component_list").find('input:checked');
+    if (n.length == 1) {
+        $(n).button('disable');
+    } else {
+        $(n).button('enable');
+    }    
+}
 $(document).ready(function(){ 
 
-	{% if default_component %}
-	var tidx = $("#{{default_component.slug}}").attr('index');
-	{% endif %}
-	
-	$("#filestabs").tabs({
-			cache: true,
-			{% if default_component %}
-			selected: parseInt(tidx),
-			{% endif %}
-			cookie: {
-				expires: 7,
-				name: 'tab_{{release.project.slug}}'
-			},
-			load: function(event, ui) {
-				$(ui.panel).find('.file_list_table').tablesorter({
-		            headers: { 1: { sorter: 'percentbars'}},
-		            widgets: ['cookie'],
-				});
-				tabCache.push(ui.index);
-			},
-			show: function(event, ui) {
-				var $elem = $("a[href="+$(ui.tab).attr('href')+"] > span");
-				if ($elem.hasClass('tab-need-reload')) {
-					$elem.removeClass('tab-need-reload');
-					$(this).tabs('load', ui.index);
-				}
-			},
-			spinner: '<img src="{{STATIC_URL}}images/loading_lt.gif"/>'
-		});
-	
-    	jQuery.aop.before({target: jQuery.fn, method: "hide"},
-		function(){
-			this.trigger("hide");
-		});
+    $.tablesorter.addParser({ 
+        id: 'percentbars', 
+        is: function(s) { 
+            return false; 
+        }, 
+        format: function(s) {
+            re = s.match(new RegExp(/(\d*%)/g));
+            if (re) {
+                s = re[0];
+            }
+            return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));
+        }, 
+        type: 'numeric' 
+    });
+    $.tablesorter.addParser({ 
+        id: 'sortext', 
+        is: function(s) { 
+            return false; 
+        }, 
+        format: function(s) {
+            re = s.match(new RegExp(/<sortext>(.+)<\/sortext>/));
+            if (re) {
+                s = re[1].toLowerCase();    
+            } else {
+                s = "";
+            }
+            return s;
+        }, 
+        type: 'text' 
+    });
     
-	    $.tablesorter.addParser({ 
-	        id: 'percentbars', 
-	        is: function(s) { 
-	            return false; 
-	        }, 
-	        format: function(s) {
-		        re = s.match(new RegExp(/(\d*%)/g));
-	        	if (re) {
-		        	s = re[0];
-	        	}
-	        	return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));
-	        }, 
-	        type: 'numeric' 
-	    });     
+    $("#component_list > input").removeAttr('checked');
+    
+    {% for id in cfilter %}
+    $("#cmp_{{id}}").attr('checked', true);
+    {% endfor %}
+    
+    /*
+    var curr_filter = $.cookie("cfilter_{{release.slug}}", {raw: true});
+    if (curr_filter != undefined) {
+        curr_filter.split(',').forEach(function(el, idx, arr) {
+            $("#cmp_" + el).attr('checked', true);
+        });
+    }
+    */
+    $("#component_list").buttonset();
+    $("#component_list").find('input:checked').button("option", "icons", {primary:'ui-icon-circle-check'});
+    $("#component_list").find('input:not(:checked)').button("option", "icons", {primary:'ui-icon-circle-plus'});
+    
+    $("#component_list").find('input').change(function(){
+        var cfilter = [];
+        $("#component_list").find('input:checked').each(function() {
+            cfilter.push($(this).attr('id').substring(4));
+        });
+        check_filter_button();
+        if (cfilter.length == 0) {
+            show_ok_dialog(gettext("You can't hide all components."));
+        } else {
+            $.cookie("cfilter_{{release.slug}}", cfilter.join(), { raw: true, expires: 30, path: '/' });
+            if ($(this).is(':checked')) {
+                $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-check").removeClass("ui-icon-circle-plus");
+                load_component($(this).val());
+            } else {
+                $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-plus").removeClass("ui-icon-circle-check");
+                hide_component($(this).attr('name'));
+            }
+        }
+    });
 
-		$(document).keyup(function(event){
-		    if (event.keyCode == 27) {
-		    	check_current();
-		    }
-		});
-		init_select_events();
+    check_filter_button();
+    
+    $("#filestabs").find('table').tablesorter({
+        widgets: ['cookie'],
+        sortList: [[0,0]],
+    });
+    
+    $("#filestabs").find('table').bind("sortStart",function() { 
+        loading(true);
+    }).bind("sortEnd",function() { 
+        loading(false);
+    }); 
+        
+    jQuery.aop.before({target: jQuery.fn, method: "hide"},
+    function(){
+        this.trigger("hide");
+    });
+    
+    $(document).keyup(function(event){
+        if (event.keyCode == 27) {
+            check_current();
+        }
+    });
+    init_select_events();
 		
-		$("#filterbutton").click(function() {
-			$("input[name='extraFunc']").each(function() {
-				if ($(this).is(':checked')) {
-					$.cookie($(this).attr('alt'), 'true', { expires: 30, path: '/' });
-				} else {
-					$.cookie($(this).attr('alt'), null, {path: '/' });
-				}
-			});			
-			var current = $("#filestabs").tabs('option', 'selected');
-			tabCache.forEach(function(el, idx, arr) {
-				if (el != current) {
-					$("a[href=#ui-tabs-"+(el+1)+"] > span").addClass('tab-need-reload');
-				}
-			});
-			$("#filestabs").tabs( "load" , current);
-		});
+    $("#filterbutton").click(function() {
+        $("input[name='extraFunc']").each(function() {
+            if ($(this).is(':checked')) {
+                $.cookie($(this).attr('alt'), 'true', { expires: 30, path: '/' });
+            } else {
+                $.cookie($(this).attr('alt'), null, {path: '/' });
+            }
+        });			
+        load_component("{% url reload_list_files release.slug,language.code %}", true);
+    });
 
-		$("#comment_input").keyup(function (e) {
-			if( e.keyCode == $.ui.keyCode.ENTER ) {
-				e.preventDefault();
-				$("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
-			}
-		});
+    $("#comment_input").keyup(function (e) {
+        if( e.keyCode == $.ui.keyCode.ENTER ) {
+            e.preventDefault();
+            $("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
+        }
+    });
 		
-		$( "#lock_comment" ).dialog({
-			autoOpen: false,
-			width: 350,
-			modal: true,
-			resizable: false,
-			buttons: {
-				'{% trans "Ok" %}': function() {
-					var bValid = true;
-					bValid = bValid && checkLength( $("#comment_input"), '{% trans "Comments" %}', 4, 255 );
-					if ( bValid ) {
-						try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
-						$( this ).dialog( "close" );
-					}
-				},
-			},
-			open: function() {
-				$(".validateTips").text('');
-				$("#comment_input").val('');
-			},
-			close: function() {
-				$("#comment_input").removeClass( "ui-state-error" );
-			}
-		});
+    $( "#lock_comment" ).dialog({
+        autoOpen: false,
+        width: 350,
+        modal: true,
+        resizable: false,
+        buttons: {
+            '{% trans "Ok" %}': function() {
+                var bValid = true;
+                bValid = bValid && checkLength( $("#comment_input"), '{% trans "Comments" %}', 4, 255 );
+                if ( bValid ) {
+                    try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
+                    $( this ).dialog( "close" );
+                }
+            },
+        },
+        open: function() {
+            $(".validateTips").text('');
+            $("#comment_input").val('');
+        },
+        close: function() {
+            $("#comment_input").removeClass( "ui-state-error" );
+        }
+    });
+    
+    $("#component_list").show();
+    $("#filestabs").show();
 		
-		$("#filestabs").show();
-	
-    } 
-); 
+}); 
 --></script>
 {% endblock %}
 {% block quick_menu %}
@@ -207,6 +262,7 @@ $(document).ready(function(){
 
 <br/>
 
+{% if user.is_authenticated and enabled and not readonly %}
 <div class="filter-box">
 	<fieldset>
 		<ul class="simple">
@@ -224,17 +280,20 @@ $(document).ready(function(){
 		</ul>
 	</fieldset> 
 </div>
+{% endif %}
 
 <br/>
-
-<div id="filestabs" style="display: none;">
+<div id="component_list" style="display: none;">
 {% with release.project.components.all as components %}
-    <ul>
 	{% for component in components|dictsort:"pk" %}
-		<li id="{{component.slug}}" index="{{forloop.counter0}}"><a href="{% url list_files_component release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}">{{ component.name }}<span style="padding-left: 5px;">&nbsp;</span></a></li>
+    <input type="checkbox" id="cmp_{{component.pk}}" name="{{component.slug}}" value="{% url list_files_component release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}"/>
+    <label for="cmp_{{component.pk}}">{{ component.name }}</label>
 	{% endfor %}
-	</ul>
 {% endwith %}
+</div>
+
+<div id="filestabs" class="ui-widget-content ui-corner-all" style="display: none;">
+{% include "files/file_list_table.html" %}
 </div>
 
 {% if user.is_authenticated %}
@@ -255,7 +314,7 @@ $(document).ready(function(){
 </div>
 {% endif %}
 <div id="user-selection-list" class="floating-box">
-<select id="user-select">
+<select id="user-select" style="width: 150px;">
 {% for user in team.team_members %}
 	<option value="{{user.id}}">{{user.username}}{%if user.get_full_name%} ({{user.get_full_name}}){%endif%}</option>
 {% endfor %}

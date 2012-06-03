@@ -12,6 +12,7 @@
  * 
  * Jun 17, 2009 Sergio Gabriel Teves: fix incorrect sortStart on disabled columns
  * May 28, 2012 SGT: fix error when disabling sort for last column
+ * Jun 06, 2012 SGT: Enclose header text in span and apply class to it
  */
 /**
  *
@@ -308,7 +309,10 @@
 					if(checkHeaderMetadata(this) || checkHeaderOptions(table,index)) this.sortDisabled = true;
 					
 					if(!this.sortDisabled) {
-						$(this).addClass(table.config.cssHeader);
+                        var elem = $("<span>"+$(this).html()+"</span>");
+						//$(this).addClass(table.config.cssHeader);
+                        elem.addClass(table.config.cssHeader);
+                        $(this).html(elem);
 					}
 					
 					// add cell to headerList
@@ -390,10 +394,11 @@
 				
 			function setHeadersCss(table,$headers, list, css) {
 				// remove all header information
-				$headers.removeClass(css[0]).removeClass(css[1]);
+				//$headers.removeClass(css[0]).removeClass(css[1]);
 				
 				var h = [];
 				$headers.each(function(offset) {
+                        $(this).find('span:first').removeClass(css[0]).removeClass(css[1]);
 						if(!this.sortDisabled) {
 							h[this.column] = $(this);					
 						}
@@ -401,8 +406,8 @@
 				
 				var l = list.length; 
 				for(var i=0; i < l; i++) {
-                    if (!h[list[i][0]] == undefined) {
-                        h[list[i][0]].addClass(css[list[i][1]]);
+                    if (h[list[i][0]].length > 0) {
+                        h[list[i][0]].find('span:first').addClass(css[list[i][1]]);
                     }
 				}
 			}
@@ -599,6 +604,8 @@
 						// rebuild the cache map
 						cache = buildCache(this);
 						
+                        $(this).trigger("sorton", [config.sortList]);
+                        
 					}).bind("sorton",function(e,list) {
 						
 						$(this).trigger("sortStart");
