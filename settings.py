@@ -1,4 +1,3 @@
-# Django settings for pureftpman project.
 import os
 import glob
 
@@ -6,7 +5,7 @@ PROJECT_PATH = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 
 LOCAL_CONFIG = None
 VERSION = None
-ROOT_PATH = PROJECT_PATH
+ROOT_PATH = os.path.join(PROJECT_PATH, 'appcache')
 
 conffiles = glob.glob(os.path.join(os.path.dirname(__file__), 'settings','*.pyconf'))
 conffiles.sort()
