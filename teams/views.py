@@ -131,19 +131,20 @@ def team_delete(request, project, lang):
         t = Team.objects.get(language=l, project=p)
         t.delete()
         # start a thread to delete all files for this team
-        thread.start_new_thread(_remove_team_files, (p, l))
+        thread.start_new_thread(_remove_team_files, (request, p, l))
     except Team.DoesNotExist:
         pass
     except Exception, e:
         raise
     return XMLResponse(res)
 
-def _remove_team_files(project, language):
+def _remove_team_files(request, project, language):
     logger.debug("Remove team files %s - %s" % (project, language))
     for pofile in POFile.objects.filter(language=language, release__project=project):
         logger.debug("Delete %s" % (smart_unicode(pofile)))
         pofile.delete()
-
+    request.user.message_set.create(message=_('Team %(lang)s [%(project)s] removed.') % {'lang': language.name, 'project': project.name})
+    
 @login_required
 def join_accept(request, id, reject=False):
     logger.debug("Team petition management %s [%s]" % (id, str(reject)))

@@ -421,7 +421,9 @@ table.stats-table {
 .stats-table td {
 	border-bottom:1px solid #E3EAEE;
 	/*padding-left: 0.5em;*/
-	padding-right: 0.7em;	
+	padding-right: 0.7em;
+	padding-bottom: 2px;
+	padding-top: 2px;	
 }
 tr.even {
 	background: none repeat scroll 0 0 #F8F8F8;

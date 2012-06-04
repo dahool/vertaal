@@ -66,21 +66,6 @@
 					<span onclick="try_toggle('{{ toggle_lock_url }}')" class="nodecoration_icon action_icon lock-open link" title="{% trans "Lock the file to notify others you're working on it." %}"></span>
 				{% endif %}
 				{% endif %}
-
-		        {% comment %}
-		        {% switch file.status %}
-		            {% case 0 %}
-		            	{% captureas status_message %}{% trans "Mark the file as Translated." %}{% endcaptureas %}
-		            	{% set 'mark-translated' as status_icon %}
-		            {% case 1 %}
-		            	{% captureas status_message %}{% trans "Mark the file as Reviewed." %}{% endcaptureas %}
-		            	{% set 'mark-reviewed' as status_icon %}		            
-		            {% case 2 %}
-		            	{% captureas status_message %}{% trans "Mark the file as Completed." %}{% endcaptureas %}
-		            	{% set 'mark-completed' as status_icon %}		            
-		        {% endswitch %}
-		        <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
-		        {% endcomment %}
 			{% endif %}			
 		{% endif %}
 	{% endif %}
@@ -88,14 +73,10 @@
 	<span>&nbsp;</span>	
 <!-- end buttons -->
 	<a class="highlight" name="{{ file.slug }}" href="{% url file_detail file.slug %}">
-	{% if file.potfile.all %}
-	{% with file.potfile.get as potfile %}
-	{% if file.need_merge %}
-		<span class="icon warn">&nbsp;</span>
-	{% endif %}
-	{% endwith %}
-	{% endif %}
 	<sortext>{{ file.filename }}</sortext></a>
+	{% if file.need_merge %}
+		<span class="icon warn" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
+	{% endif %}	
 	{% with file.submits.get as submit %}
 		{% if  submit %}
 			{% if submit.enabled %}
@@ -120,7 +101,7 @@
 {% with file.assigns.get as assign %}
 	{% if assign.translate %}
 		{% if can_manage or translate %}
-			<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove translator" %}"></span>
+			<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove translator" %}"></span>
 		{% endif %}	
 		{% if translate %}
 			<sortext>{% trans "(you)" %}</sortext>
@@ -136,9 +117,9 @@
 	{% else %}
 		{% if user.is_authenticated %}
 			{% if can_manage %}
-				<span onclick="select_user(this,try_toggle,'{{ set_assigned_translator }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign translator" %}">&nbsp;</span>
+				<span onclick="select_user(this,try_toggle,'{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
 			{% else %}
-				<span onclick="try_toggle('{{ set_assigned_translator }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign translator" %}">&nbsp;</span>
+				<span onclick="try_toggle('{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
 			{% endif %}
 		{% else %}
 			{% trans "None" %}
@@ -148,7 +129,7 @@
 <td class="assigns">
 	{% if assign.review %}
 		{% if can_manage or review %}
-			<span onclick="try_toggle_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon remove link" title="{% trans "Remove reviewer" %}"></span>
+			<span onclick="try_toggle_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove reviewer" %}"></span>
 		{% endif %}	
 		{% if review %}
 			<sortext>{% trans "(you)" %}</sortext>
@@ -164,9 +145,9 @@
 	{% else %}
 		{% if user.is_authenticated %}
 			{% if can_manage %}
-				<span onclick="select_user(this,try_toggle,'{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+				<span onclick="select_user(this,try_toggle,'{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
 			{% else %}
-				<span onclick="try_toggle('{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon add link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+				<span onclick="try_toggle('{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
 			{% endif %}
 		{% else %}
 			{% trans "None" %}

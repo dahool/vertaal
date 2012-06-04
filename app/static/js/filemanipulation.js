@@ -22,7 +22,7 @@ function init_select_events() {
 function select_user(elem, callback, param) {
     var topOffset = -10;
     //var leftOffset = $(elem).parent().width() * -1;
-    var leftOffset = 10;
+    var leftOffset = -210;
 
     var div = $('#user-selection-list');
     $(div).hide();

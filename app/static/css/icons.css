@@ -1,16 +1,25 @@
 .icon {
-  background-repeat: no-repeat;
-  background-position: 5px 50%;
-  padding-top: 1px;
-  padding-right: 0;
-  padding-bottom: 1px;
-  padding-left: 24px !important;
-  line-height: 16px;
+   background-position: 5px 50%;
+   background-repeat: no-repeat;
+   line-height: 16px;
+   padding-bottom: 1px;
+   padding-left: 24px !important;
+   padding-right: 0;
+   padding-top: 1px;
+}
+.action_icon {
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	padding-right: 5px;
+	/*background: url(../images/icons/action_icons.png) no-repeat top left;*/
 }
 .email {
 	background-image: url('../images/icons/email.png');
 }
 .add {
+	background-image: url('../images/icons/add.png');
+}
+.addassg {
 	background-image: url('../images/icons/add.png');
 }
 .tag_green {
@@ -39,11 +48,6 @@
 }
 .branch {
 	background-image: url(../images/icons/arrow_branch.png);
-}
-.action_icon {
-	background-repeat: no-repeat;
-	background-position: 0 50%;
-	padding-right: 5px;
 }
 .info {
 	background-image: url(../images/icons/information.png);
@@ -109,6 +113,9 @@
 	background-image: url(../images/icons/accept.png);
 }
 .remove {
+	background-image: url(../images/icons/delete.png);
+}
+.removeassg {
 	background-image: url(../images/icons/delete.png);
 }
 .join {
@@ -206,7 +213,57 @@
 }
 .filelocked {
 	background-image: url(../images/icons/asterisk_yellow.png);
+	background-position: 0 50%;
+	margin-left: 5px;
 }
-.disabled {
-	background-image: url(../images/icons/stop.png);
+/*.action_icon.submit {
+	background-position: 0 -0px;
 }
+.action_icon.addassg {
+	background-position: 0 -28px;
+}
+.action_icon.filelocked {
+	background-position: 0 -62px;
+}
+.action_icon.startup-add {
+	background-position: 0 -93px;
+}
+.action_icon.startup-del {
+	background-position: 0 -124px;
+}
+.action_icon.file-submit {
+	background-position: 0 -155px;
+}
+.action_icon.cancel {
+	background-position: 0 -186px;
+}
+.action_icon.removeassg {
+	background-position: 0 -217px;
+}
+.action_icon.warn {
+	background-position: 0 -248px;
+}
+.action_icon.lock {
+	background-position: 0 -279px;
+}
+.action_icon.lock-break {
+	background-position: 0 -310px;
+}
+.action_icon.lock-open {
+	 background-position: 0 -341px;
+}
+.action_icon.file-diff {
+	background-position: 0 -372px;
+}
+.action_icon.file-edit {
+	background-position: 0 -403px;
+}
+.action_icon.file-view {
+	background-position: 0 -434px;
+}
+.action_icon.download {
+	background-position: 0 -465px;
+}
+.action_icon.svnlog {
+	background-position: 0 -496px;
+}*/

@@ -15,7 +15,7 @@
 <input type="button" name="href" class="icon populate" rel="{% url release_populate release.slug %}" value="{% trans "Populate" %}"/>
 <input type="button" name="href" class="icon build" rel="{% url project_build release.slug %}" value="{% trans "Build cache" %}"/>
 {% if build_log %}
-<input type="button" name="href" class="icon build-log" rel="{% url build_log release.project.slug, release.slug %}" value="{% trans "View console" %}"/>
+<input type="button" name="href" class="icon misc_icon build-log" rel="{% url build_log release.project.slug, release.slug %}" value="{% trans "View console" %}"/>
 {% endif %}
 <input type="button" name="href" class="icon merge" rel="{% url multimerge release.slug %}" value="{% trans "POT Merge" %}"/>
 </div>
