@@ -340,17 +340,17 @@ def get_file_list(request, component=None, release=None, language=None):
         if request.POST.has_key('cmpfilter'):
             if request.POST.get('cmpfilter'):
                 q = q.filter(component__in=request.POST.getlist('cmpfilter'))
-                res['cmpfilter'] = [ int(i) for i in request.POST.getlist('cmpfilter') ]
+                res['cfilter'] = [ int(i) for i in request.POST.getlist('cmpfilter') ]
         else:
             if cook in request.COOKIES:
                 cf = request.COOKIES.get(cook).split(',')
                 q = q.filter(component__in=cf)
-                res['cmpfilter'] = [ int(i) for i in cf ]
+                res['cfilter'] = [ int(i) for i in cf ]
             else:
                 co = r.project.components.all()[0]
                 q = q.filter(component=co)
-                res['cmpfilter'] = [int(co.pk)]
-        filter_data = ",".join([ str(i) for i in res['cmpfilter']])
+                res['cfilter'] = [int(co.pk)]
+        filter_data = ",".join([ str(i) for i in res['cfilter']])
         #res['cookjar'][cook] = filter_data
     if language:
         l = res['language'] = get_object_or_404(Language, code=language)
