@@ -336,21 +336,21 @@ def get_file_list(request, component=None, release=None, language=None):
         c = res['component'] = get_object_or_404(Component, slug=component)
         q = q.filter(component=res['component'])
     else:
-        cook = 'cfilter_%s' % r.slug
-        if request.POST.has_key('cfilter'):
-            if request.POST.get('cfilter'):
-                q = q.filter(component__in=request.POST.getlist('cfilter'))
-                res['cfilter'] = [ int(i) for i in request.POST.getlist('cfilter') ]
+        cook = 'cmpfilter_%s' % r.slug
+        if request.POST.has_key('cmpfilter'):
+            if request.POST.get('cmpfilter'):
+                q = q.filter(component__in=request.POST.getlist('cmpfilter'))
+                res['cmpfilter'] = [ int(i) for i in request.POST.getlist('cmpfilter') ]
         else:
             if cook in request.COOKIES:
                 cf = request.COOKIES.get(cook).split(',')
                 q = q.filter(component__in=cf)
-                res['cfilter'] = [ int(i) for i in cf ]
+                res['cmpfilter'] = [ int(i) for i in cf ]
             else:
                 co = r.project.components.all()[0]
                 q = q.filter(component=co)
-                res['cfilter'] = [int(co.pk)]
-        filter_data = ",".join([ str(i) for i in res['cfilter']])
+                res['cmpfilter'] = [int(co.pk)]
+        filter_data = ",".join([ str(i) for i in res['cmpfilter']])
         #res['cookjar'][cook] = filter_data
     if language:
         l = res['language'] = get_object_or_404(Language, code=language)
