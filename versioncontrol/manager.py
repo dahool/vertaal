@@ -185,11 +185,11 @@ class SubmitClient():
                                 # notification list
                                 commit_files_notice.append((smfile.owner, smfile.pofile))
                                 message.append('%s: %s (%s)' % (smfile.pofile.filename,smfile.log_message, smfile.owner.username))
-                                message.append('\n\nCommitted with %s on behalf of %s' % (getattr(settings, 'PROJECT_NAME'),self.current))
                             else:
                                 logger.error("File %s does not exists [%s]" % (sfilename,smfile.id))
                                 raise Exception(_('The system was unable to find the file id %(id)s. Please open a support ticket [%(url)s]') % 
                                                 {'id':smfile.id, 'url': getattr(settings, 'TICKET_URL','')})
+                        message.append('\n\nCommitted with %s on behalf of %s' % (getattr(settings, 'PROJECT_NAME'),self.current))
                         commit_message = "\n".join(message)
                         rev = v.commit(self.user, self.pword, commit_files, commit_message)
                         
