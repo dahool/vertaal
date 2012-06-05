@@ -1,0 +1,35 @@
+.tooltipbox {
+	border:0 none;
+	overflow:hidden;
+}
+.tooltipbox .tip-wrap {
+    border-radius: 5px;
+    border: 1px #CACACA solid;
+}
+.tooltipbox .tip-body {
+	-moz-user-select:none;
+	-x-system-font:none;
+	color:#444444;
+	font-family:tahoma,arial,helvetica,sans-serif;
+	font-size:11px;
+	font-size-adjust:none;
+	font-stretch:normal;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:14px;
+	margin:0 !important;
+	padding: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.tooltipbox.info-tip .tip-body {
+	padding-left: 24px;
+	background: #ECF5FF url(simpletooltip/information.png) no-repeat scroll 2px 50%;
+	border: 1px #8AC5FF solid;
+}
+.tooltipbox.error-tip .tip-body {
+	padding-left: 24px;
+	background: #FFF0F0 url(simpletooltip/exclamation.png) no-repeat scroll 2px 50%;
+    border: 1px #FF0000 solid;
+}

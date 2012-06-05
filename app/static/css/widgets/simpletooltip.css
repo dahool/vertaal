@@ -2,7 +2,6 @@
 	border:0 none;
 	overflow:hidden;
 }
-
 .tooltip .tip-tc {
 	background: transparent url(simpletooltip/tip-sprite.gif) no-repeat 0 -62px;
 	padding-top:3px;
