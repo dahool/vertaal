@@ -239,14 +239,18 @@ $(document).ready(function(){
 		</td>
 		</tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
-		{% endif %}		
+		{% endif %}
+		<tr>
+			<th class="icon team-page">{% trans "Team:" %}</th>
+			<td><a href="{{ team.get_absolute_url }}">{{ language.name }}</a></td>
+		</tr>
 		<tr>
 			<th class="icon project">{% trans "Project:" %}</th>
-			<td>{{ release.project.name }}</td>
+			<td><a href="{{ release.project.get_absolute_url }}">{{ release.project.name }}</a></td>
 		</tr>
 		<tr>
 			<th class="icon release">{% trans "Release:" %}</th>
-			<td>{{ release.name }}</td>
+			<td><a href="{{ release.get_absolute_url }}">{{ release.name }}</a></td>
 		</tr>
 	</table>
 </div>

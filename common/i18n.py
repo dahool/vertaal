@@ -26,9 +26,10 @@ class UserLanguage(object):
         self.user = user
         
     def __enter__(self):
-        set_user_language(self.user)
+        l = set_user_language(self.user)
+        return l
     
-    def __exit__(self):
+    def __exit__(self, type, value, traceback):
         translation.deactivate()
         
     def __del__(self):

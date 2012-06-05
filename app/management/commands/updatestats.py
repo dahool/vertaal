@@ -32,6 +32,7 @@ from files.models import POFile, POTFile, POFileSubmit
 from django.db.models.signals import pre_save
 from optparse import make_option
 from common.notification import FileUpdateNotification, POTFileChangeNotification
+from django.utils.encoding import smart_unicode
 import os
 
 global notification, potnotification
@@ -159,11 +160,11 @@ class Command(BaseCommand):
 
         pre_save.disconnect(update_callback, sender=POFile)
         
-        self.stdout.write("Processing %d notifications " % len(notification.notifications))
-        logger.info("Processing %d notifications " % len(notification.notifications))    
+        self.stdout.write("Processing %d notifications\n" % len(notification.notifications))
+        logger.info("Processing %d notifications" % len(notification.notifications))    
         notification.process_notifications()
-        self.stdout.write("Processing %d POT notifications " % len(potnotification.notifications))
-        logger.info("Processing %d POT notifications " % len(potnotification.notifications))    
+        self.stdout.write("Processing %d POT notifications\n" % len(potnotification.notifications))
+        logger.info("Processing %d POT notifications" % len(potnotification.notifications))    
         potnotification.process_notifications()
         
         self.stdout.write("Clean orphaned files ...")
@@ -174,25 +175,25 @@ class Command(BaseCommand):
             if not os.path.exists(pofile.file):
                 c +=1
                 logger.info("Remove %s. %s do no exists anymore." % (pofile.filename, pofile.file))
-                self.stdout.write("Remove %s. %s do no exists anymore." % (pofile.filename, pofile.file))
+                self.stdout.write("Remove %s. %s do no exists anymore.\n" % (pofile.filename, pofile.file))
                 pofile.delete()
                 
         for potfile in POTFile.objects.all():
             if not os.path.exists(potfile.file):
                 c +=1
                 logger.info("Remove %s. %s do no exists anymore." % (potfile.name, potfile.file))
-                self.stdout.write("Remove %s. %s do no exists anymore." % (potfile.name, potfile.file))
+                self.stdout.write("Remove %s. %s do no exists anymore.\n" % (potfile.name, potfile.file))
                 potfile.delete()
                 
         for submitfile in POFileSubmit.objects.all():
-            if not os.path.exists(submitfile.file):
+            if not os.path.exists(smart_unicode(submitfile.file)):
                 c +=1
                 logger.info("Submitted file %s do no exists anymore." % (submitfile.file))
-                self.stdout.write("Submitted file %s do no exists anymore." % (submitfile.file))
+                self.stdout.write("Submitted file %s do no exists anymore.\n" % (submitfile.file))
                 submitfile.delete()
                 
-        self.stdout.write("Removed %d orphaned files" % c)
-        logger.info("Removed %d orphaned files" % c)    
+        self.stdout.write("Removed %d orphaned files\n" % c)
+        logger.info("Removed %d orphaned files." % c)    
         
         logger.info("End")
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))

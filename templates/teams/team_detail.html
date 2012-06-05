@@ -8,7 +8,7 @@
 <span>{{ team.project.name }}</span>
 {% endblock %}
 {% block content %}
-{% block content_title %}<h1>{{ team.language.name }} ({{ team.project.name }})</h1>{% endblock %}
+{% block content_title %}<h1>{{ team.language.name }} ({{ team.project.name }})&nbsp;<a href="{{ team.project.get_absolute_url }}" class="icon open-project" title='{% trans "Project Page" %}'>&nbsp;</a></h1>{% endblock %}
 
 {% iftrue team.can_manage request.user %}
 {% set 'true' as can_manage %}

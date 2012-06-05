@@ -206,7 +206,7 @@ class SvnBrowser(browser.RepositoryBrowser):
     def submit(self, auth, files, msg):
         if auth:
             self.set_login(auth)
-        logger.debug("Perform submit %s (%s) [%s]" % (self.location, self.files, msg))
+        logger.debug("Perform submit %s (%s) [%s]" % (self.location, files, msg))
         self._send_callback(self.callback_on_action_notify,_('Checking in'))
         try:
             if files:

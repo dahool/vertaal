@@ -16,7 +16,7 @@
 {% autopaginate teams %}
 	<div class="simple">
 		{% for team in teams %}
-		<p class="projects title"><a href="{{ team.get_absolute_url }}">{{ team.project.name }}</a></p>
+		<p class="projects title"><a href="{{ team.get_absolute_url }}">{{ team.project.name }}</a>&nbsp;&nbsp;<a href="{{ team.project.get_absolute_url }}" class="icon open-project" title='{% trans "Project Page" %}'>&nbsp;</a></p>
 		<div class="description">{%if team.project.description %}{{team.project.description}}{% endif %}</div>
 		{% endfor %}
 	</div>

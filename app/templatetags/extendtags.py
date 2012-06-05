@@ -368,15 +368,14 @@ def do_urlfull(parser, token):
 class URLFullNode(URLNode):
     def render(self, context): 
         url = super(URLFullNode, self).render(context)
-        
+
+        host = getattr(settings, 'SITE_DOMAIN', '--SITE_DOMAIN--')
         if self.asvar:
             url = context[self.asvar]
-            context[self.asvar] = 'http://%s%s' % (getattr(settings, 'SITE_DOMAIN'),
-                                                   url)
+            context[self.asvar] = 'http://%s%s' % (host, url)
             return ''
         else:
-            return 'http://%s%s' % (getattr(settings, 'SITE_DOMAIN'),
-                                                   url)
+            return 'http://%s%s' % (host, url)
 
 @register.tag(name="switch")
 def do_switch(parser, token):

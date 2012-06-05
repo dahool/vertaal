@@ -5,7 +5,8 @@ import pygments.formatters
 import traceback
 import os
 import thread
-
+import time
+    
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
 from django.shortcuts import render_to_response, get_object_or_404
@@ -802,13 +803,13 @@ def edit_submit_file(request, slug):
                                context_instance = RequestContext(request))
     
 @login_required
-def view_file_diff(request, slug):
+def view_file_diff(request, slug, uniff=False):
     file = get_object_or_404(POFile, slug=slug)
     redirect = HttpResponseRedirect(reverse('commit_queue'))
     
     if file.submits.all():
         s = file.submits.get()
-        content = make_file_diff(file, s)
+        content = make_file_diff(file, s, uniff)
         return render_to_response("files/file_diff.html",
                                    {'body': content,
                                     'pofile': file},
@@ -816,25 +817,79 @@ def view_file_diff(request, slug):
     else:
         return redirect
 
-def make_file_diff(file_old, file_new):
+def make_file_diff(file_old, file_new, uniff=False):
     content_new = file_new.handler.get_content().decode('utf-8')
     content_old = file_old.handler.get_content().decode('utf-8')
+    if uniff:
+        return make_udiff(content_old, content_new)
     return make_diff(content_old, content_new)
     
+#def make_diff(a, b):
+#    dm = diff_match_patch()
+#    diffs = dm.diff_lineMode(a,b, time.time() + 60)
+#    out = []
+#    for (op, data) in diffs:
+#      text = (data.replace("&", "&amp;").replace("<", "&lt;")
+#                 .replace(">", "&gt;").replace("\n", "<br>"))
+#      if op == diff_match_patch.DIFF_INSERT:
+#        out.append("<ins class=\"diff_add\">%s</ins>" % text)
+#      elif op == diff_match_patch.DIFF_DELETE:
+#        out.append("<del class=\"diff_sub\">%s</del>" % text)
+#      elif op == diff_match_patch.DIFF_EQUAL:
+#        out.append("<span>%s</span>" % text)
+#    return "".join(out)
+
+def make_udiff(a, b):
+    import urllib
+    dm = diff_match_patch()
+    diffs = dm.diff_main(a,b)
+    patches = dm.patch_make(diffs)
+    out = []
+    for patch in patches:
+        if patch.length1 == 0:
+            coords1 = str(patch.start1) + ",0"
+        elif patch.length1 == 1:
+            coords1 = str(patch.start1 + 1)
+        else:
+            coords1 = str(patch.start1 + 1) + "," + str(patch.length1)
+        if patch.length2 == 0:
+            coords2 = str(patch.start2) + ",0"
+        elif patch.length2 == 1:
+            coords2 = str(patch.start2 + 1)
+        else:
+            coords2 = str(patch.start2 + 1) + "," + str(patch.length2)
+        text = ["@@ -", coords1, " +", coords2, " @@\n"]
+        # Escape the body of the patch with %xx notation.
+        for (op, data) in patch.diffs:
+            data = data.encode("utf-8")
+            txt = urllib.quote(data, "\"!~*'();/?:@&=+$,# ")
+            #txt = (data.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>"))            
+            if op == diff_match_patch.DIFF_INSERT:
+                text.append("<ins class=\"diff_add\">+%s</ins>" % txt)
+            elif op == diff_match_patch.DIFF_DELETE:
+                text.append("<del class=\"diff_sub\">-%s</del>" % txt)
+            elif op == diff_match_patch.DIFF_EQUAL:
+                text.append("<span>%s</span>" % txt)
+            # High ascii will raise UnicodeDecodeError.  Use Unicode instead.
+        out.append("".join(text))
+    return "".join(out)
+
 def make_diff(a, b):
+    import urllib
     dm = diff_match_patch()
     diffs = dm.diff_main(a,b)
     dm.diff_cleanupSemantic(diffs)
     out = []
     for (op, data) in diffs:
-      text = (data.replace("&", "&amp;").replace("<", "&lt;")
-                 .replace(">", "&gt;").replace("\n", "<br>"))
-      if op == diff_match_patch.DIFF_INSERT:
-        out.append("<ins class=\"diff_add\">%s</ins>" % text)
-      elif op == diff_match_patch.DIFF_DELETE:
-        out.append("<del class=\"diff_sub\">%s</del>" % text)
-      elif op == diff_match_patch.DIFF_EQUAL:
-        out.append("<span>%s</span>" % text)
+        text = urllib.quote(data, "\"!~*'();/?:@&=+$,# ")
+#      text = (data.replace("&", "&amp;").replace("<", "&lt;")
+#                 .replace(">", "&gt;").replace("\n", "<br>"))
+        if op == diff_match_patch.DIFF_INSERT:
+            out.append("<ins class=\"diff_add\">%s</ins>" % text)
+        elif op == diff_match_patch.DIFF_DELETE:
+            out.append("<del class=\"diff_sub\">%s</del>" % text)
+        elif op == diff_match_patch.DIFF_EQUAL:
+            out.append("<span>%s</span>" % text)
     return "".join(out)
     
 def make_diff_old(a, b):

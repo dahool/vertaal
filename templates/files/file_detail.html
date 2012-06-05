@@ -49,12 +49,10 @@
 				{% if potfile.updated %}
 				-
 				{% if user.is_authenticated %}
-					{% captureas updated %}{{ potfile.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" }}{% endcaptureas %}
+					{% blocktrans with since=potfile.updated|timesince updated=potfile.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}updated on {{updated}} ({{since}} ago){% endblocktrans %}
 				{% else %}
-					{% captureas updated %}{{ potfile.updated|date:"M d, Y H:i O" }}{% endcaptureas %}
+					{% blocktrans with since=potfile.updated|timesince updated=potfile.updated|date:"M d, Y H:i O" %}updated on {{updated}} ({{since}} ago){% endblocktrans %}
 				{% endif %}
-				{% captureas since %}{{ potfile.updated|timesince }}{% endcaptureas %}
-				{% blocktrans %}updated on {{updated}} ({{since}} ago){% endblocktrans %}
 				{% endif %}
 				</td>
 			</tr>
@@ -75,12 +73,10 @@
                 {% if pofile.potupdated %}
                 - 				
 				{% if user.is_authenticated %}
-				    {% captureas updated %}{{ pofile.potupdated|localtime:user.get_profile.timezone|date:"M d, Y H:i" }}{% endcaptureas %}
+					{% blocktrans with since=pofile.potupdated|timesince updated=pofile.potupdated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}source updated on {{updated}} ({{since}} ago){% endblocktrans %}
 				{% else %}
-				    {% captureas updated %}{{ pofile.potupdated|date:"M d, Y H:i O" }}{% endcaptureas %}
+					{% blocktrans with since=pofile.potupdated|timesince updated=pofile.potupdated|date:"M d, Y H:i O" %}source updated on {{updated}} ({{since}} ago){% endblocktrans %}
 				{% endif %}
-				{% captureas since %}{{ pofile.potupdated|timesince }}{% endcaptureas %}
-				{% blocktrans %}source updated on {{updated}} ({{since}} ago){% endblocktrans %}
 				{% endif %}				
 				</td>
 			</tr>
@@ -92,18 +88,14 @@
 				<td>
 					{% if pofile.buildcachedata %}
 						{% with pofile.buildcachedata as cache %}
-							{% if user.is_authenticated %}
-								{% captureas updated %}{{ cache.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" }}{% endcaptureas %}
-							{% else %}
-								{% captureas updated %}{{ cache.updated|date:"M d, Y H:i O" }}{% endcaptureas %}
-							{% endif %}
 							{% if cache.rev %}
-								{% with cache.rev as rev %}
-								{% blocktrans %}Revision {{rev}}{% endblocktrans %}
-								{% endwith %}
+								{% blocktrans with rev=cache.rev %}Revision {{rev}}{% endblocktrans %}
 							{% endif %}
-							{% captureas since %}{{ cache.updated|timesince }}{% endcaptureas %}
-							{% blocktrans %}(updated {{updated}} - {{since}} ago){% endblocktrans %} 
+							{% if user.is_authenticated %}
+								{% blocktrans with since=cache.updated|timesince updated=cache.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}(updated {{updated}} - {{since}} ago){% endblocktrans %}
+							{% else %}
+								{% blocktrans with since=cache.updated|timesince updated=cache.updated|date:"M d, Y H:i O" %}(updated {{updated}} - {{since}} ago){% endblocktrans %}
+							{% endif %}
 						{% endwith %}
 						<span class="help_text">{% trans "The information displayed is local and may be out dated." %}</span>
 					{% endif %}
@@ -116,12 +108,10 @@
 				<th colspan="2">
 				<a href="{% url get_submit_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
 				{% if user.is_authenticated %}
-					{% captureas created %}{{ submit.created|localtime:user.get_profile.timezone|date:"M d, H:i" }}{% endcaptureas %}
+					{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
 				{% else %}
-					{% captureas created %}{{ submit.created|date:"M d, H:i O" }}{% endcaptureas %}
+					{% blocktrans with since=submit.created|timesince created=submit.created|date:"M d, Y H:i O" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
 				{% endif %}
-				{% captureas since %}{{ submit.created|timesince }}{% endcaptureas %}
-				{% blocktrans %}Pending submit, in queue since {{created}} ({{since}} ago){%endblocktrans%}
 				</th>
 			</tr>
 			{% endif %}

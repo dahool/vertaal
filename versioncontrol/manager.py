@@ -95,6 +95,7 @@ class SubmitClient():
             self.notifier.process_notifications()
         except Exception, e:
             logger.error(str(e))
+            logger.exception('__process_notifications')
         logger.debug("End")
         
     def run(self):

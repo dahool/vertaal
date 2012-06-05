@@ -526,11 +526,6 @@ td.filename a {
 	/*padding-left: 5px;*/
 	padding-right: 0px !important;	
 }
-.actions
-.nodecoration_icon,
-.nodecoration_icon {
-	padding-left: 16px !important;
-}
 .stat_message {
 	color:gray;
 	font-size:90%;
@@ -762,6 +757,9 @@ form.form-style fieldset {
 	position: relative;
 	margin-top:1em;
 	padding-top:.75em;
+    padding-bottom: 9px;
+    padding-left: 7px;
+    padding-right: 7px;	
 	border:1px solid #D9D9D9;
 	background-color: #F2F2F2;
 	-webkit-border-radius: 3px;

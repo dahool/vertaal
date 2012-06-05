@@ -110,8 +110,8 @@
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.translate %}
 		<span class="icon filelocked tooltip" title="{% spaceless %}
-		{% blocktrans with lock.created|localtime:user.get_profile.timezone|timesince as locked %}
-			Locked {{locked}} ago.
+		{% blocktrans with created=lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" locked=lock.created|timesince %}
+			Locked on {{created}} ({{locked}} ago).
 		{% endblocktrans %}{% endspaceless %}"></span>
 		{% endif %}
 	{% else %}
