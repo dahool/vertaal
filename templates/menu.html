@@ -20,5 +20,8 @@
 	<li><a href="{% url language_list %}">{% trans "Languages" %}</a></li>	
 	<li><a href="{% url project_list %}">{% trans "Projects" %}</a></li>
 	<li><a href="{% url home %}">{% trans "Home" %}</a></li>
+	{% if user.is_staff %}
+	<li style="float: left;"><a href="{% url admin:index %}">{% trans "Administration" %}</a></li>
+	{% endif %}		
 </ul>
 {% endblock %}

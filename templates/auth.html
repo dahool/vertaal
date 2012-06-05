@@ -7,7 +7,9 @@
 		<a href="{% url user_signout %}">{% trans "Sign out" %}</a>
 	{% else %}
 		<a class="menu_link" href="{% url user_signin %}">{% trans "Sign in" %}</a>
+		{% if not request.maintenance %}
 		&nbsp;|&nbsp;
 		<a class="menu_link" href="{% url user_signup %}">{% trans "Register" %}</a>
+		{% endif %}
 	{% endif %}
 {% endblock %}

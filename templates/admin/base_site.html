@@ -1,9 +1,8 @@
 {% extends "admin/base.html" %}
-{% load i18n adminmedia %}
-
-{% block title %}{{ title }} | {% trans 'Vertaal site admin' %}{% endblock %}
+{% load i18n adminmedia settingstag %}
 
 {% block extrastyle %}
+{{ block.super }}
 <style>
 #header{ background-color: #333940; border-bottom: solid 3px #999; }
 #branding h1{ color: #fff; }
@@ -12,8 +11,13 @@ a.section:link, a.section:visited { color: #666666; }
 </style>
 {% endblock %}
 
+{% block title %}{{ title }} | {% setting "PROJECT_NAME" as site %}{%blocktrans%}{{site}} Admin{%endblocktrans%}{% endblock %}
+
 {% block branding %}
-<h1 id="site-name">{% trans 'Vertaal site admin' %}</h1>
+<h1 id="site-name">{% setting "PROJECT_NAME" as site %}{%blocktrans%}{{site}} Admin{%endblocktrans%}</h1>
 {% endblock %}
 
+{% block userlinks %}<a href="{% url home %}">{% trans 'Site Index' %}</a> / {{block.super}}{% endblock %}
+
 {% block nav-global %}{% endblock %}
+

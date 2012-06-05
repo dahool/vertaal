@@ -10,6 +10,11 @@ def forbidden(request, template_name='403.html'):
     t = loader.get_template(template_name)
     return HttpResponseForbidden(t.render(RequestContext(request)))
 
+def unavailable(request, template_name='503.html'):
+    """Default 503 handler"""
+    t = loader.get_template(template_name)
+    return HttpResponseForbidden(t.render(RequestContext(request)))
+
 @requires_csrf_token
 def not_found(request, exception, template_name='404.html'):
 

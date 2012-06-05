@@ -17,3 +17,4 @@ class SiteStatus(models.Model):
     
     class Meta:
         db_table  = 'site_status'
+        verbose_name_plural = "Site Status"

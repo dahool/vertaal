@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import Message
 from django.db.models.signals import post_save
+from django.utils.encoding import smart_unicode
 
 class UserMessages(models.Model):
     
@@ -16,6 +17,7 @@ class UserMessages(models.Model):
         db_table  = 'user_messages_status'
         ordering  = ('created',)
         get_latest_by = 'created'
+        verbose_name_plural = "User Messages"
         
 def message_add_callback(sender, **kwargs):
     obj = kwargs['instance']
