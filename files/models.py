@@ -445,8 +445,8 @@ class POFile(models.Model):
     def need_merge(self):
         if self.potfile.all():
             potfile = self.potfile.get()
-#            if potfile.total != self.total and (potfile.updated is not None and potfile.updated > self.potupdated):
-            if potfile.updated is not None and potfile.updated > self.potupdated:
+            if potfile.total != self.total and (potfile.updated is not None and potfile.updated >= self.potupdated):
+#            if potfile.updated is not None and potfile.updated > self.potupdated:
                 return True
         return False
                     
