@@ -172,7 +172,7 @@ class POFileManager(models.Manager):
         if languages:
             sql += "(%s) AND " % langq
         sql += "c.project_id = %(project_id)s AND NOT (c.potlocation IS NULL OR c.potlocation = '') "\
-                "AND pot.updated IS NOT NULL AND p.potupdated < pot.updated" % {'project_id': project.id}
+                "AND (pot.total <> p.total OR (pot.updated IS NOT NULL AND pot.updated > p.potupdated))" % {'project_id': project.id}
         
         logger.debug(sql)
         logger.debug(cursor.execute(sql))
@@ -445,7 +445,7 @@ class POFile(models.Model):
     def need_merge(self):
         if self.potfile.all():
             potfile = self.potfile.get()
-            if potfile.total != self.total and (potfile.updated is not None and potfile.updated >= self.potupdated):
+            if potfile.total != self.total or (potfile.updated is not None and potfile.updated > self.potupdated):
 #            if potfile.updated is not None and potfile.updated > self.potupdated:
                 return True
         return False
