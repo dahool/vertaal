@@ -66,6 +66,23 @@
 					<span onclick="try_toggle('{{ toggle_lock_url }}')" class="nodecoration_icon action_icon lock-open link" title="{% trans "Lock the file to notify others you're working on it." %}"></span>
 				{% endif %}
 				{% endif %}
+                
+                {% switch file.status %}
+                {% case 0 %}
+                {% captureas status_message %}{% trans "Mark the file as Translated." %}{% endcaptureas %}
+                {% set 'mark-translated' as status_icon %}
+                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+                {% case 1 %}
+                {% captureas status_message %}{% trans "File translated. Mark as Reviewed." %}{% endcaptureas %}
+                {% set 'mark-reviewed' as status_icon %}
+                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+                {% case 2 %}
+                {% captureas status_message %}{% trans "File reviewed. Mark as Completed." %}{% endcaptureas %}
+                {% set 'mark-completed' as status_icon %}
+                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+                {% else %}
+                <span class="nodecoration_icon action_icon file-done" title='{% trans "File completed." %}'></span>
+                {% endswitch %}
 			{% endif %}			
 		{% endif %}
 	{% endif %}

@@ -875,15 +875,12 @@ def make_udiff(a, b):
     return "".join(out)
 
 def make_diff(a, b):
-    import urllib
     dm = diff_match_patch()
     diffs = dm.diff_main(a,b)
     dm.diff_cleanupSemantic(diffs)
     out = []
     for (op, data) in diffs:
-        text = urllib.quote(data, "\"!~*'();/?:@&=+$,# ")
-#      text = (data.replace("&", "&amp;").replace("<", "&lt;")
-#                 .replace(">", "&gt;").replace("\n", "<br>"))
+        text = (data.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>"))
         if op == diff_match_patch.DIFF_INSERT:
             out.append("<ins class=\"diff_add\">%s</ins>" % text)
         elif op == diff_match_patch.DIFF_DELETE:

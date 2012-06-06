@@ -222,3 +222,6 @@
 	background-position: 0 50%;
 	margin-left: 5px;
 }
+.file-done {
+	background-image: url(../images/icons/tick.png);
+}
