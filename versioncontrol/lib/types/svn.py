@@ -183,16 +183,15 @@ class SvnBrowser(browser.RepositoryBrowser):
         try:
             self.client.update(self.location)
         except pysvn.ClientError, e:
-            for message, code in e.args[1]:
-                if code == 155000: # relocate
-                    logger.debug("Must relocate")
-                    self._switch_url()
-                    self.client.update(self.location)
-                elif code == 155004: # locked
-                    self.cleanup()
-                    self.client.update(self.location)
-                else:
-                    raise
+            if self._checkerror(e, 155000): # relocate
+                logger.debug("Must relocate")
+                self._switch_url()
+                self.client.update(self.location)
+            elif self._checkerror(e, 155004): # locked
+                self.cleanup()
+                self.client.update(self.location)
+            else:
+                raise
         return getattr(self.revision_update_complete,'number',0)
 
     @need_repo
@@ -203,16 +202,36 @@ class SvnBrowser(browser.RepositoryBrowser):
             logger.error("Revert %s failed: %s" % (self.location, str(e)))
             pass
 
+    def _checkin(self, files, msg):
+        if files:
+            rev = self.client.checkin(files, msg.encode('utf-8'), recurse=True, keep_locks=False)
+        else:
+            rev = self.client.checkin([self.location], msg.encode('utf-8'), recurse=True, keep_locks=False)
+        return rev
+        
+    def _checkerror(self, exception, number):
+        for message, code in exception.args[1]:
+            if code == number:
+                return True 
+        return False
+    
     def submit(self, auth, files, msg):
         if auth:
             self.set_login(auth)
         logger.debug("Perform submit %s (%s) [%s]" % (self.location, files, msg))
         self._send_callback(self.callback_on_action_notify,_('Checking in'))
         try:
-            if files:
-                rev = self.client.checkin(files, msg.encode('utf-8'), recurse=True, keep_locks=False)
+            rev = self._checkin(files, msg)
+        except pysvn.ClientError, e:
+            if self._checkerror(e, 125001):
+                logger.warn(str(e))
+                self.cleanup()
+                try:
+                    rev = self._checkin(files, msg)
+                except:
+                    raise
             else:
-                rev = self.client.checkin([self.location], msg.encode('utf-8'), recurse=True, keep_locks=False)
+                raise
         except:
             raise
         if rev and hasattr(rev, 'number'):
