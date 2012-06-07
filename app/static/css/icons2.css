@@ -3,6 +3,9 @@
 	padding-right: 5px;
 	padding-left: 16px !important;
 }
+.action_icon.remove {
+	background-position: 0 -164px;
+}
 .addassg {
 	background-position: 0 0;
 }

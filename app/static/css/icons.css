@@ -7,6 +7,10 @@
   padding-left: 24px !important;
   line-height: 16px;
 }
+.action_icon2 {
+	padding-right: 5px;
+	padding-left: 16px !important;
+}
 .email {
 	background-image: url('../images/icons/email.png');
 }

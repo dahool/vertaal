@@ -12,17 +12,21 @@ function add_lang(url) {
 			"xml");			
 }
 function remove_lang(url, elem) {
-	$.post(url, function(data) {
-		$(data).find('response').each(function(){
-			var m = $(this).find('success');
-			if (m.text()) {
-				$(elem).find('delete').tipTip('destroy');
-				$(elem).remove();
-			} else {
-				show_ok_dialog('{% trans "An error ocurred while removing this team" %}');
-			}
-		})
-	},"xml");			
+	confirmSimple(function(r){
+		if (r) {
+			$.post(url, function(data) {
+				$(data).find('response').each(function(){
+					var m = $(this).find('success');
+					if (m.text()) {
+						$(elem).find('delete').tipTip('destroy');
+						$(elem).remove();
+					} else {
+						show_ok_dialog('{% trans "An error ocurred while removing this team" %}');
+					}
+				})
+			},"xml");			
+		}
+	});
 }
 function process_response(data) {
 	$(data).find('response').each(function(){
