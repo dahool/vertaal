@@ -94,7 +94,7 @@
 	<a class="highlight" name="{{ file.slug }}" href="{% url file_detail file.slug %}">
 	<sortext>{{ file.filename }}</sortext></a>
 	{% if file.need_merge %}
-		<span class="icon warn" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
+		<span class="icon action_icon warnmerge" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
 	{% endif %}	
 	{% with file.submits.get as submit %}
 		{% if  submit %}
@@ -128,7 +128,7 @@
 			<a href="{% url contact_me assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.translate %}
-		<span class="icon filelocked tooltip" title="{% spaceless %}
+		<span class="icon action_icon filelocked tooltip" title="{% spaceless %}
 		{% blocktrans with created=lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" locked=lock.created|timesince %}
 			Locked on {{created}} ({{locked}} ago).
 		{% endblocktrans %}{% endspaceless %}"></span>
@@ -156,7 +156,7 @@
 			<a href="{% url contact_me assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.review %}
-		<span class="icon filelocked tooltip" title="{% spaceless %}
+		<span class="icon action_icon filelocked tooltip" title="{% spaceless %}
 		{% blocktrans with lock.created|localtime:user.get_profile.timezone|timesince as locked %}
 			Locked {{locked}} ago.
 		{% endblocktrans %}{% endspaceless %}"></span>

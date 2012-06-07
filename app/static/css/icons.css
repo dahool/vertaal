@@ -7,19 +7,10 @@
   padding-left: 24px !important;
   line-height: 16px;
 }
-.action_icon {
-	background-repeat: no-repeat;
-	background-position: 0 50%;
-	padding-right: 5px;
-	padding-left: 16px !important;
-}
 .email {
 	background-image: url('../images/icons/email.png');
 }
 .add {
-	background-image: url('../images/icons/add.png');
-}
-.addassg {
 	background-image: url('../images/icons/add.png');
 }
 .tag_green {
@@ -52,29 +43,8 @@
 .info {
 	background-image: url(../images/icons/information.png);
 }
-.download {
-	background-image: url(../images/icons/page_white_put.png);
-}
-.file-view {
-	background-image: url(../images/icons/page_white_magnify.png);
-}
-.file-edit {
-	background-image: url(../images/icons/page_white_edit.png);
-}
 .lock {
 	background-image: url(../images/icons/lock.png);
-}
-.lock-break {
-	background-image: url(../images/icons/lock_break.png);
-}
-.lock-open {
-	background-image: url(../images/icons/lock_none.png);
-}
-.file-submit {
-	background-image: url(../images/icons/bullet_star.png);
-}
-.file-submit-edit {
-	background-image: url(../images/icons/bullet_red.png);
 }
 .upload {
 	background-image: url(../images/icons/attach.png);
@@ -113,9 +83,6 @@
 	background-image: url(../images/icons/accept.png);
 }
 .remove {
-	background-image: url(../images/icons/delete.png);
-}
-.removeassg {
 	background-image: url(../images/icons/delete.png);
 }
 .join {
@@ -181,15 +148,6 @@
 .mod-assign {
 	background-image: url(../images/icons/wrench.png);
 }
-.mark-translated {
-	background-image: url(../images/icons/flag_red.png);
-}
-.mark-reviewed {
-	background-image: url(../images/icons/flag_yellow.png);
-}
-.mark-completed {
-	background-image: url(../images/icons/flag_green.png);
-}
 .populate {
 	background-image: url(../images/icons/arrow_in.png);
 }
@@ -198,9 +156,6 @@
 }
 .svnlog {
 	background-image: url(../images/icons/world_link.png);
-}
-.file-diff {
-	background-image: url(../images/icons/page_white_code_red.png);
 }
 .view-url {
 	background-image: url(../images/icons/eye.png);
@@ -216,12 +171,4 @@
 }
 .team-page {
 	background-image: url(../images/icons/group_go.png);
-}
-.filelocked {
-	background-image: url(../images/icons/asterisk_yellow.png);
-	background-position: 0 50%;
-	margin-left: 5px;
-}
-.file-done {
-	background-image: url(../images/icons/tick.png);
 }

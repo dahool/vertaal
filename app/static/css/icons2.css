@@ -1,0 +1,59 @@
+.action_icon {
+	background: url('../images/icons/action_icon.png') no-repeat top left;
+	padding-right: 5px;
+	padding-left: 16px !important;
+}
+.addassg {
+	background-position: 0 0;
+}
+.download {
+	background-position: 0 -615px;
+}
+.file-view {
+	background-position: 0 -574px;
+}
+.file-edit {
+	background-position: 0 -533px;
+}
+.lock-break {
+	background-position: 0 -369px;
+}
+.lock-open {
+	background-position: 0 -410px;
+}
+.file-submit {
+	background-position: 0 -123px;
+}
+.file-submit-edit {
+	background-position: 0 -82px;
+}
+.warnmerge {
+	background-position: 0 -205px;
+}
+.removeassg {
+	background-position: 0 -164px;
+}
+.mark-translated {
+	background-position: 0 -287px;
+}
+.mark-reviewed {
+	background-position: 0 -328px;
+}
+.mark-completed {
+	background-position: 0 -246px;
+}
+.file-diff {
+	background-position: 0 -492px;
+}
+.file-udiff {
+	background-position: 0 -451px;
+}
+.filelocked {
+	background-position: 0 -41px;
+	margin-left: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;	
+}
+.file-done {
+	background-position: 0 -656px;
+}

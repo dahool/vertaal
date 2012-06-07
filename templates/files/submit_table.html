@@ -25,7 +25,8 @@
 		</td>
 		<td>
 		<a href="{% url get_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a>
-		<a href="{% url view_file_udiff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-diff" title="{% trans "View Diff" %}" style="padding-right: 0px;"></a>
+		<a href="{% url view_file_diff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-diff" title="{% trans "View Diff" %}" style="padding-right: 0px;"></a>
+		<a href="{% url view_file_udiff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-udiff" title="{% trans "View Unified Diff" %}" style="padding-right: 0px;"></a>
 		<a href="{% url edit_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon file-edit" title="{% trans "Edit" %}"></a>
 		<a href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a>
 		</td>
