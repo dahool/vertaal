@@ -8,8 +8,9 @@
   line-height: 16px;
 }
 .action_icon2 {
-	padding-right: 5px;
-	padding-left: 16px !important;
+  padding-right: 5px;
+  padding-left: 16px !important;
+  background-repeat: no-repeat;
 }
 .email {
 	background-image: url('../images/icons/email.png');
