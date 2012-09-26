@@ -7,7 +7,7 @@ import os
 import thread
 import time
     
-from django.utils.translation import ugettext as _
+from django.utils.translation import ungettext, ugettext as _
 from django.utils.encoding import smart_unicode
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -36,6 +36,10 @@ from django.conf import settings
 from common.view.decorators import render
 import StringIO
 from django.core.cache import cache
+
+from django.shortcuts import redirect
+
+from deferredsubmit import handler as deferredhandler
 
 try:
     import hashlib
@@ -443,18 +447,26 @@ def get_pot_file(request, slug):
         logger.error(e)
         raise Http404
     
-    response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
-    attach = "attachment;"
-    response['Content-Disposition'] = '%s filename=%s' % (attach, potfile.name)        
+    from files.external import get_external_url
+    url = get_external_url(potfile)
+    if url:
+        logger.debug('Redirect to ' + url)
+        response = redirect(url)
+    else:    
+        response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
+        attach = "attachment;"
+        response['Content-Disposition'] = '%s filename=%s' % (attach, potfile.name)        
     return response
 
 @login_required
 def get_file(request, slug, view=False, submit=False):
     file = get_object_or_404(POFile, slug=slug)
+    fileElement = file
     logger.debug("Get file - View: %s" % view)
     try:
         if submit:
             s = file.submits.get()
+            fileElement = s
             content = s.handler.get_content()
         else:
             content = file.handler.get_content(not view)
@@ -490,9 +502,15 @@ def get_file(request, slug, view=False, submit=False):
             cache.set(ckey, response)
         return response   
     else:
-        response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
-        attach = "attachment;"
-        response['Content-Disposition'] = '%s filename=%s' % (attach, file.filename)        
+        from files.external import get_external_url
+        url = get_external_url(fileElement)
+        if url:
+            logger.debug('Redirect to ' + url)
+            response = redirect(url)        
+        else:
+            response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
+            attach = "attachment;"
+            response['Content-Disposition'] = '%s filename=%s' % (attach, file.filename)        
     return response
 
 @login_required
@@ -538,7 +556,16 @@ def edit_file(request, slug):
                 request.user.message_set.create(
                                 message=_("You are not a member of this team."))                
                 return redirect
-
+            if file.assigns.all():
+                assign = file.assigns.get()
+                if not assign.translate == request.user and not assign.review == request.user:
+                    request.user.message_set.create(
+                                    message=_("You are not assigned to this file."))                
+                    return redirect                    
+            else:
+                request.user.message_set.create(
+                                    message=_("You are not assigned to this file."))                
+                return redirect       
             request.user.message_set.create(
                                 message=_("The file is now locked on your name."))            
             lock = POFileLock.objects.create(pofile=file, owner=request.user)
@@ -546,6 +573,10 @@ def edit_file(request, slug):
         try:
             if file.submits.all():
                 s = file.submits.get()
+                if s.locked:
+                    request.user.message_set.create(
+                                message=_("This file is being processed. It can't be modified."))
+                    return redirect                
                 s.enabled = False
                 s.save()
                 content = s.handler.get_content()
@@ -718,20 +749,27 @@ def confirm_submit(request):
     return HttpResponseRedirect(request.POST['back'])
 
 def do_commit(submits, user, repo_user, repo_pass, message=''):
-    c = SubmitClient(submits,
-                     user,
-                     repo_user,
-                     repo_pass,
-                     message)
-    try:
-        c.run()
-        user.message_set.create(
-                            message=_("The files were submitted."))
-    except Exception, e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        user.message_set.create(
-                            message=_("Failed. Reason: %s") % smart_unicode(e))
+    if deferredhandler.deferred_enabled:
+        deferredhandler.add_submits(submits, user, repo_user, repo_pass, message)
+        msg = ungettext('The file was added to the queue for later processing.',
+                            'The files were added to the queue for later processing.', len(submits))
+        user.message_set.create(message=msg)        
+    else:
+        c = SubmitClient(submits,
+                         user,
+                         repo_user,
+                         repo_pass,
+                         message)
+        try:
+            c.run()
+            msg = ungettext('File submitted.',
+                            'Files submitted.', len(submits))          
+            user.message_set.create(message=msg)
+        except Exception, e:
+            logger.error(e)
+            logger.error(traceback.format_exc())
+            user.message_set.create(
+                                message=_("Failed. Reason: %s") % smart_unicode(e))
     
 @login_required
 def commit_queue(request):
@@ -785,6 +823,11 @@ def edit_submit_file(request, slug):
         try:
             if file.submits.all():
                 s = file.submits.get()
+                if s.locked:
+                    request.user.message_set.create(
+                                message=_("This file is being processed. It can't be modified."))
+                    return redirect
+                                                    
                 s.enabled = False
                 s.save()
                 content = s.handler.get_content()

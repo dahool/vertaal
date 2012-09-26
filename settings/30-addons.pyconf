@@ -41,6 +41,7 @@ MAX_FILE_SIZE = 1048576
 
 REPOSITORIES = (
                 ('svn','subversion'),
+                ('fs','FileSystem'),
                 #('git','git'),
                 )
 

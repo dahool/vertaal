@@ -2,6 +2,7 @@ from __future__ import with_statement
 import os
 from django.conf import settings
 from datetime import datetime as dt
+from django.utils.encoding import smart_unicode
 
 from app.log import (logger)
 
@@ -54,11 +55,13 @@ class POFileHandler():
                 b.unlock()
                 del man
         
+    def get_file_path(self):
+        return smart_unicode(self.pofile.file)
+        
     def get_content(self, update = False):
         if update:
             self.update_repo()
-            
-        filef = file(self.pofile.file, 'rU')
+        filef = file(self.get_file_path(), 'rU')
         file_content = filef.read()
         filef.close()
         return file_content
@@ -66,8 +69,7 @@ class POFileHandler():
 class POTFileHandler(POFileHandler):
 
     def get_content(self):
-        path = unicode(self.pofile.file)
-        filef = file(path, 'rU')
+        filef = file(self.get_file_path(), 'rU')
         file_content = filef.read()
         filef.close()
         return file_content
@@ -76,8 +78,7 @@ class SubmitFileHandler(POFileHandler):
 
     def get_content(self):
         # this is not really a pofile, but a POFileSubmit
-        path = unicode(self.pofile.file)
-        filef = file(path, 'rU')
+        filef = file(self.get_file_path(), 'rU')
         file_content = filef.read()
         filef.close()
         return file_content

@@ -37,7 +37,7 @@
 			{% with pofile.potfile.get as potfile %}
 			<tr>
 				<th>
-				<a href="{% url get_pot_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+				<a href="{% url get_pot_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
 				{% trans "POT file:" %}
 				</th>
 				<td>
@@ -67,7 +67,7 @@
 			{% endif %}
 			<tr>
 				<th>
-				<a href="{% url get_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+				<a href="{% url get_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
 				{% trans "Translated:" %}</th>
 				<td><span title="{% trans "Total/Translated/Untranslated/Fuzzy" %}"/>{{pofile.trans_perc}}% ({{pofile.total}}/{{pofile.trans}}/{{pofile.untrans}}/{{pofile.fuzzy}})</span>
                 {% if pofile.potupdated %}
@@ -106,7 +106,7 @@
 			{% if submit %}
 			<tr>
 				<th colspan="2">
-				<a href="{% url get_submit_file pofile.slug %}" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+				<a href="{% url get_submit_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
 				{% if user.is_authenticated %}
 					{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
 				{% else %}

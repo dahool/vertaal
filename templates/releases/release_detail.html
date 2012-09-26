@@ -1,5 +1,5 @@
 {% extends "releases/release_base.html" %}
-{% load i18n stats extendtags %}
+{% load i18n stats extendtags settingstag %}
 {% block title %}{{ block.super }} | {{ release.name }} ({{release.project.name}}){% endblock %}
 {% block quick_menu %}
 {{ block.super }}
@@ -8,14 +8,17 @@
 {% block content %}
 {% load pagination_tags %}
 {% block content_title %}<h1>{{ release.name }}</h1>{% endblock %}
+{% setting "ENABLE_MANUAL_BUILD" as enable_build %}
 {% iftrue release.project.is_maintainer request.user %}
 <div id="form-action">
 <input type="button" name="href" class="icon edit" rel="{% url release_edit release.slug %}" value="{% trans "Edit" %}"/>
 <input type="button" name="href" class="icon add" rel="{% url release_create release.project.slug %}" value="{% trans "Add" %}"/>
 <input type="button" name="href" class="icon populate" rel="{% url release_populate release.slug %}" value="{% trans "Populate" %}"/>
+{% if enable_build or request.user.is_staff %}
 <input type="button" name="href" class="icon build" rel="{% url project_build release.slug %}" value="{% trans "Build cache" %}"/>
 {% if build_log %}
 <input type="button" name="href" class="icon misc_icon build-log" rel="{% url build_log release.project.slug, release.slug %}" value="{% trans "View console" %}"/>
+{% endif %}
 {% endif %}
 <input type="button" name="href" class="icon merge" rel="{% url multimerge release.slug %}" value="{% trans "POT Merge" %}"/>
 </div>

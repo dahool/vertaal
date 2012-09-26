@@ -12,6 +12,9 @@ from files.lib.msgfmt import *
 from files.models import POFile,POFileSubmit,POFileLog,LOG_ACTION
 from app.log import (logger)
                       
+class LockedException(Exception):
+    pass
+    
 def find_matching_file(name, release, language, user):
     files = POFile.objects.filter(filename__iexact=name,
                                   release=release,
@@ -93,11 +96,15 @@ def add_submit(pofile, owner, temp_file, comment='', merge=True):
     posubmit = None
     try:
         posubmit = sub = POFileSubmit.objects.get(pofile=pofile)
+        if sub.locked:
+            raise LockedException, _("%(file)s is being processed. It can't be modified right now.") % pofile.filename
         sub.update(owner=owner, file=temp_file, log_message=comment)
         sub.save()
         newsubmit = False
     except POFileSubmit.DoesNotExist:
         posubmit = POFileSubmit.objects.create(pofile=pofile, owner=owner, file=temp_file, log_message=comment, merge=merge)
+    except LockedException:
+        raise
     except Exception, e:
         logger.error("Add submit failed [%s]" % smart_unicode(e))
         raise Exception, _("Failed. Please try again. If the problem persist fill a ticket.")

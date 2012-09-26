@@ -1,2 +1,3 @@
 
-BROWSER_TYPES = {'svn': ('versioncontrol.lib.types.svn','SvnBrowser'),}
+BROWSER_TYPES = {'svn': ('versioncontrol.lib.types.svn','SvnBrowser'),
+                 'fs': ('versioncontrol.lib.types.filesystem','FileSystemBrowser'),}

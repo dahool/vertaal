@@ -4,13 +4,18 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from projects.models import *
 
+from django.core.validators import URLValidator
+
 userChoices = [(u.id, u.username) for u in User.objects.filter(is_active=True)]
 
 class ProjectForm(forms.ModelForm):
 
-    vcsurl = forms.URLField(widget=widgets.TextInput(attrs={'size':'50'}),
+    #vcsurl = forms.URLField(widget=widgets.TextInput(attrs={'size':'50'}),
+                            #label=_('Repository URL'),
+                            #help_text=_("Subversion repository URL"))
+    vcsurl = forms.CharField(widget=widgets.TextInput(attrs={'size':'50'}),
                             label=_('Repository URL'),
-                            help_text=_("Subversion repository URL"))
+                            help_text=_("Subversion repository URL"))                            
     viewurl = forms.URLField(widget=widgets.TextInput(attrs={'size':'50'}),
                             label=_('View Repository URL'),required=False)    
     repo_user = forms.RegexField(label=_("Username"), max_length=50,
@@ -29,7 +34,14 @@ class ProjectForm(forms.ModelForm):
     
     maintainers = forms.MultipleChoiceField(label=_("Project maintainers"),
                                             choices=userChoices)
-    
+    def clean_vcsurl(self):
+        data = self.cleaned_data['vcsurl']
+        if data:
+            if not data.startswith('file://'):
+                validate = URLValidator()
+                validate(data)
+        return data
+        
     class Meta:
         model = Project
         exclude = ("repo_pwd", )

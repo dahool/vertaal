@@ -645,6 +645,7 @@ input.default {
 }
 .grid td {
 	border-top: 1px solid #D9D9D9;
+    padding-top: 4px;
 }
 .grid span {
 	color:gray;

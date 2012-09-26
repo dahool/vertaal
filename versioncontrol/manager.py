@@ -154,10 +154,13 @@ class SubmitClient():
                             if os.path.exists(sfilename):
                                 if smfile.merge:
                                     if smfile.pofile.need_merge:
-                                        pot = smfile.pofile.potfile.get()
-                                        logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
-                                        # merge first the current file with the pot file
-                                        out = msgfmt.msgmerge(smfile.pofile.file, pot.file)
+                                        try:
+                                            pot = smfile.pofile.potfile.get()
+                                            logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
+                                            # merge first the current file with the pot file
+                                            out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
+                                        except POTFile.DoesNotExist:
+                                            out = 0
                                         if not len(out) > 1:
                                             logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
                                             out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
@@ -300,8 +303,8 @@ class Manager(object):
         self.browser.callback_on_action_notify =  self.notify_callback
         self.browser.callback_on_file_delete = self.__on_file_delete
         self.browser.callback_on_file_add = self.__on_file_add
-        #self.browser.callback_on_file_update = self.__on_file_add
-
+        self.browser.callback_on_file_update = self.__on_file_add
+        
         if project.repo_user and project.repo_pwd:
             self.browser.auth = BrowserAuth(project.repo_user, project.get_repo_pwd())
         

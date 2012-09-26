@@ -52,7 +52,7 @@
 <td class="filename">
 <!-- buttons -->
 	<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view" title="{% with file.filename as filename %}{% blocktrans %}View {{filename}}{% endblocktrans %}{% endwith %}"></a>
-	<a href="{% url get_file file.slug %}" class="nodecoration_icon action_icon download" title="{% with file.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
+	<a href="{% url get_file file.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% with file.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
 	{% if user.is_authenticated %}
 		{% if enabled and not readonly %}
 			{% if editable or can_manage %}
@@ -99,7 +99,7 @@
 	{% with file.submits.get as submit %}
 		{% if  submit %}
 			{% if submit.enabled %}
-			<a href="{% url get_submit_file file.slug %}" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
+			<a href="{% url get_submit_file file.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
 			{% else %}
 			<span class="action_icon nodecoration_icon file-submit-edit" title="{% trans "This file is being edited" %}"></span>
 			{% endif %}

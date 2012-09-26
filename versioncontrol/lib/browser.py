@@ -59,12 +59,16 @@ class RepositoryBrowser(object):
         callback_on_file_add ( absolute_filename ): on file add
         callback_on_file_update ( absolute_filename ): on file update
         """
+        # remote url
         if url.endswith('/'):
             self.url = url  
         else:
             self.url = url + "/"
+        # remote branch
         self.branch = branch
-        self.folder = folder  
+        # remote folder
+        self.folder = folder
+        # local path (destination)
         self.location = location
         self.auth = auth
 

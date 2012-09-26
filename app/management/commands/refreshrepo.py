@@ -50,17 +50,18 @@ class Command(BaseCommand):
                 teams = project.teams.all()
                 for release in project.releases.filter(enabled=True, read_only=False):
                     for component in project.components.all():
+
                         try:
                             b = BuildCache.objects.get(component=component, release=release)
                             if b.is_locked:
                                 break
-                            else:
-                                b.lock()
                         except:
                             b = BuildCache.objects.create(component=component,
                                                       release=release)
-                            b.lock()              
-                        else:                        
+                        
+                        b.lock()
+
+                        try:
                             for team in teams:
                                 if project.slug in failedProjects:
                                     self.stdout.write("Project %s skipped because previous fails\n" % project.slug)
@@ -88,6 +89,7 @@ class Command(BaseCommand):
                                     del man
                         finally:
                             if b: b.unlock()
+                            
         except Exception, e:
             logger.error(e.args)
             if b: b.unlock()

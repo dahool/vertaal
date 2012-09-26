@@ -389,6 +389,8 @@ class POFile(models.Model):
                     branch = self.release.vcsbranch
                 else:
                     branch = "branches/%s" % self.release.vcsbranch
+            else:
+                branch = self.release.vcsbranch
             url = '%s/%s/%s/%s' % (self.release.project.viewurl,
                                     branch,
                                     self.component.get_path(self.language.code),
@@ -747,3 +749,12 @@ pre_delete.connect(remove_pofile, sender=POFile)
 pre_delete.connect(remove_pofile, sender=POTFile)
 #post_save.connect(addsubmit_callback, sender=POFileSubmit)
 
+from files import external
+if external.is_enabled():
+    pre_delete.connect(external.remove_file_handler, sender=POFile)
+    pre_delete.connect(external.remove_file_handler, sender=POFileSubmit)
+    pre_delete.connect(external.remove_file_handler, sender=POTFile)
+    
+    post_save.connect(external.update_file_handler, sender=POFile)
+    post_save.connect(external.update_file_handler, sender=POFileSubmit)
+    post_save.connect(external.update_file_handler, sender=POTFile)

@@ -45,7 +45,7 @@ class Project(models.Model):
         help_text=_('Check to disable modifications (to all dependent components)'))
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    vcsurl = models.URLField(verbose_name=_('Repository URL'), blank=False, verify_exists=False, help_text=_("Subversion repository URL"))
+    vcsurl = models.CharField(verbose_name=_('Repository URL'), max_length=200, blank=False, help_text=_("Subversion repository URL"))
     viewurl = models.URLField(verbose_name=_('View Repository URL'), blank=True, verify_exists=False, null=True)
     viewurlparams = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('View URL parameters'), help_text=_("Parameters separated by semicolon (;). Ex: view=log;down=False"))
     
