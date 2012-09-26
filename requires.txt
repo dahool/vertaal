@@ -7,3 +7,4 @@ pygments
 recaptcha-client
 pycrypto
 python-dateutil
+python-openid

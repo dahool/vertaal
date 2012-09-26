@@ -32,13 +32,13 @@ class ChmodRotatingFileHandler(logging.handlers.RotatingFileHandler):
     
     def doRollover(self):
         logging.handlers.RotatingFileHandler.doRollover(self)
-        os.chmod(LOG_FILENAME, int('666',8))    
+        os.chmod(LOG_FILENAME, int('755',8))    
     
 LOG_FILENAME = getattr(settings, 'LOG_FILENAME')
 
 if not os.path.exists(os.path.dirname(LOG_FILENAME)):
     os.makedirs(os.path.dirname(LOG_FILENAME))
-    os.chmod(os.path.dirname(LOG_FILENAME), int('666',8))
+    os.chmod(os.path.dirname(LOG_FILENAME), int('755',8))
     
 DEFAULT_LOG_LEVEL = logging.INFO
 log_level = getattr(settings, 'LOG_LEVEL', DEFAULT_LOG_LEVEL)
