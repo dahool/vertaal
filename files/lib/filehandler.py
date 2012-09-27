@@ -23,10 +23,10 @@ class POFileHandler():
             b = BuildCache.objects.create(component=self.pofile.component,
                                           release=self.pofile.release)
         else:
-            # 15 minutes
+            updategap = getattr(settings,'FILE_UPDATE_GAP',900)
             diff = dt.now() - b.updated
             diffm = (diff.seconds/60)
-            if b.is_locked or diff.seconds < 900:
+            if b.is_locked or updategap == 0 or diff.seconds < updategap:
                 logger.debug("No need to update. Last updated %s. %s minutes ago. Current lock %s." % (
                                                                             b.updated,
                                                                             diffm,

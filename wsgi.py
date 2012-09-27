@@ -1,10 +1,9 @@
-import os
-import sys
+#!/usr/bin/python
+import os, sys
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vertaal.settings")
 
-# This application object is used by the development server
-# as well as any WSGI server configured to use this file.
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+from django.core.handlers.wsgi import WSGIHandler
+application = WSGIHandler()

@@ -342,7 +342,7 @@ class Manager(object):
     def build(self):
         logger.debug("init")
         rev = self.browser.init_repo()
-        self._do_post_process()
+        #self._do_post_process()
         self.update_stats(False)
         logger.debug("end")
         return rev
@@ -354,7 +354,7 @@ class Manager(object):
     def refresh(self):
         logger.debug("init")
         rev = self.browser.update()
-        self._do_post_process()
+        #self._do_post_process()
         logger.debug("end")
         return rev
         
@@ -423,7 +423,9 @@ class Manager(object):
             except Exception, e:
                 logger.error(e)
                 raise
-        
+        else:
+            logger.debug("Ignored %s" % path)
+                    
     def update_stats(self, update=True):
         logger.debug("init")
 
@@ -460,6 +462,10 @@ class POTUpdater(Manager):
     
     def __init__(self, project, release, component, lang=None, log=None, user=None):
         super(POTUpdater, self).__init__(project, release, component, lang, log, user)
+        self.browser.callback_on_action_notify =  self.notify_callback
+        self.browser.callback_on_file_delete = self.__on_file_delete
+        self.browser.callback_on_file_add = self.__on_file_add
+        self.browser.callback_on_file_update = self.__on_file_add        
         self.notify_callback(_('Starting POT processing'))
                 
     def _init_location(self, project, release, component, lang):
@@ -541,3 +547,5 @@ class POTUpdater(Manager):
             except Exception, e:
                 logger.error(e)
                 raise
+        else:
+            logger.debug("Ignored %s" % path)

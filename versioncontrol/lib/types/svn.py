@@ -66,6 +66,7 @@ class SvnBrowser(browser.RepositoryBrowser):
         pysvn.wc_notify_action.update_delete: 'D',
         pysvn.wc_notify_action.update_external: 'X',
         pysvn.wc_notify_action.update_update: 'U',
+        pysvn.wc_notify_action.update_started: 'started',
         pysvn.wc_notify_action.annotate_revision: 'A',
     }
     
@@ -96,21 +97,24 @@ class SvnBrowser(browser.RepositoryBrowser):
     def _notify(self, arg_dict):
         msg = None
         
-        if arg_dict['action'] == pysvn.wc_notify_action.update_completed:
-            self.revision_update_complete = arg_dict['revision']
-            if hasattr(self.revision_update_complete, 'number'):
-                msg = _('At revision %s.') % self.revision_update_complete.number
-            else:
-                msg = _('Completed.') 
-        elif arg_dict['path'] != '' and self.wc_notify_action_map[ arg_dict['action'] ] is not None:
-            if arg_dict['action'] == pysvn.wc_notify_action.update_add:
-                self._send_callback(self.callback_on_file_add,arg_dict['path'])
-            elif arg_dict['action'] == pysvn.wc_notify_action.update_delete:
-                self._send_callback(self.callback_on_file_delete,arg_dict['path'])
-            elif arg_dict['action'] == pysvn.wc_notify_action.update_update:
-                self._send_callback(self.callback_on_file_update,arg_dict['path'])
-            msg = '%s %s' % (self.wc_notify_action_map[ arg_dict['action'] ], os.path.basename(arg_dict['path']))
-
+        try:
+            if arg_dict['action'] == pysvn.wc_notify_action.update_completed:
+                self.revision_update_complete = arg_dict['revision']
+                if hasattr(self.revision_update_complete, 'number'):
+                    msg = _('At revision %s.') % self.revision_update_complete.number
+                else:
+                    msg = _('Completed.') 
+            elif arg_dict['path'] != '' and self.wc_notify_action_map[ arg_dict['action'] ] is not None:
+                if arg_dict['action'] == pysvn.wc_notify_action.update_add:
+                    self._send_callback(self.callback_on_file_add,arg_dict['path'])
+                elif arg_dict['action'] == pysvn.wc_notify_action.update_delete:
+                    self._send_callback(self.callback_on_file_delete,arg_dict['path'])
+                elif arg_dict['action'] == pysvn.wc_notify_action.update_update:
+                    self._send_callback(self.callback_on_file_update,arg_dict['path'])
+                msg = '%s %s' % (self.wc_notify_action_map[ arg_dict['action'] ], os.path.basename(arg_dict['path']))
+        except KeyError:
+            logger.debug(arg_dict)
+            
         if msg:
             self._send_callback(self.callback_on_action_notify, msg)
             
@@ -153,6 +157,7 @@ class SvnBrowser(browser.RepositoryBrowser):
 
         try:
             logger.debug("check path %s" % self.location)
+            self.client.status(self.location)
             if self._normalizePath(self.client.root_url_from_path(self.location)) <> self._normalizePath(self.url):
                 self._switch_url()
         except pysvn.ClientError, e:

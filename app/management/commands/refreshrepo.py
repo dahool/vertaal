@@ -24,20 +24,30 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.conf import settings
 import time
-from versioncontrol.manager import Manager, LockRepo
+from optparse import make_option
+from versioncontrol.manager import Manager, LockRepo, POTUpdater
 from versioncontrol.models import BuildCache
 from batch.log import (logger)
 from projects.models import Project
 
 class Command(BaseCommand):
     help = 'Refresh Repositories'
-
+    option_list = BaseCommand.option_list + (
+        make_option('--pot-only',
+            action='store_true',
+            dest='potonly',
+            default=False,
+            help='Get POT cache only'),
+        )
+        
     def handle(self, *args, **options):
 
         self.stdout.write('Started.\n')
         logger.info("Start")
         t_start = time.time() 
 
+        potonly = options['potonly']
+        
         BOT_USERNAME = getattr(settings, 'BOT_USERNAME', 'bot')
         BOT_USER = User.objects.get(username=BOT_USERNAME)
 
@@ -54,6 +64,7 @@ class Command(BaseCommand):
                         try:
                             b = BuildCache.objects.get(component=component, release=release)
                             if b.is_locked:
+                                logger.info("%s - %s is locked" % (release, component))
                                 break
                         except:
                             b = BuildCache.objects.create(component=component,
@@ -62,36 +73,55 @@ class Command(BaseCommand):
                         b.lock()
 
                         try:
-                            for team in teams:
-                                if project.slug in failedProjects:
-                                    self.stdout.write("Project %s skipped because previous fails\n" % project.slug)
-                                    logger.info("Project %s skipped because previous fails" % project.slug)
-                                    break
-                                
-                                logger.info("Refresh project %s, release %s, component %s, team %s" % (project.name,
-                                                                                                      release.name,
-                                                                                                      component.name,
-                                                                                                      team.language.name))
-                                man = Manager(project, release, component, team.language, user=BOT_USER)
-                                
+                            if not potonly:
+                                for team in teams:
+                                    if project.slug in failedProjects:
+                                        self.stdout.write("Project %s skipped because previous fails\n" % project.slug)
+                                        logger.info("Project %s skipped because previous fails" % project.slug)
+                                        break
+                                    
+                                    logger.info("Refresh project %s, release %s, component %s, team %s" % (project.name,
+                                                                                                          release.name,
+                                                                                                          component.name,
+                                                                                                          team.language.name))
+                                    man = Manager(project, release, component, team.language, user=BOT_USER)
+                                    
+                                    try:
+                                        logger.debug('Create lock')
+                                        with LockRepo(project.slug,
+                                                      release.slug,
+                                                      component.slug,
+                                                      team.language.code) as lock:
+                                            logger.debug('Resfresh')
+                                            man.refresh()
+                                        logger.debug('Process Stats')
+                                        man.update_stats(False)
+                                    except Exception, e:
+                                        failedProjects.append(project.slug)
+                                        logger.error(e)
+                                        traceback.print_exc(file=sys.stdout)
+                                    finally:
+                                        del man
+                                    
+                            if component.potlocation:
+                                logger.info("Processing POT")
+                                repo = POTUpdater(project, release, component)
                                 try:
-                                    with LockRepo(project.slug,
-                                                  release.slug,
-                                                  component.slug,
-                                                  team.language.code) as lock:        
-                                        man.refresh()
-                                    man.update_stats(False)
+                                    repo.update_stats(True)
                                 except Exception, e:
-                                    failedProjects.append(project.slug)
                                     logger.error(e)
                                     traceback.print_exc(file=sys.stdout)
                                 finally:
-                                    del man
+                                    del repo
+                            else:
+                                logger.debug("POT skipped")
+                                                                    
                         finally:
                             if b: b.unlock()
                             
         except Exception, e:
             logger.error(e.args)
+            traceback.print_exc(file=sys.stdout)
             if b: b.unlock()
         logger.info("End")
         
