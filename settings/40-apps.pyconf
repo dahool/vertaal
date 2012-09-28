@@ -48,7 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.markup',
-    #'django_evolution',
+    'django_evolution',
     'django_authopenid',
     #'django_openidconsumer',
     'app',
