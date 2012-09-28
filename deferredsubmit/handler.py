@@ -29,6 +29,7 @@ class UserFiles:
     repo_user = None
     repo_pwd = None
     files = []
+    deffiles = []
     messages = set()
     
     def __init__(self, user, repo_user, repo_pwd):
@@ -40,12 +41,18 @@ class UserFiles:
         if msg and len(msg)>0:
             self.messages.add(msg)
     
+    def add_files(self, posubmit, deffile, msg):
+        self.files.append(posubmit)
+        self.deffiles.append(deffile)
+        self.add_message(msg)
+        
     @property
     def message(self):
         return "\n".join(self.messages)
         
 def process_queue():
     from django.utils.translation import ugettext as _
+    from common.utils.lock import LockException
     count = 0
     erc = 0
     submits = {}
@@ -58,9 +65,8 @@ def process_queue():
             submits[project] = {userkey: UserFiles(sf.user, sf.repo_user, sf.repo_pwd)}
         elif not submits[project].has_key(userkey):
             submits[project][userkey] = UserFiles(sf.user, sf.repo_user, sf.repo_pwd)
-        submits[project][userkey].files.append(sf.filesubmit)
-        submits[project][userkey].add_message(sf.message)
-        sf.delete()
+        submits[project][userkey].add_files(sf.filesubmit, sf, sf.message)
+        sf.lock()
         
     for project in submits.values():
         for userfile in project.values():
@@ -71,11 +77,21 @@ def process_queue():
                              userfile.message)
             try:
                 count += 1
-                c.run()
+                c.run(True)
+                # if success the file is removed when the fk gets removed.
+            except LockException, e:
+                logger.error(e)
+                for sf in userfile.deffiles: sf.lock(False)
             except Exception, e:
+                for sf in userfile.deffiles:
+                    try:
+                        sf.delete()
+                    except Exception:
+                        pass
                 erc += 1
                 logger.error(e)
                 logger.error(traceback.format_exc())
                 userfile.user.message_set.create(
                                     message=_("Submit failed. Reason: %s") % smart_unicode(e))
+                
     return {'count': count, 'errors': erc}

@@ -98,7 +98,7 @@ class SubmitClient():
             logger.exception('__process_notifications')
         logger.debug("End")
         
-    def run(self):
+    def run(self, raiseLock = False):
         """ it is supposed all the files in the list 
             are from the same project.
             So I will create a lock for the project to avoid conflicts
@@ -110,8 +110,9 @@ class SubmitClient():
             c = {}
             f = []
             # lets lock the submitfile to avoid conflics
-            smfile.locked = True
-            smfile.save()
+            if not smfile.locked:
+                smfile.locked = True
+                smfile.save()
             pofile = smfile.pofile
             rkey = "_".join([pofile.release.project.slug,pofile.release.slug])
             ckey = pofile.component.slug
@@ -123,147 +124,149 @@ class SubmitClient():
             c[ckey] = f
             releases[rkey] = c
 
-        for key, release in releases.items():
-            for component in release.itervalues():
-                lang = component[0].pofile.language.code
-                message = []
-                if self.message:
-                    message.append(self.message)
-                try:
-                    # lets update the POT first
-                    if component[0].pofile.component.potlocation:
-                        potup = POTUpdater(component[0].pofile.release.project,
-                                           component[0].pofile.release,
-                                           component[0].pofile.component)
-                        potup.refresh()
-                        del potup
-                    with LockRepo(component[0].pofile.release.project.slug,
-                             component[0].pofile.release.slug,
-                             component[0].pofile.component.slug,
-                             component[0].pofile.language.code) as lock:
-                        v = Manager(component[0].pofile.release.project,
-                                           component[0].pofile.release,
-                                           component[0].pofile.component,
-                                           component[0].pofile.language)
-                        v.revert()
-                        v.refresh()
-                        commit_files = []
-                        commit_files_notice = []
-                        for smfile in component:
-                            sfilename = smart_unicode(smfile.file)
-                            if os.path.exists(sfilename):
-                                if smfile.merge:
-                                    if smfile.pofile.need_merge:
-                                        try:
-                                            pot = smfile.pofile.potfile.get()
-                                            logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
-                                            # merge first the current file with the pot file
-                                            out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
-                                        except POTFile.DoesNotExist:
-                                            out = 0
-                                        if not len(out) > 1:
+        try:
+            for key, release in releases.items():
+                for component in release.itervalues():
+                    lang = component[0].pofile.language.code
+                    message = []
+                    if self.message:
+                        message.append(self.message)
+                    try:
+                        # lets update the POT first
+                        if component[0].pofile.component.potlocation:
+                            potup = POTUpdater(component[0].pofile.release.project,
+                                               component[0].pofile.release,
+                                               component[0].pofile.component)
+                            potup.refresh()
+                            del potup
+                            
+                        with LockRepo(component[0].pofile.release.project.slug,
+                                 component[0].pofile.release.slug,
+                                 component[0].pofile.component.slug,
+                                 component[0].pofile.language.code) as lock:
+                            v = Manager(component[0].pofile.release.project,
+                                               component[0].pofile.release,
+                                               component[0].pofile.component,
+                                               component[0].pofile.language)
+                            v.revert()
+                            v.refresh()
+                            commit_files = []
+                            commit_files_notice = []
+                            for smfile in component:
+                                sfilename = smart_unicode(smfile.file)
+                                if os.path.exists(sfilename):
+                                    if smfile.merge:
+                                        if smfile.pofile.need_merge:
+                                            try:
+                                                pot = smfile.pofile.potfile.get()
+                                                logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
+                                                # merge first the current file with the pot file
+                                                out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
+                                            except POTFile.DoesNotExist:
+                                                out = 0
+                                            if not len(out) > 1:
+                                                logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                                out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                        else:
                                             logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
                                             out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
                                     else:
-                                        logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                        out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                        try:
+                                            logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
+                                            shutil.copy(sfilename, str(smfile.pofile.file))
+                                            out = ''
+                                        except Exception, e:
+                                            out = str(e)
+                                    if len(out)>1:
+                                        raise Exception(_('An error occurred while performing file merge. %s' % ";".join(out)))
+                                    # create a backup, just in case
+                                    if getattr(settings, 'BACKUP_UPLOADS', True):
+                                        newname = '%s.%s.bak' % (sfilename, datetime.datetime.now().strftime('%Y%m%d%H%M'))
+                                        logger.debug("Backup file %s" % newname)
+                                        shutil.copy(sfilename, newname)
+                                        os.chmod(newname, getattr(settings, 'FILE_UPLOAD_PERMISSIONS',0664))
+                                    
+                                    # files to be commited
+                                    commit_files.append(str(smfile.pofile.file))
+                                    # notification list
+                                    commit_files_notice.append((smfile.owner, smfile.pofile))
+                                    message.append('%s: %s (%s)' % (smfile.pofile.filename,smfile.log_message, smfile.owner.username))
                                 else:
-                                    try:
-                                        logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
-                                        shutil.copy(sfilename, str(smfile.pofile.file))
-                                        out = ''
-                                    except Exception, e:
-                                        out = str(e)
-                                if len(out)>1:
-                                    raise Exception(_('An error occurred while performing file merge. %s' % ";".join(out)))
-                                # create a backup, just in case
-                                if getattr(settings, 'BACKUP_UPLOADS', True):
-                                    newname = '%s.%s.bak' % (sfilename, datetime.datetime.now().strftime('%Y%m%d%H%M'))
-                                    logger.debug("Backup file %s" % newname)
-                                    shutil.copy(sfilename, newname)
-                                    os.chmod(newname, getattr(settings, 'FILE_UPLOAD_PERMISSIONS',0664))
-                                
-                                # files to be commited
-                                commit_files.append(str(smfile.pofile.file))
-                                # notification list
-                                commit_files_notice.append((smfile.owner, smfile.pofile))
-                                message.append('%s: %s (%s)' % (smfile.pofile.filename,smfile.log_message, smfile.owner.username))
-                            else:
-                                logger.error("File %s does not exists [%s]" % (sfilename,smfile.id))
-                                raise Exception(_('The system was unable to find the file id %(id)s. Please open a support ticket [%(url)s]') % 
-                                                {'id':smfile.id, 'url': getattr(settings, 'TICKET_URL','')})
-                        message.append('\n\nCommitted with %s on behalf of %s' % (getattr(settings, 'PROJECT_NAME'),self.current))
-                        commit_message = "\n".join(message)
-                        rev = v.commit(self.user, self.pword, commit_files, commit_message)
-                        
-                        for fowner, fpo in commit_files_notice:
-                            self.__add_notification(fowner, fpo)
-                        
-                        try:
-                            bc = BuildCache.objects.get(component=component[0].pofile.component,
-                                                        release=component[0].pofile.release)
-                            bc.setrev(rev)
-                            bc.save()
-                        except BuildCache.DoesNotExist:
-                            pass
-                        except Exception, e:
-                            logger.error(e)
-
-                        if rev:
-                            if self.message:
-                                cmessage = _('%(message)s (Committed revision %(revision)s)') % {'message': self.message, 'revision': rev}
-                            else:
-                                cmessage = _('Committed revision %s') % rev
-                        else:
-                            logger.debug("Revision is: %s" % str(rev))
-                            cmessage = self.message
-                                                        
-                        for smfile in component:
-                            old_instance = copy.copy(smfile.pofile)
-                            smfile.pofile.update_file_stats(True)
-                            self.notifier.check_notification(smfile.pofile, old_instance, False)
-                            try:
-                                smfile.pofile.locks.get().delete()
-                                POFileLog.objects.create(pofile=smfile.pofile, user=smfile.owner, action=LOG_ACTION['ACT_LOCK_DEL'], comment=smfile.log_message)
-                            except:
-                                pass
-                            smfile.delete()
-                            POFileLog.objects.create(pofile=smfile.pofile, user=self.current, action=LOG_ACTION['ACT_SUBMIT'], comment=cmessage)
-                            try:
-                                self.files.remove(smfile)
-                            except:
-                                pass
+                                    logger.error("File %s does not exists [%s]" % (sfilename,smfile.id))
+                                    raise Exception(_('The system was unable to find the file id %(id)s. Please open a support ticket [%(url)s]') % 
+                                                    {'id':smfile.id, 'url': getattr(settings, 'TICKET_URL','')})
+                            message.append('\n\nCommitted with %s on behalf of %s' % (getattr(settings, 'PROJECT_NAME'),self.current))
+                            commit_message = "\n".join(message)
+                            rev = v.commit(self.user, self.pword, commit_files, commit_message)
                             
-                except LockException, e:
-                    # unlock remaining files
-#                    for f in self.files:
-#                        f.lock = False
-#                        f.save()
-                    self.__unlock_submits(component)
-                    logger.error(e)
-                    #raise Exception(_('The project is locked. Please try again in a few minutes'))
-                    exceps.append(_('Component %(component)s is locked for language %(lang)s. Please try again in a few minutes') % 
-                                  {'component': component[0].pofile.component.name, 'lang': component[0].pofile.language.name})
-                except Exception, e:
-                    logger.error(e)
-                    if str(e).count('callback_get_login')>0:
-                        self.__unlock_submits(self.files)
-                        logger.error("Fail login")
-                        raise AuthException(_('Authentication error. Check your username and password.'))
-                    elif str(e).count('callback_ssl_server_trust_prompt')>0:
-                        self.__unlock_submits(self.files)
-                        logger.error("Fail trust SSL")
-                        raise AuthException(_('SSL Validation error. If the problem persist contact the repository administrator.'))
-                    else:
-                        self.__unlock_submits(component)
-                        exceps.append(str(e))
-                
-        thread.start_new_thread(self.__process_notifications, ())
-        set_user_language(self.user)
+                            for fowner, fpo in commit_files_notice:
+                                self.__add_notification(fowner, fpo)
+                            
+                            try:
+                                bc = BuildCache.objects.get(component=component[0].pofile.component,
+                                                            release=component[0].pofile.release)
+                                bc.setrev(rev)
+                                bc.save()
+                            except BuildCache.DoesNotExist:
+                                pass
+                            except Exception, e:
+                                logger.error(e)
 
-        if len(exceps)>0:
-            raise Exception("\n".join(exceps))
-        
+                            if rev:
+                                if self.message:
+                                    cmessage = _('%(message)s (Committed revision %(revision)s)') % {'message': self.message, 'revision': rev}
+                                else:
+                                    cmessage = _('Committed revision %s') % rev
+                            else:
+                                logger.debug("Revision is: %s" % str(rev))
+                                cmessage = self.message
+                                                            
+                            for smfile in component:
+                                old_instance = copy.copy(smfile.pofile)
+                                smfile.pofile.update_file_stats(True)
+                                self.notifier.check_notification(smfile.pofile, old_instance, False)
+                                try:
+                                    smfile.pofile.locks.get().delete()
+                                    POFileLog.objects.create(pofile=smfile.pofile, user=smfile.owner, action=LOG_ACTION['ACT_LOCK_DEL'], comment=smfile.log_message)
+                                except:
+                                    pass
+                                smfile.delete()
+                                POFileLog.objects.create(pofile=smfile.pofile, user=self.current, action=LOG_ACTION['ACT_SUBMIT'], comment=cmessage)
+                                try:
+                                    self.files.remove(smfile)
+                                except:
+                                    pass
+                            
+                    except LockException, e:
+                        logger.error(e)
+                        msg=_('Component %(component)s is locked for language %(lang)s. Please try again in a few minutes.') % {'component': component[0].pofile.component.name, 'lang': component[0].pofile.language.name}
+                        if raiseLock:
+                            raise LockException(msg)
+                        
+                        self.__unlock_submits(component)
+                        exceps.append(msg)
+                    except Exception, e:
+                        logger.error(e)
+                        if str(e).count('callback_get_login')>0:
+                            self.__unlock_submits(self.files)
+                            logger.error("Fail login")
+                            raise AuthException(_('Authentication error. Check your username and password.'))
+                        elif str(e).count('callback_ssl_server_trust_prompt')>0:
+                            self.__unlock_submits(self.files)
+                            logger.error("Fail trust SSL")
+                            raise AuthException(_('SSL Validation error. If the problem persist contact the repository administrator.'))
+                        else:
+                            self.__unlock_submits(component)
+                            exceps.append(str(e))
+                        
+            if len(exceps)>0:
+                raise Exception("\n".join(exceps))
+                        
+        finally:
+            #thread.start_new_thread(self.__process_notifications, ())
+            self.__process_notifications()
+            set_user_language(self.user)
+
         logger.debug("end")
 
 def get_repository_location(project, release, component, lang):
