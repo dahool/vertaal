@@ -16,20 +16,10 @@ def unavailable(request, template_name='503.html'):
     return HttpResponseForbidden(t.render(RequestContext(request)))
 
 @requires_csrf_token
-def not_found(request, exception, template_name='404.html'):
-
-    try:
-        tried = exception.args[0]['tried']
-    except (IndexError, TypeError):
-        tried = []
-    else:
-        if not tried:
-            tried = ''
-
+def not_found(request, template_name='404.html'):
     t = loader.get_template(template_name)
     c = RequestContext(request, {
         'request_path': request.path_info[1:],
-        'reason': smart_str(exception, errors='replace'),
         'settings': settings,
     })
     return HttpResponseNotFound(t.render(c))
