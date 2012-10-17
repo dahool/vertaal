@@ -36,7 +36,7 @@
 				if (offset!='END') {
 					refreshdelay = setTimeout('request_log('+offset+')',2000);
 				} else {
-					clearTimeout(refreshdelay);
+                    if (refreshdelay != undefined) clearTimeout(refreshdelay);
 				}
 					
 			} 
