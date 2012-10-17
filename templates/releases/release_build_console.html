@@ -24,6 +24,7 @@
 	}
 	
 	function process_console_response(data) {
+        var refreshdelay;
 		$(data).find('response').each(function(){
 			var c = $(this).find('text');
 			if (c.length>0) {
