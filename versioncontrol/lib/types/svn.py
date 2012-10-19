@@ -66,7 +66,6 @@ class SvnBrowser(browser.RepositoryBrowser):
         pysvn.wc_notify_action.update_delete: 'D',
         pysvn.wc_notify_action.update_external: 'X',
         pysvn.wc_notify_action.update_update: 'U',
-        pysvn.wc_notify_action.update_started: 'started',
         pysvn.wc_notify_action.annotate_revision: 'A',
     }
     
