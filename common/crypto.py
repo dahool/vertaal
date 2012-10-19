@@ -23,8 +23,6 @@ from django.conf import settings
 
 class BCipher:
     
-    prefix = 'CRYP='
-    
     def __init__(self, key=None):
         if not key:
             key = getattr(settings, 'CIPHER_KEY', settings.SECRET_KEY)
@@ -38,12 +36,10 @@ class BCipher:
             part = padtext[n:n+8]
             res.append(self.__cipher.encrypt(part))
         ciphertext = ''.join(res)
-        return self.prefix + base64.b64encode(ciphertext)
+        return base64.b64encode(ciphertext)
     
     def decrypt(self, b64text):
-        if not b64text.startswith(self.prefix):
-            return b64text
-        enctext = b64text[len(self.prefix):]
+        enctext = b64text
         try:
             ciphertext = base64.b64decode(enctext)
         except TypeError:
