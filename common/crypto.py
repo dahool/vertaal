@@ -16,58 +16,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
-from random import randrange
-import base64
-from blowfish import Blowfish
 from django.conf import settings
+from blowfishcipher import cipher
 
 class BCipher:
     
     def __init__(self, key=None):
         if not key:
             key = getattr(settings, 'CIPHER_KEY', settings.SECRET_KEY)
-        if len(key) < 8: raise Exception('Key length must be greater than 8')
-        self.__cipher = Blowfish(key)
+        self.__cipher = cipher(key)
         
     def encrypt(self, text):
-        padtext = self.__pad_text(text)
-        res = []
-        for n in range(0,len(padtext),8):
-            part = padtext[n:n+8]
-            res.append(self.__cipher.encrypt(part))
-        ciphertext = ''.join(res)
-        return base64.b64encode(ciphertext)
+        return self.__cipher.encrypt(text)
     
     def decrypt(self, b64text):
-        enctext = b64text
-        try:
-            ciphertext = base64.b64decode(enctext)
-        except TypeError:
-            # text is not encrypted
-            return enctext
-        res = []
-        for n in range(0,len(ciphertext),8):
-            part = ciphertext[n:n+8]
-            res.append(self.__cipher.decrypt(part))
-        cleartext = ''.join(res)
-        return self.__depad_text(cleartext)
-
-    # Blowfish cipher needs 8 byte blocks to work with
-    def __pad_text(self, text):
-        pad_bytes = 8 - (len(text) % 8)
-        # try to deal with unicode strings
-        asc_text = str(text)
-        for i in range(pad_bytes - 1):
-            asc_text += chr(randrange(0, 256))
-        # final padding byte; % by 8 to get the number of padding bytes
-        bflag = randrange(6, 248); bflag -= bflag % 8 - pad_bytes
-        asc_text += chr(bflag)
-        return asc_text
-
-    def __depad_text(self, text):
-        pad_bytes = ord(text[-1]) % 8
-        if not pad_bytes: pad_bytes = 8
-        return text[:-pad_bytes]
+        return self.__cipher.decrypt(b64text)
         
 if __name__ == '__main__':
     import sys
