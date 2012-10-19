@@ -227,6 +227,7 @@ class SvnBrowser(browser.RepositoryBrowser):
         try:
             rev = self._checkin(files, msg)
         except pysvn.ClientError, e:
+            logger.debug(str(e))
             if self._checkerror(e, 125001):
                 logger.warn(str(e))
                 self.cleanup()
