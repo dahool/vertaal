@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'exceptionlogger',
     'news',
     'deferredsubmit',
+    'commandlogger',
 #    'debug_toolbar',
 )
 

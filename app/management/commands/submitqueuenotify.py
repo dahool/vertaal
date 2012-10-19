@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.core.management.base import BaseCommand
+from commandlogger import LogBaseCommand
 
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User, Permission
@@ -30,15 +30,15 @@ from teams.models import Team
 from files.models import POFileSubmit
 from batch.log import (logger)
 
-class Command(BaseCommand):
+class Command(LogBaseCommand):
     help = 'Notify Pending Submits'
 
-    def handle(self, *args, **options):
+    def do_handle(self, *args, **options):
 
         self.stdout.write('Started.\n')
         logger.info("Start")
         t_start = time.time() 
-
+        rsp = None
         perm = Permission.objects.get(codename='can_commit')
         prefix = getattr(settings,'EMAIL_SUBJECT_PREFIX','')    
         
@@ -64,7 +64,10 @@ class Command(BaseCommand):
                     sendm.append((subject, message, None, [ u.email ]))
                     
                 logger.debug("Notify %d users" % len(sendm))
+                rsp = "Notify %d users" % len(sendm)
                 send_mass_mail(sendm, True)        
 
         logger.info("End")
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))
+        
+        return rsp

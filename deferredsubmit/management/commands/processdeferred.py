@@ -16,14 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.core.management.base import BaseCommand
-from django.conf import settings
+from commandlogger import LogBaseCommand
 from deferredsubmit.handler import process_queue
 
-class Command(BaseCommand):
+class Command(LogBaseCommand):
     help = 'Process Deferred Submit Queue'
 
-    def handle(self, *args, **options):
+    def do_handle(self, *args, **options):
         self.stdout.write('Starting.\n')
-        self.stdout.write('Processed %(count)s. Errors %(errors)s.\n' % process_queue())
+        rsp = 'Processed %(count)s. Errors %(errors)s.\n' % process_queue()
+        self.stdout.write(rsp)
         self.stdout.write("Done.\n");
+        return rsp

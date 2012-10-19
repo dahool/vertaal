@@ -17,23 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 from __future__ import with_statement
-import traceback, sys, os
+import os
 
-from django.core.management.base import BaseCommand
+from commandlogger import LogBaseCommand
 
-from django.contrib.auth.models import User
 from django.conf import settings
 import time
 import datetime
-from versioncontrol.manager import Manager, LockRepo
-from versioncontrol.models import BuildCache
 from batch.log import (logger)
-from projects.models import Project
 
-class Command(BaseCommand):
+class Command(LogBaseCommand):
     help = 'Notify Pending Submits'
 
-    def handle(self, *args, **options):
+    def do_handle(self, *args, **options):
 
         self.stdout.write('Started.\n')
         logger.info("Start")
@@ -65,8 +61,8 @@ class Command(BaseCommand):
                         logger.debug("OK")
     
         logger.debug("Processing user path ...")
-        for dir in os.walk(settings.TEMP_UPLOAD_PATH):
-            pathname, s, files = dir
+        for dirn in os.walk(settings.TEMP_UPLOAD_PATH):
+            pathname, s, files = dirn
             for name in files:
                 filename = os.path.join(pathname, name)
                 logger.debug("Processing %s" % filename)
@@ -89,3 +85,5 @@ class Command(BaseCommand):
         logger.info("End")
         
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))
+        
+        return "Removed %d\n" % count

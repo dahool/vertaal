@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.core.management.base import BaseCommand
+from commandlogger import LogBaseCommand
 from django.utils.translation import ugettext as _
 from django.utils.translation import ungettext
 from django.template import loader, Context
@@ -31,10 +31,10 @@ from django.conf import settings
 import time
 import datetime
 
-class Command(BaseCommand):
+class Command(LogBaseCommand):
     help = 'Check User Unread Messages'
 
-    def handle(self, *args, **options):
+    def do_handle(self, *args, **options):
 
         self.stdout.write('Started.\n')
         logger.info("Start")
@@ -88,3 +88,5 @@ class Command(BaseCommand):
         logger.info("End")
         
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))
+        
+        return "Notify %d users" % len(mailing)

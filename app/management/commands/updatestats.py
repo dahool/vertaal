@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import with_statement
 import traceback, sys
 
-from django.core.management.base import BaseCommand
+from commandlogger import LogBaseCommand
 
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -57,9 +57,9 @@ def update_callback(sender, **kwargs):
             notification.check_notification(new, actual)
 
 
-class Command(BaseCommand):
+class Command(LogBaseCommand):
     help = 'Refresh Repositories And Update Stats'
-    option_list = BaseCommand.option_list + (
+    option_list = LogBaseCommand.option_list + (
         make_option('--stats-only',
             action='store_true',
             dest='statsonly',
@@ -67,7 +67,7 @@ class Command(BaseCommand):
             help='Do not refresh repository, update stats only'),
         )
 
-    def handle(self, *args, **options):
+    def do_handle(self, *args, **options):
         global notification, potnotification
                 
         self.stdout.write('Started.\n')
@@ -82,7 +82,7 @@ class Command(BaseCommand):
         BOT_USER = User.objects.get(username=BOT_USERNAME)
             
         pre_save.connect(update_callback, sender=POFile)
-
+        rsp = None
         projects = Project.objects.filter(enabled=True, read_only=False)
         b = None
         try:
@@ -156,6 +156,7 @@ class Command(BaseCommand):
                             
         except Exception, e:
             logger.error(e.args)
+            rsp = str(e)
             if b: b.unlock()
 
         pre_save.disconnect(update_callback, sender=POFile)
@@ -197,3 +198,5 @@ class Command(BaseCommand):
         
         logger.info("End")
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))
+        
+        return rsp
