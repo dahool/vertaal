@@ -2,6 +2,7 @@ import os
 import shutil
 import tarfile
 import tempfile
+import time
 
 from django.db import transaction
 from django.utils.encoding import smart_unicode
@@ -9,7 +10,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from common.utils.file import deltree
 from files.lib.msgfmt import *
-from files.models import POFile,POFileSubmit,POFileLog,LOG_ACTION
+from files.models import POFile,POFileSubmit,POFileLog,LOG_ACTION, SUBMIT_STATUS_ENUM
 from app.log import (logger)
                       
 class LockedException(Exception):
@@ -58,8 +59,15 @@ def handle_text_file(pofile, text, user, comment=''):
         raise
     check_file(dest_file, pofile.language.code, pofile)
     new_file = get_upload_path(pofile)
-    r = add_submit(pofile, user, new_file, comment)
     move_file(dest_file, new_file)
+    try:
+        r = add_submit(pofile, user, new_file, comment)
+    except Exception, e:
+        try:
+            os.unlink(new_file)
+        except:
+            pass
+        raise e
     return r
 
 def move_file(src, tge):
@@ -90,19 +98,19 @@ def get_upload_path(pofile):
     """
         returns the upload path + filename
     """
-    return os.path.join(settings.UPLOAD_PATH,pofile.component.project.slug, pofile.slug + ".po")
+    return os.path.join(settings.UPLOAD_PATH,pofile.component.project.slug, "%s_%s.po" % (str(int(time.time())), pofile.slug))
     
 def add_submit(pofile, owner, temp_file, comment='', merge=True):
     posubmit = None
     try:
-        posubmit = sub = POFileSubmit.objects.get(pofile=pofile)
+        posubmit = sub = POFileSubmit.objects.get(pofile=pofile, status=SUBMIT_STATUS_ENUM.PENDING)
         if sub.locked:
             raise LockedException, _("%(file)s is being processed. It can't be modified right now.") % pofile.filename
         sub.update(owner=owner, file=temp_file, log_message=comment)
         sub.save()
         newsubmit = False
     except POFileSubmit.DoesNotExist:
-        posubmit = POFileSubmit.objects.create(pofile=pofile, owner=owner, file=temp_file, log_message=comment, merge=merge)
+        posubmit = POFileSubmit.objects.create(pofile=pofile, owner=owner, file=temp_file, log_message=comment, merge=merge, status=SUBMIT_STATUS_ENUM.PENDING)
     except LockedException:
         raise
     except Exception, e:

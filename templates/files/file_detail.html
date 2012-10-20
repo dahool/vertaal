@@ -102,7 +102,7 @@
 				</td>
 			</tr>	
 			{% endif %}
-			{% with pofile.submits.get as submit %}
+			{% with pofile.submits.get_pending as submit %}
 			{% if submit %}
 			<tr>
 				<th colspan="2">
@@ -121,51 +121,89 @@
 				
 	</table>
 </div>
-<div id="log-file-table">
-	{% with pofile.log.all as logs %}
-	{% if logs %}
-	{% autopaginate logs %}
-	<table class="stats-table">
-		<thead>
-			<tr>
-				<th class="title-center">{% trans "Action" %}</th>
-				<th class="title-center">{% trans "Date" %}</th>
-				<th class="title-center">{% trans "User" %}</th>
-				<th class="title-center">{% trans "Comments" %}</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for log in logs %}
-			<tr>
-				<td>{{ log.get_action_display }}</td>
-				<td>{% if user.is_authenticated %}
-					{{ log.created|localtime:request.user.get_profile.timezone|date:"M d, H:i" }}
-					{% else %}
-					{{ log.created|date:"M d, H:i O" }}
-					{% endif %}	
-				</td>
-				<td>
-					{% if log.user.get_full_name %}
-					{{ log.user.get_full_name }} ({{ log.user.username }})
-					{% else %}
-					{{ log.user.username }}
-					{% endif %}					
-				</td>
-				<td>{{ log.comment }}</td>
-			</tr>
-			{% endfor %}			
-		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="3">
-					<div class="pagination_box">{% paginate %}</div>
-				</td>
-			</tr>
-		</tfoot>
-	</table>
-	{% else %}
-	<p>{% trans "No actions registered yet" %}</p>
-	{% endif %}
-	{% endwith %}
+<div class="file-detail-wrapper">
+	<div class="side-left">
+		<div id="log-file-table">
+			{% with pofile.log.all as logs %}
+			{% if logs %}
+			{% autopaginate logs %}
+			<table class="stats-table">
+				<thead>
+					<tr>
+						<th class="title-center">{% trans "Action" %}</th>
+						<th class="title-center">{% trans "Date" %}</th>
+						<th class="title-center">{% trans "User" %}</th>
+						<th class="title-center">{% trans "Comments" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for log in logs %}
+					<tr>
+						<td>{{ log.get_action_display }}</td>
+						<td>{% if user.is_authenticated %}
+							{{ log.created|localtime:request.user.get_profile.timezone|date:"M d, H:i" }}
+							{% else %}
+							{{ log.created|date:"M d, H:i O" }}
+							{% endif %}	
+						</td>
+						<td>
+							{% if log.user.get_full_name %}
+							{{ log.user.get_full_name }} ({{ log.user.username }})
+							{% else %}
+							{{ log.user.username }}
+							{% endif %}					
+						</td>
+						<td>{{ log.comment }}</td>
+					</tr>
+					{% endfor %}			
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="3">
+							<div class="pagination_box">{% paginate %}</div>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+			{% else %}
+			<p>{% trans "No actions registered yet" %}</p>
+			{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+	<div class="side-right">
+	   {% if user.is_authenticated and pofile.submits.all %}
+	   <table id="submit-history" class="stats-table">
+	        <caption>{% trans "Submit History" %}</caption>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th class="title-center">{% trans "Date" %}</th>
+                    <th class="title-center">{% trans "User" %}</th>
+                    <th class="title-center">{% trans "Status" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sfile in pofile.submits.all|slice:":5" %}
+                <tr>
+                    <td><a href="{% url get_submit_file_arch sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
+                    <td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+                    <td>{% if sfile.owner.get_full_name %}
+			            {{ sfile.owner.get_full_name }} ({{ sfile.owner.username }})
+			            {% else %}
+			            {{ sfile.owner.username }}
+			            {% endif %}</td>
+                    <td>{{ sfile.get_status_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+            <td colspan="4" class="title-center">{% setting "BACKUP_CLEAN_AGE" as days %}{% blocktrans %}Files older than {{days}} days are removed.{%endblocktrans%}</td>
+            </tr> 
+            </tfoot>
+        </table>
+        {% endif %}
+	</div>
 </div>
 {% endblock %}

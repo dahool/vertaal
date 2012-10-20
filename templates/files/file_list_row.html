@@ -44,7 +44,7 @@
 {% url set_assigned_reviewer file.slug as set_assigned_reviewer %}
 {% url toggle_mark file.slug as toggle_mark_url %}
 
-{% if file.submits.all %}
+{% if file.submits.all_pending %}
 	{% url view_submit_file file.slug as view_url %}
 {% else %}
 	{% url view_file file.slug as view_url %}
@@ -96,7 +96,7 @@
 	{% if file.need_merge %}
 		<span class="icon action_icon warnmerge" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
 	{% endif %}	
-	{% with file.submits.get as submit %}
+	{% with file.submits.get_pending as submit %}
 		{% if  submit %}
 			{% if submit.enabled %}
 			<a href="{% url get_submit_file file.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>

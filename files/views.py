@@ -137,8 +137,8 @@ def toggle(request, slug):
                 # if the file is locked by the same user or the user is admin or coord
                 # then can unlock the file
                 if file.locks.get().can_unlock(request.user):
-                    if file.submits.all():
-                        if file.submits.get().owner.username == request.user.username:
+                    if file.submits.all_pending():
+                        if file.submits.get_pending().owner.username == request.user.username:
                             res['message'] = _('The file will be unlocked once submitted.')       
                     else:
                         file.locks.get().delete()
@@ -189,7 +189,7 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     auser = assign.translate
                     if auser:
                         if can_manage or auser == request.user:
-                            if file.submits.all() and file.submits.get().owner == auser:
+                            if file.submits.all_pending() and file.submits.get_pending().owner == auser:
                                 return XMLResponse({'message': _('The file has a pending submit. Cannot be released right now.')})
                             else:
                                 assign.translate = None
@@ -202,7 +202,7 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     auser = assign.review
                     if auser:
                         if can_manage or auser == request.user:
-                            if file.submits.all() and file.submits.get().owner == auser:
+                            if file.submits.all_pending() and file.submits.get_pending().owner == auser:
                                 return XMLResponse({'message': _('The file has a pending submit. Cannot be released right now.')})
                             else:
                                 assign.review = None
@@ -458,6 +458,23 @@ def get_pot_file(request, slug):
         response['Content-Disposition'] = '%s filename=%s' % (attach, potfile.name)        
     return response
 
+
+@login_required
+def get_file_arch(request, id):
+    sfile = get_object_or_404(POFileSubmit, pk=id)
+    logger.debug("Get archived file %s" % id)
+    from files.external import get_external_url
+    url = get_external_url(sfile)
+    if url:
+        logger.debug('Redirect to ' + url)
+        response = redirect(url)
+    else:
+        content = sfile.handler.get_content()
+        response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
+        attach = "attachment;"
+        response['Content-Disposition'] = '%s filename=%s' % (attach, sfile.filename)   
+    return response
+
 @login_required
 def get_file(request, slug, view=False, submit=False):
     file = get_object_or_404(POFile, slug=slug)
@@ -465,7 +482,7 @@ def get_file(request, slug, view=False, submit=False):
     logger.debug("Get file - View: %s" % view)
     try:
         if submit:
-            s = file.submits.get()
+            s = file.submits.get_pending()
             fileElement = s
             content = s.handler.get_content()
         else:
@@ -530,7 +547,7 @@ def edit_file(request, slug):
                                     message=_("Your file was added to the submission queue."))
                     return redirect
                 except Exception, e:
-                    res = e.message.split("$$")
+                    res = str(e).split("$$")
                     for m in res:
                         request.user.message_set.create(
                                     message=m[:-1])
@@ -539,8 +556,8 @@ def edit_file(request, slug):
 #                                message=form.content.error)
                 
         else:
-            if file.submits.all():
-                s = file.submits.get()
+            if file.submits.all_pending():
+                s = file.submits.get_pending()
                 s.enabled = True
                 s.save()            
             return redirect
@@ -571,8 +588,8 @@ def edit_file(request, slug):
             lock = POFileLock.objects.create(pofile=file, owner=request.user)
         
         try:
-            if file.submits.all():
-                s = file.submits.get()
+            if file.submits.all_pending():
+                s = file.submits.get_pending()
                 if s.locked:
                     request.user.message_set.create(
                                 message=_("This file is being processed. It can't be modified."))
@@ -717,7 +734,9 @@ def confirm_submit(request):
                                          user=request.user, action='X',
                                          comment=form.cleaned_data.get('message'))
                 #file.pofile.locks.get().delete()
-                submfile.delete()
+                #submfile.delete()
+                submfile.status = SUBMIT_STATUS_ENUM.REJECTED
+                submfile.save()
             else:
                 files.append(submfile)
 #                c = CommitQueue.objects.create(submit=file,
@@ -814,15 +833,15 @@ def edit_submit_file(request, slug):
                         request.user.message_set.create(
                                     message=m[:-1])
         else:
-            if file.submits.all():
-                s = file.submits.get()
+            if file.submits.all_pending():
+                s = file.submits.get_pending()
                 s.enabled = True
                 s.save()            
             return redirect
     else:
         try:
-            if file.submits.all():
-                s = file.submits.get()
+            if file.submits.all_pending():
+                s = file.submits.get_pending()
                 if s.locked:
                     request.user.message_set.create(
                                 message=_("This file is being processed. It can't be modified."))
@@ -850,8 +869,8 @@ def view_file_diff(request, slug, uniff=False):
     file = get_object_or_404(POFile, slug=slug)
     redirect = HttpResponseRedirect(reverse('commit_queue'))
     
-    if file.submits.all():
-        s = file.submits.get()
+    if file.submits.all_pending():
+        s = file.submits.get_pending()
         content = make_file_diff(file, s, uniff)
         return render_to_response("files/file_diff.html",
                                    {'body': content,
@@ -976,7 +995,7 @@ def do_merge(request, slug):
                         message=_("You are not a member of this team."))                
         return redirect            
     
-    if pofile.submits.all():
+    if pofile.submits.all_pending():
         request.user.message_set.create(
                                         message=_("The file has a pending submit. You can't force a merge right now."))
         return redirect

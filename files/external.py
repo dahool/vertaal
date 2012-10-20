@@ -8,6 +8,7 @@ def is_enabled():
     
 def get_file_location(elem):
     from files.models import POFile, POTFile, POFileSubmit
+    name = None
     url = []
     if isinstance(elem, POFileSubmit):
         pofile = elem.pofile
@@ -18,22 +19,28 @@ def get_file_location(elem):
     url.append(pofile.component.slug)
     if isinstance(elem, POFileSubmit):
         url.append('SUBMIT')
-        url.append(elem.pofile.filename)
+        url.append("%s_%s" % (elem.pk, elem.pofile.filename))
+        name = elem.pofile.filename
     elif isinstance(elem, POTFile):
         url.append('POT')
         url.append(elem.name)
     else:
         url.append(elem.filename)
-    return url
+    return name, url
     
 def get_external_url(elem):
     if is_enabled():
-        return settings.FILE_EXTERNAL_URL + '/'.join(get_file_location(elem))
+        name, url = get_file_location(elem)
+        exurl = settings.FILE_EXTERNAL_URL + '/'.join(url)
+        if name:
+            exurl = exurl + "?name=" + name
+        return exurl
     else:
         return None
         
 def update_file_handler(sender, instance, created, **kw):
-    tgtfile = os.path.join(settings.FILE_EXTERNAL_PATH, os.path.sep.join(get_file_location(instance)))
+    name, url = get_file_location(instance)
+    tgtfile = os.path.join(settings.FILE_EXTERNAL_PATH, os.path.sep.join(url))
     try:
         if not os.path.exists(os.path.dirname(tgtfile)):
             os.makedirs(os.path.dirname(tgtfile))
@@ -43,7 +50,8 @@ def update_file_handler(sender, instance, created, **kw):
         logger.error(str(e))
 
 def remove_file_handler(sender, instance, **kw):
-    tgtfile = os.path.join(settings.FILE_EXTERNAL_PATH, os.path.sep.join(get_file_location(instance)))
+    name, url = get_file_location(instance)
+    tgtfile = os.path.join(settings.FILE_EXTERNAL_PATH, os.path.sep.join(url))
     if os.path.exists(tgtfile):
         try:
             logger.debug('Delete ' + tgtfile)

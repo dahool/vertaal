@@ -1274,3 +1274,29 @@ fieldset { padding:0; border:0; margin-top:5px; }
 #filterbutton {
 	margin-right: 10px;
 }
+.side-left, .side-right {
+	width: 50%;	
+}
+.side-left {
+	float: left;
+}
+.side-right {
+	float: right;
+}
+.file-detail-wrapper .side-left {
+	width: 60%;
+}
+.file-detail-wrapper .side-right {
+	width: 40%;
+}
+.stats-table caption {
+    background: url("../images/table-hover.png") repeat scroll 0 0 #EFEFEF;
+    border-bottom: 2px solid #E3EAEE;
+    color: #444444;
+    font-size: 95%;
+    padding: 0.3em;
+	font-weight: bold;	
+}
+#submit-history {
+	width: 35em;
+}

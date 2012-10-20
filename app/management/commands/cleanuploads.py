@@ -25,6 +25,8 @@ from django.conf import settings
 import time
 import datetime
 from batch.log import (logger)
+from files.models import POFileSubmit
+from django.utils.encoding import smart_unicode
 
 class Command(LogBaseCommand):
     help = 'Notify Pending Submits'
@@ -82,6 +84,17 @@ class Command(LogBaseCommand):
         logger.info("Removed %d" % count)
         self.stdout.write("Removed %d\n" % count)
 
+        count = 0
+        logger.debug("Clean orphaned submits ...")
+        for fsub in POFileSubmit.objects.all():
+            filename = smart_unicode(fsub.file)
+            if not os.path.exists(filename):
+                fsub.delete()
+                count+=1
+        
+        logger.info("Removed %d orphaned submits" % count)
+        self.stdout.write("Removed %d orphaned submits\n" % count)
+        
         logger.info("End")
         
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))

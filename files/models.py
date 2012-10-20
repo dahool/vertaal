@@ -39,6 +39,17 @@ STATUS_CHOICES = (
     (3, _('Completed')),
 )
 
+class SUBMIT_STATUS_ENUM:
+    PENDING = 0
+    SUBMITTED = 1
+    REJECTED = 2
+    
+SUBMIT_STATUS_CHOICES = (
+    (SUBMIT_STATUS_ENUM.PENDING, _('Pending')),
+    (SUBMIT_STATUS_ENUM.SUBMITTED, _('Submitted')),
+    (SUBMIT_STATUS_ENUM.REJECTED, _('Rejected')),
+)
+
 LOG_ACTION = {'ACT_LOCK_ADD': 'A',
         'ACT_LOCK_DEL': 'R',
         'ACT_UPLOAD': 'U',
@@ -641,31 +652,50 @@ class POFileLog(models.Model):
         return '<POFileLog: %s - Action: %s>' % (self.pofile.filename,
                                                  self.action)
     
+def get_upload_path(instance, filename):
+    return instance.pofile.slug
+   
+#class FileSystemStorage(storage.FileSystemStorage):
+#    """
+#    Subclass Django's standard FileSystemStorage to fix permissions
+#    of uploaded files.
+#    """
+#    def _save(self, name, content):
+#        name =  super(FileSystemStorage, self)._save(name, content)
+#        full_path = self.path(name)
+#        mode = getattr(settings, 'FILE_UPLOAD_PERMISSIONS', None)
+#        if not mode:
+#            mode = 0644
+#        os.chmod(full_path, mode)
+#        return name
+
 class POFileSubmitManager(models.Manager):
+    use_for_related_fields = True
     
     def by_project_and_language(self, project, language):
         files = self.filter(pofile__language=language,
                             pofile__release__project=project,
+                            status=SUBMIT_STATUS_ENUM.PENDING,
                             enabled=True).order_by('-created')
         return files
+    
+    def get_pending(self, pofile=None):
+        """return one result only.
+        mainly for use with related manager
+        """
+        kwargs = {'status': SUBMIT_STATUS_ENUM.PENDING}
+        if pofile:
+            kwargs['pofile'] = pofile
+        return self.get_query_set().get(**kwargs)
+    
+    def all_pending(self):
+        return self.filter(status=SUBMIT_STATUS_ENUM.PENDING)
 
-def get_upload_path(instance, filename):
-    return instance.pofile.slug
-   
-class FileSystemStorage(storage.FileSystemStorage):
-    """
-    Subclass Django's standard FileSystemStorage to fix permissions
-    of uploaded files.
-    """
-    def _save(self, name, content):
-       name =  super(FileSystemStorage, self)._save(name, content)
-       full_path = self.path(name)
-       mode = getattr(settings, 'FILE_UPLOAD_PERMISSIONS', None)
-       if not mode:
-           mode = 0644
-       os.chmod(full_path, mode)
-       return name
-   
+    def completed(self, pofile = None):
+        if pofile:
+            return self.filter(pofile=pofile).exclude(status=SUBMIT_STATUS_ENUM.PENDING)    
+        return self.exclude(status=SUBMIT_STATUS_ENUM.PENDING)
+       
 class POFileSubmit(models.Model):
     """A file upload
     
@@ -676,21 +706,23 @@ class POFileSubmit(models.Model):
     'testfile.es.po (test)'
     """
         
-    pofile = models.ForeignKey(POFile, related_name='submits', null=True)
+    pofile = models.ForeignKey(POFile, related_name='submits')
     created = models.DateTimeField(auto_now=True, auto_now_add=True, editable=True)
     owner = models.ForeignKey(User, related_name='files_submitted')
     enabled = models.BooleanField(default=True, db_index=True)
     locked = models.BooleanField(default=False, db_index=True)
     log_message = models.CharField(max_length=255, default='')
     file = models.FileField(max_length=500,
-                            storage=FileSystemStorage(location=settings.UPLOAD_PATH),
+                            storage=storage.FileSystemStorage(location=settings.UPLOAD_PATH),
                             upload_to=get_upload_path) 
     merge = models.BooleanField(default=True)
+    status = models.IntegerField(db_index=True, choices=SUBMIT_STATUS_CHOICES, default=SUBMIT_STATUS_ENUM.PENDING)
+    
     objects = POFileSubmitManager()
     
     class Meta:
         db_table = 'pofile_submit'
-        unique_together = ('pofile', 'owner')
+        #unique_together = ('pofile', 'owner')
         ordering  = ('-created',)
         get_latest_by = 'created'
     

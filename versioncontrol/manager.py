@@ -34,7 +34,8 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.conf import settings
 
-from files.models import POFile, POFileLog, POTFile, LOG_ACTION
+from files.models import POFile, POFileLog, POTFile, LOG_ACTION,\
+    SUBMIT_STATUS_ENUM
 from versioncontrol.lib.browser import BrowserAuth, RepositoryBrowserFactory, AuthException
 from common.utils.lock import Lock, LockException
 from common.i18n import set_user_language, UserLanguage
@@ -179,12 +180,12 @@ class SubmitClient():
                                             out = str(e)
                                     if len(out)>1:
                                         raise Exception(_('An error occurred while performing file merge. %s' % ";".join(out)))
-                                    # create a backup, just in case
-                                    if getattr(settings, 'BACKUP_UPLOADS', True):
-                                        newname = '%s.%s.bak' % (sfilename, datetime.datetime.now().strftime('%Y%m%d%H%M'))
-                                        logger.debug("Backup file %s" % newname)
-                                        shutil.copy(sfilename, newname)
-                                        os.chmod(newname, getattr(settings, 'FILE_UPLOAD_PERMISSIONS',0664))
+#                                    # create a backup, just in case
+#                                    if getattr(settings, 'BACKUP_UPLOADS', True):
+#                                        newname = '%s.%s.bak' % (sfilename, datetime.datetime.now().strftime('%Y%m%d%H%M'))
+#                                        logger.debug("Backup file %s" % newname)
+#                                        shutil.copy(sfilename, newname)
+#                                        os.chmod(newname, getattr(settings, 'FILE_UPLOAD_PERMISSIONS',0664))
                                     
                                     # files to be commited
                                     commit_files.append(str(smfile.pofile.file))
@@ -220,17 +221,22 @@ class SubmitClient():
                             else:
                                 logger.debug("Revision is: %s" % str(rev))
                                 cmessage = self.message
-                                                            
+                                        
+                            # process submitted files                    
                             for smfile in component:
                                 old_instance = copy.copy(smfile.pofile)
                                 smfile.pofile.update_file_stats(True)
                                 self.notifier.check_notification(smfile.pofile, old_instance, False)
                                 try:
+                                    # remove user lock
                                     smfile.pofile.locks.get().delete()
                                     POFileLog.objects.create(pofile=smfile.pofile, user=smfile.owner, action=LOG_ACTION['ACT_LOCK_DEL'], comment=smfile.log_message)
                                 except:
                                     pass
-                                smfile.delete()
+                                #smfile.delete()
+                                #archive submitted file
+                                smfile.status = SUBMIT_STATUS_ENUM.SUBMITTED
+                                smfile.save()
                                 POFileLog.objects.create(pofile=smfile.pofile, user=self.current, action=LOG_ACTION['ACT_SUBMIT'], comment=cmessage)
                                 try:
                                     self.files.remove(smfile)

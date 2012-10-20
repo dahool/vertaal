@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from files.models import POFileLog, POFileSubmit, POFile
+from files.models import POFileLog, POFileSubmit, POFile, SUBMIT_STATUS_ENUM
 from projects.models import Project
 from releases.models import Release
 from languages.models import Language
@@ -124,7 +124,7 @@ class CommitQueue(Feed):
         if self.language:
             return POFileSubmit.objects.by_project_and_language(project, self.language)
         else:
-            return POFileSubmit.objects.filter(project=project, enabled=True)
+            return POFileSubmit.objects.filter(project=project, enabled=True, status=SUBMIT_STATUS_ENUM.PENDING)
 
     def item_pubdate(self, item):
         return item.created
