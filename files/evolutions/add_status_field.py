@@ -19,9 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 Created on 20/10/2012
 """
-from django_evolution.mutations import AddField
+from django_evolution.mutations import AddField, ChangeField
 from django.db import models
 
 MUTATIONS = [
-    AddField('POFileSubmit', 'status', models.IntegerField, initial=0, db_index=True)
+    AddField('POFileSubmit', 'status', models.IntegerField, initial=0, db_index=True),
+    ChangeField('POFileSubmit', 'pofile', initial=0, null=False),
 ]
