@@ -92,7 +92,8 @@ class Command(BaseCommand):
                                                       release.slug,
                                                       component.slug,
                                                       team.language.code) as lock:
-                                            logger.debug('Resfresh')
+                                            logger.debug('Refresh')
+                                            man.revert()
                                             man.refresh()
                                         logger.debug('Process Stats')
                                         man.update_stats(False)

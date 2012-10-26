@@ -126,7 +126,9 @@ class Command(LogBaseCommand):
                                                   release.slug,
                                                   component.slug,
                                                   team.language.code) as lock:        
-                                        if dorefresh: b.setrev(man.refresh())
+                                        if dorefresh:
+                                            man.revert()
+                                            b.setrev(man.refresh())
                                         man.update_stats(False)
                                 except Exception, e:
                                     failedProjects.append(project.slug)
