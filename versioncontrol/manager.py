@@ -115,8 +115,8 @@ class SubmitClient():
                 smfile.locked = True
                 smfile.save()
             pofile = smfile.pofile
-            rkey = "_".join([pofile.release.project.slug,pofile.release.slug])
-            ckey = pofile.component.slug
+            rkey = "%s_%s" % (pofile.release.project.slug,pofile.release.slug)
+            ckey = "%s_%s" % (pofile.component.slug, pofile.language.code)
             if releases.has_key(rkey):
                 c = releases.get(rkey)
             if c.has_key(ckey):
