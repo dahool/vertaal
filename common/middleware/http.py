@@ -7,7 +7,7 @@ class HttpErrorMiddleware(object):
     def process_exception(self, request, exception):
         if isinstance(exception, Http403):
             return forbidden(request)
-        elif isinstance(exception, Http404):
-            return not_found(request, exception)
+#        elif isinstance(exception, Http404):
+#            return not_found(request, exception)
         else:
             return None
