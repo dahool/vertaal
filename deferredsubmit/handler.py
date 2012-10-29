@@ -104,7 +104,7 @@ def process_queue():
                     with UserLanguage(userfile.user) as user_lang:
                         subject = getattr(settings, 'EMAIL_SUBJECT_PREFIX','') + _("File submit failed")
                         message = render_to_string('updater/commitfail.mail', {'error': smart_unicode(e)})
-                        send_mail(subject, message, None, userfile.user.email)
+                        send_mail(subject, message, None, [userfile.user.email])
                 except Exception, e:
                     logger.error(str(e))
                 
