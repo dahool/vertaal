@@ -13,6 +13,7 @@ def msgmerge(new_file, source, destination=None):
                                                                    'source': source,
                                                                    'dest': destination}
         output = get_command_output(command)
+               
     else:
         import shutil
         try:
@@ -20,9 +21,7 @@ def msgmerge(new_file, source, destination=None):
             output = ''
         except Exception, e:
             output = str(e)
-    
-#    if len(output)>1:
-#        return False
+
     return output
 
 def msgfmt_check(pofile, lang='C'):

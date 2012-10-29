@@ -1,3 +1,4 @@
+from __future__ import with_statement
 from deferredsubmit.models import POFileSubmitDeferred
 from django.conf import settings
 from django.utils.encoding import smart_unicode
@@ -53,6 +54,10 @@ class UserFiles:
 def process_queue():
     from django.utils.translation import ugettext as _
     from common.utils.lock import LockException
+    from common.i18n import UserLanguage
+    from django.template.loader import render_to_string
+    from django.core.mail import send_mail
+    
     count = 0
     erc = 0
     submits = {}
@@ -93,5 +98,14 @@ def process_queue():
                 logger.error(traceback.format_exc())
                 userfile.user.message_set.create(
                                     message=_("Submit failed. Reason: %s") % smart_unicode(e))
+                
+                # send mail
+                try:
+                    with UserLanguage(userfile.user) as user_lang:
+                        subject = getattr(settings, 'EMAIL_SUBJECT_PREFIX','') + _("File submit failed")
+                        message = render_to_string('updater/commitfail.mail', {'error': smart_unicode(e)})
+                        send_mail(subject, message, None, userfile.user.email)
+                except Exception, e:
+                    logger.error(str(e))
                 
     return {'count': count, 'errors': erc}

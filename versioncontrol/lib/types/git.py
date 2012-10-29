@@ -58,7 +58,7 @@ class GitBrowser(browser.RepositoryBrowser):
         """
         repo = Repo(self.location)
         if repo.is_dirty():
-            repo.index.add([*]) <---
+            repo.index.add([*]) #<---
             rev = repo.index.commit(msg)
             repo.remote().push()
             return rev.name_rev

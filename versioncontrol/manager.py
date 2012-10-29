@@ -154,6 +154,7 @@ class SubmitClient():
                             commit_files = []
                             commit_files_notice = []
                             for smfile in component:
+                                pot = None
                                 sfilename = smart_unicode(smfile.file)
                                 if os.path.exists(sfilename):
                                     if smfile.merge:
@@ -179,7 +180,13 @@ class SubmitClient():
                                         except Exception, e:
                                             out = str(e)
                                     if len(out)>1:
-                                        raise Exception(_('An error occurred while performing file merge. %s' % ";".join(out)))
+                                        out.pop(0)
+                                        mergeerror = ";".join(out)
+                                        mergeerror = mergeerror.replace(str(smfile.pofile.file), smfile.pofile.filename)
+                                        mergeerror = mergeerror.replace(sfilename, smfile.pofile.filename)
+                                        if pot:
+                                            mergeerror = mergeerror.replace(str(pot.file), smfile.pofile.filename)
+                                        raise Exception(_('An error occurred while merging %s. %s' % (smfile.pofile.filename, mergeerror)))
 #                                    # create a backup, just in case
 #                                    if getattr(settings, 'BACKUP_UPLOADS', True):
 #                                        newname = '%s.%s.bak' % (sfilename, datetime.datetime.now().strftime('%Y%m%d%H%M'))
