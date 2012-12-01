@@ -363,9 +363,9 @@ class Manager(object):
         logger.debug("end")
         return rev
         
-    def revert(self):
+    def revert(self, path=None):
         logger.debug("revert")
-        self.browser.revert()
+        self.browser.revert(path)
 
     def refresh(self):
         logger.debug("init")

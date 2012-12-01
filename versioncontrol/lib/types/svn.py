@@ -199,9 +199,12 @@ class SvnBrowser(browser.RepositoryBrowser):
         return getattr(self.revision_update_complete,'number',0)
 
     @need_repo
-    def revert(self):
+    def revert(self, path=None):
         try:
-            self.client.revert([self.location])
+            if path:
+                self.client.revert([path])    
+            else:
+                self.client.revert([self.location])
         except Exception, e:
             logger.error("Revert %s failed: %s" % (self.location, str(e)))
             pass

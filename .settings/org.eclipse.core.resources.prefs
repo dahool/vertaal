@@ -1,4 +1,3 @@
-#Tue Jun 05 11:41:32 ART 2012
 eclipse.preferences.version=1
 encoding//app/management/commands/appupdate.py=utf-8
 encoding//app/management/commands/cleanuploads.py=utf-8
@@ -8,8 +7,14 @@ encoding//app/management/commands/relocaterepo.py=utf-8
 encoding//app/management/commands/resetproject.py=utf-8
 encoding//app/management/commands/submitqueuenotify.py=utf-8
 encoding//app/management/commands/updatestats.py=utf-8
+encoding//app/templatetags/settingstag.py=utf-8
+encoding//deferredsubmit/management/commands/processdeferred.py=utf-8
+encoding//deferredsubmit/models.py=utf-8
+encoding//django_authopenid/management/commands/cleanupassociations.py=utf-8
+encoding//django_authopenid/management/commands/cleanupnonces.py=utf-8
 encoding//django_authopenid/urls.py=utf-8
 encoding//django_authopenid/views.py=utf-8
+encoding//files/evolutions/add_status_field.py=utf-8
 encoding//files/models.py=utf-8
 encoding//versioncontrol/lib/browser.py=utf-8
 encoding//versioncontrol/lib/types/svn.py=utf-8

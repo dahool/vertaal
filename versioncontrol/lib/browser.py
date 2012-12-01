@@ -95,6 +95,10 @@ class RepositoryBrowser(object):
             requires a BrowserAuth instance
         """
 
+    def revert(self, path):
+        """ revert
+        """
+        
     def _send_callback(self, callback, param):
         if callback:
             callback(param)
