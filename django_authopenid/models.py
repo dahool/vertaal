@@ -86,3 +86,6 @@ class UserAssociation(models.Model):
 #                    [self.user.email], fail_silently=True)
         oid_associate.send(sender=self, user=self.user, openid=self.openid_url)
         
+    class Meta:
+        verbose_name = _('User association')
+        verbose_name_plural = _('User associations')

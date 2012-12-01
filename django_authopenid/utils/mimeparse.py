@@ -32,10 +32,10 @@ def parse_mime_type(mime_type):
 
        ('application', 'xhtml', {'q', '0.5'})
        """
-    parts = mime_type.split(";")
-    params = dict([tuple([s.strip() for s in param.split("=")])\
-            for param in parts[1:] ])
-    (type, subtype) = parts[0].split("/")
+    import re
+    parts = re.split(r'[,|;]', mime_type)
+    params = dict([tuple([s.strip() for s in param.split("=")]) for param in parts[1:] if param.count("=")])
+    (type, subtype) = parts[0].split("/") if parts[0].count("/") else (parts[0], parts[0])
     return (type.strip(), subtype.strip(), params)
 
 def parse_media_range(range):

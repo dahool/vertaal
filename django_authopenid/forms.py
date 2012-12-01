@@ -33,7 +33,7 @@ class OpenidSigninForm(forms.Form):
     """ signin form """
     openid_url = forms.CharField(max_length=255, 
             widget=forms.widgets.TextInput(attrs={'class': 'required openid'}),
-            label=_('OpenID URL'))
+            label=_("OpenID URL"))
             
     def clean_openid_url(self):
         """ test if openid is accepted """
@@ -72,9 +72,12 @@ class OpenidRegisterForm(forms.Form):
             except User.DoesNotExist:
                 return self.cleaned_data['username']
             except User.MultipleObjectsReturned:
-                raise forms.ValidationError(_('There is already more than one account registered with that username. Please try another.'))
+                raise forms.ValidationError(u'There is already more than one \
+                    account registered with that username. Please try \
+                    another.')
             self.user = user
-            raise forms.ValidationError(_("This username is already taken. Please choose another."))
+            raise forms.ValidationError(_("This username is already \
+                taken. Please choose another."))
             
     def clean_email(self):
         """For security reason one unique email in database"""
@@ -84,15 +87,17 @@ class OpenidRegisterForm(forms.Form):
             except User.DoesNotExist:
                 return self.cleaned_data['email']
             except User.MultipleObjectsReturned:
-                raise forms.ValidationError(_('There is already more than one account registered with that e-mail address. Please try another.'))
-            raise forms.ValidationError(_("This email is already registered in our database. Please choose another."))
-                
-                
+                raise forms.ValidationError(u'There is already more than one \
+                    account registered with that e-mail address. Please try \
+                    another.')
+            raise forms.ValidationError(_("This email is already \
+                registered in our database. Please choose another."))
+
 class AssociateOpenID(forms.Form):
     """ new openid association form """
     openid_url = forms.CharField(max_length=255, 
             widget=forms.widgets.TextInput(attrs={'class': 'required openid'}),
-            label=_('OpenID URL'))
+            label=_("OpenID URL"))
 
     def __init__(self, user, *args, **kwargs):
         super(AssociateOpenID, self).__init__(*args, **kwargs)
@@ -113,9 +118,10 @@ class AssociateOpenID(forms.Form):
                 return self.cleaned_data['openid_url']
             
             if rel.user != self.user:
-                raise forms.ValidationError(_("This OpenID is already registered in our database by another account. Please choose another."))
+                raise forms.ValidationError(_("This openid is already \
+                    registered in our database by another account. Please choose another."))
                     
-            raise forms.ValidationError(_("You already associated this OpenID to your account."))
+            raise forms.ValidationError(_("You already associated this openid to your account."))
             
 class OpenidDissociateForm(OpenidSigninForm):
     """ form used to dissociate an openid. """

@@ -160,7 +160,7 @@ def not_authenticated(func):
     he is already logged."""
     def decorated(request, *args, **kwargs):
         if request.user.is_authenticated():
-            next = request.GET.get("next", "/")
+            next = request.GET.get("next", settings.LOGIN_REDIRECT_URL)
             return HttpResponseRedirect(next)
         return func(request, *args, **kwargs)
     return decorated
