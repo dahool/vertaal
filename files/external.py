@@ -16,15 +16,16 @@ def get_file_location(elem):
         pofile = elem
     url.append(pofile.release.project.slug)
     url.append(pofile.release.slug)
-    url.append(pofile.component.slug)
     if isinstance(elem, POFileSubmit):
         url.append('SUBMIT')
         url.append("%s_%s" % (elem.pk, elem.pofile.filename))
         name = elem.pofile.filename
     elif isinstance(elem, POTFile):
+        url.append(pofile.component.slug)
         url.append('POT')
         url.append(elem.name)
     else:
+        url.append(pofile.component.slug)
         url.append(elem.filename)
     return name, url
     

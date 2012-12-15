@@ -22,7 +22,7 @@ from django.conf import settings
 from django.contrib import admin
 
 handler404 = 'common.middleware.views.not_found'
-#handler500 = 'common.middleware.views.server_error'
+handler500 = 'common.middleware.views.server_error'
 handler503 = 'common.middleware.views.unavailable'
 
 js_info_dict = {

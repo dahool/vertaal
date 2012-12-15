@@ -18,11 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from django.core.management.base import BaseCommand
 import time
+import os
 from versioncontrol.manager import get_repository_path, normalize_path, get_potrepository_path
 from batch.log import (logger)
 from projects.models import Project
 from files.models import POFile
-import os
+from files.lib.handlers import get_upload_path
+from django.utils.encoding import smart_unicode
 from django.conf import settings
 
 class Command(BaseCommand):
@@ -54,7 +56,15 @@ class Command(BaseCommand):
                                 pot.save()
                             except:
                                 pass
-                    self.stdout.write('Completed %s %%...\n' % str((proc * 100) / total))
+                            for pofilesubmit in POFileSubmit.objects.filter(pofile=pofile):
+                                try:
+                                    upath = get_upload_path(pofile, False)
+                                    upath = os.path.join(upath, os.path.basename(smart_unicode(pofilesubmit.file)))
+                                    pofilesubmit.file = upath.replace('\\','/')
+                                    pofilesubmit.save()
+                                except:
+                                    pass                            
+                        self.stdout.write('Completed %s %%...\n' % str((proc * 100) / total))
 
         logger.info("End")
         self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))

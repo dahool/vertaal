@@ -94,11 +94,14 @@ def move_file(src, tge):
             logger.debug("Failed to remove")
             pass
     
-def get_upload_path(pofile):
+def get_upload_path(pofile, appendfile = True):
     """
         returns the upload path + filename
     """
-    return os.path.join(settings.UPLOAD_PATH,pofile.component.project.slug, "%s_%s.po" % (str(int(time.time())), pofile.slug))
+    upath = os.path.join(settings.UPLOAD_PATH,pofile.component.project.slug)
+    if appendfile:
+        upath = os.path.join(upath, "%s_%s.po" % (str(int(time.time())), pofile.slug))
+    return upath
     
 def add_submit(pofile, owner, temp_file, comment='', merge=True):
     posubmit = None
