@@ -56,7 +56,7 @@ class Command(BaseCommand):
                                 pot.save()
                             except:
                                 pass
-                            for pofilesubmit in POFileSubmit.objects.filter(pofile=pofile):
+                            for pofilesubmit in pofile.submits.all():
                                 try:
                                     upath = get_upload_path(pofile, False)
                                     upath = os.path.join(upath, os.path.basename(smart_unicode(pofilesubmit.file)))
