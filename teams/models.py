@@ -38,6 +38,24 @@ class CoordinatorUser(TeamUser):
     def is_coord(self):
         return True
 
+class HasheableTeam:
+    
+    language = None
+    project = None
+    
+    def __init__(self, language, project):
+        self.language = language
+        self.project = project
+        
+    def __hash__(self):
+        return self.language.__hash__() + self.project.__hash__() + 99
+    
+    def __eq__(self, other):
+        try:
+            return self.language == other.language and self.project == other.project
+        except:
+            return False
+        
 class Team(models.Model):
 
     language = models.ForeignKey(Language, related_name='teams')

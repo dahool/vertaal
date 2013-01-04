@@ -92,7 +92,7 @@ $(document).ready(function() {
 		});
 	});	
     $("input[name='selector']").click( function() {
-        $("#" + $(this).attr('rel') + " INPUT[type='checkbox']").attr('checked', $(this).attr('checked'));
+        $("#" + $(this).attr('rel') + " INPUT[type='checkbox']").attr('checked', $(this).is(':checked'));
     });	
     $("*[title]").tipTip({delay: 200, defaultPosition: 'top'});
     /*$(".tooltip").tipTip({delay: 200, defaultPosition: 'left'});*/

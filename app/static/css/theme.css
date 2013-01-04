@@ -1300,3 +1300,13 @@ fieldset { padding:0; border:0; margin-top:5px; }
 #submit-history {
 	width: 35em;
 }
+#submit_table thead tr {
+	background: url("../images/table-hover.png") repeat scroll 0 0 #EFEFEF;
+}
+.submit-title {
+	font-weight: bold;
+	background: url("../images/table-hover.png") repeat scroll 0 0 #EFEFEF;
+}
+.submit-title a {
+	font-weight: bold;
+}

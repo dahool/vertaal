@@ -621,34 +621,50 @@ def file_log(request, slug):
                               context_instance = RequestContext(request))
     
 @login_required
-def submit_team_file(request, team, fromq = False):
+def submit_team_file(request, team = None):
+
     if request.method != 'POST':
         raise Http403
     
-    t = get_object_or_404(Team, id=team)
-    
-    if fromq:
-        back = reverse('commit_queue')
-    else:
+    if team:
+        t = get_object_or_404(Team, id=team)
         back = reverse('team_detail',
                        kwargs={'project': t.project.slug, 'lang': t.language.code})
+    else:
+        back = reverse('commit_queue')
 
-    if not t.can_commit(request.user):
-        request.user.message_set.create(
-                            message=_("You are not authorized to perform this action."))        
-        return HttpResponseRedirect(back)
-    
     reject=False
     if request.POST.has_key('reject'):
         reject = True;
 
     files = []
+    teams = set()
     for fid in request.POST.getlist('file'):
         try:
             sfile = POFileSubmit.objects.get(pk=fid)
             files.append(sfile)
+            h = HasheableTeam(language=sfile.pofile.language.pk, project=sfile.pofile.release.project.pk)
+            teams.add(h)
+        except Exception, e:
+            logger.error("Submit Queue: %s" % (e))
+            
+    if len(teams) == 0:
+        request.user.message_set.create(
+                            message=_("You are not authorized to perform this action."))        
+        return HttpResponseRedirect(back)
+        
+    for tm in teams:
+        try:
+            t = Team.objects.get(language=tm.language, project=tm.project)
+            if not t.can_commit(request.user):
+                request.user.message_set.create(
+                                    message=_("You are not authorized to perform this action."))        
+                return HttpResponseRedirect(back)
         except:
-            pass
+            logger.error("Team %s-%s not found" % (tm.language, tm.project))
+            request.user.message_set.create(
+                                message=_("You are not authorized to perform this action."))        
+            return HttpResponseRedirect(back)
 
     if len(files)==0:
         request.user.message_set.create(

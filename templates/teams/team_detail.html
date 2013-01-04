@@ -78,8 +78,31 @@
 <div class="right-layout" style="width: 60%">
 <h3>{% trans "Submission Queue:" %}</h3>
 {% if submit_files %}
-{% url file_submit team.id as form_url %}
-{% include "files/submit_table.html" %}
+<form id="submit_form" method="post" action="{% url file_submit team.id %}">
+{% csrf_token %}
+<table id="submit_table" class="grid">
+	<thead>
+		<tr>
+			<th><input type="checkbox" name="selector" rel="submit_form"/></th>
+			<th>{% trans "File" %}</th>
+			<th>{% trans "Component" %}</th>
+			<th>{% trans "Release" %}</th>
+			<th>{% trans "Submitted on" %}</th>
+			<th>{% trans "by" %}</th>
+			<th>{% trans "Comment" %}</th>
+		</tr>
+	</thead>
+	{% include "files/submit_table.html" with submit_files=submit_files team=False %}
+	<tfoot>
+		<tr>
+			<td colspan="7" class="table-action">
+				<input class="icon submit" type="submit" name="submit" value="{% trans "Submit" %}">
+				<input class="icon remove" type="submit" name="reject" value="{% trans "Reject" %}">
+			</td>	
+		</tr>
+	</tfoot>
+</table>		
+</form>	
 {% else %}
 <span class="help_text">{% trans "No files submitted" %}</span>
 {% endif %}
