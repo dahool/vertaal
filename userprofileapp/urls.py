@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^favorites/add/$', update_favorites, name="add_favorites"),
     url(r'^favorites/remove/$', update_favorites, name="remove_favorites", kwargs = {'remove': True }),
     url(r'^favorites/remove/profile$', update_favorites, name="profile_remove_fav", kwargs = {'remove': True, 'idtype': True}),
+    url(r'^notification/$', mass_notification, name="profile_contact")
 )

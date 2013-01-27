@@ -433,18 +433,13 @@ def list_files(request, component=None, release=None, language=None, filter = Fa
     return response
 
 def get_pot_file(request, slug):
-    file = get_object_or_404(POFile, slug=slug)
+    pofile = get_object_or_404(POFile, slug=slug)
     try:
-        potfile = file.potfile.get()
+        potfile = pofile.potfile.get()
     except:
         potfile = None
     if not potfile:
         logger.error("POTFile not found")
-        raise Http404
-    try:
-        content = potfile.handler.get_content()
-    except Exception, e:
-        logger.error(e)
         raise Http404
     
     from files.external import get_external_url
@@ -452,7 +447,12 @@ def get_pot_file(request, slug):
     if url:
         logger.debug('Redirect to ' + url)
         response = redirect(url)
-    else:    
+    else:
+        try:
+            content = potfile.handler.get_content()
+        except Exception, e:
+            logger.error(e)
+            raise Http404            
         response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
         attach = "attachment;"
         response['Content-Disposition'] = '%s filename=%s' % (attach, potfile.name)        
@@ -484,13 +484,17 @@ def get_file(request, slug, view=False, submit=False):
         if submit:
             s = file.submits.get_pending()
             fileElement = s
-            content = s.handler.get_content()
+            handler = s.handler
         else:
-            content = file.handler.get_content(not view)
+            handler = file.handler
     except Exception, e:
         logger.error(e)
         raise Http404
     if view:
+        if submit:
+            content = handler.get_content()
+        else:
+            content = handler.get_content(not view)
         if request.user.is_authenticated():
             ckey = 'v-%s-%s' % (request.user.username, slug)    
         else:
@@ -525,6 +529,10 @@ def get_file(request, slug, view=False, submit=False):
             logger.debug('Redirect to ' + url)
             response = redirect(url)        
         else:
+            if submit:
+                content = handler.get_content()
+            else:
+                content = handler.get_content(not view)            
             response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
             attach = "attachment;"
             response['Content-Disposition'] = '%s filename=%s' % (attach, file.filename)        

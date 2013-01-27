@@ -12,6 +12,11 @@ from userprofileapp.models import *
 from userprofileapp.forms import UserProfileForm
 from app.log import logger
 
+from django.core.mail import EmailMessage
+from common.mail import send_mass_mail_em
+from teams.views import ContactForm
+from app.templatetags.extendtags import get_full_url
+
 @login_required
 def update_favorites(request, remove=False, idtype=False):
     if request.method != 'POST':
@@ -71,8 +76,12 @@ def account_profile(request):
                             message=_("Profile updated."))            
     else:
         form = UserProfileForm(instance=request.user)
+    if request.user.is_superuser:
+        cform = ContactForm()
+    else:
+        cform = None
     return render_to_response("registration/profile.html",
-                              {'form': form},
+                              {'form': form, 'cform': cform},
                                context_instance = RequestContext(request))
 
 @login_required
@@ -112,3 +121,31 @@ def startup_redirect(request):
         return HttpResponseRedirect(getattr(settings, 'STARTUP_REDIRECT_URL', reverse('user_profile')))
     else:
         return HttpResponseRedirect(profile.startup.url)
+
+@login_required
+def mass_notification(request):
+    if request.method != 'POST' or not request.user.is_superuser:
+        raise Http403
+    
+    form = ContactForm(request.POST)
+
+    if form.is_valid():
+        subject = form.cleaned_data['subject']
+        message = form.cleaned_data['message']
+        message += '\n\n--\nThe %(app_name)s administration.\n%(home)s' % {'app_name': getattr(settings, 'PROJECT_NAME'), 'home': get_full_url(reverse('home'))}
+
+        maillist = []
+        for u in User.objects.all():
+            if not u.is_superuser and not u.is_staff:
+                maillist.append(EmailMessage(subject=subject, body=message, to=[u.email]))
+
+        try:
+            send_mass_mail_em(maillist)
+        except Exception, e:
+            logger.error(e)
+            request.user.message_set.create(message=_("Your message couldn't be delivered to one or more recipients."))
+        else:                              
+            request.user.message_set.create(message=_('Your message has been sent.'))
+
+    return HttpResponseRedirect(reverse('user_profile'))
+    

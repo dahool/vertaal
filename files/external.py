@@ -36,6 +36,9 @@ def get_external_url(elem):
         if name:
             exurl = exurl + "?name=" + name
         return exurl
+    elif getattr(settings,'FILE_DIRECT_URL', None):
+        location = elem.handler.get_file_path().replace(settings.REPOSITORY_LOCATION,settings.FILE_DIRECT_URL).replace('\\','/')
+        return location
     else:
         return None
         

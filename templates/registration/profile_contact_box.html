@@ -1,0 +1,15 @@
+{% load i18n extendtags timezone_filters formtags %}
+<div class="left-layout">
+<form id="form_user_contact" class="form-style" action="{% url profile_contact %}" method="post" accept-charset="utf-8">
+{% csrf_token %}
+<fieldset>
+	<legend>{% trans "Mass Notification" %}</legend>
+	<ol>
+		<li>{% formfield cform.subject %}</li>
+		<li>{% formfield cform.message %}</li>
+	</ol>    
+</fieldset>
+<div id="form-action" class="text-right">
+	<input class="icon email" type="submit" value="{% trans "Send" %}" />
+</div>
+</form>
