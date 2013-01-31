@@ -39,7 +39,10 @@ def get_external_url(elem):
     elif getattr(settings,'FILE_DIRECT_URL', None):
         from files.models import POFileSubmit
         if isinstance(elem, POFileSubmit):
-            target = os.path.join(settings.TEMP_UPLOAD_PATH, elem.pofile.filename)
+            target = os.path.join(settings.TEMP_UPLOAD_PATH, elem.pofile.slug, elem.pofile.filename)
+            if not os.path.exists(os.path.dirname(target)):
+                os.makedirs(os.path.dirname(target))
+                os.chmod(os.path.dirname(target), int('755',8))
             shutil.copy(elem.handler.get_file_path(), target)
             basepath = target
         else:
