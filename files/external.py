@@ -37,7 +37,13 @@ def get_external_url(elem):
             exurl = exurl + "?name=" + name
         return exurl
     elif getattr(settings,'FILE_DIRECT_URL', None):
-        location = elem.handler.get_file_path().replace(settings.ROOT_PATH,settings.FILE_DIRECT_URL).replace('\\','/')
+        if isinstance(elem, POFileSubmit):
+            target = os.path.join(settings.TEMP_UPLOAD_PATH, elem.pofile.filename)
+            shutil.copy(elem.handler.get_file_path(), target)
+            basepath = target
+        else:
+            basepath = elem.handler.get_file_path()
+        location = basepath.replace(settings.ROOT_PATH,settings.FILE_DIRECT_URL).replace('\\','/')
         return location
     else:
         return None
