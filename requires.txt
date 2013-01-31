@@ -1,10 +1,8 @@
-django 1.1
-django-evolution
+django 1.3.x
 django-pagination
 pysvn
 pytz
 pygments
 recaptcha-client
-pycrypto
 python-dateutil
 python-openid
