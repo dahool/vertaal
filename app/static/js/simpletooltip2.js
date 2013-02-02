@@ -20,7 +20,7 @@
  * @revision 05/06/2012
  * @version 2.0.0
  * 
- * @requires jquery.js (tested with 1.3.2)
+ * @requires jquery.js (tested with 1.8.2)
  * 
 */
 
@@ -42,7 +42,7 @@
 		          div += text;
 		          div += '</div></div></div>';
 		    	  $(this).append(div);
-				  var tooltip = $(this).find("div:." + o.className);
+				  var tooltip = $(this).find("div." + o.className);
 				  var p = $(this).position();
 				  var w = tooltip.width();
 				  if (w > maxWidth) w = maxWidth;

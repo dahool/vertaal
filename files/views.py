@@ -138,8 +138,7 @@ def toggle(request, slug):
                 # then can unlock the file
                 if file.locks.get().can_unlock(request.user):
                     if file.submits.all_pending():
-                        if file.submits.get_pending().owner.username == request.user.username:
-                            res['message'] = _('The file will be unlocked once submitted.')       
+                        res['message'] = _('The file will be unlocked once submitted.')       
                     else:
                         file.locks.get().delete()
                         if request.POST.has_key('text'):
@@ -815,7 +814,7 @@ def do_commit(submits, user, repo_user, repo_pass, message=''):
                                 message=_("Failed. Reason: %s") % smart_unicode(e))
     
 @login_required
-def commit_queue(request):
+def commit_queue(request, data = {}):
     logger.debug("Check if user has permissions")
     teams = None
     if request.user.is_superuser:
@@ -833,9 +832,14 @@ def commit_queue(request):
         if po.count()>0:
             setattr(team, 'submits', po)
             tres.append(team)
-        
+
+    data['teams'] = tres
+    
+    if not data.get('form', None):
+        data['form'] = UploadFileForm()
+    
     return render_to_response("files/commit_queue.html",
-                               {'teams': tres},
+                               data,
                                context_instance = RequestContext(request))
     
 @login_required
@@ -1048,3 +1052,57 @@ def create_diff_cache(submits):
     for s in submits:
         logger.debug("Processing diff for %s" % s.pofile.filename)
         make_file_diff(s.pofile, s)
+
+@login_required
+def submit_new_file(request, slug):
+
+    if request.method != 'POST':
+        raise Http403
+    
+    pofile = get_object_or_404(POFile, slug=slug)
+    
+    back = reverse('commit_queue')
+
+    team = get_object_or_404(Team, language=pofile.language.pk, project=pofile.release.project.pk)
+    if not team.can_commit(request.user):
+        request.user.message_set.create(
+                            message=_("You are not authorized to perform this action."))        
+        return HttpResponseRedirect(back)
+
+    if pofile.submits.all_pending():
+        s = pofile.submits.get_pending()
+        if s.locked:
+            request.user.message_set.create(
+                                message=_("This file is being processed. It can't be modified."))
+            return back
+        s.enabled = False
+        s.save()    
+
+    res = {}
+    res['back']=back
+    res['uploadfile']=pofile
+    
+    form = UploadFileForm(request.POST, request.FILES)
+    
+    if form.is_valid():
+        try:
+            logger.debug(request.FILES)
+            # first we add the files to the queue
+            submits = handle_uploaded_file(request.FILES['file'], pofile.release, pofile.language, request.user, form.cleaned_data['comment'], pofile)
+            request.user.message_set.create(
+                        message=_("Your file was uploaded and added to the submission queue."))
+            return HttpResponseRedirect(back)
+        except Exception, e:
+            s.enabled = True
+            s.save()    
+            logger.error(e)
+            res['message']=e.message.split("$$")
+            return render_to_response('files/upload_failed.html',
+                                      res,
+                                      context_instance = RequestContext(request))
+    else:
+        s.enabled = True
+        s.save()
+        res['form']=form
+
+    return commit_queue(request, res)

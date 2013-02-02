@@ -8,6 +8,8 @@
 {% block content %}
 {% block content_title %}<h1>{% trans "Submission Queue Manager" %}</h1>{% endblock %}
 
+{% include "files/submit_table_upload.html" %}
+
 {% if teams %}
 {% regroup teams|dictsort:"project.pk" by project as project_list %}
 {% for teamproject in project_list %}

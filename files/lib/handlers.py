@@ -142,7 +142,7 @@ def check_file(temp_file, lang, pofile = None):
             pass
         raise e
             
-def handle_uploaded_file(file, release, language, user, comment=''):
+def handle_uploaded_file(file, release, language, user, comment='', pofile=None):
     #we need to check first if it's tared
     logger.debug("Handle upload %s" % file)
     tmpfile = None
@@ -167,7 +167,11 @@ def handle_uploaded_file(file, release, language, user, comment=''):
         raise Exception, _("Unable to open the file %s.") % file
     except tarfile.ReadError:
         #the file is not tared
-        pofile = find_matching_file(file.name, release, language, user)
+        if not pofile:
+            pofile = find_matching_file(file.name, release, language, user)
+        else:
+            if not pofile.filename == file.name:
+                raise Exception, _("You are supposed to upload a new version of %s, instead we found %s.") % (pofile.filename, file.name)
 #        dest_path = os.path.join(settings.TEMP_UPLOAD_PATH, user.username)
 #        if not os.path.exists(dest_path):
 #            os.makedirs(dest_path)

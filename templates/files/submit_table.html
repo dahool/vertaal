@@ -23,6 +23,7 @@
 	<a href="{% url view_file_udiff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-udiff" title="{% trans "View Unified Diff" %}" style="padding-right: 0px;"></a>
 	{% if not sfile.locked %}
 	<a href="{% url edit_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon file-edit" title="{% trans "Edit" %}"></a>
+    <a href="#" class="action_icon nodecoration_icon file-reload" title="{% trans "Upload New Version" %}" alt="{% url submit_new_file sfile.pofile.slug %}" alt2="{{ sfile.pofile.filename }}"></a>
 	{% endif %}
 	<a href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a>
 	</td>
