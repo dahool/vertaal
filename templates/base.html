@@ -91,10 +91,14 @@
 	{% block content %}
 	{% endblock %}
 	<div style="clear: both"></div>
+	{% if user.is_authenticated %}
     {% ifadsensecookie %}
     {% else %}
     {% include 'adsense.html' %}      
-    {% endifadsensecookie %} 
+    {% endifadsensecookie %}
+    {% else %}
+    {% include 'adsense.html' %} 
+    {% endif %}
 </div>
 {% endblock %}
 </div>
