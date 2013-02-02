@@ -155,7 +155,6 @@ $(document).ready(function() {
 <script type="text/javascript">
 $(document).ready(function() {
     var ckey = 'adsense' + window.location.pathname.replace(/\//g,'_');
-    console.log($.cookie(ckey));
     if ($.cookie(ckey) == undefined) {
         window.setTimeout(function() {
             if ($("#pubblock").find("iframe").length == 0) {
@@ -163,7 +162,6 @@ $(document).ready(function() {
             } else {
                 var dt = new Date();
                 dt.setHours(23,59,59,999);
-                console.log(dt);
                 $.cookie(ckey, 'true', { expires: dt });    
             }            
         },1000);
