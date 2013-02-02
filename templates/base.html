@@ -1,4 +1,4 @@
-{% load i18n extendtags settingstag %}
+{% load i18n extendtags settingstag adsensetag %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -91,20 +91,10 @@
 	{% block content %}
 	{% endblock %}
 	<div style="clear: both"></div>
-    <div id="pubblock" style="width: 468px; height: 60px; margin-left: auto; margin-right: auto; margin-top: 25px; bottom: 5px;">
-        <div id="pubblockhint" class="description" style="display: none; background-color: #F2F2F2; border: 1px solid #BBBBBB; padding: 5px; width: 468px;">{% trans "Looks like you are blocking ads. In order to keep Vertaal running,  we felt the need to show you some ads, it would be nice if you could disable your adblocking for this site. It will be shown only once per page. Also, if you click on them, it would be great :). Thank you." %}</div>
-        <script type="text/javascript"><!--
-        google_ad_client = "ca-pub-6692965674688630";
-        /* Vertaal */
-        google_ad_slot = "4897783492";
-        google_ad_width = 468;
-        google_ad_height = 60;
-        //-->
-        </script>
-        <script type="text/javascript"
-        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-        </script>
-    </div>
+    {% ifadsensecookie %}
+    {% else %}
+    {% include 'adsense.html' %}      
+    {% endifadsensecookie %} 
 </div>
 {% endblock %}
 </div>
@@ -151,24 +141,6 @@ $(document).ready(function() {
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-</script>
-<script type="text/javascript">
-$(document).ready(function() {
-    var ckey = 'adsense' + window.location.pathname.replace(/\//g,'_');
-    if ($.cookie(ckey) == undefined) {
-        window.setTimeout(function() {
-            if ($("#pubblock").find("iframe").length == 0) {
-                $("#pubblockhint").show();
-            } else {
-                var dt = new Date();
-                dt.setHours(23,59,59,999);
-                $.cookie(ckey, 'true', { expires: dt });    
-            }            
-        },1000);
-    } else {
-        $("#pubblock").hide();   
-    };
-});
 </script>
 </body>
 </html>

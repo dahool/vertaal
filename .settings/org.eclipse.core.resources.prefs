@@ -7,6 +7,7 @@ encoding//app/management/commands/relocaterepo.py=utf-8
 encoding//app/management/commands/resetproject.py=utf-8
 encoding//app/management/commands/submitqueuenotify.py=utf-8
 encoding//app/management/commands/updatestats.py=utf-8
+encoding//app/templatetags/adsensetag.py=utf-8
 encoding//app/templatetags/settingstag.py=utf-8
 encoding//deferredsubmit/management/commands/processdeferred.py=utf-8
 encoding//deferredsubmit/models.py=utf-8
