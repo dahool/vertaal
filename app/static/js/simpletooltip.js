@@ -42,7 +42,7 @@
 		          div += text;
 		          div += '</div></div></div></div></div><div class="tip-bl"><div class="tip-br"><div class="tip-bc"></div></div></div></div>';
 		    	  $(this).append(div);
-				  var tooltip = $(this).find("div:." + o.className);
+				  var tooltip = $(this).find("div." + o.className);
 				  var p = $(this).position();
 				  var w = tooltip.width();
 				  if (w > maxWidth) w = maxWidth;
@@ -52,7 +52,7 @@
 				  tooltip.css("width",w);
 		      }, 
 		      function () {
-		    	  $(this).find("div:." + o.className).remove();
+		    	  $(this).find("div." + o.className).remove();
 		      }
        );
 

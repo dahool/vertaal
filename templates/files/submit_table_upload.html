@@ -1,10 +1,14 @@
 {% load i18n errors %}
-<script type="text/javascript" src="{{STATIC_URL}}js/simpletooltip2.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/errors.js"></script>
-<link media="screen" href="{{STATIC_URL}}css/widgets/simpletooltip2.css" type="text/css" rel="stylesheet" />
-
 <script type="text/javascript">
 $(function() {
+    $("#id_fakefile").on('click', function() {
+        $("#id_file").click();
+    });
+    $("#id_file").on('change', function() {
+        $("#id_fakefile").val(get_filename($(this).val()));
+    });
+    $("#id_fakefile").val(get_filename($("#id_file").val()));
+
     $("a.file-reload").on('click', function(ev) {
         ev.preventDefault();
         $("#upload_form").attr('action',$(this).attr('alt'));
@@ -17,7 +21,7 @@ $(function() {
 
     $("#new_upload").dialog({
         autoOpen: false,
-        width: 350,
+        width: 360,
         modal: true,
         resizable: false,
         open: function() {
@@ -25,6 +29,8 @@ $(function() {
         },
         close: function() {
             $("#id_comment").removeClass( "ui-state-error" );
+            $("#upload_form div.error-tip").remove();
+            $("span.error").remove();
         }
     });
     
@@ -43,22 +49,25 @@ $(function() {
         <div class="upload-control">
             <table>
                 <tr>
-                    <td><input type="file" id="id_file" name="file"/></td>
+                    <td>
+                        <input type="file" id="id_file" name="file" style="display: none;"/>
+                        <input type="text" id="id_fakefile" name="fakefile" readonly="readonly" class="file_attach" title="{% trans "Click to select a file" %}"/>
+                    </td>
                     <td><input type="submit" onclick="popoverlay('{% trans "Please wait, this could take some time..." %}')" class="icon upload-go" value="{% trans "Upload" %}"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <span class="help_text">{% trans "Comments" %}:&nbsp;<em>*</em></span>
-                        {% if form.comment.errors %}<span class="error">{% endif %}
-                        <input id="id_comment" name="comment" maxlength="255" type="text">
-                        {% if form.comment.errors %}
-                        </span>
-                        {% endif %}
+                        <input id="id_comment" name="comment" maxlength="255" type="text" {% if form.comment.errors %}class="ui-state-error" title="{{form.comment|errormsg}}"{% endif %}>
                     </td>
                 </tr>
             </table>
             {% if form.file.errors %}
-            {{form.file.errors}}
+            <div class="tooltipbox error-tip" style="margin-right: 15px;">
+            <div class="tip-wrap">
+            <div class="tip-body">{{form.file|errormsg}}</div>
+            </div>
+            </div>
             {% endif %}
         </div>
     </form> 

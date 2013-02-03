@@ -4,4 +4,5 @@
 {% else %}
 	{% ifmatch request.META.HTTP_USER_AGENT "Opera" %}
 		<link media="screen" href="{{STATIC_URL}}css/styles_opera.css" type="text/css" rel="stylesheet" />
-	{% endifmatch %}{% endifmatch %}
+	{% endifmatch %}
+{% endifmatch %}

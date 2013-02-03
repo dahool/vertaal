@@ -1,5 +1,5 @@
 /**
- * simpletooltip.js
+ * simpletooltip2.js
  * Simple Tooltip
  * Copyright (c) 2009 SGT Dev.
  *
@@ -17,8 +17,8 @@
  *
  * @author Sergio Gabriel Teves (info at sgtdev.com.ar)
  * @date 05/02/2009
- * @revision 05/06/2012
- * @version 2.0.0
+ * @revision 02/03/2013
+ * @version 2.0.1
  * 
  * @requires jquery.js (tested with 1.8.2)
  * 
@@ -36,7 +36,7 @@
        
        $(this).hover(
 		      function (ev) {
-		          var text = $(this).attr('alt')
+		          var text = $(this).attr('title')
 		          var div = '<div class="tooltipbox '+o.className+'" style="position: absolute; display: none;">';
 		          div += '<div class="tip-wrap"><div class="tip-body">';
 		          div += text;
@@ -52,7 +52,7 @@
 				  tooltip.css("width",w);
 		      }, 
 		      function () {
-		    	  $(this).find("div:." + o.className).remove();
+		    	  $(this).find("div." + o.className).remove();
 		      }
        );
 

@@ -1310,3 +1310,9 @@ fieldset { padding:0; border:0; margin-top:5px; }
 .submit-title a {
 	font-weight: bold;
 }
+.file_attach {
+	cursor: pointer;
+	background: #e6e9ec url("../images/icons/attach.png") no-repeat 5px 50% !important;
+	padding-left: 30px;
+	width: 215px;
+}

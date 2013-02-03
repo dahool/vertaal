@@ -94,7 +94,8 @@ $(document).ready(function() {
     $("input[name='selector']").click( function() {
         $("#" + $(this).attr('rel') + " INPUT[type='checkbox']").attr('checked', $(this).is(':checked'));
     });	
-    $("*[title]").tipTip({delay: 200, defaultPosition: 'top'});
+    $("*[title]:not(.field-error)").tipTip({delay: 200, defaultPosition: 'top'});
+    $(".field-error").tooltip({className:'error-tip'});
     /*$(".tooltip").tipTip({delay: 200, defaultPosition: 'left'});*/
     $('body').ajaxComplete(function() {
     	$("*[title]").tipTip({delay: 200, defaultPosition: 'top'});
@@ -142,4 +143,9 @@ function checkRegexp( o, regexp, n ) {
 	} else {
 		return true;
 	}
+}
+
+function get_filename(value) {
+    if (value == undefined || value == '') return '';
+    return /([^\\]+)$/.exec(value)[1];
 }

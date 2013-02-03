@@ -20,6 +20,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 	border: 1px solid #7EADD9;
 }
 input[readonly],textarea[readonly],select[readonly] {
+	background-color: #f0f3f3;
 	background-image: url(../images/form/text-bg-ro.gif);
 }
 input[readonly]:focus, textarea[readonly]:focus, select[readonly]:focus {
