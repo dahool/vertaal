@@ -156,41 +156,23 @@ class SubmitClient():
                             for smfile in component:
                                 pot = None
                                 sfilename = smart_unicode(smfile.file)
-                                out = ''
+                                out = 0
                                 if os.path.exists(sfilename):
-                                    if smfile.merge:
-                                        if smfile.pofile.need_merge:
-                                            try:
-                                                pot = smfile.pofile.potfile.get()
-                                                #logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
-                                                # merge first the current file with the pot file
-                                                #out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
-                                                logger.debug("Merge file %s with %s." % (sfilename, pot.file))
-                                                out = msgfmt.msgmerge(sfilename, pot.file)                                            
-                                            except POTFile.DoesNotExist:
-                                                out = 0
-                                    #         I think this is causing deleted messages to appear again
-                                    #        if not len(out) > 1:
-                                    #            logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                    #            out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
-                                    #    else:
-                                    #        logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                    #        out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
-                                    #else:
-                                    #    try:
-                                    #        logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
-                                    #        shutil.copy(sfilename, str(smfile.pofile.file))
-                                    #        out = ''
-                                    #    except Exception, e:
-                                    #        out = str(e)
+                                    try:
+                                        logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
+                                        shutil.copy(sfilename, str(smfile.pofile.file))
+                                    except Exception, e:
+                                        out = str(e)
                                     
-                                    if not len(out) > 1:
-                                        try:
-                                            logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
-                                            shutil.copy(sfilename, str(smfile.pofile.file))
-                                            out = ''
-                                        except Exception, e:
-                                            out = str(e)
+                                    if not len(out)>1:                                            
+                                        if smfile.merge:
+                                            if smfile.pofile.need_merge:
+                                                try:
+                                                    pot = smfile.pofile.potfile.get()
+                                                    logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
+                                                    out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
+                                                except POTFile.DoesNotExist:
+                                                    out = 0
                                                                         
                                     if len(out)>1:
                                         out.pop(0)
@@ -200,12 +182,6 @@ class SubmitClient():
                                         if pot:
                                             mergeerror = mergeerror.replace(str(pot.file), smfile.pofile.filename)
                                         raise Exception(_('An error occurred while merging %s. %s' % (smfile.pofile.filename, mergeerror)))
-#                                    # create a backup, just in case
-#                                    if getattr(settings, 'BACKUP_UPLOADS', True):
-#                                        newname = '%s.%s.bak' % (sfilename, datetime.datetime.now().strftime('%Y%m%d%H%M'))
-#                                        logger.debug("Backup file %s" % newname)
-#                                        shutil.copy(sfilename, newname)
-#                                        os.chmod(newname, getattr(settings, 'FILE_UPLOAD_PERMISSIONS',0664))
                                     
                                     # files to be commited
                                     commit_files.append(str(smfile.pofile.file))
