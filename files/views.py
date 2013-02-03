@@ -353,7 +353,7 @@ def get_file_list(request, component=None, release=None, language=None):
                 co = r.project.components.all()[0]
                 q = q.filter(component=co)
                 res['cfilter'] = [int(co.pk)]
-        filter_data = ",".join([ str(i) for i in res['cfilter']])
+        #filter_data = ",".join([ str(i) for i in res['cfilter']])
         #res['cookjar'][cook] = filter_data
     if language:
         l = res['language'] = get_object_or_404(Language, code=language)
@@ -362,33 +362,34 @@ def get_file_list(request, component=None, release=None, language=None):
             res['team'] = get_object_or_404(Team, language=l,project=r.project)
             #res['team'] = Team.objects.get(language=l,project=r.project)
 
-    cook = 'shide_%s' % r.slug
-    if request.POST.has_key('hideTranslated'):
-        if request.POST.get('hideTranslated')=='true':
-            q = q.extra(where=['total>trans'])
-            res['cookjar'][cook] = 'true'
-            res['hideTranslated'] = 'true'
+    if request.user.is_authenticated():
+        cook = 'shide_%s' % r.slug
+        if request.POST.has_key('hideTranslated'):
+            if request.POST.get('hideTranslated')=='true':
+                q = q.extra(where=['total>trans'])
+                res['cookjar'][cook] = 'true'
+                res['hideTranslated'] = 'true'
+            else:
+                res['cookjar'][cook] = None
         else:
-            res['cookjar'][cook] = None
-    else:
-        if cook in request.COOKIES:
-            q = q.extra(where=['total>trans'])
-            res['hideTranslated'] = 'true'
-    
-    cook = 'onlys_%s' % r.slug
-    if request.POST.has_key('onlySelf'):
-        if request.POST.get('onlySelf')=='true':
-            q = q.filter(Q(assigns__translate__id=request.user.id) |
-                         Q(assigns__review__id=request.user.id))
-            res['cookjar'][cook] = 'true'
-            res['onlySelf'] = 'true'
+            if cook in request.COOKIES:
+                q = q.extra(where=['total>trans'])
+                res['hideTranslated'] = 'true'
+        
+        cook = 'onlys_%s' % r.slug
+        if request.POST.has_key('onlySelf'):
+            if request.POST.get('onlySelf')=='true':
+                q = q.filter(Q(assigns__translate__id=request.user.id) |
+                             Q(assigns__review__id=request.user.id))
+                res['cookjar'][cook] = 'true'
+                res['onlySelf'] = 'true'
+            else:
+                res['cookjar'][cook] = None
         else:
-            res['cookjar'][cook] = None
-    else:
-        if cook in request.COOKIES:
-            q = q.filter(Q(assigns__translate__id=request.user.id) |
-                         Q(assigns__review__id=request.user.id))
-            res['onlySelf'] = 'true'
+            if cook in request.COOKIES:
+                q = q.filter(Q(assigns__translate__id=request.user.id) |
+                             Q(assigns__review__id=request.user.id))
+                res['onlySelf'] = 'true'
                         
     res['file_list']=q
     res['last_actions'] = POFileLog.objects.last_actions(res['release'],10,res['language'])
