@@ -25,6 +25,7 @@ import datetime
 import re
 import copy
 import thread
+import types
 
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
@@ -156,7 +157,7 @@ class SubmitClient():
                             for smfile in component:
                                 pot = None
                                 sfilename = smart_unicode(smfile.file)
-                                out = 0
+                                out = ''
                                 if os.path.exists(sfilename):
                                     try:
                                         logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
@@ -172,13 +173,16 @@ class SubmitClient():
                                                     logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
                                                     out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
                                                 except POTFile.DoesNotExist:
-                                                    out = 0
+                                                    out = ''
                                                                         
                                     if len(out)>1:
-                                        out.pop(0)
-                                        mergeerror = ";".join(out)
-                                        mergeerror = mergeerror.replace(str(smfile.pofile.file), smfile.pofile.filename)
-                                        mergeerror = mergeerror.replace(sfilename, smfile.pofile.filename)
+                                        if not isinstance(out, types.StringTypes):
+                                            out.pop(0)
+                                            mergeerror = ";".join(out)
+                                        else:
+                                            mergeerror = out
+                                            mergeerror = mergeerror.replace(str(smfile.pofile.file), smfile.pofile.filename)
+                                            mergeerror = mergeerror.replace(sfilename, smfile.pofile.filename)
                                         if pot:
                                             mergeerror = mergeerror.replace(str(pot.file), smfile.pofile.filename)
                                         raise Exception(_('An error occurred while merging %s. %s' % (smfile.pofile.filename, mergeerror)))
