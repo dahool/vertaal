@@ -12,7 +12,8 @@ $(function() {
     $("a.file-reload").on('click', function(ev) {
         ev.preventDefault();
         $("#upload_form").attr('action',$(this).attr('alt'));
-        $("#file_name").html(interpolate(gettext('Replacing %s'), [$(this).attr('alt2')]));
+        //$("#file_name").html(interpolate(gettext('Replacing %s'), [$(this).attr('alt2')]));
+        $("#new_upload").dialog("option", "title", interpolate(gettext('Replace %s'), [$(this).attr('alt2')]) );
         $("#new_upload").dialog('open');
     });
     $("#upload_form").on('submit', function(ev) {
@@ -36,7 +37,8 @@ $(function() {
     
 	{% if form.errors %}
     $("#upload_form").attr('action','{% url submit_new_file uploadfile.slug %}');
-    $("#file_name").html(interpolate(gettext('Replacing %s'), ['{{uploadfile.filename}}']));
+    //$("#file_name").html(interpolate(gettext('Replacing %s'), ['{{uploadfile.filename}}']));
+    $("#new_upload").dialog("option", "title", interpolate(gettext('Replace %s'), ['{{uploadfile.filename}}']) );
 	$("#new_upload").dialog('open');
     {% endif %}
 });
@@ -45,7 +47,6 @@ $(function() {
 <div id="new_upload" >
     <form id="upload_form" class="form-style" method="post" enctype="multipart/form-data" accept-charset="utf-8">
         {% csrf_token %}
-        <div class="icon upload" id="file_name"></div>
         <div class="upload-control">
             <table>
                 <tr>
