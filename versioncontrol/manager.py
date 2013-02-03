@@ -156,29 +156,42 @@ class SubmitClient():
                             for smfile in component:
                                 pot = None
                                 sfilename = smart_unicode(smfile.file)
+                                out = ''
                                 if os.path.exists(sfilename):
                                     if smfile.merge:
                                         if smfile.pofile.need_merge:
                                             try:
                                                 pot = smfile.pofile.potfile.get()
-                                                logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
+                                                #logger.debug("Merge file %s with %s." % (smfile.pofile.file, pot.file))
                                                 # merge first the current file with the pot file
-                                                out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
+                                                #out = msgfmt.msgmerge(smfile.pofile.file, pot.file)                                            
+                                                logger.debug("Merge file %s with %s." % (sfilename, pot.file))
+                                                out = msgfmt.msgmerge(sfilename, pot.file)                                            
                                             except POTFile.DoesNotExist:
                                                 out = 0
-                                            if not len(out) > 1:
-                                                logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                                out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
-                                        else:
-                                            logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
-                                            out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
-                                    else:
+                                    #         I think this is causing deleted messages to appear again
+                                    #        if not len(out) > 1:
+                                    #            logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                    #            out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                    #    else:
+                                    #        logger.debug("Merge file %s with %s." % (sfilename, smfile.pofile.file))
+                                    #        out = msgfmt.msgmerge(sfilename, smfile.pofile.file)
+                                    #else:
+                                    #    try:
+                                    #        logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
+                                    #        shutil.copy(sfilename, str(smfile.pofile.file))
+                                    #        out = ''
+                                    #    except Exception, e:
+                                    #        out = str(e)
+                                    
+                                    if not len(out) > 1:
                                         try:
                                             logger.debug("Copy file %s to  %s." % (sfilename, smfile.pofile.file))
                                             shutil.copy(sfilename, str(smfile.pofile.file))
                                             out = ''
                                         except Exception, e:
                                             out = str(e)
+                                                                        
                                     if len(out)>1:
                                         out.pop(0)
                                         mergeerror = ";".join(out)
