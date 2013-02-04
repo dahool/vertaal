@@ -113,7 +113,7 @@
 	  <div class="fuzzy_comp" style="left: {{file.trans_perc}}px; width: {{file.fuzzy_perc}}px;"></div>
 	  <div class="untranslated_comp" style="left: {{file|sum_trans_fuzzy}}px; width: {{file.untrans_perc}}px;"></div>
 	</div>
-	<div alt="{{file.trans_perc}}" row="file_row_{{ file.slug }}" class="stats_string_comp" title="{% trans "Total:" %}{{file.total}}, {% trans "Trans:" %}{{file.trans}}, {% trans "Untrans:" %}{{file.untrans}}, {% trans "Fuzzy:" %}{{file.fuzzy}}" >{{file.total}}/{{file.untrans}}/{{file.fuzzy}} [{{file.trans_perc}}%]</div>					
+	<div alt="{{file.trans_perc}}" row="file_row_{{ file.slug }}" class="stats_string_comp" title="{% trans "Total:" %}{{file.total}}<br>{% trans "Translated:" %}{{file.trans}}<br>{% trans "Untranslated:" %}{{file.untrans}}<br>{% trans "Fuzzy:" %}{{file.fuzzy}}" >{{file.total}}/{{file.untrans}}/{{file.fuzzy}} [{{file.trans_perc}}%]</div>					
 </td>
 {% if user.is_authenticated %}
 <td class="assigns">
