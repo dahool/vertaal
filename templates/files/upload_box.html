@@ -8,13 +8,21 @@ $(function() {
         $("#id_fakefile").val(get_filename($(this).val()));
     });
     $("#id_fakefile").val(get_filename($("#id_file").val()));
+    $("#upload_form").on('submit', function() {
+		if ($("#id_file").val() == "" || $("#id_comment").val() == "") {
+			show_ok_dialog("{% trans "Both field are required" %}");
+			return false;
+		} else {
+			popoverlay('{% trans "Please wait, this could take some time..." %}');
+		}
+    })
 })
 </script>
 <div id="upload-box">
 	<form id="upload_form" class="form-style" action="{% url file_upload release.slug, language.code %}"
 		method="post" enctype="multipart/form-data" accept-charset="utf-8">
 		{% csrf_token %}
-		<div class="icon upload">{% trans "Upload a file" %}</div>
+		<span class="help_text title">{% trans "File Upload" %}</span><br/>
 		<span class="help_text">{% trans "(.po or .tar, .tgz without directories)" %}</span><span class="icon help" title="{% trans "You can upload multiple files compressed into a tar. The tar file should not include directories." %}">&nbsp;</span>
 		<div class="upload-control">
 			<table>
@@ -23,7 +31,7 @@ $(function() {
 					   <input type="file" id="id_file" name="file" style="display: none;"/>
 					   <input type="text" id="id_fakefile" name="fakefile" readonly="readonly" class="file_attach" title="{% trans "Click to select a file" %}"/>
 					</td>
-					<td><input type="submit" onclick="popoverlay('{% trans "Please wait, this could take some time..." %}')" class="icon upload-go" value="{% trans "Upload" %}"/></td>
+					<td><input type="submit" class="icon upload-go" value="{% trans "Upload" %}"/></td>
 				</tr>
 				<tr>
 					<td colspan="2">

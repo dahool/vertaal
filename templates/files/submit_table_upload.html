@@ -16,10 +16,17 @@ $(function() {
         $("#new_upload").dialog("option", "title", interpolate(gettext('Replace %s'), [$(this).attr('alt2')]) );
         $("#new_upload").dialog('open');
     });
-    $("#upload_form").on('submit', function(ev) {
-        $("#new_upload").dialog('close');
-    });
 
+    $("#upload_form").on('submit', function() {
+		if ($("#id_file").val() == "" || $("#id_comment").val() == "") {
+			show_ok_dialog("{% trans "Both field are required" %}");
+			return false;
+		} else {
+			popoverlay('{% trans "Please wait, this could take some time..." %}');
+			$("#new_upload").dialog('close');
+		}
+    })
+    
     $("#new_upload").dialog({
         autoOpen: false,
         width: 360,
@@ -54,7 +61,7 @@ $(function() {
                         <input type="file" id="id_file" name="file" style="display: none;"/>
                         <input type="text" id="id_fakefile" name="fakefile" readonly="readonly" class="file_attach" title="{% trans "Click to select a file" %}"/>
                     </td>
-                    <td><input type="submit" onclick="popoverlay('{% trans "Please wait, this could take some time..." %}')" class="icon upload-go" value="{% trans "Upload" %}"/></td>
+                    <td><input type="submit" class="icon upload-go" value="{% trans "Upload" %}"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
