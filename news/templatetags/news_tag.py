@@ -7,4 +7,4 @@ register = template.Library()
 
 @register.inclusion_tag('news/latest.html')
 def latest_news():
-    return {'news': Article.objects.all().order_by("-created")[:getattr(settings, 'LATEST_NEWS',10)]}
+    return {'news': Article.objects.all_active().order_by("-created")[:getattr(settings, 'LATEST_NEWS',10)]}
