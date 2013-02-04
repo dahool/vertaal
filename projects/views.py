@@ -209,9 +209,9 @@ def __build_repo(project, release, user):
             del repo
         except:
             pass
-        user.message_set.create(
-                    message=_('Finished build cache for release %(release)s.') %
-                        {'release': release.name})
+        message=_('Finished build cache for release %(release)s.') % {'release': release.name}
+        user.message_set.create(message=message)
+        user.email_user(_('Build complete'), message)
 
 def project_list(request):
     list = Project.objects.by_authorized(request.user)
