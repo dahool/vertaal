@@ -17,195 +17,27 @@
 <link rel="alternate" type="application/rss+xml" title="{% trans "Submission queue" %}" href="{% url language_project_queue_feed release.project.slug, language.code %}">
 {% endif %}
 {% endifsetting %}
-<script type="text/javascript" src="{{STATIC_URL}}js/filelist.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.metadata.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.min.js"></script>
-<!--script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script-->
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.json.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookiejar.pack.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.cookie.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.aop.min.js"></script>
-<!-- 
-<link href="{{STATIC_URL}}facebox/facebox.css" media="screen" rel="stylesheet" type="text/css"/>
-<script src="{{STATIC_URL}}facebox/facebox.js" type="text/javascript"></script>
-<script type="text/javascript">
-$.facebox.settings.loadingImage = '{{STATIC_URL}}facebox/loading.gif';
-$.facebox.settings.closeImage = '{{STATIC_URL}}facebox/close.gif';
-</script>
--->
+<script type="text/javascript" src="{{STATIC_URL}}js/filelist.js"></script>
 <script type="text/javascript"><!--
-function add_comment(name, url) {
-	$("#lock_comment").attr('action', url);
-	$("#comment_text").text(interpolate(gettext('Unlocking file %s'), [name]));
-	$("#lock_comment").dialog('open');
-}
-function load_component(url,replace) {
-    if (replace==undefined) replace = false;
-    $.post(url, function(data) {
-        $(data).find('tbody').each(function() {
-            if (replace) {
-                $("#filestabs").find('tbody').html($(this).html());
-            } else {
-                $("#filestabs").find('tbody').append($(this).html());
-            }
-        });
-        $("#filestabs").find('table').trigger("update");
-    });    
-}
-function hide_component(name) {
-    loading(true);
-    $("#filestabs").find('tr[component="'+name+'"]').remove();
-    loading(false);
-}
-function check_filter_button() {
-    n = $("#component_list").find('input:checked');
-    if (n.length == 1) {
-        $(n).button('disable');
-    } else {
-        $(n).button('enable');
-    }    
-}
+var RELOAD_LIST_FILES_URL = "{% url reload_list_files release.slug,language.code %}";
 $(document).ready(function(){ 
-
-    $.tablesorter.addParser({ 
-        id: 'percentbars', 
-        is: function(s) { 
-            return false; 
-        }, 
-        format: function(s) {
-            re = s.match(new RegExp(/(\d*%)/g));
-            if (re) {
-                s = re[0];
-            }
-            return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));
-        }, 
-        type: 'numeric' 
-    });
-    $.tablesorter.addParser({ 
-        id: 'sortext', 
-        is: function(s) { 
-            return false; 
-        }, 
-        format: function(s) {
-            re = s.match(new RegExp(/<sortext>(.+)<\/sortext>/));
-            if (re) {
-                s = re[1].toLowerCase();    
-            } else {
-                s = "";
-            }
-            return s;
-        }, 
-        type: 'text' 
-    });
-    
+	initialize_filelist();
     $("#component_list > input").removeAttr('checked');
-    
     {% for id in cfilter %}
-    $("#cmp_{{id}}").attr('checked', true);
+    	$("#cmp_{{id}}").attr('checked', true);
     {% endfor %}
-    
-    /*
-    var curr_filter = $.cookie("cfilter_{{release.slug}}", {raw: true});
-    if (curr_filter != undefined) {
-        curr_filter.split(',').forEach(function(el, idx, arr) {
-            $("#cmp_" + el).attr('checked', true);
-        });
-    }
-    */
     $("#component_list").buttonset();
     $("#component_list").find('input:checked').button("option", "icons", {primary:'ui-icon-circle-check'});
     $("#component_list").find('input:not(:checked)').button("option", "icons", {primary:'ui-icon-circle-plus'});
-    
-    $("#component_list").find('input').change(function(){
-        var cfilter = [];
-        $("#component_list").find('input:checked').each(function() {
-            cfilter.push($(this).attr('id').substring(4));
-        });
-        check_filter_button();
-        if (cfilter.length == 0) {
-            show_ok_dialog(gettext("You can't hide all components."));
-        } else {
-            $.cookie("cmpfilter_{{release.slug}}", cfilter.join(), { raw: true, expires: 30, path: '/' });
-            if ($(this).is(':checked')) {
-                $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-check").removeClass("ui-icon-circle-plus");
-                load_component($(this).val());
-            } else {
-                $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-plus").removeClass("ui-icon-circle-check");
-                hide_component($(this).attr('name'));
-            }
-        }
-    });
-
     check_filter_button();
-    
-    $("#filestabs").find('table').tablesorter({
-        widgets: ['cookie'],
-        sortList: [[0,0]],
-    });
-    
-    $("#filestabs").find('table').bind("sortStart",function() { 
-        loading(true);
-    }).bind("sortEnd",function() { 
-        loading(false);
-    }); 
-        
-    jQuery.aop.before({target: jQuery.fn, method: "hide"},
-    function(){
-        this.trigger("hide");
-    });
-    
-    $(document).keyup(function(event){
-        if (event.keyCode == 27) {
-            check_current();
-        }
-    });
-    init_select_events();
-		
-    $("#filterbutton").click(function() {
-        $("input[name='extraFunc']").each(function() {
-            if ($(this).is(':checked')) {
-                $.cookie($(this).attr('alt'), 'true', { expires: 30, path: '/' });
-            } else {
-                $.cookie($(this).attr('alt'), null, {path: '/' });
-            }
-        });			
-        load_component("{% url reload_list_files release.slug,language.code %}", true);
-    });
-
-    $("#comment_input").keyup(function (e) {
-        if( e.keyCode == $.ui.keyCode.ENTER ) {
-            e.preventDefault();
-            $("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
-        }
-    });
-		
-    $( "#lock_comment" ).dialog({
-        autoOpen: false,
-        width: 350,
-        modal: true,
-        resizable: false,
-        buttons: {
-            '{% trans "Ok" %}': function() {
-                var bValid = true;
-                bValid = bValid && checkLength( $("#comment_input"), '{% trans "Comments" %}', 4, 255 );
-                if ( bValid ) {
-                    try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
-                    $( this ).dialog( "close" );
-                }
-            },
-        },
-        open: function() {
-            $(".validateTips").text('');
-            $("#comment_input").val('');
-        },
-        close: function() {
-            $("#comment_input").removeClass( "ui-state-error" );
-        }
-    });
-    
     $("#component_list").show();
     $("#filestabs").show();
-		
 }); 
 --></script>
 {% endblock %}

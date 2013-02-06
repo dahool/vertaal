@@ -230,7 +230,7 @@
                 off = F.split(o.offset) || [0,0];
             F.calcSide.call(this, pbox, box, off[0], F.sides.v, v, o);
             F.calcSide.call(this, pbox, box, off[1], F.sides.h, h, o);
-            if (!box.height) delete box.height;
+            delete box.height;
             if (!box.width) delete box.width;
             return box;
         },

@@ -73,3 +73,154 @@ function process_toggle_response(data) {
 		}
 	});	
 }
+function add_comment(name, url) {
+	$("#lock_comment").attr('action', url);
+	$("#comment_text").text(interpolate(gettext('Unlocking file %s'), [name]));
+	$("#lock_comment").dialog('open');
+}
+function load_component(url,replace) {
+    if (replace==undefined) replace = false;
+    $.post(url, function(data) {
+        $(data).find('tbody').each(function() {
+            if (replace) {
+                $("#filestabs").find('tbody').html($(this).html());
+            } else {
+                $("#filestabs").find('tbody').append($(this).html());
+            }
+        });
+        $("#filestabs").find('table').trigger("update");
+    });    
+}
+function hide_component(name) {
+    loading(true);
+    $("#filestabs").find('tr[component="'+name+'"]').remove();
+    loading(false);
+}
+function check_filter_button() {
+    n = $("#component_list").find('input:checked');
+    if (n.length == 1) {
+        $(n).button('disable');
+    } else {
+        $(n).button('enable');
+    }    
+}
+function initialize_filelist() {
+	
+    $.tablesorter.addParser({ 
+        id: 'percentbars', 
+        is: function(s) { 
+            return false; 
+        }, 
+        format: function(s) {
+            re = s.match(new RegExp(/(\d*%)/g));
+            if (re) {
+                s = re[0];
+            }
+            return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));
+        }, 
+        type: 'numeric' 
+    });
+    $.tablesorter.addParser({ 
+        id: 'sortext', 
+        is: function(s) { 
+            return false; 
+        }, 
+        format: function(s) {
+            re = s.match(new RegExp(/<sortext>(.+)<\/sortext>/));
+            if (re) {
+                s = re[1].toLowerCase();    
+            } else {
+                s = "";
+            }
+            return s;
+        }, 
+        type: 'text' 
+    });
+
+    $("#component_list").find('input').change(function(){
+        var cfilter = [];
+        $("#component_list").find('input:checked').each(function() {
+            cfilter.push($(this).attr('id').substring(4));
+        });
+        check_filter_button();
+        if (cfilter.length == 0) {
+            show_ok_dialog(gettext("You can't hide all components."));
+        } else {
+            $.cookie("cmpfilter_{{release.slug}}", cfilter.join(), { raw: true, expires: 30, path: '/' });
+            if ($(this).is(':checked')) {
+                $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-check").removeClass("ui-icon-circle-plus");
+                load_component($(this).val());
+            } else {
+                $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-plus").removeClass("ui-icon-circle-check");
+                hide_component($(this).attr('name'));
+            }
+        }
+    });
+
+    $("#filestabs").find('table').tablesorter({
+        widgets: ['cookie'],
+        sortList: [[0,0]],
+    });
+    
+    $("#filestabs").find('table').bind("sortStart",function() { 
+        loading(true);
+    }).bind("sortEnd",function() { 
+        loading(false);
+    }); 
+        
+    jQuery.aop.before({target: jQuery.fn, method: "hide"},
+    function(){
+        this.trigger("hide");
+    });
+    
+    $(document).keyup(function(event){
+        if (event.keyCode == 27) {
+            check_current();
+        }
+    });
+    
+    init_select_events();
+		
+    $("#filterbutton").click(function() {
+        $("input[name='extraFunc']").each(function() {
+            if ($(this).is(':checked')) {
+                $.cookie($(this).attr('alt'), 'true', { expires: 30, path: '/' });
+            } else {
+                $.cookie($(this).attr('alt'), null, {path: '/' });
+            }
+        });			
+        load_component(RELOAD_LIST_FILES_URL, true);
+    });
+
+    $("#comment_input").keyup(function (e) {
+        if( e.keyCode == $.ui.keyCode.ENTER ) {
+            e.preventDefault();
+            $("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
+        }
+    });
+		
+    $( "#lock_comment" ).dialog({
+        autoOpen: false,
+        width: 350,
+        modal: true,
+        resizable: false,
+        buttons: {
+        	_OK : function() {
+                var bValid = true;
+                bValid = bValid && checkLength( $("#comment_input"), gettext("Comments"), 4, 255 );
+                if ( bValid ) {
+                    try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
+                    $( this ).dialog( "close" );
+                }
+            },
+        },
+        open: function() {
+            $(".validateTips").text('');
+            $("#comment_input").val('');
+        },
+        close: function() {
+            $("#comment_input").removeClass( "ui-state-error" );
+        }
+    });
+		
+} 
