@@ -69,7 +69,7 @@ INSTALLED_APPS = (
     'maintenancemode',
     'glossary',
     'appfeeds',
-    'notifications',
+    #'notifications',
     'exceptionlogger',
     'news',
     'deferredsubmit',
