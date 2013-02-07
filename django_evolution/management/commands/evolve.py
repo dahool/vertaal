@@ -41,6 +41,9 @@ class Command(BaseCommand):
         make_option(
             '--database', action='store', dest='database',
             help='Nominates a database to synchronize.'),
+        make_option(
+            '--force', action='store_true', dest='force',
+            help='Force evolution even if contains errors.'),            
     )
 
     if '--verbosity' not in [opt.get_opt_string()
@@ -67,6 +70,7 @@ class Command(BaseCommand):
         hint = options['hint']
         purge = options['purge']
         database = options['database']
+        force = options['force']
 
         if not database and is_multi_db():
             from django.db.utils import DEFAULT_DB_ALIAS
@@ -79,9 +83,9 @@ class Command(BaseCommand):
 
         # Use the list of all apps, unless app labels are specified.
         if app_labels:
-            if execute:
-                raise CommandError('Cannot specify an application name when '
-                                   'executing evolutions.')
+            #if execute:
+            #    raise CommandError('Cannot specify an application name when '
+            #                        'executing evolutions.')
             try:
                 app_list = [get_app(app_label) for app_label in app_labels]
             except (ImproperlyConfigured, ImportError), e:
@@ -222,8 +226,9 @@ class Command(BaseCommand):
                       'not be resolved:'
                 print diff
 
-                raise CommandError('Your models contain changes that Django '
-                                   'Evolution cannot resolve automatically.')
+                if not force:
+                    raise CommandError('Your models contain changes that Django '
+                                    'Evolution cannot resolve automatically.')
         else:
             print self.style.NOTICE(
                 'Evolution could not be simulated, possibly due to raw '
