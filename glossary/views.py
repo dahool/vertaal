@@ -11,6 +11,8 @@ from glossary.models import Glossary
 from glossary.forms import GlossaryForm
 from django.conf import settings
 
+from django.contrib import messages
+
 lang_session_key = 'glossary_lang'
 project_session_key = 'glossary_project'
 
@@ -41,7 +43,7 @@ def create_update(request, project=None, lang=None, word_id=None):
             try:
                 t = form.save(p,l)
             except IntegrityError:
-                request.user.message_set.create(message=_("'%s' already exists") % form.cleaned_data['word'])
+                messages.error(request, message=_("'%s' already exists") % form.cleaned_data['word'])
                 return {'lang': l,
                         'project': p,
                         'id': word_id,
@@ -50,7 +52,7 @@ def create_update(request, project=None, lang=None, word_id=None):
                 t.history.create(user=request.user, translation=t.translation, action_flag='C')
             else:
                 t.history.create(user=request.user, translation=t.translation, action_flag='A')
-            request.user.message_set.create(message=message % t.word)
+            messages.info(request, message=message % t.word)
             return HttpResponseRedirect(reverse('gloss_list',
                                                 kwargs={'project': p.slug,
                                                         'lang': l.code}))
@@ -68,7 +70,7 @@ def create_update(request, project=None, lang=None, word_id=None):
 def remove_word(request, word_id=None):
     term = get_object_or_404(Glossary, id=word_id)
     term.delete()
-    request.user.message_set.create(message=_("Removed translation for '%s'") % term.word)
+    messages.info(request, message=_("Removed translation for '%s'") % term.word)
     return HttpResponseRedirect(reverse('gloss_list',
                                         kwargs={'project': term.project.slug,
                                                 'lang': term.language.code}))
@@ -129,7 +131,7 @@ def export_tbx(request, project, lang):
     try:
         from glossary.lib import tbx
     except ImportError:
-        request.user.message_set.create(message=_("Sorry, export is not available at this time."))
+        messages.warning(request, message=_("Sorry, export is not available at this time."))
         return HttpResponseRedirect(reverse('gloss_list',
                                         kwargs={'project': project,
                                                 'lang': lang}))        

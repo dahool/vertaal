@@ -84,7 +84,7 @@
 	<div class="message center-box">
 	<ul class="simple">
 	{% for message in messages %}
-		<li>{{ message }}</li>
+		<li {% if message.tags %}class="type-{{ message.tags }}"{% endif %}>{{ message }}</li>
 	{% endfor %}
 	</ul>
 	</div>

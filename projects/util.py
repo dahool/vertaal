@@ -2,13 +2,13 @@ import os
 from django.conf import settings
 import logging
 
+from django.contrib import messages
 from django.utils.translation import ugettext as _
 
 def check_project(request, project):
     if not project.enabled:
         if project.is_maintainer(request.user):
-            request.user.message_set.create(
-                        message=_('This project is disabled. Only maintainers can view it.'))
+            messages.warning(request, message=_('This project is disabled. Only maintainers can view it.'))
             return True
         else:
             return False

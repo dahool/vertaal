@@ -1,0 +1,11 @@
+{% load i18n %}
+<form id="compose_form">
+<fieldset>
+	<div id="compose_recipients">
+		<label for="id_recipients">{% trans "To" %}:</label>
+		<span id="id_recipients"></span>
+	</div>
+	<div id="compose_subject"><label for="id_subject">{% trans "Subject" %}:</label> <input type="text" id="id_subject" name="subject" maxlength="50" class="text ui-widget-content ui-corner-all"/></div>
+	<textarea id="id_message" rows="7" cols="33" class="text ui-widget-content ui-corner-all"></textarea>
+</fieldset>
+</form>

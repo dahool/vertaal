@@ -1,4 +1,4 @@
-{% load i18n settingstag extendtags timezone_filters %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull home as home %}
+{% load i18n settingstag extendtags timezone_filters %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull home as home %}{% urlfull pm_home as pmhome %}
 {% blocktrans %}
 Hello,
 {% endblocktrans %}{% blocktrans count message_count as counter %}
@@ -7,12 +7,12 @@ There are {{ counter }} unread messages in your profile.{% endblocktrans %}
 
 {% trans "Latest messages:" %}
 {% for mesa in messages %}
-> ---------- {{ mesa.status.get.created|localtime:user.get_profile.timezone }} ----------
+> ---------- {{ mesa.message.created|localtime:user.get_profile.timezone }} ----------
 > 
-> {{ mesa }}
+> {{ mesa.message.subject }}
 {% endfor %}
 {% blocktrans %}
-Login to check your messages.
+Go to {{pmhome}} to check your messages.
  
 Sincerely,
 

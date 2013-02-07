@@ -23,6 +23,9 @@ from projects.util import get_build_log_file, check_project
 from app.log import (logger)
 from files.models import POTFile, POFile
 
+from django.contrib import messages
+from djangopm.utils import send_pm
+
 @login_required
 def project_create_update(request, slug=None):
     res = {}
@@ -78,8 +81,7 @@ def project_build(request, release_slug):
     try:
         b = BuildCache.objects.get_locked(release)
         if b.count()>0:
-            request.user.message_set.create(
-                        message=_('Build is already running.'))
+            messages.warning(request, message=_('Build is already running.'))
             return back
     except:
         pass
@@ -91,8 +93,7 @@ def project_build(request, release_slug):
                                  'user': request.user})
     t.start()
 
-    request.user.message_set.create(
-                message=_('Build started.'))
+    messages.info(request, message=_('Build started.'))
             
     return back
 
@@ -121,8 +122,7 @@ def __build_repo(project, release, user):
                                            release=release)
                 if b.is_locked:
                     canbuild = False
-                    user.message_set.create(
-                                message=_('Component %s is locked at this moment.') % component.name)  
+                    send_pm(user, subject=_('Component %s is locked at this moment.') % component.name)  
                     logger.debug('Component %s is locked.' % component.name)                  
                 else:
                     b.lock()
@@ -131,7 +131,7 @@ def __build_repo(project, release, user):
                                            release=release)
                 b.lock()
             except Exception, e:
-                user.message_set.create(str(e))
+                send_pm(user, _("Build error"), str(e))
                 logger.error(e)
                 raise
             if canbuild:
@@ -150,28 +150,23 @@ def __build_repo(project, release, user):
                     repo = Manager(project, release, component, team.language, logfile)
                     try:
                         b.setrev(repo.build())
-                        user.message_set.create(
-                                    message=_('Build of %(component)s on release %(release)s for team %(team)s completed.')
-                                        % {'component': component.name,
-                                           'release': release.name,
-                                           'team': team.language.name})
+#                        send_pm(user, subject=_('Build of %(component)s on release %(release)s for team %(team)s completed.')
+#                                        % {'component': component.name,
+#                                           'release': release.name,
+#                                           'team': team.language.name})
                     except lock.LockException, l:
                         repo.notify_callback(l)
                         logger.error(l)
-                        user.message_set.create(
-                                    message=_('Project locked for %(team)s. Try again in a few minutes. If the problem persist contact the administrator.') % {
+                        send_pm(user, _("Project locked"), message=_('Project locked for %(team)s. Try again in a few minutes. If the problem persist contact the administrator.') % {
                                             'team': team.language.name})
                     except Exception, e:
                         repo.notify_callback(e)
                         logger.error(e)
-                        user.message_set.create(
-                                    message=_('Error building team %(team)s. Reason: %(error)s') % {
-                                            'team': team.language.name, 'error': e.args})
+                        send_pm(user, _('Error building team %(team)s.') % {'team': team.language.name}, _('Reason: %(error)s') % {'error': e.args} )
                     finally:
                         del repo
                 
-                user.message_set.create(
-                            message=_('Finished build cache for component %(component)s.') %
+                send_pm(user, _('Finished build cache for component %(component)s.') %
                                 {'component': component.name})
                 
                 if component.potlocation:
@@ -188,13 +183,11 @@ def __build_repo(project, release, user):
                     except lock.LockException, l:
                         repo.notify_callback(l)
                         logger.error(l)
-                        user.message_set.create(
-                                    message=_('Project locked. Try again in a few minutes. If the problem persist contact the administrator.'))
+                        send_pm(user, _("Project locked"), message=_('Project %s locked. Try again in a few minutes. If the problem persist contact the administrator.') % project.name)
                     except Exception, e:
                         repo.notify_callback(e)
                         logger.error(e)
-                        user.message_set.create(
-                                    message=_('Build error. Reason: %(error)s') % {
+                        send_pm(user, _("Build error"), message=_('Build error. Reason: %(error)s') % {
                                             'error': e.args})
                     finally:
                         del repo
@@ -210,7 +203,7 @@ def __build_repo(project, release, user):
         except:
             pass
         message=_('Finished build cache for release %(release)s.') % {'release': release.name}
-        user.message_set.create(message=message)
+        send_pm(user, "Build complete", message=message)
         user.email_user(_('Build complete'), message)
 
 def project_list(request):
@@ -224,8 +217,7 @@ def project_detail(request, slug):
 
     if not p.enabled:
         if p.is_maintainer(request.user):
-            request.user.message_set.create(
-                        message=_('This project is disabled. Only maintainers can view it.'))
+            messages.info(request, message=_('This project is disabled. Only maintainers can view it.'))
         else:
             raise Http403
     

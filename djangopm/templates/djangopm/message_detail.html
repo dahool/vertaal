@@ -1,0 +1,8 @@
+{% load i18n %}
+<div id="message_detail">
+	<div class="pm_detail_from"><label>{% trans "From" %}:</label> <span class="pm_recipient">{{message.sender}}</span></div>
+	<div class="pm_detail_to"><label>{% trans "To" %}:</label> {% for recip in message.recipients.all %}<span class="pm_recipient">{{recip}}</span>{%endfor%}</div>
+	<div class="pm_detail_message">
+		{{message.text}}
+	</div>
+</div>

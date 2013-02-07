@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/djangopm.css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/djangopm.js"></script>
+<!-- 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+ -->
+{% endblock %}
+{% block content %}
+<div id="mailbox" style="display: none;">
+<!-- 
+<ul>
+<li><a href="#pminbox">{% trans "Inbox" %}</a></li>
+<li><a href="#pmsent">{% trans "Sent" %}</a></li>
+<li><a href="#pmdraft">{% trans "Draft" %}</a></li>
+</ul>
+ -->
+<div id="form-action">
+	<div class="right">
+	<button action="pm_delete" href="{% url pm_inbox_delete %}" class="icon delete">{% trans "Delete" %}</button>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<div id="pminbox" class="inbox_content" href="{% url pm_inbox %}">
+<!-- 
+<div class="mailbox_header">
+	<button href="#pm_compose">{% trans "Compose" %}</button>
+	<div class="right">
+	<button action="pm_delete" href="{% url pm_inbox_delete %}" class="icon delete">{% trans "Delete" %}</button>
+	</div>
+	<div class="clear"></div>
+</div>
+ -->
+<div class="mailbox_holder"></div>
+</div>
+<!-- 
+<div id="pmsent" class="inbox_content" href="{% url pm_outbox %}">
+<div class="mailbox_header">
+	<button href="#pm_compose">{% trans "Compose" %}</button>
+	<div class="right">
+	<button class="red-button">{% trans "Delete" %}</button>
+	</div>
+</div>
+<div class="mailbox_holder"></div>
+</div>
+<div id="pmdraft" class="inbox_content" href="{% url pm_draftbox %}">
+<div class="mailbox_header">
+	<button href="#pm_compose">{% trans "Compose" %}</button>
+	<div class="right">
+	<button>{% trans "Delete" %}</button>
+	</div>
+</div>
+<div class="mailbox_holder"></div>
+</div>
+ -->
+</div>
+
+<div id="pm_detail"></div>
+<div id="pm_compose" style="display: none;">{% include "djangopm/message_compose.html" %}</div>
+{% endblock %}

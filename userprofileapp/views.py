@@ -17,6 +17,8 @@ from common.mail import send_mass_mail_em
 from teams.views import ContactForm
 from app.templatetags.extendtags import get_full_url
 
+from django.contrib import messages
+
 @login_required
 def update_favorites(request, remove=False, idtype=False):
     if request.method != 'POST':
@@ -72,8 +74,7 @@ def account_profile(request):
             if lang and request.LANGUAGE_CODE <> lang:
                 from django.utils import translation
                 translation.activate(lang)
-            request.user.message_set.create(
-                            message=_("Profile updated."))            
+            messages.success(request, _("Profile updated."))            
     else:
         form = UserProfileForm(instance=request.user)
     if request.user.is_superuser:
@@ -143,9 +144,9 @@ def mass_notification(request):
             send_mass_mail_em(maillist)
         except Exception, e:
             logger.error(e)
-            request.user.message_set.create(message=_("Your message couldn't be delivered to one or more recipients."))
+            messages.warning(request, _("Your message couldn't be delivered to one or more recipients."))
         else:                              
-            request.user.message_set.create(message=_('Your message has been sent.'))
+            messages.success(request, _('Your message has been sent.'))
 
     return HttpResponseRedirect(reverse('user_profile'))
     

@@ -41,6 +41,9 @@ from django.shortcuts import redirect
 
 from deferredsubmit import handler as deferredhandler
 
+from django.contrib import messages
+from djangopm.utils import send_pm
+
 try:
     import hashlib
     hash = hashlib.sha1
@@ -58,6 +61,7 @@ def escape(text):
 def check_status(fn):
     """check if the project is enabled"""
     def status_fn(self, *args, **kw):
+        request = kw.get('request')
         if kw.has_key('release'):
             release = get_object_or_404(Release,slug=kw['release'])
         elif kw.has_key('slug'):
@@ -68,11 +72,9 @@ def check_status(fn):
         if not release.enabled or not release.project.enabled:
             if release.project.is_maintainer(self.user):
                 if not release.project.enabled:
-                    self.user.message_set.create(
-                            message=_("This project is disabled. You shouldn't change anything here."))
+                    messages.warning(request, _("This project is disabled. You shouldn't change anything here."))
                 else:
-                    self.user.message_set.create(
-                            message=_("This release is disabled. You shouldn't change anything here."))                    
+                    messages.warning(request, _("This release is disabled. You shouldn't change anything here."))
             else:
                 raise Http403
         return fn(self, *args, **kw)
@@ -98,11 +100,10 @@ def upload(request, release, language):
                 # then we check if it is possible to commit now
                 team = Team.objects.get(project=r.project,language=l)
                 if r.project.repo_user and team.submittype == 1 and team.can_commit(request.user):
-                    do_commit(submits, request.user, r.project.repo_user, r.project.get_repo_pwd())
+                    do_commit(request, submits, request.user, r.project.repo_user, r.project.get_repo_pwd())
                 else:
                     #thread.start_new_thread(create_diff_cache, (submits,))
-                    request.user.message_set.create(
-                                message=_("Your file was uploaded and added to the submission queue."))
+                    messages.info(request, _("Your file was uploaded and added to the submission queue."))
             except Exception, e:
                 logger.error(e)
                 res['message']=e.message.split("$$")
@@ -235,8 +236,8 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     assign.translate = request.user 
                 else:
                     assign.translate = User.objects.get(id=userid)
-                    assign.translate.message_set.create(
-                                                        message=_('You had been designated as translator of %(file)s') % {'file': smart_unicode(file)})
+                    if assign.translate != request.user:
+                        send_pm(assign.translate, _('File assigned'), _('You had been designated as translator of %(file)s') % {'file': smart_unicode(file)})
                 if assign.translate != request.user:
                     cmt = _('Assigned to %s') % assign.translate.username                
                 act=LOG_ACTION['AS_TRA']
@@ -249,7 +250,8 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     assign.review = request.user 
                 else:
                     assign.review = User.objects.get(id=userid)
-                    assign.review.message_set.create(message=_('You had been designated as reviewer of %(file)s') % {'file':smart_unicode(file)})
+                    if assign.review != request.user:
+                        send_pm(assign.review, _('File assigned'), _('You had been designated as reviewer of %(file)s') % {'file':smart_unicode(file)})
 
                 if assign.review != request.user:
                     cmt = _('Assigned to %s') % assign.review.username                
@@ -258,8 +260,7 @@ def toggle_assigned(request, slug, translator=False, remove=False):
             if assign.translate == assign.review:
                 return XMLResponse({'message': _('Sorry, the translator and the reviewer cannot be the same user.')})
             
-            log = POFileLog.objects.create(pofile=file, user=request.user, action=act, comment=cmt)
-            #log.save()
+            POFileLog.objects.create(pofile=file, user=request.user, action=act, comment=cmt)
             assign.save()
             
         page = render_to_string('files/file_list_row.html',
@@ -313,7 +314,7 @@ def toggle_mark(request, slug):
                     if file.status == 1:
                         if assign and assign.review:
                             set_user_language(assign.review)
-                            assign.review.message_set.create(message=_("File %s ready for review.") % smart_unicode(file))                    
+                            send_pm(assign.review, subject=_("File %s ready for review.") % smart_unicode(file))                    
         else:
             return XMLResponse({'message': _('You are not authorized to perform this action.')})
 
@@ -333,7 +334,7 @@ def get_file_list(request, component=None, release=None, language=None):
         r = res['release'] = get_object_or_404(Release, slug=release)
         if r.read_only or r.project.read_only:
             if request.user.is_authenticated():
-                request.user.message_set.create(message=_('This component is read only.'))
+                messages.warning(request, _('This component is read only.'))
         q = q.filter(release=res['release'])
     if component:
         c = res['component'] = get_object_or_404(Component, slug=component)
@@ -551,17 +552,12 @@ def edit_file(request, slug):
             if form.is_valid():
                 try:
                     handle_text_file(file, form.cleaned_data['content'], request.user, form.cleaned_data['comment'])
-                    request.user.message_set.create(
-                                    message=_("Your file was added to the submission queue."))
+                    messages.info(request, message=_("Your file was added to the submission queue."))
                     return redirect
                 except Exception, e:
                     res = str(e).split("$$")
                     for m in res:
-                        request.user.message_set.create(
-                                    message=m[:-1])
-#            else:
-#                request.user.message_set.create(
-#                                message=form.content.error)
+                        messages.error(request, message=m[:-1])
                 
         else:
             if file.submits.all_pending():
@@ -572,56 +568,46 @@ def edit_file(request, slug):
     else:
         if file.locked:
             if file.locks.get().owner.username != request.user.username:
-                request.user.message_set.create(
-                                message=_("The file is locked by another user."))
+                messages.warning(request, message=_("The file is locked by another user."))
                 return redirect
         else:
             team = Team.objects.get(project=file.component.project, language=file.language)
             if not team.is_member(request.user):
-                request.user.message_set.create(
-                                message=_("You are not a member of this team."))                
+                messages.warning(request, message=_("You are not a member of this team."))
                 return redirect
             if file.assigns.all():
                 assign = file.assigns.get()
                 if not assign.translate == request.user and not assign.review == request.user:
-                    request.user.message_set.create(
-                                    message=_("You are not assigned to this file."))                
+                    messages.warning(request, message=_("You are not assigned to this file."))
                     return redirect                    
             else:
-                request.user.message_set.create(
-                                    message=_("You are not assigned to this file."))                
-                return redirect       
-            request.user.message_set.create(
-                                message=_("The file is now locked on your name."))            
-            lock = POFileLock.objects.create(pofile=file, owner=request.user)
-        
+                messages.warning(request, message=_("You are not assigned to this file."))
+                return redirect
+            messages.info(request, message=_("The file is now locked on your name."))       
+            POFileLock.objects.create(pofile=file, owner=request.user)
         try:
             if file.submits.all_pending():
                 s = file.submits.get_pending()
                 if s.locked:
-                    request.user.message_set.create(
-                                message=_("This file is being processed. It can't be modified."))
+                    messages.warning(request, message=_("This file is being processed. It can't be modified."))
                     return redirect                
                 s.enabled = False
                 s.save()
                 content = s.handler.get_content()
-                request.user.message_set.create(
-                                message=_("You are editing the uploaded version of this file."))
-                request.user.message_set.create(
-                                message=_("The file was removed from the submission queue, remember to either save your work or cancel to put the file back in the queue."))                                
+                messages.info(request, message=_("You are editing the uploaded version of this file."))
+                messages.info(request, message=_("The file was removed from the submission queue, remember to either save your work or cancel to put the file back in the queue."))
             else:
                 content = file.handler.get_content(True)
         except:
             raise Http404
         form = FileEditForm(initial={'content': content})
+        # end else
     return render_to_response("files/file_edit.html",
                                {'form': form,
                                 'file': file,
                                 'title': _('Editing %s') % file.filename},
                                context_instance = RequestContext(request))
 
-#@login_required
-#@check_status
 def file_log(request, slug):
     file = get_object_or_404(POFile,slug=slug)
     return render_to_response("files/file_log.html",
@@ -657,33 +643,28 @@ def submit_team_file(request, team = None):
             logger.error("Submit Queue: %s" % (e))
             
     if len(teams) == 0:
-        request.user.message_set.create(
-                            message=_("You are not authorized to perform this action."))        
+        messages.warning(request, _("You are not authorized to perform this action."))
         return HttpResponseRedirect(back)
         
     for tm in teams:
         try:
             t = Team.objects.get(language=tm.language, project=tm.project)
             if not t.can_commit(request.user):
-                request.user.message_set.create(
-                                    message=_("You are not authorized to perform this action."))        
+                messages.warning(request, _("You are not authorized to perform this action."))        
                 return HttpResponseRedirect(back)
         except:
             logger.error("Team %s-%s not found" % (tm.language, tm.project))
-            request.user.message_set.create(
-                                message=_("You are not authorized to perform this action."))        
+            messages.warning(request, _("You are not authorized to perform this action."))     
             return HttpResponseRedirect(back)
 
     if len(files)==0:
-        request.user.message_set.create(
-                            message=_("Please, select one or more files."))
+        messages.warning(request, _("Please, select one or more files."))
         return HttpResponseRedirect(back)
 
     if reject:
         needuser = False
         form = RejectSubmitForm()
-        request.user.message_set.create(
-                            message=_("You are about to reject the following files."))
+        messages.info(request, _("You are about to reject the following files."))
     else:
         if t.project.repo_user:
             needuser=False
@@ -691,8 +672,7 @@ def submit_team_file(request, team = None):
         else:
             needuser=True
             form = HttpCredForm()
-        request.user.message_set.create(
-                            message=_("You are about to submit the following files."))
+        messages.info(request, _("You are about to submit the following files."))
     
     return render_to_response("files/file_submit_confirm.html",
                                {'files': files,
@@ -734,8 +714,7 @@ def confirm_submit(request):
                 files.append(sfile)
             except:
                 pass            
-        request.user.message_set.create(
-                            message=_("Complete the form and try again."))
+        messages.warning(request, message=_("Complete the form and try again."))
         return render_to_response("files/file_submit_confirm.html",
                                    {'files': files,
                                     'back': request.POST['back'],
@@ -748,8 +727,7 @@ def confirm_submit(request):
         try:
             submfile = POFileSubmit.objects.get(pk=fid)
             if reject:
-                submfile.owner.message_set.create(
-                                    message=_("The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]") % 
+                send_pm(submfile.owner, _("Submit rejected"), message=_("The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]") % 
                                         {'file': submfile.pofile.filename,
                                          'user': request.user.username,
                                          'project': submfile.pofile.release.project.name,
@@ -771,8 +749,7 @@ def confirm_submit(request):
             pass
 
     if reject:
-        request.user.message_set.create(
-                            message=_("The files were rejected."))
+        messages.info(request, message=_("The files were rejected."))
                 
     if len(files)>0:
         if needuser:
@@ -783,7 +760,7 @@ def confirm_submit(request):
             puser = p.repo_user
             ppass = p.get_repo_pwd()
             
-        do_commit(files,
+        do_commit(request, files,
                  request.user,
                  puser,
                  ppass,
@@ -791,12 +768,12 @@ def confirm_submit(request):
 
     return HttpResponseRedirect(request.POST['back'])
 
-def do_commit(submits, user, repo_user, repo_pass, message=''):
+def do_commit(request, submits, user, repo_user, repo_pass, message=''):
     if deferredhandler.deferred_enabled:
         deferredhandler.add_submits(submits, user, repo_user, repo_pass, message)
         msg = ungettext('The file was added to the queue for later processing.',
                             'The files were added to the queue for later processing.', len(submits))
-        user.message_set.create(message=msg)        
+        messages.info(request, message=msg)        
     else:
         c = SubmitClient(submits,
                          user,
@@ -807,12 +784,11 @@ def do_commit(submits, user, repo_user, repo_pass, message=''):
             c.run()
             msg = ungettext('File submitted.',
                             'Files submitted.', len(submits))          
-            user.message_set.create(message=msg)
+            messages.info(request, message=msg)
         except Exception, e:
             logger.error(e)
             logger.error(traceback.format_exc())
-            user.message_set.create(
-                                message=_("Failed. Reason: %s") % smart_unicode(e))
+            messages.error(request, message=_("Failed. Reason: %s") % smart_unicode(e))
     
 @login_required
 def commit_queue(request, data = {}):
@@ -853,14 +829,12 @@ def edit_submit_file(request, slug):
             if form.is_valid():
                 try:
                     handle_text_file(file, form.cleaned_data['content'], request.user, form.cleaned_data['comment'])
-                    request.user.message_set.create(
-                                    message=_("The file was added back to the submission queue."))
+                    messages.info(request, message=_("The file was added back to the submission queue."))
                     return redirect
                 except Exception, e:
                     res = e.message.split("$$")
                     for m in res:
-                        request.user.message_set.create(
-                                    message=m[:-1])
+                        messages.error(request, message=m[:-1])
         else:
             if file.submits.all_pending():
                 s = file.submits.get_pending()
@@ -872,15 +846,13 @@ def edit_submit_file(request, slug):
             if file.submits.all_pending():
                 s = file.submits.get_pending()
                 if s.locked:
-                    request.user.message_set.create(
-                                message=_("This file is being processed. It can't be modified."))
+                    messages.warning(request, message=_("This file is being processed. It can't be modified."))
                     return redirect
                                                     
                 s.enabled = False
                 s.save()
                 content = s.handler.get_content()
-                request.user.message_set.create(
-                                message=_("The file was removed from the submission queue, remember to either save your work or cancel to put the file back in the queue."))                                
+                messages.info(request, message=_("The file was removed from the submission queue, remember to either save your work or cancel to put the file back in the queue."))                                
             else:
                 return redirect
         except:
@@ -1020,27 +992,23 @@ def do_merge(request, slug):
 
     team = Team.objects.get(project=pofile.component.project, language=pofile.language)
     if not team.is_member(request.user) and not team.can_manage(request.user):
-        request.user.message_set.create(
-                        message=_("You are not a member of this team."))                
+        messages.warning(request, message=_("You are not a member of this team."))                
         return redirect            
     
     if pofile.submits.all_pending():
-        request.user.message_set.create(
-                                        message=_("The file has a pending submit. You can't force a merge right now."))
+        messages.warning(request, message=_("The file has a pending submit. You can't force a merge right now."))
         return redirect
 
     if not pofile.potfile.all():
-        request.user.message_set.create(
-                                message=_('POT file not found.'))
+        messages.error(request, message=_('POT file not found.'))
         return redirect
     
     try:
         filehandler.process_merge(pofile, request.user)
     except Exception, e:
-        request.user.message_set.create(message=str(e))
+        messages.error(request, message=str(e))
     else:
-        request.user.message_set.create(
-                        message=_("File merged and added to the submission queue."))
+        messages.info(request, message=_("File merged and added to the submission queue."))
 
     return redirect
     
@@ -1066,15 +1034,13 @@ def submit_new_file(request, slug):
 
     team = get_object_or_404(Team, language=pofile.language.pk, project=pofile.release.project.pk)
     if not team.can_commit(request.user):
-        request.user.message_set.create(
-                            message=_("You are not authorized to perform this action."))        
+        messages.warning(request, message=_("You are not authorized to perform this action."))        
         return HttpResponseRedirect(back)
 
     if pofile.submits.all_pending():
         s = pofile.submits.get_pending()
         if s.locked:
-            request.user.message_set.create(
-                                message=_("This file is being processed. It can't be modified."))
+            messages.warning(request, message=_("This file is being processed. It can't be modified."))
             return back
         s.enabled = False
         s.save()    
@@ -1090,8 +1056,7 @@ def submit_new_file(request, slug):
             logger.debug(request.FILES)
             # first we add the files to the queue
             submits = handle_uploaded_file(request.FILES['file'], pofile.release, pofile.language, request.user, form.cleaned_data['comment'], pofile)
-            request.user.message_set.create(
-                        message=_("Your file was uploaded and added to the submission queue."))
+            messages.info(request, message=_("Your file was uploaded and added to the submission queue."))
             return HttpResponseRedirect(back)
         except Exception, e:
             s.enabled = True

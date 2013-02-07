@@ -23,6 +23,8 @@ from django import forms
 import thread
 from django.utils.encoding import smart_unicode
 
+from django.contrib import messages
+
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':4, 'cols':30}))
@@ -55,7 +57,7 @@ def team_admin(request, id):
         if form.is_valid():
             team.submittype = form.cleaned_data['type']
             team.save()
-            request.user.message_set.create(message=_('Updated'))
+            messages.success(request, _('Updated'))
     else:
         form = SubmitTypeForm(initial={'type': team.submittype})
     return render_to_response("teams/team_admin.html",
@@ -94,9 +96,9 @@ def team_contact(request, id):
                 send_mass_mail_em(maillist)
             except Exception, e:
                 logger.error(e)
-                request.user.message_set.create(message=_("Your message couldn't be delivered to one or more recipients."))
+                messages.warning(request, _("Your message couldn't be delivered to one or more recipients."))
             else:                              
-                request.user.message_set.create(message=_('Your message has been sent.'))
+                messages.success(request, _('Your message has been sent.'))
         
             return HttpResponseRedirect(reverse('team_detail',
                                             kwargs={ 'project': team.project.slug,
@@ -143,7 +145,7 @@ def _remove_team_files(request, project, language):
     for pofile in POFile.objects.filter(language=language, release__project=project):
         logger.debug("Delete %s" % (smart_unicode(pofile)))
         pofile.delete()
-    request.user.message_set.create(message=_('Team %(lang)s [%(project)s] removed.') % {'lang': language.name, 'project': project.name})
+    messages.info(request, _('Team %(lang)s [%(project)s] removed.') % {'lang': language.name, 'project': project.name})
     
 @login_required
 def join_accept(request, id, reject=False):
@@ -201,10 +203,10 @@ def join_request(request, teamid):
                                             'lang': team.language.code}))
 
     if team.is_member(request.user):
-        request.user.message_set.create(message=_('You are already a member of this team.'));
+        messages.warning(request, _('You are already a member of this team.'));
         return back
     elif request.user in [r.user for r in team.join_requests.all()]:
-        request.user.message_set.create(message=_('You have already sent a join request.'));
+        messages.warning(request, _('You have already sent a join request.'));
         return back
         
     if request.method == 'POST':
@@ -223,7 +225,7 @@ def join_request(request, teamid):
             if request.user.get_full_name():
                 username = "%s (%s)" % (request.user.get_full_name(), request.user.username)
             else:
-                 username = request.user.username
+                username = request.user.username
             sendm = []
             sender = request.user.email
             for coord in team.coordinators.all():
@@ -246,8 +248,8 @@ def join_request(request, teamid):
             try:
                 send_mass_mail_em(sendm)
             except Exception, e:
-                logger.error(e)            
-            request.user.message_set.create(message=_('Your request to join this team has been received.'));
+                logger.error(e)
+            messages.success(request, _('Your request to join this team has been received.'));
             return HttpResponseRedirect(reverse('team_detail',
                                                 kwargs={ 'project': team.project.slug,
                                                 'lang': team.language.code}))

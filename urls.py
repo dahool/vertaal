@@ -48,6 +48,7 @@ urlpatterns = patterns('',
     url(r'^iterm/', include('glossary.urls')),
     url(r'^news/', include('news.urls')),
     url(r'^man/', include(admin.site.urls)),
+    url(r'^pm/', include('djangopm.urls')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 ) 
 

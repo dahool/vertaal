@@ -3,6 +3,14 @@
 	{% if user.is_authenticated %}
 		{% url user_profile as profile %}
 		{% trans "Welcome" %} <a title="{% trans "Profile settings" %}" href="{{ profile }}">{{ user.username }}</a>
+		&nbsp;
+		
+		{% if user.pm_inbox.unread %}
+		<a href="{% url pm_home %}" class="icon email_unread" title="{% trans "Private Messages" %}"><sub class="pm_count">{{user.pm_inbox.unread.count}}</sub></a>
+		{% else %}
+		<a href="{% url pm_home %}" class="icon email" title="{% trans "Private Messages" %}"></a>
+		{% endif %}
+		
 		&nbsp;|&nbsp;
 		<a href="{% url user_signout %}">{% trans "Sign out" %}</a>
 	{% else %}

@@ -28,6 +28,8 @@ from app.log import logger
 from versioncontrol.forms import HttpCredForm
 from files.forms import CommentForm
 
+from django.contrib import messages
+
 @login_required
 def release_create_update(request, project=None, slug=None):
     res = {}
@@ -86,11 +88,9 @@ def release_detail(request, slug):
     if not r.enabled or not r.project.enabled:
         if r.project.is_maintainer(request.user):
             if not r.project.enabled:
-                request.user.message_set.create(
-                            message=_('This project is disabled. Only maintainers can view it.'))
+                messages.info(request, message=_('This project is disabled. Only maintainers can view it.'))
             else:
-                request.user.message_set.create(
-                            message=_('This release is disabled. Only project maintainers can view it.'))
+                messages.info(request, message=_('This release is disabled. Only project maintainers can view it.'))
         else:
             raise Http403
     
@@ -141,12 +141,12 @@ def release_populate(request, slug):
                     if assign.review and assign.review.is_active:
                         asg.review = assign.review
                     asg.save()
-        request.user.message_set.create(message=_('Success.'))
+        messages.success(request, _('Success.'))
         return back
     else:
         releases = Release.objects.filter(project=release.project).exclude(pk=release.pk)
         if releases.count() == 0:
-            request.user.message_set.create(message=_('There are no available releases to populate from.'))
+            messages.warning(request, _('There are no available releases to populate from.'))
             return back
         if release.project.is_maintainer(request.user):
             languages = [team.language for team in Team.objects.filter(project=release.project)]
@@ -235,10 +235,10 @@ def multimerge(request, slug):
         
         if len(fail)>0:
             if len(fail) == len(files):
-                request.user.message_set.create(message=_("The files could not be merged."))
+                messages.error(request, _("The files could not be merged."))
                 redirect = False
             else:
-                request.user.message_set.create(message=_("Some files could not be merged."))
+                messages.warning(request, _("Some files could not be merged."))
 
         if redirect:
             if release.project.repo_user:
@@ -246,9 +246,8 @@ def multimerge(request, slug):
                 form = CommentForm()
             else:
                 needuser=True
-                form = HttpCredForm()            
-            request.user.message_set.create(
-                            message=_("You are about to submit the following files."))
+                form = HttpCredForm()
+            messages.info(request, _("You are about to submit the following files."))
             return render_to_response("files/file_submit_confirm.html",
                                {'files': submitted,
                                 'back': reverse('multimerge', kwargs={'slug': slug}),

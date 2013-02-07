@@ -57,6 +57,7 @@ def process_queue():
     from common.i18n import UserLanguage
     from django.template.loader import render_to_string
     from django.core.mail import send_mail
+    from djangopm.utils import send_pm
     
     count = 0
     erc = 0
@@ -96,9 +97,7 @@ def process_queue():
                 erc += 1
                 logger.error(e)
                 logger.error(traceback.format_exc())
-                userfile.user.message_set.create(
-                                    message=_("Submit failed. Reason: %s") % smart_unicode(e))
-                
+
                 # send mail
                 try:
                     with UserLanguage(userfile.user) as user_lang:

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-#from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_noop as _
 from django.utils.encoding import smart_unicode
 from django.template.loader import render_to_string
@@ -8,7 +7,8 @@ from django.core.mail import send_mass_mail
 from common.i18n import set_user_language
 from teams.models import Team
 from files.models import *
-#from app.log import logger
+
+from djangopm.utils import send_pm
 
 class FileUpdateNotification(object):
     
@@ -72,7 +72,7 @@ class FileUpdateNotification(object):
                                 pofile_new.log.create(user=self.user, action=LOG_ACTION['ST_TRAN'])
                                 if assign.review:
                                     set_user_language(assign.review)
-                                    assign.review.message_set.create(message=_("File %s ready for review.") % smart_unicode(pofile_new))
+                                    send_pm(assign.review, subject=_("File %s ready for review.") % smart_unicode(pofile_new))
                     elif pofile_new.status == 1:
                         if assign.review:
                             if POFileLog.objects.filter(

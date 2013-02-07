@@ -58,6 +58,8 @@ from django_authopenid.models import UserAssociation
 from django_authopenid.signals import oid_register
 from django_authopenid.utils import *
 
+from django.contrib import messages
+
 def _build_context(request, extra_context=None):
     if extra_context is None:
         extra_context = {}
@@ -495,7 +497,7 @@ def password_change(request,
         if form.is_valid():
             form.save()
             msg = urllib.quote(_("Password changed"))
-            request.user.message_set.create(message=message)
+            messages.info(request, msg)
             redirect_to = "%s?%s" % (post_change_redirect, 
                                 urllib.urlencode({ "msg": msg }))
             return HttpResponseRedirect(redirect_to)
@@ -514,7 +516,7 @@ def associate_failure(request, message,
         extra_context=None, **kwargs):
         
     """ function used when new openid association fail"""
-    request.user.message_set.create(message=message)
+    messages.error(request, message)
     return render(template_failure, {
         'form': openid_form(request.user)
     }, context_instance=_build_context(request, extra_context=extra_context))
@@ -616,7 +618,7 @@ def dissociate(request, template_name="authopenid/dissociate.html",
     if len(associated_openids) == 1 and not request.user.has_usable_password():
         msg = _("You can't remove this openid. "
         "You should set a password first.")
-        request.user.message_set.create(message=msg)
+        messages.error(request, msg)
         return HttpResponseRedirect("%s?%s" % (redirect_to,
             urllib.urlencode({ "msg": msg })))
     
@@ -633,14 +635,14 @@ def dissociate(request, template_name="authopenid/dissociate.html",
                 if openid_url == request.session.get('openid_url'):
                     del request.session['openid_url']
                 msg = _("OpenID removed.")
-            request.user.message_set.create(message=msg)                
+            messages.info(request, msg)                
             return HttpResponseRedirect("%s?%s" % (redirect_to,
                 urllib.urlencode({ "msg": msg })))
     else:
         openid_url = request.GET.get('openid_url', '')
         if not openid_url:
             msg = _("Invalid OpenID url.")
-            request.user.message_set.create(message=msg)
+            messages.warning(request, msg)
             return HttpResponseRedirect("%s?%s" % (redirect_to,
                 urllib.urlencode({ "msg": msg })))
         form = dissociate_form(initial={ 'openid_url': openid_url })

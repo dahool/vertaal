@@ -15,6 +15,9 @@
 .email {
 	background-image: url('../images/icons/email.png');
 }
+.email_unread {
+	background-image: url('../images/icons/email_star.png');
+}
 .add {
 	background-image: url('../images/icons/add.png');
 }

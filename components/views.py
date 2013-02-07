@@ -18,6 +18,8 @@ from django.contrib.auth.models import User
 from projects.util import get_build_log_file
 from common.simplexml import XMLResponse
 
+from django.contrib import messages
+
 @login_required
 def component_create_update(request, project=None, slug=None):
     res = {}
@@ -75,8 +77,7 @@ def component_detail(request, slug):
 
     if not component.project.enabled:
         if component.project.is_maintainer(request.user):
-                request.user.message_set.create(
-                            message=_('This project is disabled. Only maintainers can view it.'))
+                messages.warning(request, _('This project is disabled. Only maintainers can view it.'))
         else:
             raise Http403
     
