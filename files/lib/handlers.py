@@ -171,7 +171,7 @@ def handle_uploaded_file(file, release, language, user, comment='', pofile=None)
             pofile = find_matching_file(file.name, release, language, user)
         else:
             if not pofile.filename == file.name:
-                raise Exception, _("You are supposed to upload a new version of %s, instead we found %s.") % (pofile.filename, file.name)
+                raise Exception, _("You are supposed to upload a new version of %(expected)s, instead we found %(uploaded)s.") % {'expected': pofile.filename, 'uploaded': file.name}
 #        dest_path = os.path.join(settings.TEMP_UPLOAD_PATH, user.username)
 #        if not os.path.exists(dest_path):
 #            os.makedirs(dest_path)

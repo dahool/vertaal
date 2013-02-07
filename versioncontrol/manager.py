@@ -185,7 +185,7 @@ class SubmitClient():
                                             mergeerror = mergeerror.replace(sfilename, smfile.pofile.filename)
                                         if pot:
                                             mergeerror = mergeerror.replace(str(pot.file), smfile.pofile.filename)
-                                        raise Exception(_('An error occurred while merging %s. %s' % (smfile.pofile.filename, mergeerror)))
+                                        raise Exception(_('An error occurred while merging %(filename)s. %(error)s' % {'filename': smfile.pofile.filename, 'error': mergeerror}))
                                     
                                     # files to be commited
                                     commit_files.append(str(smfile.pofile.file))
