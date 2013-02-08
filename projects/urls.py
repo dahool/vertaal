@@ -1,41 +1,14 @@
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
-from projects.models import Project
-from projects.views import * 
+from projects import views 
 
 admin.autodiscover()
 
-#project_list = {
-#    'queryset': Project.objects.all(),
-#    'template_object_name': 'project',
-#}
-
 urlpatterns = patterns('',
-    url(
-        regex = '^add/$',
-        view = project_create_update,
-        name = 'project_create'),
-    url(
-        regex = '^(?P<slug>[-\w]+)/edit/$',
-        view = project_create_update,
-        name = 'project_edit',),
-    url(
-        regex = '^(?P<slug>[-\w]+)/delete/$',
-        view = project_delete,
-        name = 'project_delete',),
-    url(
-        regex = '^(?P<release_slug>[-\w]+)/build/$',
-        view = project_build,
-        name = 'project_build',),
-) 
-
-urlpatterns += patterns('django.views.generic',
-    url(
-        regex = '^(?P<slug>[-\w]+)/$',
-        view = project_detail,
-        name = 'project_detail'),
-    url (
-        regex = '^$',
-        view = project_list,
-        name = 'project_list'),
+    url(r'^add/$', views.project_create_update, name = 'project_create'),
+    url(r'^(?P<slug>[-\w]+)/edit/$', views.project_create_update, name = 'project_edit'),
+    url(r'^(?P<slug>[-\w]+)/delete/$', views.project_delete, name = 'project_delete'),
+    url(r'^(?P<release_slug>[-\w]+)/build/$', views.project_build, name = 'project_build'),
+    url(r'^(?P<slug>[-\w]+)/$', views.project_detail, name = 'project_detail'),
+    url(r'^$', views.project_list, name = 'project_list'),                       
 )

@@ -2,9 +2,9 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.contrib.sites.models import Site
 
-from django.conf.urls import defaults
-defaults.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
-defaults.__all__.append('handler503')
+from django.conf import urls
+urls.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
+urls.__all__.append('handler503')
 
 #from maintenancemode.conf.settings import MAINTENANCE_MODE
 

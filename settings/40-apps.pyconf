@@ -78,7 +78,7 @@ INSTALLED_APPS = (
 #    'debug_toolbar',
 )
 
-ROOT_URLCONF = 'vertaal.urls'
+ROOT_URLCONF = 'urls'
 
 AUTH_PROFILE_MODULE = 'userprofileapp.UserProfile'
 

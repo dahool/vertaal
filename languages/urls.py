@@ -1,23 +1,21 @@
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
 from languages.models import Language
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 admin.autodiscover()
 
-urlpatterns = patterns('django.views.generic',
-    url(
-        regex = '^(?P<slug>[-_@\w]+)/$',
-        view = 'list_detail.object_detail',
-        name = 'language_detail',
-        kwargs = {'slug_field': 'code',
-                  "template_object_name" : "language",
-                  'queryset': Language.objects.all()}        
-        ),
-    url (
-        name = 'language_list',
-        regex = '^$',
-        view = 'list_detail.object_list',
-        kwargs = {"template_object_name" : "language",
-                  'queryset': Language.objects.all()}
-    )
+urlpatterns = patterns('',
+    url(r'^(?P<slug>[-_@\w]+)/$', DetailView.as_view(
+                                queryset=Language.objects.all(), 
+                                slug_field='code',
+                                context_object_name='language', 
+                                template_name='language/language_detail'),
+        name = 'language_detail'),                       
+    url(r'^$', ListView.as_view(
+                                queryset=Language.objects.all(), 
+                                context_object_name='language_list', 
+                                template_name='language/language_list'),
+        name = 'language_list'),
 )

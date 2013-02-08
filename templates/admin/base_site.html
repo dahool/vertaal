@@ -1,12 +1,12 @@
 {% extends "admin/base.html" %}
-{% load i18n adminmedia settingstag %}
+{% load i18n admin_static settingstag %}
 
 {% block extrastyle %}
 {{ block.super }}
 <style>
 #header{ background-color: #333940; border-bottom: solid 3px #999; }
 #branding h1{ color: #fff; }
-.module h2, .module caption, .inline-group h2 { background:#ccc url({% admin_media_prefix %}img/admin/nav-bg.gif) bottom left repeat-x; color: #333940; }
+.module h2, .module caption, .inline-group h2 { background:#ccc url({% static "admin/img/admin/nav-bg.gif" %}) bottom left repeat-x; color: #333940; }
 a.section:link, a.section:visited { color: #666666; }
 </style>
 {% endblock %}

@@ -13,7 +13,7 @@ class ProjectManager(models.Manager):
         if user is not None and user.is_authenticated():
             return self.filter(
                                Q(enabled=True) | Q(maintainers__id__exact=user.id)
-                               ).distinct('id') 
+                               ).distinct() 
         else:
             return self.filter(enabled=True)
     
