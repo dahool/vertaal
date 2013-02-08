@@ -1,10 +1,7 @@
 from django.conf.urls.defaults import patterns, url
-from django.contrib import admin
 from languages.models import Language
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-
-admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^(?P<slug>[-_@\w]+)/$', DetailView.as_view(

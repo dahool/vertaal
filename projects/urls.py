@@ -1,8 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from django.contrib import admin
 from projects import views 
-
-admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^add/$', views.project_create_update, name = 'project_create'),

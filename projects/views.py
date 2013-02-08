@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from django.views.generic.list_detail import object_detail, object_list
 from common.decorators import permission_required_with_403
 from common.middleware.exceptions import Http403
 from projects.forms import ProjectForm
@@ -25,6 +24,7 @@ from files.models import POTFile, POFile
 
 from django.contrib import messages
 from djangopm.utils import send_pm
+from django.views.generic.detail import DetailView
 
 @login_required
 def project_create_update(request, slug=None):
@@ -212,11 +212,11 @@ def __build_repo(project, release, user):
         user.email_user(_('Build complete'), message)
 
 def project_list(request):
-    list = Project.objects.by_authorized(request.user)
-    return object_list(request,
-                         queryset=list,
-                         template_object_name= 'project')    
-    
+    plist = Project.objects.by_authorized(request.user)
+    return render_to_response('projects/project_list.html',
+                              {'project_list': plist},
+                              context_instance = RequestContext(request))    
+
 def project_detail(request, slug):
     p = get_object_or_404(Project, slug=slug)
 
@@ -226,16 +226,10 @@ def project_detail(request, slug):
         else:
             raise Http403
     
+    data = {'project': p}
     if p.is_maintainer(request.user):
-        return object_detail(request,
-                             queryset=Project.objects.all(),
-                             template_object_name= 'project',
-                             slug=slug,
-                             extra_context={
-                                    'languages': Language.objects.get_unused(p)
-                                    })
-    else:
-        return object_detail(request,
-                             queryset=Project.objects.all(),
-                             template_object_name= 'project',
-                             slug=slug)
+        data['languages'] = Language.objects.get_unused(p)
+        
+    return render_to_response('projects/project_detail.html',
+                              data,
+                              context_instance = RequestContext(request))
