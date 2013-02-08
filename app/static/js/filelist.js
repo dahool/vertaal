@@ -146,7 +146,7 @@ function initialize_filelist() {
         if (cfilter.length == 0) {
             show_ok_dialog(gettext("You can't hide all components."));
         } else {
-            $.cookie("cmpfilter_{{release.slug}}", cfilter.join(), { raw: true, expires: 30, path: '/' });
+            $.cookie("cmpfilter_"+LIST_PROJECT_RELEASE, cfilter.join(), { raw: true, expires: 30, path: '/' });
             if ($(this).is(':checked')) {
                 $(this).next().children('.ui-button-icon-primary').addClass("ui-icon-circle-check").removeClass("ui-icon-circle-plus");
                 load_component($(this).val());

@@ -26,6 +26,7 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/filelist.js"></script>
 <script type="text/javascript"><!--
 var RELOAD_LIST_FILES_URL = "{% url reload_list_files release.slug,language.code %}";
+var LIST_PROJECT_RELEASE = "{{release.slug}}";
 $(document).ready(function(){ 
 	initialize_filelist();
     $("#component_list > input").removeAttr('checked');
