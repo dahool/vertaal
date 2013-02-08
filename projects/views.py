@@ -19,8 +19,10 @@ from versioncontrol.models import BuildCache
 from common.utils import lock
 from django.contrib.auth.models import User
 from projects.util import get_build_log_file, check_project
-from app.log import (logger)
 from files.models import POTFile, POFile
+
+import logging
+logger = logging.getLogger(__name__)
 
 from django.contrib import messages
 from djangopm.utils import send_pm

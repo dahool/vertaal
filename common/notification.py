@@ -10,6 +10,9 @@ from files.models import *
 
 from djangopm.utils import send_pm
 
+import logging
+logger = logging.getLogger(__name__)
+
 class FileUpdateNotification(object):
     
     subject = _("Files changed")

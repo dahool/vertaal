@@ -2,9 +2,11 @@ from django.utils.translation import ugettext as _
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_init
-from app.log import (logger)
 from files.models import *
 from timezones.fields import TimeZoneField
+
+import logging
+logger = logging.getLogger(__name__)
 
 class FavoriteManager(models.Manager):
     

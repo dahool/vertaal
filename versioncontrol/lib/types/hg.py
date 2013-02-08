@@ -18,7 +18,9 @@ from django.utils.translation import ugettext as _
 
 import versioncontrol.lib.browser as browser
 from versioncontrol.lib.browser import BrowserException
-from app.log import (logger)
+
+import logging
+logger = logging.getLogger(__name__)
 
 def need_repo(fn):
     def repo_fn(self, *args, **kw):

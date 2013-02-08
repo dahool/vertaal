@@ -1,7 +1,8 @@
 import os, errno
 import tempfile
 import time
-from app.log import (logger)
+import logging
+logger = logging.getLogger(__name__)
 
 class LockException(Exception):
     pass

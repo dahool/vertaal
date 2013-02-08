@@ -31,7 +31,6 @@ from versioncontrol.models import *
 from versioncontrol.manager import *
 import files.lib.handlers as filehandler
 from files.lib.handlers import handle_uploaded_file, handle_text_file
-from app.log import (logger)
 from django.conf import settings
 from common.view.decorators import render
 import StringIO
@@ -43,6 +42,9 @@ from deferredsubmit import handler as deferredhandler
 
 from django.contrib import messages
 from djangopm.utils import send_pm
+
+import logging
+logger = logging.getLogger(__name__)
 
 try:
     import hashlib

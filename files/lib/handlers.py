@@ -11,7 +11,9 @@ from django.conf import settings
 from common.utils.file import deltree
 from files.lib.msgfmt import *
 from files.models import POFile,POFileSubmit,POFileLog,LOG_ACTION, SUBMIT_STATUS_ENUM
-from app.log import (logger)
+
+import logging
+logger = logging.getLogger(__name__)
                       
 class LockedException(Exception):
     pass

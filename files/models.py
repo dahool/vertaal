@@ -23,7 +23,8 @@ from releases.models import Release
 from django.conf import settings
 from versioncontrol.models import BuildCache
 
-from app.log import logger
+import logging
+logger = logging.getLogger(__name__)
 
 from files.potutils import extract_creation_date
 

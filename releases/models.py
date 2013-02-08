@@ -4,13 +4,14 @@ from django.utils.translation import ugettext_lazy as _
 from projects.models import Project
 from django.db.models import permalink
 from common import fields 
-from auditor import middleware
+
+from common.middleware import threadlocal
 
 class ReleaseManager(models.Manager):
     use_for_related_fields = True
 
     def all(self):
-        user = middleware.LOGGED_USER
+        user = threadlocal.get_current_user()
         q = self.get_query_set()
         if user:
             q.query.add_q((Q(enabled=True) & Q(project__enabled=True)) | Q(project__maintainers__id__exact=user.id))

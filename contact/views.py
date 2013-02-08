@@ -1,11 +1,13 @@
 from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from contact.forms import ContactForm
-from app.log import logger
 from django.conf import settings
+
+import logging
+logger = logging.getLogger(__name__)
 
 if settings.CONTACT_USE_CAPTCHA:
     from recaptcha.client import captcha

@@ -1,19 +1,9 @@
 import logging
-import logging.handlers
 import traceback
 from django.conf import settings
-from exceptionlogger.models import *
+from exceptionlogger.models import ExceptionLog
 
-_logger = logging.getLogger('error-vertaal')
-_handler = logging.handlers.RotatingFileHandler(
-              getattr(settings, 'ERROR_LOG_FILENAME'), maxBytes=5242880, backupCount=10)
-_formatter = logging.Formatter(
-    '[%(asctime)s: %(message)s')
-_handler.setFormatter(_formatter)
-_logger.addHandler(_handler)
-_logger.setLevel(logging.ERROR)
-
-logger = _logger 
+logger = logging.getLogger('exceptionlogger')
 
 class ExceptionLoggerMiddleware(object):
          
@@ -28,5 +18,3 @@ class ExceptionLoggerMiddleware(object):
         except:
             logger.error("Cannot generate error message");
         return None
-        
-

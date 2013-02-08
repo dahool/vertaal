@@ -24,7 +24,9 @@ import pysvn
 from django.utils.translation import ugettext as _
 
 import versioncontrol.lib.browser as browser
-from app.log import (logger)
+
+import logging
+logger = logging.getLogger(__name__)
 
 def need_repo(fn):
     def repo_fn(self, *args, **kw):

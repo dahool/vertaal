@@ -31,6 +31,7 @@ MIDDLEWARE_CLASSES = (
     'auditor.middleware.AuditMiddleware',
     'django.middleware.cache.CacheMiddleware', ## use for CACHE_ANON_ONLY
     #'django.middleware.locale.LocaleMiddleware',
+    'common.middleware.threadlocal.ThreadLocalMiddleware',
     'maintenancemode.middleware.MaintenanceModeMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'exceptionlogger.middleware.ExceptionLoggerMiddleware',

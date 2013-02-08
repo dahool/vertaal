@@ -1,7 +1,8 @@
 from dateutil.parser import *
 import datetime
 import re
-from app.log import (logger)
+import logging
+logger = logging.getLogger(__name__)
 
 _CREATION_DATE = re.compile('.(POT-Creation-Date:)[ ](?P<date>[0-9]{4}[-][0-9]{2}[-][0-9]{2}[ ][0-9]{2}[:][0-9]{2}[+|-][0-9]{0,4})')
 

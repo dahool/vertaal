@@ -10,7 +10,9 @@ from common.middleware.exceptions import Http403
 from common.simplexml import XMLResponse
 from userprofileapp.models import *
 from userprofileapp.forms import UserProfileForm
-from app.log import logger
+
+import logging
+logger = logging.getLogger(__name__)
 
 from django.core.mail import EmailMessage
 from common.mail import send_mass_mail_em

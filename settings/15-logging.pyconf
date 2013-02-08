@@ -1,4 +1,5 @@
 import logging
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -6,3 +7,59 @@ LOG_LEVEL = logging.DEBUG
 BATCH_LOG_LEVEL = LOG_LEVEL
 RPC_LOG_LEVEL = LOG_LEVEL
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '[%(asctime)s %(filename)s %(levelname)s %(module)s (%(lineno)d)] <%(username)s> [%(sessionid)s] %(funcName)s: %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'user': {
+            '()': 'app.log.formatter.UserFilter',
+        }
+    },           
+    'handlers': {
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler',
+        },                 
+        'file': {
+            'level': 'DEBUG',
+            'class': 'app.log.formatter.ChmodRotatingFileHandler',
+            'filename': 'unarchivo.log',
+            'filters': ['user']
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['user'],
+            'strm': sys.stdout
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        }                 
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handers': ['console'],
+            'propagate': True,
+        },
+        'django': {
+            'handlers':['null'],
+            'propagate': True,
+            'level':'INFO',
+        },                
+        'exceptionlogger': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'ERROR',
+        },                
+    }
+}

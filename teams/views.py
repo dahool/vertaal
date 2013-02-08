@@ -17,13 +17,15 @@ from projects.models import *
 from languages.models import *
 from files.models import POFile, POFileSubmit
 from teams.models import *
-from app.log import logger
 from common.i18n import set_user_language
 from django import forms
 import thread
 from django.utils.encoding import smart_unicode
 
 from django.contrib import messages
+
+import logging
+logger = logging.getLogger(__name__)
 
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)

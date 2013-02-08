@@ -4,7 +4,9 @@ from django.conf import settings
 from django.utils.encoding import smart_unicode
 from versioncontrol.manager import SubmitClient
 import traceback
-from app.log import (logger)
+
+import logging
+logger = logging.getLogger(__name__)
 
 deferred_enabled = getattr(settings,'DEFERRED_SUBMIT', False)
 

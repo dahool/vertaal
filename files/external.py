@@ -1,5 +1,6 @@
 from django.conf import settings
-from app.log import (logger)
+import logging
+logger = logging.getLogger(__name__)
 import os
 import shutil
 

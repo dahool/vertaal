@@ -4,7 +4,8 @@ from django.conf import settings
 from datetime import datetime as dt
 from django.utils.encoding import smart_unicode
 
-from app.log import (logger)
+import logging
+logger = logging.getLogger(__name__)
 
 class POFileHandler():
     
