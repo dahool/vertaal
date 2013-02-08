@@ -1,16 +1,12 @@
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
-from news.views import *
+from django.views.generic.detail import DetailView
+from news.models import Article
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-#    url(
-#        regex = '^add/$',
-#        view = news_add,
-#        name = 'news_add'),
-    url(
-        regex = '^view/(?P<slug>[-\w]+)/$',
-        view = news_view,
-        name = 'news_view'),        
+    url(r'^view/(?P<slug>[-\w]+)/$', DetailView.as_view(
+                                queryset=Article.objects.all(), 
+                                context_object_name='article'), name = 'news_view')
 )

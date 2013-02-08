@@ -1,14 +1,8 @@
 from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
-from components.models import Component
 from components import views
 
 admin.autodiscover()
-
-component_list = {
-    'queryset': Component.objects.all(),
-    'template_object_name': 'component',
-}
 
 urlpatterns = patterns('',
     url(

@@ -41,9 +41,9 @@ def project_create_update(request, slug=None):
                 form.cleaned_data["maintainers"].append(unicode(request.user.id))
             p = form.save(True)
             if slug:
-                messages.success(request, _('Created project %s') % p.name)
+                messages.success(request, _('Updated project %s') % p.name)
             else:
-                messages.success(request, _('Updated project %s') % p.name)            
+                messages.success(request, _('Created project %s') % p.name)            
             return HttpResponseRedirect(p.get_absolute_url())
         messages.warning(request, _('Please, correct the following errors and try again.'))
         res['form'] = form

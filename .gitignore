@@ -14,3 +14,4 @@ recaptcha
 build_logs
 /media/
 /appcache/
+/django/

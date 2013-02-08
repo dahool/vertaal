@@ -1,34 +1,30 @@
 import os
-import threading
+import logging
 
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
-from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.views.generic.list_detail import object_detail, object_list
-from common.decorators import permission_required_with_403
+
 from common.middleware.exceptions import Http403
 from projects.models import Project
 from projects.util import get_build_log_file
 from releases.forms import ReleaseForm
 from releases.models import Release
-from components.models import Component
 from files.models import POFile, POFileAssign
 from teams.models import Team
-from django.contrib.auth.models import User
-from projects.util import check_project
 from common.simplexml import XMLResponse
 from versioncontrol.models import BuildCache
-from django.db.models import Q, F
-from app.log import logger
+
 from versioncontrol.forms import HttpCredForm
 from files.forms import CommentForm
 
 from django.contrib import messages
+
+logger = logging.getLogger(__name__)
 
 @login_required
 def release_create_update(request, project=None, slug=None):
@@ -52,9 +48,9 @@ def release_create_update(request, project=None, slug=None):
         if form.is_valid():
             r = form.save()
             if slug:
-                messages.success(request, _('Created release %s') % r.name)
-            else:
                 messages.success(request, _('Updated release %s') % r.name)
+            else:
+                messages.success(request, _('Created release %s') % r.name)
             return HttpResponseRedirect(r.project.get_absolute_url())
         messages.warning(request, _('Please, correct the following errors and try again.'))
         res['form'] = form

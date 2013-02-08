@@ -81,7 +81,7 @@
 	</div>
 	{% endif %}
 	{% if messages %}
-	<div class="message center-box">
+	<div class="messages center-box">
 	<ul id="message-box-w" class="simple">
 	{% for message in messages %}
 		<li {% if message.tags %}class="type-{{ message.tags }}"{% endif %}>{{ message }}</li>

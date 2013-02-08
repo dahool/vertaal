@@ -42,9 +42,9 @@ def component_create_update(request, project=None, slug=None):
         if form.is_valid():
             r = form.save()
             if slug:
-                messages.success(request, _('Created component %s') % r.name)
-            else:
                 messages.success(request, _('Updated component %s') % r.name)
+            else:
+                messages.success(request, _('Created component %s') % r.name)
             return HttpResponseRedirect(r.project.get_absolute_url())
         messages.warning(request, _('Please, correct the following errors and try again.'))
         res['form'] = form

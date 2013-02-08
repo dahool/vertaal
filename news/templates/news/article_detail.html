@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n formtags %}
+{% block title %}{{block.super}} | {{ article.title }}{%endblock%}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<h1>{{article.title}}</h1>
+<div style="padding-left: 0.8em;">
+<p class="news_footer">{% trans "Published on" %} {{article.created|date:"M d, Y"}} {% trans "by" %} {{article.author}}</p>
+{{article.hometext|safe}}
+{{article.bodytext|safe}}
+</div>
+{% endblock %}
