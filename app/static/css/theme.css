@@ -361,22 +361,21 @@ div.multicolumn5 {
     font-size: 90%;
 }
 .message li.type-info {
-    background-color: #84D7FF;
-    border-color: #0080C0;
-}
-.messages li.type-success {
     background-color: #A5E9A8;
     border-color: #3FA244;
 }
-.messages li.type-error {
+.message li.type-success {
+    background-color: #84D7FF;
+    border-color: #0080C0;
+}
+.message li.type-error {
     background-color: #F29B9B;
     border-color: #FF0000;
 }
-.messages li.type-warning {
+.message li.type-warning {
     background-color: #FFFFA8;
     border-color: #FFFF00;
 }
-
 .title, .title a {
     font-size: 14px;
     font-weight: bold;

@@ -41,7 +41,12 @@ def component_create_update(request, project=None, slug=None):
             form = ComponentForm(request.POST)
         if form.is_valid():
             r = form.save()
+            if slug:
+                messages.success(request, _('Created component %s') % r.name)
+            else:
+                messages.success(request, _('Updated component %s') % r.name)
             return HttpResponseRedirect(r.project.get_absolute_url())
+        messages.warning(request, _('Please, correct the following errors and try again.'))
         res['form'] = form
     else:
         if slug:
@@ -70,6 +75,7 @@ def component_delete(request, slug=None):
         raise Http403
     p = r.project
     r.delete()
+    messages.success(request, _('Removed component %s') % r.name)
     return HttpResponseRedirect(p.get_absolute_url())
 
 def component_detail(request, slug):

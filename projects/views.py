@@ -40,8 +40,12 @@ def project_create_update(request, slug=None):
             if not unicode(request.user.id) in form.cleaned_data["maintainers"]:
                 form.cleaned_data["maintainers"].append(unicode(request.user.id))
             p = form.save(True)
+            if slug:
+                messages.success(request, _('Created project %s') % p.name)
+            else:
+                messages.success(request, _('Updated project %s') % p.name)            
             return HttpResponseRedirect(p.get_absolute_url())
-            
+        messages.warning(request, _('Please, correct the following errors and try again.'))
         res['form'] = form
     else:
         if slug:
@@ -67,6 +71,7 @@ def project_delete(request, slug=None):
     '''
     p = get_object_or_404(Project, slug=slug)
     p.delete()
+    messages.success(request, _('Removed project %s') % p.name)
     return HttpResponseRedirect(reverse('project_list'))
 
 @login_required
