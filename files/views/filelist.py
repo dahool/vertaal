@@ -31,7 +31,7 @@ from djangopm.utils import send_pm
 from django.conf import settings
 
 from common.middleware.exceptions import Http403
-from common.simplexml import XMLResponse
+from djangoutils.render.shortcuts import XMLResponse
 from common.i18n import set_user_language
 from common.view.decorators import render
 
@@ -41,7 +41,7 @@ from releases.models import Release
 from languages.models import Language
 from components.models import Component
 
-from files.views import check_status
+from files.views import check_status, ResponseMessage
 
 logger = logging.getLogger(__name__)
 
@@ -52,14 +52,14 @@ def toggle(request, slug):
         try:
             file = POFile.objects.get(slug=slug)
         except:
-            return XMLResponse({'message': _('File not found.')})
+            return XMLResponse({'message': ResponseMessage.error(_('File not found.'))})
         else:
             if not file.release.enabled or not file.release.project.enabled:
-                return XMLResponse({'message': _('Sorry, you are not supposed to change anything on a disabled component.')})
+                return XMLResponse({'message': ResponseMessage.error(_('Sorry, you are not supposed to change anything on a disabled component.'))})
             
             team = Team.objects.get(project=file.component.project, language=file.language)
             if not team.is_member(request.user):
-                return XMLResponse({'message': _('You are not a member of this team.')})
+                return XMLResponse({'message': ResponseMessage.error(_('You are not a member of this team.'))})
                 
             res['id'] = file.slug
             if file.locked:
@@ -67,7 +67,7 @@ def toggle(request, slug):
                 # then can unlock the file
                 if file.locks.get().can_unlock(request.user):
                     if file.submits.all_pending():
-                        res['message'] = _('The file will be unlocked once submitted.')       
+                        res['message'] = ResponseMessage.info(_('%s will be automatically unlocked once submitted.') % file.filename)       
                     else:
                         file.locks.get().delete()
                         if request.POST.has_key('text'):
@@ -75,12 +75,12 @@ def toggle(request, slug):
                         else:
                             comment = ''
                         POFileLog.objects.create(pofile=file, user=request.user, action='R', comment=comment)
+                        res['message'] = ResponseMessage.success(_('Unlocked %s') % file.filename)
                 else:
-                    res['message'] = _('This file is already locked by someone else.')
+                    res['message'] = ResponseMessage.error(_('%s is already locked.') % file.filename)
             else:
-                #lock = POFileLock.objects.create(pofile=file, owner=request.user)
                 file.locks.create(owner=request.user)
-                #file.locks.add(lock)
+                res['message'] = ResponseMessage.success(_('Locked %s') % file.filename)
         page = render_to_string('files/file_list_row.html',
                                 {'file': file, 'team': team},
                                 context_instance = RequestContext(request))
@@ -96,14 +96,14 @@ def toggle_assigned(request, slug, translator=False, remove=False):
         try:
             file = POFile.objects.get(slug=slug)
         except:
-            return XMLResponse({'message': _('File not found.')})
+            return XMLResponse({'message': ResponseMessage.error(_('File not found.'))})
         
         if not file.release.enabled or not file.release.project.enabled:
-            return XMLResponse({'message': _('Sorry, you are not supposed to change anything on a disabled component.')})
+            return XMLResponse({'message': ResponseMessage.error(_('Sorry, you are not supposed to change anything on a disabled component.'))})
 
         team = Team.objects.get(project=file.component.project, language=file.language)
         if not team.is_member(request.user) and not request.user.is_superuser:
-            return XMLResponse({'message': _('You are not a member of this team.')})
+            return XMLResponse({'message': ResponseMessage.error(_('You are not a member of this team.'))})
         can_manage = team.can_manage(request.user)
         
         res['id'] = file.slug
@@ -118,27 +118,29 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     if auser:
                         if can_manage or auser == request.user:
                             if file.submits.all_pending() and file.submits.get_pending().owner == auser:
-                                return XMLResponse({'message': _('The file has a pending submit. Cannot be released right now.')})
+                                return XMLResponse({'message': ResponseMessage.error(_('%s has a pending submit. Cannot be released right now.') % file.filename)})
                             else:
                                 assign.translate = None
                                 if auser != request.user:
                                     cmt = _('Removed %s') % auser.username
+                                res['message'] = ResponseMessage.success(_('%s translator removed.') % file.filename)
                                 act=LOG_ACTION['RE_TRA']
                         else:
-                            return XMLResponse({'message': _('You are not authorized to perform this action.')})                        
+                            return XMLResponse({'message': ResponseMessage.error(_('You are not authorized to perform this action.'))})
                 else:
                     auser = assign.review
                     if auser:
                         if can_manage or auser == request.user:
                             if file.submits.all_pending() and file.submits.get_pending().owner == auser:
-                                return XMLResponse({'message': _('The file has a pending submit. Cannot be released right now.')})
+                                return XMLResponse({'message': ResponseMessage.error(_('%s has a pending submit. Cannot be released right now.') % file.filename)})
                             else:
                                 assign.review = None
                                 if auser != request.user:
-                                    cmt = _('Removed %s') % auser.username                            
+                                    cmt = _('Removed %s') % auser.username
+                                res['message'] = ResponseMessage.success(_('%s reviewer removed.') % file.filename)                            
                                 act=LOG_ACTION['RE_REV']
                         else:
-                            return XMLResponse({'message': _('You are not authorized to perform this action.')})
+                            return XMLResponse({'message': ResponseMessage.error(_('You are not authorized to perform this action.'))})
                 if file.locked:
                     if file.locks.get().owner == auser:
                         file.locks.get().delete()
@@ -158,7 +160,7 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                 assign = POFileAssign(pofile=file)
             if translator:
                 if assign.translate:
-                    return XMLResponse({'message': _('This file already has an assigned translator.')})
+                    return XMLResponse({'message': ResponseMessage.error(_('%s already has an assigned translator.') % file.filename)})
                 
                 if not can_manage or not userid:
                     assign.translate = request.user 
@@ -166,13 +168,14 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     assign.translate = User.objects.get(id=userid)
                     if assign.translate != request.user:
                         send_pm(assign.translate, _('File assigned'), _('You had been designated as translator of %(file)s') % {'file': smart_unicode(file)})
+                    res['message'] = ResponseMessage.success(_('Translator set for %s.') % file.filename)
                 if assign.translate != request.user:
                     cmt = _('Assigned to %s') % assign.translate.username                
                 act=LOG_ACTION['AS_TRA']
                     
             else:
                 if assign.review:
-                    return XMLResponse({'message': _('This file already has an assigned reviewer.')})
+                    return XMLResponse({'message': ResponseMessage.error(_('%s already has an assigned reviewer.') % file.filename)})
                 
                 if not can_manage or not userid:
                     assign.review = request.user 
@@ -180,13 +183,13 @@ def toggle_assigned(request, slug, translator=False, remove=False):
                     assign.review = User.objects.get(id=userid)
                     if assign.review != request.user:
                         send_pm(assign.review, _('File assigned'), _('You had been designated as reviewer of %(file)s') % {'file':smart_unicode(file)})
-
+                    res['message'] = ResponseMessage.success(_('Reviewer set for %s.') % file.filename)
                 if assign.review != request.user:
                     cmt = _('Assigned to %s') % assign.review.username                
                 act=LOG_ACTION['AS_REV']
                 
             if assign.translate == assign.review:
-                return XMLResponse({'message': _('Sorry, the translator and the reviewer cannot be the same user.')})
+                return XMLResponse({'message': ResponseMessage.error(_('Sorry, the translator and the reviewer cannot be the same user.'))})
             
             POFileLog.objects.create(pofile=file, user=request.user, action=act, comment=cmt)
             assign.save()

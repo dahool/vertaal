@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import time
 import datetime
-import types
 from decimal import *
 
 from django.http import HttpResponse
@@ -27,42 +26,47 @@ from django.utils import simplejson as json
 from django.core.serializers.json import DateTimeAwareJSONEncoder
 
 def isiterable(elem):
-    import collections
-    if hasattr(collections, "Iterable"):
-        return isinstance(elem, getattr(collections, "Iterable"))
-    else:
-        try:
-            iter(elem)
-        except:
-            return False
-        else:
-            return True
-    
+    return hasattr(elem, "__iter__")
+
+def isdictlike(elem):
+    return hasattr(elem, 'keys') and hasattr(elem, 'values')
+        
 def XMLResponse(data):
     response = HttpResponse(mimetype='text/xml')
-    xml = '<?xml version="1.0" encoding="UTF-8"?><response>'
-    for k in data.iterkeys():
-        if k[-5:]=='_HTML':
-            key = k[:-5]
-            xml += '<%(key)s><![CDATA[%(value)s]]></%(key)s>' % ({'key': key, 'value': data[k]})
-        else:
-            if isiterable(data[k]):
-                for kvalue in data[k]:
-                    xml += '<%(key)s>%(value)s</%(key)s>' % ({'key': k, 'value': kvalue})    
-            else:
-                xml += '<%(key)s>%(value)s</%(key)s>' % ({'key': k, 'value': data[k]})
-    xml += '</response>'
-    response.write(xml)
+    response.write(parseXml(data))
     return response
-
-def JJONResponse(data):
+        
+def JSONResponse(data):
     resp = []
     for k in data.iterkeys():
-        resp.append('"%s": %s' % (k, parse(data[k])))
+        resp.append('"%s": %s' % (k, parseJson(data[k])))
     data = '{%s}' % ','.join(resp)
     return HttpResponse(data, mimetype='application/json')    
-    
-def parse(data):
+
+def parseXml(data):
+    xml = '<?xml version="1.0" encoding="UTF-8"?><response>'
+    xml += parseXmlDict(data)
+    xml += '</response>'
+    return xml
+
+def parseXmlDict(data):
+    xml = ''
+    for k in data.iterkeys():
+        v = data[k]    
+        if k[-5:]=='_HTML':
+            key = k[:-5]
+            xml += '<%(key)s><![CDATA[%(value)s]]></%(key)s>' % ({'key': key, 'value': v})
+        else:
+            if isdictlike(v):
+                xml = '<%(key)s>%(value)s</%(key)s>' % ({'key': k, 'value': parseXmlDict(v)})
+            elif isiterable(v):
+                for kvalue in v:
+                    xml += '<%(key)s>%(value)s</%(key)s>' % ({'key': k, 'value': kvalue})    
+            else:
+                xml += '<%(key)s>%(value)s</%(key)s>' % ({'key': k, 'value': v})
+    return xml
+        
+def parseJson(data):
     """
     The main issues with django's default json serializer is that properties that
     had been added to a object dynamically are being ignored (and it also has 
@@ -71,10 +75,10 @@ def parse(data):
 
     def _any(data):
         ret = None
-        if type(data) is types.ListType:
-            ret = _list(data)
-        elif type(data) is types.DictType:
+        if isdictlike(data):
             ret = _dict(data)
+        elif isiterable(data):
+            ret = _list(data)
         elif isinstance(data, Decimal):
             # json.dumps() cant handle Decimal
             ret = float(data)

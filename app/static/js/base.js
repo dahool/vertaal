@@ -12,6 +12,10 @@ var _CANCEL = gettext("Cancel");
 var _CONFIRM = gettext("Are you sure?");
 var _CONFIRM_T = gettext("Confirm");
 
+$().toastmessage({
+    position : 'bottom-center'
+});
+
 function loading(show) {
     if (show == undefined) {
         show = true;

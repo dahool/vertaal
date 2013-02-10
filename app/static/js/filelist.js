@@ -64,7 +64,20 @@ function process_toggle_response(data) {
 	$(data).find('response').each(function(){
 		var m = $(this).find('message');
 		if (m.length>0) {
-			show_file_dialog(m.text());
+			var t = $(m).find('text')
+			if (t.length>0) {
+				var text = t.text();
+			} else {
+				var text = m.text();
+			}
+			t = $(m).find('type')
+			if (t.length>0) {
+				var type = t.text();
+			} else {
+				var type = 'notice';
+			}
+            $().toastmessage('showToast', {text : text, type : type});			
+			//show_file_dialog(m.text());
 		}
 		var c = $(this).find('content');
 		var id = $(this).find('id');
@@ -159,7 +172,7 @@ function initialize_filelist() {
 
     $("#filestabs").find('table').tablesorter({
         widgets: ['cookie'],
-        sortList: [[0,0]],
+        sortList: [[0,0]]
     });
     
     $("#filestabs").find('table').bind("sortStart",function() { 
@@ -212,7 +225,7 @@ function initialize_filelist() {
                     try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
                     $( this ).dialog( "close" );
                 }
-            },
+            }
         },
         open: function() {
             $(".validateTips").text('');

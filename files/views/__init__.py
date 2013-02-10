@@ -25,6 +25,29 @@ from common.middleware.exceptions import Http403
 from releases.models import Release
 from files.models import POFile
 
+class ResponseMessage:
+    
+    @staticmethod        
+    def info(message):
+        return ResponseMessage.get_message(message, 'notice')
+
+    @staticmethod
+    def warn(message):
+        return ResponseMessage.get_message(message, 'warning')
+
+    @staticmethod
+    def error(message):
+        return ResponseMessage.get_message(message, 'error')
+    
+    @staticmethod
+    def success(message):
+        return ResponseMessage.get_message(message, 'success')
+
+    @staticmethod        
+    def get_message(message, message_type):
+        return {'text': message, 'type': message_type}
+        
+        
 def escape(text):
     return text.replace("<", "&lt;").replace(">","&gt;")
 
