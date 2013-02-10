@@ -6,4 +6,5 @@ pygments
 recaptcha-client
 python-dateutil
 python-openid
+gettext-tools
 (optional) python-memcached
