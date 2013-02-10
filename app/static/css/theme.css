@@ -35,9 +35,10 @@ a:hover {
 }
 /* END AUTH MENU */
 #content {
-    padding-left: 10px;
+    /*padding-left: 10px;
     padding-right: 15px;
-    padding-bottom: 10px;
+    padding-bottom: 10px;*/
+    padding: 5px 15px 10px 10px;
     min-height: 400px;
     overflow-x:auto;
     background: white url(../images/back.png) 100% 0px no-repeat;   
@@ -1359,4 +1360,10 @@ fieldset { padding:0; border:0; margin-top:5px; }
     float: right;
     height: 16px;
     width: 16px;
+}
+#submit_table .action_icon {
+	padding-right: 0px;
+}
+#submit_table .filename {
+	margin-left: 5px;
 }

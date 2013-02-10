@@ -103,9 +103,9 @@ def get_file(request, slug, view=False, submit=False):
         else:
             content = handler.get_content(not view)
         if request.user.is_authenticated():
-            ckey = 'v-%s-%s' % (request.user.username, slug)    
+            ckey = 'v-%s-%s-%s' % (request.user.username, slug, str(submit))    
         else:
-            ckey = 'v-#NON#-%s' % slug
+            ckey = 'v-#NON#-%s-%s' % (slug, str(submit))
         response = cache.get(ckey)
         if not response:
             lexer = pygments.lexers.GettextLexer()

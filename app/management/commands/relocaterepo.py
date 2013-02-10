@@ -20,12 +20,14 @@ from django.core.management.base import BaseCommand
 import time
 import os
 from versioncontrol.manager import get_repository_path, normalize_path, get_potrepository_path
-from batch.log import (logger)
 from projects.models import Project
 from files.models import POFile
 from files.lib.handlers import get_upload_path
 from django.utils.encoding import smart_unicode
 from django.conf import settings
+
+import logging
+logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = 'Relocate files to new repository location'
@@ -38,8 +40,9 @@ class Command(BaseCommand):
         total = POFile.objects.count()
         proc = 0
         projects = Project.objects.all()
+        lastproc = None
         for project in projects:
-            self.stdout.write('Processing %s.\n' % project.name)
+            self.stdout.write('\nProcessing %s ... ' % project.name)
             teams = project.teams.all()
             for release in project.releases.all():
                 for component in project.components.all():
@@ -64,7 +67,13 @@ class Command(BaseCommand):
                                     pofilesubmit.save()
                                 except:
                                     pass                            
-                        self.stdout.write('Completed %s %%...\n' % str((proc * 100) / total))
-
+                        cproc = str((proc * 100) / total)
+                        if lastproc == cproc:
+                            self.stdout.write('.')
+                        else:
+                            lastproc = cproc
+                            self.stdout.write(' %s%% ' % cproc)
+                        self.stdout.flush()
+                        
         logger.info("End")
-        self.stdout.write('Completed in %d seconds.\n' % int(time.time() - t_start))
+        self.stdout.write('\nCompleted in %d seconds.\n' % int(time.time() - t_start))

@@ -17,9 +17,9 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/menu.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/form.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.alerts.css" />
-	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/theme.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/icons.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/icons2.css" />
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/theme.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/tiptip.css" />
     <link media="screen" href="{{STATIC_URL}}css/widgets/simpletooltip2.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
@@ -93,14 +93,21 @@
 	{% block content %}
 	{% endblock %}
 	<div style="clear: both"></div>
-	{% if user.is_authenticated %}
-    {% ifadsensecookie %}
+	{% ifsetting 'DISABLE_ADSENSE' %}
+	{% else %}
+	{% ifsetting 'ADSENSE_SEGMENT' %}
+		{% if user.is_authenticated %}
+	    {% ifadsensecookie %}
+	    {% else %}
+	    {% include 'adsense.html' %}      
+	    {% endifadsensecookie %}
+	    {% else %}
+	    {% include 'adsense.html' %}
+    	{% endif %}
     {% else %}
-    {% include 'adsense.html' %}      
-    {% endifadsensecookie %}
-    {% else %}
-    {% include 'adsense.html' %} 
-    {% endif %}
+    	{% include 'adsense.html' %}
+    {% endifsetting %}
+    {% endifsetting %}
 </div>
 {% endblock %}
 </div>

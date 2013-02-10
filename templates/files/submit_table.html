@@ -18,14 +18,14 @@
 		{% endif %}
 	</td>
 	<td>
-	<a href="{% url get_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a>
-	<a href="{% url view_file_diff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-diff" title="{% trans "View Diff" %}" style="padding-right: 0px;"></a>
-	<a href="{% url view_file_udiff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-udiff" title="{% trans "View Unified Diff" %}" style="padding-right: 0px;"></a>
+	<a href="{% url get_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}"></a>
+	<a href="{% url view_file_diff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-diff" title="{% trans "View Diff" %}"></a>
+	<a href="{% url view_file_udiff sfile.pofile.slug %}" class="action_icon nodecoration_icon file-udiff" title="{% trans "View Unified Diff" %}"></a>
 	{% if not sfile.locked %}
 	<a href="{% url edit_submit_file sfile.pofile.slug %}" class="action_icon nodecoration_icon file-edit" title="{% trans "Edit" %}"></a>
     <a href="#" class="action_icon nodecoration_icon file-reload" title="{% trans "Upload New Version" %}" alt="{% url submit_new_file sfile.pofile.slug %}" alt2="{{ sfile.pofile.filename }}"></a>
 	{% endif %}
-	<a href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a>
+	<a class="filename" href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a>
 	</td>
 	<td>{{ sfile.pofile.component.name }}</td>
 	<td>{{ sfile.pofile.release.name }}</td>
