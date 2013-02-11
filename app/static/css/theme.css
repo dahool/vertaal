@@ -394,7 +394,7 @@ div.multicolumn5 {
     border-bottom: dotted gray 1px;
 }
 .pagination_box {
-    text-align: right;
+    text-align: center;
 }
 .detail-box {
     border:1px solid #D9D9D9;
@@ -1366,4 +1366,7 @@ fieldset { padding:0; border:0; margin-top:5px; }
 }
 #submit_table .filename {
 	margin-left: 5px;
+}
+.setbottom {
+	bottom: 0;
 }

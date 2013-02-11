@@ -1,11 +1,21 @@
 {% extends "files/file_base.html" %}
-{% load i18n extendtags timezone_filters pagination_tags smartiftag settingstag %}
+{% load i18n extendtags timezone_filters pagination_tags paginator smartiftag settingstag %}
 {% block title %}
 {{ block.super }} | {{ pofile.filename }}  
 ({{ pofile.language.name }} -{{ pofile.component.name }}/{{ pofile.release.name }}- ({{ pofile.component.project.name }}))
 {% endblock %}
 {% block extra_head %}
 {{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
+<script type="text/javascript">
+$(document).ready(function(){ 
+	$("#log-file-table").on('click', 'div.pagination a', function(ev) {
+		ev.preventDefault();
+		var url = $(this).attr('href');
+		$("#log-file-table").load(url + " #log-file-table");
+	})
+})
+</script>
 {% set pofile.filename as filename %}
 {% ifsetting ENABLE_RSS %}
 <link rel="alternate" type="application/rss+xml" title="{% blocktrans %}Latest actions on {{filename}}{% endblocktrans %}" href="{% url file_feed pofile.slug %}">
@@ -159,8 +169,8 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="3">
-							<div class="pagination_box">{% paginate %}</div>
+						<td colspan="4">
+							<div class="pagination_box">{% paginatepage %}</div>
 						</td>
 					</tr>
 				</tfoot>

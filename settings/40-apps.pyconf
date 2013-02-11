@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'deferredsubmit',
     'commandlogger',
     'djangopm',
+    'djangoapp',
 #    'debug_toolbar',
 )
 

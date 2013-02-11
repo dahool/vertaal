@@ -4,6 +4,7 @@
 {% block favs %}
 {% endblock %}
 {% block extra_head %}
+{{ block.super }}
 <link media="screen" href="{{STATIC_URL}}css/jpag.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="{{STATIC_URL}}js/jpages.min.js"></script>
 <script><!--

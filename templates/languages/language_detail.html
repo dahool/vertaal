@@ -1,9 +1,12 @@
 {% extends "languages/language_base.html" %}
-{% load i18n extendtags %}
-{% load pagination_tags %}
+{% load i18n extendtags pagination_tags paginator %}
 {% block title %}
 {% set language.name as language_name %}
 {{ block.super }} | {% blocktrans %}Projects for {{ language_name }}{% endblocktrans %}{% endblock %}
+{% block extra_head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
+{% endblock %}
 {% block quick_menu %}
 {{ block.super }}
 <a href="{% url language_list %}">{% trans "Languages" %}</a>
@@ -20,13 +23,15 @@
 		<div class="description">{%if team.project.description %}{{team.project.description}}{% endif %}</div>
 		{% endfor %}
 	</div>
-<div class="pagination_box">{% paginate %}</div>
 {% else %}
 <p class="help_text">{% trans "No teams associated to this language" %}</p> 
 {% endif %}
-{% endwith %}
 {% url contact_form as contact %}
 <div class="content_footer_center">
+{% if teams %}
+<div class="pagination_box">{% paginatepage %}</div>
+{% endif %}
 <p><span>{% blocktrans %}If the project you are looking for is not listed, there is no team for this language yet. If you think this is incorrect, <a href="{{ contact }}">contact us</a>.{% endblocktrans %}</span></p>
 </div>
+{% endwith %}
 {% endblock %}

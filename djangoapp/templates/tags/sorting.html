@@ -1,0 +1,13 @@
+{% load i18n tagutils %}
+{% if data == name %}
+	{% if order == "a" %}
+	    <span class="{{style}}">&nbsp;</span>
+	    <a class="{{style}} {{style}}_desc" href="{% makeurl url order='desc' %}" title="{% trans "Sort descending" %}">&nbsp;</a>
+	{% else %}
+	    <a class="{{style}} {{style}}_asc" href="{% makeurl url order='asc' %}" title="{% trans "Sort ascending" %}">&nbsp;</a>
+	    <span class="{{style}}">&nbsp;</span> 
+	{% endif %}
+{% else %}
+	<a class="{{style}} {{style}}_asc" href="{% makeurl url order='asc' %}" title="{% trans "Sort ascending" %}">&nbsp;</a>
+	<a class="{{style}} {{style}}_desc" href="{% makeurl url order='desc' %}" title="{% trans "Sort descending" %}">&nbsp;</a>
+{% endif %}

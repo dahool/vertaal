@@ -1,6 +1,10 @@
 {% extends "base.html" %}
-{% load i18n pagination_tags timezone_filters %}
+{% load i18n pagination_tags timezone_filters paginator %}
 {% block title %}{{block.super}} | {% trans "Glossary" %} [{{ term.project.name }} ({{ term.language.name }})]{% endblock %}}
+{% block extra_head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
+{% endblock %}
 {% block quick_menu %}
 <a class="none" href="{% url home %}">{% trans 'Home' %}</a>
 <a href="{% url gloss_list term.project.slug, term.language.code %}">{% trans "Glossary" %}</a>
@@ -38,8 +42,8 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="3">
-					<div class="pagination_box">{% paginate %}</div>
+				<td colspan="4">
+					<div class="pagination_box">{% paginatepage %}</div>
 				</td>
 			</tr>
 		</tfoot>
