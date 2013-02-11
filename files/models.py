@@ -566,44 +566,77 @@ class POFileLogManager(models.Manager):
     def last_actions(self, release, limit, language=None, user=None):
         from django.db import connection
         cursor = connection.cursor()
-        
-        sql = "SELECT p.pofile_id, p.created, p.user_id, p.action, p.id "\
-              "FROM pofile_log p LEFT JOIN pofile_log p2 ON (p.pofile_id = p2.pofile_id AND p.id < p2.id)"\
-              "INNER JOIN pofile f ON p.pofile_id = f.id"\
 
+        sqlu = "SELECT pl.pofile_id, max(pl.id) as id FROM pofile_log pl"
         if user:
-            sql += " LEFT OUTER JOIN pofile_assigns as a ON p.pofile_id = a.pofile_id"
+            sqlu += " LEFT OUTER JOIN pofile_assigns a ON pl.pofile_id = a.pofile_id"
+            sqlu += " WHERE a.translate_id=%(userid)s or a.review_id=%(userid)s" % {'userid': user.id}
         else:
             try:
                 bot = User.objects.get(username=getattr(settings, 'BOT_USERNAME','bot'))
             except:
                 bot = None
-            
-        sql += " WHERE p2.id IS NULL AND f.release_id=%s" % release.id
+            if bot:            
+                sqlu += " WHERE pl.user_id <> %d" % bot.pk
+        sqlu += " group by pl.pofile_id"
         
-        if language:
-            sql += " AND f.language_id=%s" % language.id 
-        if user:
-            sql += " AND (a.translate_id=%(userid)s or a.review_id=%(userid)s)" % {'userid': user.id}
-        elif bot:
-            sql += " AND p.user_id<>%s" % bot.pk
+        sql = "SELECT p.id FROM pofile_log p INNER JOIN (%s) p2 "\
+              "INNER JOIN pofile f ON p.id = p2.id AND f.id = p.pofile_id" % sqlu 
+        
             
-        sql += " ORDER BY p.id DESC LIMIT %s" % limit
+        sql += " WHERE f.release_id = %d" % release.id
+        if language:
+            sql += " AND f.language_id=%d" % language.id 
+        sql += " ORDER BY p.id DESC LIMIT %d" % limit
                
         cursor.execute(sql)
               
         files = []
         for row in cursor.fetchall():
-            pofile = POFile.objects.get(id=row[0])
-            user = User.objects.get(id=row[2])
-            po = self.model(id=row[4],
-                            pofile=pofile,
-                            user=user,
-                            action=row[3],
-                            created=row[1])
-            files.append(po)
+            files.append(self.get(pk=row[0]))
         return files        
     
+#    def last_actions(self, release, limit, language=None, user=None):
+#        from django.db import connection
+#        cursor = connection.cursor()
+#        
+#        sql = "SELECT p.pofile_id, p.created, p.user_id, p.action, p.id "\
+#              "FROM pofile_log p LEFT JOIN pofile_log p2 ON (p.pofile_id = p2.pofile_id AND p.id < p2.id)"\
+#              "INNER JOIN pofile f ON p.pofile_id = f.id"\
+#
+#        if user:
+#            sql += " LEFT OUTER JOIN pofile_assigns as a ON p.pofile_id = a.pofile_id"
+#        else:
+#            try:
+#                bot = User.objects.get(username=getattr(settings, 'BOT_USERNAME','bot'))
+#            except:
+#                bot = None
+#            
+#        sql += " WHERE p2.id IS NULL AND f.release_id=%s" % release.id
+#        
+#        if language:
+#            sql += " AND f.language_id=%s" % language.id 
+#        if user:
+#            sql += " AND (a.translate_id=%(userid)s or a.review_id=%(userid)s)" % {'userid': user.id}
+#        elif bot:
+#            sql += " AND p.user_id<>%s" % bot.pk
+#            
+#        sql += " ORDER BY p.id DESC LIMIT %s" % limit
+#               
+#        cursor.execute(sql)
+#              
+#        files = []
+#        for row in cursor.fetchall():
+#            pofile = POFile.objects.get(id=row[0])
+#            user = User.objects.get(id=row[2])
+#            po = self.model(id=row[4],
+#                            pofile=pofile,
+#                            user=user,
+#                            action=row[3],
+#                            created=row[1])
+#            files.append(po)
+#        return files        
+#    
     def latest_by_action(self):
         latest_by = self.model._meta.get_latest_by
         q = self.get_query_set()
