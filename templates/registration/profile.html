@@ -8,40 +8,47 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/jpages.min.js"></script>
 <script><!--
 $(document).ready(function(){
-	var maxPages = 10;
 	$( "#tabs" ).tabs({
+		active: ($.cookie('profile_tab') || 0),
+		create: function(event, ui) {
+			createPagination();
+		},
 		activate: function(event, ui) {
-			if ($(".jp-current").length == 0) {
-				$("#trans_table_pages").jPages({
-			        containerID  : "trans_table",
-			        perPage      : maxPages,
-			        previous: '{% trans "previous" %}',
-			        next: '{% trans "next" %}',
-				});
-				$("#rev_table_pages").jPages({
-			        containerID  : "rev_table",
-			        perPage      : maxPages,
-			        previous: '{% trans "previous" %}',
-			        next: '{% trans "next" %}',
-				});				
-				$("#sub_table_pages").jPages({
-			        containerID  : "sub_table",
-			        perPage      : maxPages,
-			        previous: '{% trans "previous" %}',
-			        next: '{% trans "next" %}',
-				});
-				$("#lock_table_pages").jPages({
-			        containerID  : "lock_table",
-			        perPage      : maxPages,
-			        previous: '{% trans "previous" %}',
-			        next: '{% trans "next" %}',
-				});						
-			}
+			$.cookie('profile_tab', ui.newTab.index());
+			createPagination();
 		}
 	});	
-	
 });
 
+function createPagination() {
+	var maxPages = 10;
+	if ($(".jp-current").length == 0) {
+		$("#trans_table_pages").jPages({
+	        containerID  : "trans_table",
+	        perPage      : maxPages,
+	        previous: '{% trans "previous" %}',
+	        next: '{% trans "next" %}',
+		});
+		$("#rev_table_pages").jPages({
+	        containerID  : "rev_table",
+	        perPage      : maxPages,
+	        previous: '{% trans "previous" %}',
+	        next: '{% trans "next" %}',
+		});				
+		$("#sub_table_pages").jPages({
+	        containerID  : "sub_table",
+	        perPage      : maxPages,
+	        previous: '{% trans "previous" %}',
+	        next: '{% trans "next" %}',
+		});
+		$("#lock_table_pages").jPages({
+	        containerID  : "lock_table",
+	        perPage      : maxPages,
+	        previous: '{% trans "previous" %}',
+	        next: '{% trans "next" %}',
+		});						
+	}
+}
 function remove_pro_fav(id) {
 	$.post('{% url profile_remove_fav %}',
 			{id: id},
