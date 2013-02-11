@@ -2,7 +2,7 @@
 <div class="left-layout">
 {% with request.user.translator_of.all as files %}
 {% if files %}
-<h3>{% trans "You are assigned as translator of:" %}</h3>
+<h3>{% trans "You are translator of:" %}</h3>
 <table class="grid">
 	<thead>
 		<tr>
@@ -34,7 +34,7 @@
 
 {% with request.user.reviewer_of.all as files %}
 {% if files %}
-<h3>{% trans "You are assigned as reviewer of:" %}</h3>
+<h3>{% trans "You are reviewer of:" %}</h3>
 <table class="grid">
 	<thead>
 		<tr>
@@ -92,9 +92,9 @@
 </div>
 <div class="right-layout">
 
-{% with request.user.files_submitted.all as submits %}
+{% with request.user.files_submitted.all_pending as submits %}
 {% if submits %}
-<h3>{% trans "Submission Queue" %}</h3>
+<h3>{% trans "Pending Submission Queue" %}</h3>
 <table class="grid">
 	<thead>
 		<tr>

@@ -21,6 +21,8 @@ from app.templatetags.extendtags import get_full_url
 
 from django.contrib import messages
 
+from teams.models import Team
+
 @login_required
 def update_favorites(request, remove=False, idtype=False):
     if request.method != 'POST':
@@ -138,9 +140,14 @@ def mass_notification(request):
         message += '\n\n--\nThe %(app_name)s administration.\n%(home)s' % {'app_name': getattr(settings, 'PROJECT_NAME'), 'home': get_full_url(reverse('home'))}
 
         maillist = []
-        for u in User.objects.all():
-            if not u.is_superuser and not u.is_staff:
-                maillist.append(EmailMessage(subject=subject, body=message, to=[u.email]))
+        addressset = set()
+        for team in Team.objects.filter(project__enabled=True):
+            for u in team.team_members:
+                if not u.is_superuser and not u.is_staff:
+                    addressset.add(u.email)
+        addresslist = list(addressset)
+        for i in range(0,len(addresslist),25):
+            maillist.append(EmailMessage(subject=subject, body=message, bcc=addresslist[i:i+25]))
 
         try:
             send_mass_mail_em(maillist)
