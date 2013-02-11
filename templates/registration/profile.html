@@ -10,7 +10,7 @@
 $(document).ready(function(){
 	var maxPages = 10;
 	$( "#tabs" ).tabs({
-		show: function(event, ui) {
+		activate: function(event, ui) {
 			if ($(".jp-current").length == 0) {
 				$("#trans_table_pages").jPages({
 			        containerID  : "trans_table",
