@@ -71,3 +71,7 @@ INTERNAL_IPS = ('127.0.0.1',)
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates'),
 )
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_PATH, 'locale'),
+)
