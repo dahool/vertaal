@@ -362,12 +362,12 @@ div.multicolumn5 {
     font-size: 90%;
 }
 .messages li.type-info {
-    background-color: #A5E9A8;
-    border-color: #3FA244;
-}
-.messages li.type-success {
     background-color: #84D7FF;
     border-color: #0080C0;
+}
+.messages li.type-success {
+    background-color: #A5E9A8;
+    border-color: #3FA244;
 }
 .messages li.type-error {
     background-color: #F29B9B;
