@@ -12,9 +12,9 @@
 	height: auto;
 	background: #333;
     opacity: 0.9;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 	color: #eee;
 	padding-top: 20px;
 	padding-bottom: 20px;
@@ -26,6 +26,7 @@
 	display: block;
 	position: relative;
 	margin: 0 0 12px 0;
+	font-family: Verdana,Helvetica,Arial,sans-serif;
 }
 
 .toast-item p {
