@@ -1,15 +1,16 @@
-{% load i18n extendtags %}
+{% load i18n extendtags timezone_filters %}
 {% call team.project.is_maintainer request.user as maintainer %}
 <table id="team_manage_table" class="grid">
 	<thead>
 		<tr>
 			<th>{% trans "Group" %}</th>
 			<th>{% trans "User" %}</th>
+			<th>{% trans "Last Activity" %}</th>
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
-	{% with team.coordinators.all as coordinators %}
+	{% with team.list_coordinators as coordinators %}
 	{% if coordinators %}
     {% for m in coordinators %}
 	<tr>
@@ -24,6 +25,9 @@
 			</a>
 		</td>
 		<td>
+		  {% blocktrans with time=m.last_activity|timesince%}{{time}} ago{%endblocktrans%}
+		</td>
+		<td>
 			{% ifnotequal request.user m %}
 			{% if request.user.is_staff or maintainer %}
 			<span class="nodecoration_icon icon delete link" onclick="update_member('{% url remove_member team.id, m.username %}')" title="{% trans "Remove" %}"></span>
@@ -36,7 +40,7 @@
 	{% endif %}
 	{% endwith %}
 	
-	{% with team.committers.all as committers %}
+	{% with team.list_commiters as committers %}
 	{% if committers %}
 	{% for m in committers|dictsort:"username" %}
     <tr>
@@ -50,6 +54,9 @@
             {% endif %}
             </a>
         </td>
+        <td>
+          {% blocktrans with time=m.last_activity|timesince%}{{time}} ago{%endblocktrans%}
+        </td>        
         <td>
             <span class="nodecoration_icon icon delete link" onclick="update_member_cnf('{% url remove_member team.id, m.username %}')" title="{% trans "Remove" %}"></span>
             <span class="nodecoration_icon icon group_add link" onclick="update_member('{% url change_group team.id, m.username,'coord' %}')" title="{% trans "Set as coordinator" %}"></span>
@@ -65,7 +72,7 @@
 	{% endif %}
 	{% endwith %}
 	
-	{% with team.members.all as members %}
+	{% with team.list_members as members %}
 	{% if members %}
     {% for m in members|dictsort:"username" %}
 	<tr>
@@ -79,6 +86,9 @@
 			{% endif %}
 			</a>
 		</td>
+        <td>
+          {% blocktrans with time=m.last_activity|timesince%}{{time}} ago{%endblocktrans%}
+        </td>		
 		<td>
 			<span class="nodecoration_icon icon delete link" onclick="update_member_cnf('{% url remove_member team.id, m.username %}')" title="{% trans "Remove" %}"></span>
 			<span class="nodecoration_icon icon group_add link" onclick="update_member('{% url change_group team.id, m.username,'coord' %}')" title="{% trans "Set as coordinator" %}"></span>

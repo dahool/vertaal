@@ -36,39 +36,39 @@
 {% if coordinators %}
 <h3>{% blocktrans count coordinators|length as counter %}Coordinator:{% plural %}Coordinators:{% endblocktrans %}</h3>
 <table>
+{% for m in coordinators %}
 <tr>
   <td class="detail_value">
-    {% for m in coordinators %}
-      {% if m.get_full_name %}
-        <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
-      {% else %}
-      	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
-        {% endif %}{% if not forloop.last %},{% endif %}
-    {% endfor %}
+  {% if m.get_full_name %}
+    <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+  {% else %}
+  	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+    {% endif %}
   </td>
 </tr>
+{% endfor %}
 </table>
 {% endif %}
 {% endwith %}
 
 {# MEMBERS #}
-{% with team.team_members|dictsort:"username" as members %}
+{% with team.team_members|dictsort:'id' as members %}
 {% if members %}
 <h3>{% trans "Members:" %}</h3>
 <table>
+{% for m in members %}
 <tr>
   <td class="detail_value">
-    {% for m in members %}
       {% if not m.is_coord %}
       {% if m.get_full_name %}
         <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
       {% else %}
       	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
-        {% endif %}{% if not forloop.last %},{% endif %}
+        {% endif %}
       {% endif %}
-    {% endfor %}
   </td>
-</tr>
+  </tr>
+{% endfor %}
 </table>
 {% endif %}
 {% endwith %}

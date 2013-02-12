@@ -4,12 +4,13 @@ from django.db.models import permalink
 from django.contrib.auth.models import User
 from projects.models import Project
 from languages.models import Language
+import itertools
 
 SUBMISSION_TYPE = (
     (0, _('Review all submits')),
     (1, _('Allow users to submit to repository')),
 )
-
+                    
 class TeamUser(User):
     
     def __init__(self, instance):
@@ -17,27 +18,53 @@ class TeamUser(User):
         
     class Meta:
         proxy = True
+
     @property
     def is_coord(self):
         return False
+    
     @property
     def is_committer(self):
         return False
+    
+    @property
+    def last_activity(self):
+        try: 
+            latest = self.pofilelog_set.latest().created
+            if latest > self.last_login:
+                return latest
+        except:
+            pass
+        return self.last_login
 
 class CommiterUser(TeamUser):
+    
     class Meta:
         proxy = True
+    
     @property
     def is_committer(self):
         return True
 
 class CoordinatorUser(TeamUser):
+    
     class Meta:
         proxy = True
+    
     @property
     def is_coord(self):
         return True
 
+class ProxyIterator:
+    
+    def __init__(self, proxyModel, querySet):
+        self.proxyModel = proxyModel
+        self.querySet = querySet
+        
+    def __iter__(self):
+        for obj in self.querySet:
+            yield self.proxyModel(obj)
+    
 class HasheableTeam:
     
     language = None
@@ -62,10 +89,10 @@ class Team(models.Model):
     project = models.ForeignKey(Project, related_name='teams')
     coordinators = models.ManyToManyField(User, related_name='team_coordinator',
                                          blank=True, null=True)
-    members = models.ManyToManyField(User, related_name='team_member',
-                                         blank=True, null=True)
     committers = models.ManyToManyField(User, related_name='committer',
                                         blank=True, null=True)
+    members = models.ManyToManyField(User, related_name='team_member',
+                                         blank=True, null=True)
     submittype = models.IntegerField(default=0, db_index=True, choices=SUBMISSION_TYPE)
     
     def __unicode__(self):
@@ -75,7 +102,7 @@ class Team(models.Model):
         return u'<Team: %(project)s (%(language)s)>' % {'project':self.project.name, 'language':self.language.name}
     
     class Meta:
-        db_table  = 'teams'
+        db_table = 'teams'
         unique_together = ("language", "project")
         permissions = (
                     ("can_commit", "Can submit files to repository"),
@@ -104,20 +131,34 @@ class Team(models.Model):
             self.coordinators.remove(user)
 
     @property
+    def list_coordinators(self):
+        '''Returns a proxy user instead of the original model.
+        This is because the proxies in django are not implemented as it should be
+        and the parent model is not taken into account when the relation ship is done
+        '''
+        return ProxyIterator(CoordinatorUser, self.coordinators.all())
+
+    @property
+    def list_commiters(self):
+        '''Returns a proxy user instead of the original model.
+        This is because the proxies in django are not implemented as it should be
+        and the parent model is not taken into account when the relation ship is done
+        '''
+        return ProxyIterator(CommiterUser, self.committers.all())
+
+    @property
+    def list_members(self):
+        '''Returns a proxy user instead of the original model.
+        This is because the proxies in django are not implemented as it should be
+        and the parent model is not taken into account when the relation ship is done
+        '''
+        return ProxyIterator(TeamUser, self.members.all())
+    
+    @property
     def team_members(self):
-        #proxy models doesn't work as expected
-        li = []
-        for i in self.coordinators.all():
-            li.append(CoordinatorUser(i))
-        for i in self.committers.all():
-            li.append(CommiterUser(i))
-        for i in self.members.all():
-            li.append(TeamUser(i))        
-#        l1 = list(self.coordinators.all())
-#        l1.extend(list(self.committers.all()))
-#        l1.extend(list(self.members.all()))
-        return li
-        
+        '''this method execute the query in db'''
+        return itertools.chain(self.list_coordinators, self.list_commiters, self.list_members)
+    
     @permalink
     def get_absolute_url(self):
         return ('team_detail', None, { 'project': self.project.slug, 'lang': self.language.code })
