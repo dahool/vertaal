@@ -83,6 +83,10 @@ class Project(models.Model):
             return bc.decrypt(value)
         return value
     
+    @property
+    def auto_commit_enabled(self):
+        return self.repo_user != None and self.repo_user != '' and self.repo_pwd != None and self.repo_pwd != ''
+    
     class Meta:
         db_table  = 'projects'
         ordering  = ('name',)

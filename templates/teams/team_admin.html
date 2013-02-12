@@ -150,8 +150,11 @@ function update_member(url) {
 {% if not request.user.is_staff and not maintainer %}
 <p class="information">{% trans "only a maintainer can remove users from the coordinators group." %}</p>
 {% endif %}
-<p class="information warn">{% trans "Users with submit permissions must already have repository write access. This permission is not team related, the user will have it on all teams on which is member. Coordinators are authorized by default." %}</p>
-
+{% if team.project.auto_commit_enabled %}
+<p class="information">{% trans "Autocommit is enabled for this project." %}</p>
+{% else %}
+<p class="help_text icon warn">{% trans "Users with submit permissions must already have repository write access." %}</p>
+{% endif %}
 
 </div>
 <div class="right-layout">

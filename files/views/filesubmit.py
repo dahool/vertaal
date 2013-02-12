@@ -66,7 +66,7 @@ def upload(request, release, language):
                 submits = filehandler.handle_uploaded_file(request.FILES['file'], r, l, request.user, form.cleaned_data['comment'])
                 # then we check if it is possible to commit now
                 team = Team.objects.get(project=r.project,language=l)
-                if r.project.repo_user and team.submittype == 1 and team.can_commit(request.user):
+                if r.project.auto_commit_enabled and team.submittype == 1 and team.can_commit(request.user):
                     if do_commit(request, submits, request.user, r.project.repo_user, r.project.get_repo_pwd()):
                         return JSONResponse({'success': True})
                     return JSONResponse({'success': False})
