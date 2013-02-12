@@ -82,16 +82,9 @@
 	</ul>
 	</div>
 	{% endif %}
-	{% if messages %}
-	<div class="messages center-box">
-	<ul id="message-box-w" class="simple">
-	{% for message in messages %}
-		<li {% if message.tags %}class="type-{{ message.tags }}"{% endif %}>{{ message }}</li>
-	{% endfor %}
-	</ul>
+	<div id="message-container">
+	{% include 'messages.html' %}
 	</div>
-	<br/>
-	{% endif %}
 	{% block content %}
 	{% endblock %}
 	<div style="clear: both"></div>

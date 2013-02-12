@@ -15,6 +15,10 @@ def index(request):
     latest_projects = Project.objects.by_authorized(request.user).order_by('-created')[:settings.SHOW_LATEST_PROJECTS]
     return {'latest_projects': latest_projects}
     
+@render('messages.html')
+def messages(request):
+    return {}
+
 def v2gwelcome(request):
     if request.user.is_authenticated():
         return index(request)

@@ -110,7 +110,7 @@ def add_submit(pofile, owner, temp_file, comment='', merge=True):
     try:
         posubmit = sub = POFileSubmit.objects.get(pofile=pofile, status=SUBMIT_STATUS_ENUM.PENDING)
         if sub.locked:
-            raise LockedException, _("%(file)s is being processed. It can't be modified right now.") % pofile.filename
+            raise LockedException, _("%(file)s is being processed. It can't be modified right now.") % {'file': pofile.filename}
         sub.update(owner=owner, file=temp_file, log_message=comment)
         sub.save()
         newsubmit = False
@@ -120,7 +120,7 @@ def add_submit(pofile, owner, temp_file, comment='', merge=True):
         raise
     except Exception, e:
         logger.error("Add submit failed [%s]" % smart_unicode(e))
-        raise Exception, _("Failed. Please try again. If the problem persist fill a ticket.")
+        raise Exception, _("Failed [%s]. Please try again. If the problem persist fill a ticket.") % smart_unicode(e)
     log = POFileLog.objects.create(pofile=pofile, user=owner, action=LOG_ACTION['ACT_UPLOAD'], comment=comment)
     return posubmit
         

@@ -1,24 +1,53 @@
 {% load i18n errors %}
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.fileupload.js"></script>
 <script type="text/javascript">
+function reset_upload_form() {
+    $("#id_file_holder").val('');
+    $("#id_comment").val('');
+    $("#id_fakefile").val('');
+}
 $(function() {
     $("#id_fakefile").on('click', function() {
-        $("#id_file").click();
+        $("#id_file_holder").click();
     });
-    $("#id_file").on('change', function() {
+    $("#id_file_holder").on('change', function() {
         $("#id_fakefile").val(get_filename($(this).val()));
     });
-    $("#id_fakefile").val(get_filename($("#id_file").val()));
-    $("#upload_form").on('submit', function() {
-		if ($("#id_file").val() == "" || $("#id_comment").val() == "") {
+    $("#id_fakefile").val(get_filename($("#id_file_holder").val()));
+    $("#upload_form").on('submit', function(ev) {
+        ev.preventDefault();
+		if ($("#id_file_holder").val() == "" || $("#id_comment").val() == "") {
 			show_ok_dialog("{% trans "Both field are required" %}");
-			return false;
 		} else {
-			popoverlay('{% trans "Please wait, this could take some time..." %}');
+            $('#id_file').fileupload('add', {
+                fileInput: $('#id_file_holder')
+			})
 		}
     })
+    $('#id_file').fileupload({dataType: 'json', paramName: 'file'}).bind('fileuploadadd', function(e, data) {
+        popoverlay('{% trans "Please wait, this could take some time..." %}');
+        $('#id_fakefile').hide();
+        $('#progressupload').show();
+        $('#progressupload').progressbar({'max': data.files[0].size, 'value': 0});
+    }).bind('fileuploadprogressall', function(e, data) {
+        $('#progressupload').progressbar("option", "value", data.loaded);
+    }).bind('fileuploadalways', function(e, data) {
+        $('#progressupload').progressbar("destroy");
+        $('#progressupload').hide();
+        $('#id_fakefile').show();
+        removeoverlay();
+    }).bind('fileuploaddone', function(e, data) {
+        $("#message-container").load('{% url user_messages %}');    
+        if (data.result.success) {
+            reset_upload_form();
+            load_component(RELOAD_LIST_FILES_URL, true);
+        }
+    });
 })
 </script>
 <div id="upload-box">
+    <input type="file" id="id_file_holder" style="display: none;"/>
 	<form id="upload_form" class="form-style" action="{% url file_upload release.slug, language.code %}"
 		method="post" enctype="multipart/form-data" accept-charset="utf-8">
 		{% csrf_token %}
@@ -28,6 +57,7 @@ $(function() {
 			<table>
 				<tr>
 					<td>
+					   <div id="progressupload"></div>
 					   <input type="file" id="id_file" name="file" style="display: none;"/>
 					   <input type="text" id="id_fakefile" name="fakefile" readonly="readonly" class="file_attach" title="{% trans "Click to select a file" %}"/>
 					</td>

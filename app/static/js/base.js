@@ -106,17 +106,17 @@ $(document).ready(function() {
         /*$(".tooltip").tipTip({delay: 200, defaultPosition: 'left'});*/
     });
     
+});
+function create_message_box() {
     $('#message-box-w li').each(
-        function() {
-            $(this).append("<span class='close_button'></span>");
-        }
-    );
+            function() {
+                $(this).prepend("<span class='close_button'></span>");
+            }
+     );
     $('.close_button').on('click', function() {
         $(this).parent().remove();
     });
-    
-});
-
+}
 function popoverlay(message) {
     $.blockUI({
             message: '<span class="loading_message">'+message+'</span>',
@@ -128,7 +128,9 @@ function popoverlay(message) {
             }
         });     
 }
-
+function removeoverlay() {
+    $.unblockUI();
+}
 function updateTips( t ) {
     $(".validateTips")
         .text( t )

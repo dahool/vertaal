@@ -31,9 +31,9 @@ logger = logging.getLogger(__name__)
 def do_commit(request, submits, user, repo_user, repo_pass, message=''):
     if deferredhandler.deferred_enabled:
         deferredhandler.add_submits(submits, user, repo_user, repo_pass, message)
-        msg = ungettext('The file was added to the queue for later processing.',
-                            'The files were added to the queue for later processing.', len(submits))
-        messages.info(request, message=msg)        
+        msg = ungettext('The file was added to the queue for further processing.',
+                            'The files were added to the queue for further processing.', len(submits))
+        messages.info(request, message=msg)
     else:
         c = SubmitClient(submits,
                          user,
@@ -44,8 +44,10 @@ def do_commit(request, submits, user, repo_user, repo_pass, message=''):
             c.run()
             msg = ungettext('File submitted.',
                             'Files submitted.', len(submits))          
-            messages.info(request, message=msg)
+            messages.success(request, message=msg)
         except Exception, e:
             logger.error(e)
             logger.error(traceback.format_exc())
             messages.error(request, message=_("Failed. Reason: %s") % smart_unicode(e))
+            return False
+    return True

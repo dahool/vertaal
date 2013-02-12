@@ -1,0 +1,15 @@
+{% if messages %}
+<script type="text/javascript">
+$(document).ready(function() {
+    create_message_box();
+})
+</script>
+<div class="messages center-box">
+<ul id="message-box-w" class="simple">
+{% for message in messages %}
+	<li {% if message.tags %}class="type-{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+{% endfor %}
+</ul>
+</div>
+<br/>
+{% endif %}

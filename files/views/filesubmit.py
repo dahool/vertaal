@@ -28,6 +28,7 @@ from django.contrib import messages
 
 from common.middleware.exceptions import Http403
 
+from djangoutils.render.shortcuts import JSONResponse
 from djangopm.utils import send_pm
 import files.lib.handlers as filehandler
 from releases.models import Release
@@ -66,17 +67,24 @@ def upload(request, release, language):
                 # then we check if it is possible to commit now
                 team = Team.objects.get(project=r.project,language=l)
                 if r.project.repo_user and team.submittype == 1 and team.can_commit(request.user):
-                    do_commit(request, submits, request.user, r.project.repo_user, r.project.get_repo_pwd())
+                    if do_commit(request, submits, request.user, r.project.repo_user, r.project.get_repo_pwd()):
+                        return JSONResponse({'success': True})
+                    return JSONResponse({'success': False})
                 else:
-                    #thread.start_new_thread(create_diff_cache, (submits,))
-                    messages.info(request, _("Your file was uploaded and added to the submission queue."))
+                    messages.success(request, _("Your file was uploaded and added to the submission queue."))
+                    return JSONResponse({'success': True})
             except Exception, e:
                 logger.error(e)
-                res['message']=e.message.split("$$")
-                return render_to_response('files/upload_failed.html',
-                                          res,
-                                          context_instance = RequestContext(request))
-        res.update(get_file_list(request, None, release, language))
+                msg = _('<b>Please, fix the following errors and upload the file again:</b><br/>%s') % "<br/>".join(str(e).split("$$"))
+                messages.warning(request, msg)
+                return JSONResponse({'success': False})
+#                res['message']=e.message.split("$$")
+#                return render_to_response('files/upload_failed.html',
+#                                          res,
+#                                          context_instance = RequestContext(request))
+        #res.update(get_file_list(request, None, release, language))
+        messages.error(request, _('Complete the required information and try again.'))
+        return JSONResponse({'success': False})
     else:
         raise Http403
     return render_to_response('files/file_list.html',
