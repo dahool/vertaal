@@ -25,7 +25,7 @@ from django.utils.encoding import smart_unicode
 from django.contrib import messages
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.teams')
 
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)

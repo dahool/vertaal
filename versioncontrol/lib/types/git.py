@@ -8,9 +8,9 @@ from django.utils.translation import ugettext as _
 import versioncontrol.lib.browser as browser
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.vcs')
 
-from git import *
+#from git import *
 #from git.exc import InvalidGitRepositoryError, NoSuchPathError
 #
 #def need_repo(fn):

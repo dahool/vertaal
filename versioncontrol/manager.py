@@ -41,7 +41,6 @@ from versioncontrol.lib.browser import BrowserAuth, RepositoryBrowserFactory, Au
 from common.utils.lock import Lock, LockException
 from common.i18n import set_user_language, UserLanguage
 from files.lib import msgfmt
-import logging
 
 from versioncontrol.models import BuildCache
 from common.notification import FileUpdateNotification
@@ -49,7 +48,8 @@ from common.notification import FileUpdateNotification
 from dateutil.parser import *
 from files.potutils import extract_creation_date
 
-logger = logging.getLogger(__name__)
+import logging
+logger = logging.getLogger('vertaal.vcs')
 
 class LockRepo(Lock):
     

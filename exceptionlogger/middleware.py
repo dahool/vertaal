@@ -1,8 +1,8 @@
-import logging
 import traceback
 from django.conf import settings
 from exceptionlogger.models import ExceptionLog
 
+import logging
 logger = logging.getLogger('exceptionlogger')
 
 class ExceptionLoggerMiddleware(object):

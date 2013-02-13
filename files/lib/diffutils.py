@@ -16,14 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-import logging
-
 from django.conf import settings
 
 from common.cache.file import FileCache
 from files.lib.diff_match_patch import diff_match_patch
 
-logger = logging.getLogger(__name__)
+import logging
+logger = logging.getLogger('vertaal.files')
 
 def create_diff_cache(submits):
     for s in submits:

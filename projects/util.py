@@ -1,6 +1,5 @@
 import os
 from django.conf import settings
-import logging
 
 from django.contrib import messages
 from django.utils.translation import ugettext as _

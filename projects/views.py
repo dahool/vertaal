@@ -21,12 +21,12 @@ from django.contrib.auth.models import User
 from projects.util import get_build_log_file, check_project
 from files.models import POTFile, POFile
 
-import logging
-logger = logging.getLogger(__name__)
-
 from django.contrib import messages
 from djangopm.utils import send_pm
 from django.views.generic.detail import DetailView
+
+import logging
+logger = logging.getLogger('vertaal.projects')
 
 @login_required
 def project_create_update(request, slug=None):

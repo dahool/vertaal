@@ -217,8 +217,9 @@ function initialize_filelist() {
         width: 350,
         modal: true,
         resizable: false,
-        buttons: {
-        	_OK : function() {
+        buttons: [{
+        	text: _OK,
+        	click : function() {
                 var bValid = true;
                 bValid = bValid && checkLength( $("#comment_input"), gettext("Comments"), 4, 255 );
                 if ( bValid ) {
@@ -226,7 +227,7 @@ function initialize_filelist() {
                     $( this ).dialog( "close" );
                 }
             }
-        },
+        }],
         open: function() {
             $(".validateTips").text('');
             $("#comment_input").val('');

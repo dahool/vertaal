@@ -1,8 +1,9 @@
 from django.conf import settings
-import logging
-logger = logging.getLogger(__name__)
 import os
 import shutil
+
+import logging
+logger = logging.getLogger('vertaal.files')
 
 def is_enabled():
     return getattr(settings,'FILE_EXTERNAL_URL', None) and getattr(settings,'FILE_EXTERNAL_PATH', None)

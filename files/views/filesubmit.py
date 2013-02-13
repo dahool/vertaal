@@ -16,8 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-import logging
-
 from django.utils.translation import ugettext as _
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -45,7 +43,8 @@ from files.forms import RejectSubmitForm, CommentForm
 from versioncontrol.forms import HttpCredForm
 from projects.models import Project
 
-logger = logging.getLogger(__name__)
+import logging
+logger = logging.getLogger('vertaal.files')
 
 @login_required
 @check_status

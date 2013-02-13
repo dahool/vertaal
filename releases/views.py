@@ -1,5 +1,4 @@
 import os
-import logging
 
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
@@ -24,7 +23,8 @@ from files.forms import CommentForm
 
 from django.contrib import messages
 
-logger = logging.getLogger(__name__)
+import logging
+logger = logging.getLogger('vertaal.releases')
 
 @login_required
 def release_create_update(request, project=None, slug=None):

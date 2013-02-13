@@ -103,15 +103,18 @@ $(function() {
 	    autoOpen: false,
 	    modal: true,
 	    resizable: true,
-	    buttons: {
-	    	_SAVE: function() {
+	    buttons: [{
+	    	text: _SAVE,
+	    	click: function() {
 	    	},
-	    	_SEND: function() {
+	    	text: _SEND,
+	    	click: function() {
 	    	},
-	    	_CLOSE: function() {
+	    	text: _CLOSE
+	    	click: function() {
 	    		$( this ).dialog( "close" );
 	    	},
-	    },
+	    }],
 	    /*open: function() {
 	        $("#id_comment").val('');
 	    },

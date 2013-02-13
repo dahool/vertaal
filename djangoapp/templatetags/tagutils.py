@@ -19,13 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.template import TemplateSyntaxError
-
-import logging
 import re
 import urllib
 from django.utils.safestring import mark_safe
 
-logger = logging.getLogger('regeer')
+import logging
+logger = logging.getLogger('djangoapp')
 
 register = template.Library()
 

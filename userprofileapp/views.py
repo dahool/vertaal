@@ -12,7 +12,7 @@ from userprofileapp.models import *
 from userprofileapp.forms import UserProfileForm
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.userprofile')
 
 from django.core.mail import EmailMessage
 from common.mail import send_mass_mail_em

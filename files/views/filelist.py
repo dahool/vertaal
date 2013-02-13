@@ -16,8 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-import logging
-
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
 from django.shortcuts import render_to_response, get_object_or_404
@@ -44,7 +42,8 @@ from components.models import Component
 from files.views import check_status, ResponseMessage
 from files.views.utils.list import get_file_list
 
-logger = logging.getLogger(__name__)
+import logging
+logger = logging.getLogger('vertaal.files')
 
 @login_required
 def toggle(request, slug):

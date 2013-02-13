@@ -13,7 +13,7 @@ from files.lib.msgfmt import *
 from files.models import POFile,POFileSubmit,POFileLog,LOG_ACTION, SUBMIT_STATUS_ENUM
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.files')
                       
 class LockedException(Exception):
     pass

@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 import traceback
-import logging
 
 from django.utils.translation import ungettext, ugettext as _
 from django.contrib import messages
@@ -26,7 +25,8 @@ from django.utils.encoding import smart_unicode
 from deferredsubmit import handler as deferredhandler
 from versioncontrol.manager import SubmitClient
 
-logger = logging.getLogger(__name__)
+import logging
+logger = logging.getLogger('vertaal.files')
 
 def do_commit(request, submits, user, repo_user, repo_pass, message=''):
     if deferredhandler.deferred_enabled:

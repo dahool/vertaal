@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 import re
-import logging
 import pygments
 import pygments.lexers
 import pygments.formatters
@@ -37,8 +36,9 @@ from teams.models import Team
 from files.models import POFile, POFileSubmit, POFileLock
 from files.forms import FileEditForm
 from files.views import check_status
-    
-logger = logging.getLogger(__name__)
+
+import logging    
+logger = logging.getLogger('vertaal.files')
 
 def get_pot_file(request, slug):
     pofile = get_object_or_404(POFile, slug=slug)

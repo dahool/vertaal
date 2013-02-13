@@ -25,7 +25,7 @@ from django.utils.translation import ugettext as _
 import versioncontrol.lib.browser as browser
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.vcs')
 
 # This is for test only, is not completed
 

@@ -6,7 +6,7 @@ from versioncontrol.manager import SubmitClient
 import traceback
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.deferredsubmit')
 
 deferred_enabled = getattr(settings,'DEFERRED_SUBMIT', False)
 

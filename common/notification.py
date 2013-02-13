@@ -11,7 +11,7 @@ from files.models import *
 from djangopm.utils import send_pm
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('common.notification')
 
 class FileUpdateNotification(object):
     

@@ -27,7 +27,7 @@ from django.utils.encoding import smart_unicode
 from django.conf import settings
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.batch')
 
 class Command(BaseCommand):
     help = 'Relocate files to new repository location'

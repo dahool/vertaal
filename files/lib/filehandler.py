@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from django.utils.encoding import smart_unicode
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.files')
 
 class POFileHandler():
     

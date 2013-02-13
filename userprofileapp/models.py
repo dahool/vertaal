@@ -6,7 +6,7 @@ from files.models import *
 from timezones.fields import TimeZoneField
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.userprofile')
 
 class FavoriteManager(models.Manager):
     

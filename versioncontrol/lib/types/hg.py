@@ -20,7 +20,7 @@ import versioncontrol.lib.browser as browser
 from versioncontrol.lib.browser import BrowserException
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.vcs')
 
 def need_repo(fn):
     def repo_fn(self, *args, **kw):

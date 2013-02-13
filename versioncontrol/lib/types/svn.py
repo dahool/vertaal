@@ -26,7 +26,7 @@ from django.utils.translation import ugettext as _
 import versioncontrol.lib.browser as browser
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.vcs')
 
 def need_repo(fn):
     def repo_fn(self, *args, **kw):

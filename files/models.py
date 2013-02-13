@@ -24,7 +24,7 @@ from django.conf import settings
 from versioncontrol.models import BuildCache
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vertaal.files')
 
 from files.potutils import extract_creation_date
 
