@@ -2,7 +2,7 @@
 settings_test.py
 settings_local.py
 *.sqlite
-local.conf
+local.pyconf
 settings/60-local.pyconf
 .settings
 logs

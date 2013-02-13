@@ -62,7 +62,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-LOCAL_CONFIG = os.path.join(PROJECT_PATH, 'local.conf')
+LOCAL_CONFIG = os.path.join(PROJECT_PATH, 'local.pyconf')
 
 COMMON_COOKIE_AGE = 1296000 # 15 days
 

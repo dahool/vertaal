@@ -6,3 +6,48 @@ TEMPLATE_DEBUG = DEBUG
 LOG_LEVEL = logging.DEBUG
 BATCH_LOG_LEVEL = LOG_LEVEL
 RPC_LOG_LEVEL = LOG_LEVEL
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'verbose': '[%(asctime)s %(filename)s %(levelname)s %(module)s (%(lineno)d)] <%(username)s> [%(sessionid)s] %(funcName)s: %(message)s'
+        },
+        'simple': {
+            'simple': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'usercontext': {
+            '()': 'app.logging.formatter.UserFilter',
+        }
+    },
+    'handlers': {
+        'console':{
+            'level': logging.DEBUG,
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': logging.ERROR,
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'vertaal': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': LOG_LEVEL,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': logging.ERROR,
+            'propagate': False,
+        },
+        'exceptionlogger': {
+            'handlers': ['console'],
+            'level': logging.ERROR,
+        }
+    }
+}
