@@ -1,4 +1,6 @@
-django 1.3.x
+python 2.6/2.7
+gettext-tools 
+django 1.4.x
 django-pagination
 pysvn
 pytz
@@ -6,5 +8,4 @@ pygments
 recaptcha-client
 python-dateutil
 python-openid
-gettext-tools
 (optional) python-memcached
