@@ -23,13 +23,15 @@ from django.template import loader, Context
 from django.contrib.auth.models import User
 from django.core.mail import send_mass_mail
 from notifications.models import UserMessages
-from batch.log import (logger)
 from common.i18n import set_user_language
 from django.template.loader import render_to_string
 from django.db.models.fields import FieldDoesNotExist
 from django.conf import settings
 import time
 import datetime
+
+import logging
+logger = logging.getLogger('vertaal.batch')
 
 class Command(LogBaseCommand):
     help = 'Check User Unread Messages'

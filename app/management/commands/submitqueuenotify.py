@@ -28,7 +28,9 @@ import time
 
 from teams.models import Team
 from files.models import POFileSubmit
-from batch.log import (logger)
+
+import logging
+logger = logging.getLogger('vertaal.batch')
 
 class Command(LogBaseCommand):
     help = 'Notify Pending Submits'

@@ -26,7 +26,6 @@ from django.conf import settings
 import time
 from versioncontrol.manager import Manager, LockRepo, POTUpdater
 from versioncontrol.models import BuildCache
-from batch.log import (logger)
 from projects.models import Project
 from files.models import POFile, POTFile, POFileSubmit
 from django.db.models.signals import pre_save
@@ -34,6 +33,9 @@ from optparse import make_option
 from common.notification import FileUpdateNotification, POTFileChangeNotification
 from django.utils.encoding import smart_unicode
 import os
+
+import logging
+logger = logging.getLogger('vertaal.batch')
 
 global notification, potnotification
 

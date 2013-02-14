@@ -27,8 +27,10 @@ import time
 from optparse import make_option
 from versioncontrol.manager import Manager, LockRepo, POTUpdater
 from versioncontrol.models import BuildCache
-from batch.log import (logger)
 from projects.models import Project
+
+import logging
+logger = logging.getLogger('vertaal.batch')
 
 class Command(BaseCommand):
     help = 'Refresh Repositories'

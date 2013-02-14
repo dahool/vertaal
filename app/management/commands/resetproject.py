@@ -23,10 +23,12 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.conf import settings
 import time
-from batch.log import (logger)
 from releases.models import Release
 from languages.models import Language
 from files.models import POFile, STATUS, LOG_ACTION
+
+import logging
+logger = logging.getLogger('vertaal.batch')
 
 class Command(BaseCommand):
     help = 'Set all files from project & team to pending'

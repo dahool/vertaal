@@ -24,9 +24,11 @@ from commandlogger import LogBaseCommand
 from django.conf import settings
 import time
 import datetime
-from batch.log import (logger)
 from files.models import POFileSubmit
 from django.utils.encoding import smart_unicode
+
+import logging
+logger = logging.getLogger('vertaal.batch')
 
 class Command(LogBaseCommand):
     help = 'Notify Pending Submits'
