@@ -13,18 +13,163 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
-
+/*
 .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
 .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
 .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
 .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
-
-#mailbox {
+*/
+.mailbox-wrapper {
 	border: none;
 	background-color: transparent;
 	margin-top: 10px;
 }
+#mailbox-menu, #mailbox-content {
+	background-color: #F2F2F2;
+	border: 1px solid #D9D9D9;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+#mailbox-menu {
+	float: left;
+	width: 225px;
+}
+#mailbox-content {
+	float: right;
+	height: 300px;
+}
+.mailbox-wrapper ul {
+    list-style-image: none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin: 0;
+    padding: 5px;
+}
+#mailbox-menu li {
+	background-color: #FFF;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 3px 5px 3px 5px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: bold;
+}
+#mailbox-menu li.active {
+	border-right: 5px solid #0080FF;
+}
+
+#mailbox-menu li:hover {
+	/*background-color: #D9D9D9;*/
+	border-right: 5px solid #0080FF;
+	border-bottom: 1px solid #0080FF;
+}
+#mailbox-content li {
+	background-color: #FFF;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 10px 5px 10px 5px;
+	margin: 3px 5px 3px 5px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #BBBBBB;
+}
+#mailbox-content li:hover {
+	border-right: 2px solid #D9D9D9;
+	border-bottom: 1px solid #D9D9D9;
+}
+#mailbox-content li.unread {
+	color: #000;
+}
+#mailbox-content li div {
+	display: inline-block;
+}
+#mailbox-content li div.unread {
+	display: inline-block;
+}
+.mbox-from {
+	width: 200px;
+	padding-left: 10px;
+}
+.mbox-subject {
+	width: 485px;
+}
+.mbox-date {
+	text-align: right;
+	width: 65px;
+}
+.pm_detail_subject {
+	font-size: 18px;
+    padding-bottom: 15px;
+	border-bottom: 1px solid #000;
+}
+.pm_detail_from {
+	/*background-color: #0080FF;*/
+	background-color: #0099cc;
+	color: #FFFFFF;
+	font-weight: bold;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	padding: 10px 0 10px 5px;
+}
+.pm_detail_to {
+	border-bottom: 1px solid #000;
+	border-top: 1px solid #000;
+	font-size: 85%;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	padding: 10px 5px;
+	color: #C3C3C3;
+}
+.pm_detail_date {
+	float: right;
+}
+.pm_detail_message {
+	padding-top: 5px;
+}
+.pm_recipients {
+	width: 450px;
+	display: inline-block;	
+	overflow-x: hidden;
+	word-wrap: break-word;
+	max-height: 35px;
+}
+.pm_recipient {
+	color: #000;
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	background-color: #D9D9D9;
+}
+.pm-icon-reply {
+	background: url("../images/pmreply.png") no-repeat scroll 0 50% transparent;
+	padding: 5px 10px;
+}
+.pm-icon-reply-all {
+	background: url("../images/pmreplyall.png") no-repeat scroll 0 50% transparent;
+	padding: 5px 15px;
+}
+.pm-icon-forward {
+	background: url("../images/pmfwd.png") no-repeat scroll 0 50% transparent;
+	padding: 5px 10px;
+}
+.pm_detail_action {
+	float: right;
+	margin-right: 25px;
+}
+.pm_detail_action a {
+	margin-right: 15px;
+	cursor: pointer;
+}
+.pm_detail_action a:hover {
+	border-right: 1px solid #0080FF;
+	border-bottom: 1px solid #0080FF;
+}
+
+/*
 #mailbox .inbox_content, #mailbox .mailbox_header {
 	background-color: #F4FCFF;
 	border: 1px solid #AAAAAA;
@@ -85,7 +230,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 	padding:0.3em;
 }
 .mailbox_holder {
-	/*min-height:200px;*/
 	padding-right: 30px;
 	padding-bottom: 10px;
 }
@@ -109,12 +253,12 @@ td.pm_date {
 	text-align: right;
 	width: 220px;
 }
-
+/*
 .ui-red-button:hover
 { 
     border: 1px solid #132b14;
     color:#FFFFFF;
-	background: #ff3019; /* Old browsers */
+	background: #ff3019;
 	background: -moz-linear-gradient(top,  #ff3019 0%, #cf0404 99%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff3019), color-stop(99%,#cf0404)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  #ff3019 0%,#cf0404 99%); /* Chrome10+,Safari5.1+ */
@@ -122,7 +266,7 @@ td.pm_date {
 	background: -ms-linear-gradient(top,  #ff3019 0%,#cf0404 99%); /* IE10+ */
 	background: linear-gradient(to bottom,  #ff3019 0%,#cf0404 99%); /* W3C */
 }
-
+/*
 .pm_detail_message {
 	overflow: auto;
 }
@@ -149,4 +293,4 @@ td.pm_date {
 }
 #pminbox {
 	margin-top: 5px;	
-}
+}*/

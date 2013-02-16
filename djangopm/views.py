@@ -21,53 +21,55 @@ from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
 from djangoutils.render.shortcuts import XMLResponse
 from django.template.loader import render_to_string
-from djangopm.models import PMMessage, PMInbox, PMOutbox
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+
+from djangopm.models import PMMessage, PMInbox, PMOutbox
 from djangopm.forms import MessageForm
 
 import datetime
 from common.middleware.exceptions import Http403
 
+
 MAX_DISPLAY = getattr(settings, 'PM_COUNT_DISPLAY', 50)
 
 @login_required
 def home(request):
-    form = MessageForm()
-    return render_to_response("djangopm/mailbox.html", {'form': form}, context_instance = RequestContext(request))
+    messages = request.user.pm_inbox.all()[:MAX_DISPLAY]
+    return render_to_response("djangopm/mailbox.html", {'pmmessages': messages}, context_instance = RequestContext(request))
 
 @login_required
 def inbox(request):
     messages = request.user.pm_inbox.all()[:MAX_DISPLAY]
     return render_to_response('djangopm/message_list.html',
-                            {'messages': messages}, 
+                            {'pmmessages': messages}, 
                             context_instance = RequestContext(request))
 
 @login_required
 def outbox(request):
     messages = request.user.pm_outbox.all()[:MAX_DISPLAY]
     return render_to_response('djangopm/message_list.html',
-                            {'messages': messages}, 
+                            {'pmmessages': messages}, 
                             context_instance = RequestContext(request))
 
 @login_required
 def draftbox(request):
     messages = request.user.pmmessage_set.filter(draft=True)[:MAX_DISPLAY]
     return render_to_response('djangopm/message_list.html',
-                            {'messages': messages}, 
+                            {'pmmessages': messages}, 
                             context_instance = RequestContext(request))
 
-@login_required    
+@login_required
+@cache_page(60 * 30) 
 def inbox_detail(request, id):
     message = get_object_or_404(request.user.pm_inbox, pk=id)
-    #message = get_object_or_404(PMInbox, pk=id)
     if message.unread:
         message.unread = False
         message.notified = datetime.datetime.now();
         message.save() 
-    return XMLResponse({'pk': id})
-#    return render_to_response('djangopm/message_detail.html',
-#                            {'message': message.message}, 
-#                            context_instance = RequestContext(request))
+    return render_to_response('djangopm/message_detail.html',
+                            {'pmmessage': message.message}, 
+                            context_instance = RequestContext(request))
     
 @login_required    
 def outbox_detail(request, id):

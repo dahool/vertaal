@@ -14,14 +14,6 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-function loadPanel(panel) {
-	var url = $(panel).attr('href');
-	$(panel).find('.mailbox_holder').load(url);
-	/*
-	$.post(url, function(data) {
-		$(panel).find('.mailbox_holder').html(data);
-	},"html");*/
-}
 function pm_delete(url) {
 	if ($(".mailboxtable :checked").length > 0) {
 		confirmSimple(function(r){
@@ -41,8 +33,36 @@ function pm_delete(url) {
 }
 
 $(function() {
-	//$("#mailbox").tabs();
-	//$("#mailbox button").button();
+    
+    var $formact = $("#form-action");
+    var $mboxmenu = $("#mailbox-menu");
+    var $mboxct = $("#mailbox-content");
+    
+    $mboxct.width($formact.width()-$mboxmenu.width());
+    
+    $("#mailbox-menu li[href]").on('click', function() {
+        $("#mailbox-menu li.active").removeClass("active");
+        $(this).addClass("active");
+        $('#mailbox-content').load($(this).attr('href'));
+    });
+    
+    $("#mailbox-content").on('click', 'li[href]', function() {
+        $("#pm_detail").html('');
+        $("#pm_detail").dialog('open');
+        $("#pm_detail").load($(this).attr('href'));
+        //$("#mailbox-menu li.active").click();
+        $(this).removeClass('unread');
+    });
+    
+    $("#pm_detail").dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        width: 700,
+        height: 400
+    });
+    
+    /*
 	$("#mailbox").show();
 	$("#mailbox").on( "tabsactivate", function(event, ui) {
 		var panel = ui.newPanel;
@@ -59,10 +79,6 @@ $(function() {
 			});
 		}
 		$(elem).toggle();
-		/*
-		$("#pm_detail").load($(this).attr('href'), function() {
-			$("#pm_detail").dialog('open');
-		})*/
 	});
 	
 	$(".mailbox_holder").on("click","tr[id^='inbox_detail']", function(ev) {
@@ -85,14 +101,6 @@ $(function() {
 	    autoOpen: false,
 	    modal: true,
 	    resizable: true,
-	    /*open: function() {
-	        $("#id_comment").val('');
-	    },
-	    close: function() {
-	        $("#id_comment").removeClass( "ui-state-error" );
-	        $("#upload_form div.error-tip").remove();
-	        $("span.error").remove();
-	    }*/
 	});
 
 	var _SAVE = gettext("Save");
@@ -115,15 +123,8 @@ $(function() {
 	    		$( this ).dialog( "close" );
 	    	},
 	    }],
-	    /*open: function() {
-	        $("#id_comment").val('');
-	    },
-	    close: function() {
-	        $("#id_comment").removeClass( "ui-state-error" );
-	        $("#upload_form div.error-tip").remove();
-	        $("span.error").remove();
-	    }*/
-	});
+
+	});*/
 	
 });
 

@@ -1,19 +1,16 @@
-{% load i18n %}
-<table class="mailboxtable">
-	<tbody>
-		{% for mob in messages %}
-		<!-- <tr {% if mob.unread %}class="pm_unread"{%endif%} href="{{ mob.get_absolute_url }}">-->
-		<tr {% if mob.unread %}class="pm_unread"{%endif%} alt="#inbox_detail_{{mob.pk}}" id="mob_{{mob.pk}}">
-		<td class="pm_action"><input type="checkbox" value="{{mob.pk}}" name="id"/></td>
-		<td class="pm_sender">{% if mob.message.sender %}{{mob.message.sender}}{%else%}-{%endif%}</td>
-		<td class="pm_subject">{{mob.message.subject}}</td>
-		<td class="pm_date">{{mob.message.created}}</td>
-		</tr>
-		<tr id="inbox_detail_{{mob.pk}}" style="display: none;" href="{{ mob.get_absolute_url }}">
-			<td colspan="4"><div class="pm_message_detail">{% if mob.message.text%}{{mob.message.text}}{%else%}-{%endif%}</div></td>
-		</tr>
-		{% empty %}
-			<div class="pm_box_empty description">{% trans "Your mailbox is empty" %}</div>
-		{% endfor %}
-	</tbody>
-</table>
+{% load i18n pmdate %}
+
+{% if pmmessages %}
+<ul>
+{% for mob in pmmessages %}
+    <li {% if mob.unread %}class="unread"{%endif%} href="{{ mob.get_absolute_url }}">
+        <div class="mbox-act"><input type="checkbox" value="{{mob.pk}}" name="id"/></div>
+        <div class="mbox-from">{% if mob.message.sender %}{{mob.message.sender}}{%else%}-{%endif%}</div>
+        <div class="mbox-subject">{{mob.message.subject}}</div>
+        <div class="mbox-date">{{mob.message.created|date_todaytime}}</div>
+    </li>
+{% endfor %}
+</ul>    
+{% else %}
+    <div class="pm_box_empty description">{% trans "Mailbox empty." %}</div>
+{% endif %}
