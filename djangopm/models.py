@@ -49,7 +49,7 @@ class PMMessage(models.Model):
     created = models.DateTimeField(auto_now=True)
     draft = models.BooleanField(default=True)
     subject = models.CharField(max_length=100, verbose_name=_('Subject'))
-    text = models.TextField(verbose_name=_('Message'))
+    text = models.TextField(verbose_name=_('Message'), null=True, blank=True)
     
     def __unicode__(self):
         return self.subject

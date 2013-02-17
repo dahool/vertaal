@@ -9,9 +9,9 @@
 {% endblock %}
 {% block content %}
 <div id="form-action">
-    <button action="pm_compose" href="{% url pm_inbox_delete %}" class="icon new">{% trans "Compose" %}</button>
+    <button action="pm_compose" href="{% url pm_inbox_delete %}" class="icon compose" title="{% trans "Compose new message" %}">{% trans "Compose" %}</button>
     <div class="right">
-    <button action="pm_delete" href="{% url pm_inbox_delete %}" class="icon delete">{% trans "Delete" %}</button>
+    <button action="pm_delete" href="{% url pm_inbox_delete %}" class="icon delete" title="{% trans "Delete selected messages" %}">{% trans "Delete" %}</button>
     </div>
     <div class="clear"></div>
 </div>
@@ -30,4 +30,5 @@
 <div class="clear"></div>
 </div>
 <div id="pm_detail"></div>
+<div id="pm_compose">{% include "djangopm/message_compose.html" %}</div>
 {% endblock %}

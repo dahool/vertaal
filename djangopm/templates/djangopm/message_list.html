@@ -1,16 +1,21 @@
-{% load i18n pmdate %}
+{% load i18n djangopm %}
 
 {% if pmmessages %}
 <ul>
 {% for mob in pmmessages %}
-    <li {% if mob.unread %}class="unread"{%endif%} href="{{ mob.get_absolute_url }}">
+    <li id="mob_{{mob.pk}}" {% if mob.unread %}class="unread"{%endif%} href="{{ mob.get_absolute_url }}" compose="{{compose}}">
         <div class="mbox-act"><input type="checkbox" value="{{mob.pk}}" name="id"/></div>
+        {% if isinbox %}
         <div class="mbox-from">{% if mob.message.sender %}{{mob.message.sender}}{%else%}-{%endif%}</div>
         <div class="mbox-subject">{{mob.message.subject}}</div>
+        {% else %}
+        <div class="mbox-subject">{{mob.message.subject}}</div>
+        <div class="mbox-from">&nbsp;</div>
+        {% endif %}
         <div class="mbox-date">{{mob.message.created|date_todaytime}}</div>
     </li>
 {% endfor %}
 </ul>    
 {% else %}
-    <div class="pm_box_empty description">{% trans "Mailbox empty." %}</div>
+    <div class="pm_box_empty">{% trans "Mailbox empty." %}</div>
 {% endif %}

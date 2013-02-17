@@ -1375,3 +1375,6 @@ fieldset { padding:0; border:0; margin-top:5px; }
 .setbottom {
 	bottom: 0;
 }
+button.icon {
+	padding-right: 4px;
+}

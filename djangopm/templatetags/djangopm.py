@@ -22,6 +22,8 @@ from django.utils import formats
 from django.utils.dateformat import format
 from django.conf import settings
 
+from django.utils.translation import ungettext, gettext
+
 register = template.Library()
 
 TIME_FORMAT = getattr(settings, 'PM_DATE_FORMAT', 'H:i')
@@ -46,3 +48,18 @@ def date_todaytime(value):
             return format(value, fmt)
         except AttributeError:
             return ''
+        
+@register.inclusion_tag('djangopm/pmcount_tag.html', takes_context=True)
+def pmcount(context):
+    user = context['user']
+    count = user.pm_inbox.unread().count()
+    if count > 0:
+        title = ungettext(
+            'You have %(count)d unread message',
+            'You have %(count)d unread messages',
+        count) % {
+            'count': count,
+        } 
+    else:
+        title = gettext("Priivate Messages")
+    return {'count': count, 'title': title}

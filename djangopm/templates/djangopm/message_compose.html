@@ -1,11 +1,35 @@
-{% load i18n %}
-<form id="compose_form">
+{% load i18n formtags %}
+<form id="compose_form" action="{% url pm_compose %}">
+{% if instance %}<input type="hidden" name="id" value="{{instance.pk}}"/>{% endif %}
+{% for u in recipients %}
+    <input type="hidden" name="recipients" id="input_to_{{u.pk}}" value="{{u.pk}}"/>
+{% endfor %}
 <fieldset>
-	<div id="compose_recipients">
-		<label for="id_recipients">{% trans "To" %}:</label>
-		<span id="id_recipients"></span>
+    <div id="compose_recipients" class="pm-form-input pm-corner-all">
+        <a href="#pm_add_recipient" class="pm-to-add" title="{% trans "Add recipient" %}"></a>
+        {% for u in recipients %}
+            <span class="pm_recipient" title="{% trans "Remove" %}" id="to_{{u.pk}}">{{u.username}}</span>
+        {% endfor %}
+        <span class="placeholder" {% if recipients %}style="display: none;"{%endif%}>{%trans "To" %}</span>
+    </div>
+    <div id="compose_subject">
+        {% if form %}
+        <input type="text" name="subject" placeholder="{% trans "Subject" %}" maxlength="75" value="{{form.subject.value}}" class="pm-corner-all pm-form-input {% if form.subject.errors %}pm-field-error{% endif %}"
+        {% if form.subject.errors %}
+        title="{% for error in form.subject.errors %}{% if not forloop.last %}, {%endif%}{{error|escape}}{%endfor%}"
+        {% endif %}>
+        {% else %}
+        <input type="text" name="subject" placeholder="{% trans "Subject" %}" maxlength="75" value="" class="pm-corner-all pm-form-input">
+        {% endif %}
+    </div>
+    <div id="compose_message">
+        {% if form %}
+        <textarea id="id_message" name="text" class="pm-corner-all pm-form-input" placeholder="{% trans "Message" %}">{{form.text.value}}</textarea>
+        {% else %}
+        <textarea id="id_message" name="text" class="pm-corner-all pm-form-input" placeholder="{% trans "Message" %}"></textarea>
+        {% endif %}
 	</div>
-	<div id="compose_subject"><label for="id_subject">{% trans "Subject" %}:</label> <input type="text" id="id_subject" name="subject" maxlength="50" class="text ui-widget-content ui-corner-all"/></div>
-	<textarea id="id_message" rows="7" cols="33" class="text ui-widget-content ui-corner-all"></textarea>
 </fieldset>
-</form>
+</form>    
+
+

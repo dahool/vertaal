@@ -25,9 +25,10 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from common.middleware.exceptions import Http403
-from common.simplexml import XMLResponse
+
 from registration.forms import *
 from django.conf import settings
+from djangoutils.render.shortcuts import XMLResponse, JSONResponse
 
 if settings.USE_CAPTCHA:
     from recaptcha.client import captcha
@@ -72,9 +73,16 @@ def query_user(request):
     
     text = request.POST.get('search')
     users = User.objects.filter(username__icontains=text)
-    page = render_to_string('registration/user_query_response.html',
-                            {'users': users},
-                            context_instance = RequestContext(request))    
-    res={}
-    res['content_HTML'] = page
-    return XMLResponse(res)
+    
+    if 'application/json' in request.META.get('HTTP_ACCEPT',[]):
+        data = []
+        for user in users:
+            data.append({'pk': user.pk, 'username': user.username})
+        return JSONResponse({'result': data})
+    else:
+        page = render_to_string('registration/user_query_response.html',
+                                {'users': users},
+                                context_instance = RequestContext(request))    
+        res={}
+        res['content_HTML'] = page
+        return XMLResponse(res)

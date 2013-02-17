@@ -33,8 +33,8 @@ function show_ok_dialog(msg) {
     jAlert(msg,_TITLE); 
 }
 
-function confirmSimple(callback) {
-    confirmDialog(callback, _CONFIRM)
+function confirmSimple(callback, message) {
+    confirmDialog(callback, message || _CONFIRM)
 }
 
 function confirmDialog(callback, msg) {
@@ -164,4 +164,8 @@ function checkRegexp( o, regexp, n ) {
 function get_filename(value) {
     if (value == undefined || value == '') return '';
     return /([^\\]+)$/.exec(value)[1];
+}
+
+function query_user(text, callback) {
+    $.post(_UQUERY, {'search': text}, callback, "json");         
 }

@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^outbox/detail/(?P<id>[\d]+)/$', views.outbox_detail, name="pm_detail_out"),
     url(r'^draftbox/detail/(?P<id>[\d]+)/$', views.message_detail, name="pm_detail"),
     url(r'^inbox/delete/$', views.inbox_delete, name="pm_inbox_delete"),
+    url(r'^compose/$', views.message_submit, name="pm_compose"),
 )

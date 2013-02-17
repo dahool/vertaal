@@ -57,6 +57,7 @@ encoding//djangoapp/templatetags/tagutils.py=utf-8
 encoding//djangopm/__init__.py=utf-8
 encoding//djangopm/forms.py=utf-8
 encoding//djangopm/models.py=utf-8
+encoding//djangopm/templatetags/djangopm.py=utf-8
 encoding//djangopm/templatetags/pmdate.py=utf-8
 encoding//djangopm/utils.py=utf-8
 encoding//djangopm/views.py=utf-8

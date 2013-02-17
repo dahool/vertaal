@@ -25,7 +25,11 @@ class MessageForm(forms.ModelForm):
         model = PMMessage
         exclude = ('sender','created','draft')
  
-    def save(self, request, send=False):
-        self.sender = request.user
-        self.draft = not send
-        super(MessageForm, self).save()
+    def save(self, user, send=False):
+        instance = super(MessageForm, self).save(False)
+        instance.sender = user
+        instance.save()
+        for u in self.cleaned_data['recipients']: 
+            instance.recipients.add(u)
+        instance.draft = not send
+        instance.save()        
