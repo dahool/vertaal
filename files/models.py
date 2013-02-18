@@ -37,6 +37,7 @@ import common.utils.slug as sluger
 from components.models import Component
 from languages.models import Language
 from releases.models import Release
+from teams.models import Team
 from django.conf import settings
 from versioncontrol.models import BuildCache
 
@@ -480,7 +481,12 @@ class POFile(models.Model):
 #            if potfile.updated is not None and potfile.updated > self.potupdated:
                 return True
         return False
-                    
+        
+    def get_team(self):
+        if not getattr(self, '_team', None):
+            self._team = Team.objects.get(language=self.language, project=self.release.project)
+        return self._team
+               
 class POFileAssign(models.Model):
     pofile = models.ForeignKey(POFile, related_name='assigns', unique=True)
     translate = models.ForeignKey(User, null=True, blank=True, related_name="translator_of")

@@ -46,7 +46,7 @@ import logging
 logger = logging.getLogger('vertaal.files')
 
 @login_required
-def toggle(request, slug):
+def toggle(request, slug, template='files/file_list_row.html'):
     res = {}
     if request.method == "POST":
         try:
@@ -81,7 +81,7 @@ def toggle(request, slug):
             else:
                 file.locks.create(owner=request.user)
                 res['message'] = ResponseMessage.success(_('Locked %s') % file.filename)
-        page = render_to_string('files/file_list_row.html',
+        page = render_to_string(template,
                                 {'file': file, 'team': team},
                                 context_instance = RequestContext(request))
         res['content_HTML'] = page
@@ -302,7 +302,7 @@ def file_log(request, slug):
 @render("files/file_detail.html")
 def file_detail(request, slug):
     pofile = get_object_or_404(POFile, slug=slug)
-    return {'pofile': pofile}
+    return {'pofile': pofile, 'team': pofile.get_team()}
 
 
 

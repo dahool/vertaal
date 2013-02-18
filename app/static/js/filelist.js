@@ -14,23 +14,22 @@ function init_select_events() {
 	    	$(div).hide();
 	    }
 	});
-	$(div).bind("hide",function(){
-		$(div).unbind("submit");
-	});	
 }
 
 function select_user(elem, callback, param) {
     var topOffset = -10;
-    //var leftOffset = $(elem).parent().width() * -1;
     var leftOffset = -210;
 
     var div = $('#user-selection-list');
     $(div).hide();
-    $(div).submit(function(){
+    $(div).on('submit', function() {
 		$(this).hide();
+		$(this).off('submit');
 		callback(param,{userid:$('#user-select').val()});
-	});
-	
+    }).on('hide', function() {
+    	$(this).off('submit');
+    })
+    
 	var p = $(elem).position();
 	div.css("position","absolute");
 	div.css("top",(p.top+topOffset)+"px");
@@ -116,6 +115,39 @@ function check_filter_button() {
     } else {
         $(n).button('enable');
     }    
+}
+function init_filedialogs() {
+    $("#comment_input").keyup(function (e) {
+        if( e.keyCode == $.ui.keyCode.ENTER ) {
+            e.preventDefault();
+            $("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
+        }
+    });
+		
+    $( "#lock_comment" ).dialog({
+        autoOpen: false,
+        width: 350,
+        modal: true,
+        resizable: false,
+        buttons: [{
+        	text: _OK,
+        	click : function() {
+                var bValid = true;
+                bValid = bValid && checkLength( $("#comment_input"), gettext("Comments"), 4, 255 );
+                if ( bValid ) {
+                    try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
+                    $( this ).dialog( "close" );
+                }
+            }
+        }],
+        open: function() {
+            $(".validateTips").text('');
+            $("#comment_input").val('');
+        },
+        close: function() {
+            $("#comment_input").removeClass( "ui-state-error" );
+        }
+    });
 }
 function initialize_filelist() {
 	
@@ -205,36 +237,6 @@ function initialize_filelist() {
         load_component(RELOAD_LIST_FILES_URL, true);
     });
 
-    $("#comment_input").keyup(function (e) {
-        if( e.keyCode == $.ui.keyCode.ENTER ) {
-            e.preventDefault();
-            $("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
-        }
-    });
-		
-    $( "#lock_comment" ).dialog({
-        autoOpen: false,
-        width: 350,
-        modal: true,
-        resizable: false,
-        buttons: [{
-        	text: _OK,
-        	click : function() {
-                var bValid = true;
-                bValid = bValid && checkLength( $("#comment_input"), gettext("Comments"), 4, 255 );
-                if ( bValid ) {
-                    try_toggle($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
-                    $( this ).dialog( "close" );
-                }
-            }
-        }],
-        open: function() {
-            $(".validateTips").text('');
-            $("#comment_input").val('');
-        },
-        close: function() {
-            $("#comment_input").removeClass( "ui-state-error" );
-        }
-    });
+    init_filedialogs()
 		
 } 

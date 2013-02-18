@@ -1,0 +1,109 @@
+{% load i18n extendtags timezone_filters pagination_tags paginator smartiftag settingstag stats %}
+
+{% if not included %}
+{% if not release %}
+	{% if pofile.release.enabled and pofile.release.project.enabled %}
+		{% set 'enabled' as enabled %}
+	{% endif %}
+	{% if pofile.release.read_only or pofile.release.project.read_only %}
+		{% set 'read_only' as readonly %}
+	{% endif %}
+	{% iftrue team.can_manage user %}
+		{% set 'true' as can_manage %}
+	{% endiftrue %}
+{% endif %}
+
+{% if pofile.potfile.all %}
+	{% set pofile.potfile.get as potfile %}
+{% endif %}
+
+{% set lock=pofile.locks.get %}
+{% if lock %}
+    {% if user == lock.owner %}
+		{% set 'editable' as editable %}
+		{% set 'owner' as lockowner %}
+	{% endif %}
+{% else %}
+	{% if translate  or review %}
+	{% set 'editable' as editable %}
+	{% set 'owner' as owner %}
+	{% endif %}
+{% endif %}
+
+{% url toggle_lock pofile.slug as toggle_lock_url %}
+{% url remove_assigned_translator pofile.slug as remove_translate_url %}
+{% url remove_assigned_reviewer pofile.slug as remove_review_url %}
+{% url set_assigned_translator pofile.slug as set_assigned_translator %}
+{% url set_assigned_reviewer pofile.slug as set_assigned_reviewer %}
+{% url toggle_mark pofile.slug as toggle_mark_url %}
+
+{% endif %}
+
+{% if user.is_authenticated %}
+<div class="details-assignblock">
+	{% with assign=pofile.assigns.get %}
+		<ul>
+			<li>
+			<span>{% trans "Translator:" %}</span>
+			{% if assign.translate %}
+				{% if can_manage or translate %}
+					<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove translator" %}"></span>
+				{% endif %}	
+				{% if translate %}
+					<sortext>{% trans "(you)" %}</sortext>
+				{% else %}
+					<a href="{% url contact_me assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
+				{% endif %}
+			{% else %}
+				{% if can_manage %}
+					<span onclick="select_user(this,try_toggle,'{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
+				{% else %}
+					<span onclick="try_toggle('{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
+				{% endif %}
+			{% endif %}
+			</li>
+			<li>
+			<span>{% trans "Reviewer:" %}</span>
+			{% if assign.review %}
+				{% if can_manage or review %}
+					<span onclick="try_toggle_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove reviewer" %}"></span>
+				{% endif %}	
+				{% if review %}
+					<sortext>{% trans "(you)" %}</sortext>
+				{% else %}
+					<a href="{% url contact_me assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
+				{% endif %}
+			{% else %}
+				{% if can_manage %}
+					<span onclick="select_user(this,try_toggle,'{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+				{% else %}
+					<span onclick="try_toggle('{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+				{% endif %}
+			{% endif %}
+			</li>
+		</ul>
+	{% endwith %}				
+</div>
+
+<p>
+{% if lock %}
+	{% if lockowner or can_manage %}
+		<span onclick="add_comment('{{pofile.filename}}', '{{toggle_lock_url}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
+	{% endif %}
+	{% if lockowner %}
+		{% blocktrans with created=lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" locked=lock.created|timesince %}
+			Locked by <b>you</b> on {{created}}.
+		{% endblocktrans %}
+	{% else %}
+		{% blocktrans with owner=lock.owner created=lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" locked=lock.created|timesince %}
+			Locked by <b>{{owner}}</b> on {{created}}.
+		{% endblocktrans %}		
+	{% endif %}
+{% else %}
+	{% if owner %}
+		<span onclick="try_toggle('{{ toggle_lock_url }}')" class="nodecoration_icon action_icon lock-open link" title="{% trans "Lock the file to notify others you're working on it." %}"></span>
+	{% endif %}
+{% endif %}
+</p>
+
+{% endif %}

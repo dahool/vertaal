@@ -1,5 +1,6 @@
 from django import template
 from django.template import Node, Template, Context, NodeList, VariableDoesNotExist, resolve_variable, TemplateSyntaxError
+from django.template.base import token_kwargs
 from django.utils.encoding import smart_str
 
 register = template.Library()
@@ -194,30 +195,36 @@ def do_setas(parser, token):
     '''
     put property as context variable.
     
-        {% set object.property as var %}
+        {% set var=object %}
+        
+    multiple values can be added to the context::
+        {% set var=object var2=object2 %}
+        
+    Legacy format ``{% set object.property as var %}`` is still accepted.
     '''
-
-    try:
-        tag_name, object, n, asvar = token.split_contents()
-    except ValueError, e:
-        raise TemplateSyntaxError, "%r takes at least three arguments" % token.split_contents()[0]
-
-    return SetAsNode(object, asvar)    
+    bits = token.split_contents()
+    remaining_bits = bits[1:]
+    extra_context = token_kwargs(remaining_bits, parser, support_legacy=True)
+    if not extra_context:
+        raise TemplateSyntaxError("%r expected at least one variable "
+                                  "assignment" % bits[0])
+    if remaining_bits:
+        raise TemplateSyntaxError("%r received an invalid token: %r" %
+                                  (bits[0], remaining_bits[0]))
+        
+    return SetAsNode(extra_context)    
 
 class SetAsNode(template.Node):
     
-    def __init__(self, object, asvar):
-        self.object, self.asvar = object, asvar
+    def __init__(self, extra_context):
+        self.extra_context = extra_context
 
     def __repr__(self):
         return "<SetAsNode>"
 
     def render(self, context):
-        try:
-            obj = resolve_variable(self.object, context)
-            context[self.asvar] = obj
-        except:
-            pass
+        values = dict([(key, val.resolve(context)) for key, val in self.extra_context.iteritems()])
+        context.update(values)
         return ''
 
 @register.tag(name='captureas')

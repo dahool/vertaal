@@ -6,7 +6,6 @@ a {
     text-decoration: none;
     font-weight: bold;
     font-size: 12px;
-    font-weight: bold;
 }
 a:hover {
     color: #999999;
@@ -947,8 +946,24 @@ input[type="button"]:hover, button:hover {
     padding-left: 5px;
     display: none;
 }
-#log-file-table {
+.wordwrap {
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;	
 }
+/*
+#log-file-table, #log-file-table .stats-table {
+	width: 100%;
+}
+#log-file-table th.log-date {
+	width: 105px;
+}
+#log-file-table th.log-user {
+	width: 245px;
+}
+#log-file-table th.log-action {
+	width: 150px;
+}*/
 #log-file-table .stats-table td {
     padding-right: 10px;
 }
@@ -1375,6 +1390,82 @@ fieldset { padding:0; border:0; margin-top:5px; }
 .setbottom {
 	bottom: 0;
 }
+.collapsible .ui-icon {
+	float: right;
+}
 button.icon {
 	padding-right: 4px;
+}
+
+#details-box {
+	margin-top: 5px;
+}
+#details-toolbox {
+	text-align: center;
+    display: block;
+    border:1px solid #D9D9D9;
+    background-color: #F2F2F2;
+    -moz-border-radius:3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: .5em 1em .5em;
+}
+#details-toolbox a {
+	font-size: 11px !important;
+	padding-left: 20px !important;
+	padding-bottom: 4px;
+	padding-top: 1px;
+	margin-right: 10px;
+}
+#details-infobox {
+	padding-left: 10px;
+}
+#details-infobox p {
+	font-family: Verdana,Helvetica,Arial,sans-serif;
+	font-size: 12px;
+}
+#details-infobox p span {
+	font-family: Verdana,Helvetica,Arial,sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+#details-infobox .graph_comp {
+	border: 1px solid #DDDDDD;
+	width: 100%;
+	height: 1.7em;
+}
+#details-infobox .stats_string_comp {
+	width: 50%;
+	height: 1.7em;
+}
+.details-assignblock {
+    border:1px solid #D9D9D9;
+    background-color: #F2F2F2;
+    -moz-border-radius:3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 15px 1em 10px;
+    margin-top: 5px;
+    display: inline-block;
+    min-width: 50%;
+}
+.details-assignblock ul {
+    list-style-image: none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+}
+.details-assignblock li span {
+	font-weight: bold;
+}
+#details-definition {
+	margin-top: 10px;
+	border-top: 2px solid #D9D9D9;
+	border-bottom: 2px solid #D9D9D9;
+	padding-bottom: 10px;
+}
+#details-history table {
+	margin-left: auto;
+	margin-right: auto;
 }

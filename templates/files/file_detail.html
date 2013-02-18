@@ -1,5 +1,5 @@
 {% extends "files/file_base.html" %}
-{% load i18n extendtags timezone_filters pagination_tags paginator smartiftag settingstag %}
+{% load i18n extendtags timezone_filters pagination_tags paginator smartiftag settingstag stats %}
 {% block title %}
 {{ block.super }} | {{ pofile.filename }}  
 ({{ pofile.language.name }} -{{ pofile.component.name }}/{{ pofile.release.name }}- ({{ pofile.component.project.name }}))
@@ -7,13 +7,33 @@
 {% block extra_head %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/filelist.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){ 
+	var icon_open = 'ui-icon-circle-triangle-s';
+	var icon_closed = 'ui-icon-circle-triangle-w';
 	$("#log-file-table").on('click', 'div.pagination a', function(ev) {
 		ev.preventDefault();
 		var url = $(this).attr('href');
 		$("#log-file-table").load(url + " #log-file-table");
 	})
+	$(".collapsible").each(function() {
+		$(this).find("caption").on('click', function() {
+			var sp = $(this).find('span.ui-icon');
+			if ($(sp).hasClass(icon_closed)) {
+				$(sp).removeClass(icon_closed);
+				$(sp).addClass(icon_open);
+				$(this).parent().find('thead,tbody').show();
+			} else {
+				$(sp).removeClass(icon_open);
+				$(sp).addClass(icon_closed);
+				$(this).parent().find('thead,tbody').hide();			
+			}
+		}).append('<span class="ui-icon '+icon_closed+'"></span>');
+		$(this).find("thead,tbody").hide();
+	});
+	init_select_events();
+	init_filedialogs();
 })
 </script>
 {% set pofile.filename as filename %}
@@ -32,138 +52,248 @@ $(document).ready(function(){
 {% ifsetting ENABLE_RSS %}
 <h1>{{ pofile.filename }}&nbsp;&nbsp;<a class="icon feed" href="{% url file_feed pofile.slug %}">&nbsp;</a></h1>
 {% endifsetting %}
-<div class="details">
-	<table class="definition">
-		<tbody>
-			<tr>
-				<th class="icon release">{% trans "Release" %}</th>
-				<td>{{pofile.release.name}}</td>
-			</tr>		
-			<tr>
-				<th class="icon component">{% trans "Component" %}</th>
-				<td>{{pofile.component.name}}</td>
-			</tr>
-			{% if pofile.potfile.all %}
-			{% with pofile.potfile.get as potfile %}
-			<tr>
-				<th>
-				<a href="{% url get_pot_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
-				{% trans "POT file:" %}
-				</th>
-				<td>
-				{% blocktrans count potfile.total as counter %}
-				{{ counter }} message
-				{% plural %}
-				{{ counter }} messages
-				{% endblocktrans %}
-				{% if potfile.updated %}
-				-
-				{% if user.is_authenticated %}
-					{% blocktrans with since=potfile.updated|timesince updated=potfile.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}updated on {{updated}} ({{since}} ago){% endblocktrans %}
-				{% else %}
-					{% blocktrans with since=potfile.updated|timesince updated=potfile.updated|date:"M d, Y H:i O" %}updated on {{updated}} ({{since}} ago){% endblocktrans %}
-				{% endif %}
-				{% endif %}
-				</td>
-			</tr>
-			{% if pofile.need_merge %} 
-			<tr>
-				<td colspan="2" class="icon warn">{% trans "The PO file differs from the source POT file." %}
-				<input class="icon merge" type="button" value="{% trans "Force merge" %}" rel="{% url file_merge pofile.slug %}" name="confirm_href"/>
-				</td>
-			</tr>
-			{% endif %}
-			{% endwith %}
-			{% endif %}
-			<tr>
-				<th>
-				<a href="{% url get_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
-				{% trans "Translated:" %}</th>
-				<td><span title="{% trans "Total/Translated/Untranslated/Fuzzy" %}"/>{{pofile.trans_perc}}% ({{pofile.total}}/{{pofile.trans}}/{{pofile.untrans}}/{{pofile.fuzzy}})</span>
-                {% if pofile.potupdated %}
-                - 				
-				{% if user.is_authenticated %}
-					{% blocktrans with since=pofile.potupdated|timesince updated=pofile.potupdated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}source updated on {{updated}} ({{since}} ago){% endblocktrans %}
-				{% else %}
-					{% blocktrans with since=pofile.potupdated|timesince updated=pofile.potupdated|date:"M d, Y H:i O" %}source updated on {{updated}} ({{since}} ago){% endblocktrans %}
-				{% endif %}
-				{% endif %}				
-				</td>
-			</tr>
-			{% if pofile.release.project.viewurl %}
-			<tr>
-				<th>
-					<a target="_blank" href="{{ pofile.viewurl }}" class="nodecoration_icon action_icon2 svnlog" title="{% trans "View repository log" %}"></a>{% trans "Repository log:" %}
-				</th>
-				<td>
-					{% if pofile.buildcachedata %}
-						{% with pofile.buildcachedata as cache %}
-							{% if cache.rev %}
-								{% blocktrans with rev=cache.rev %}Revision {{rev}}{% endblocktrans %}
-							{% endif %}
-							{% if user.is_authenticated %}
-								{% blocktrans with since=cache.updated|timesince updated=cache.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}(updated {{updated}} - {{since}} ago){% endblocktrans %}
-							{% else %}
-								{% blocktrans with since=cache.updated|timesince updated=cache.updated|date:"M d, Y H:i O" %}(updated {{updated}} - {{since}} ago){% endblocktrans %}
-							{% endif %}
-						{% endwith %}
-						<span class="help_text">{% trans "The information displayed is local and may be out dated." %}</span>
-					{% endif %}
-				</td>
-			</tr>	
-			{% endif %}
-			{% with pofile.submits.get_pending as submit %}
-			{% if submit %}
-			<tr>
-				<th colspan="2">
-				<a href="{% url get_submit_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
-				{% if user.is_authenticated %}
-					{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
-				{% else %}
-					{% blocktrans with since=submit.created|timesince created=submit.created|date:"M d, Y H:i O" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
-				{% endif %}
-				</th>
-			</tr>
-			{% endif %}
-			{% endwith %}			
-		</tbody>
+
+{% if not release %}
+	{% if pofile.release.enabled and pofile.release.project.enabled %}
+		{% set 'enabled' as enabled %}
+	{% endif %}
+	{% if pofile.release.read_only or pofile.release.project.read_only %}
+		{% set 'read_only' as readonly %}
+	{% endif %}
+	{% iftrue team.can_manage user %}
+		{% set 'true' as can_manage %}
+	{% endiftrue %}
+{% endif %}
+
+{% if pofile.potfile.all %}
+	{% set pofile.potfile.get as potfile %}
+{% endif %}
+
+{% set lock=pofile.locks.get %}
+{% if lock %}
+    {% if user == lock.owner %}
+		{% set 'editable' as editable %}
+		{% set 'owner' as lockowner %}
+	{% endif %}
+{% else %}
+	{% if translate  or review %}
+	{% set 'editable' as editable %}
+	{% set 'owner' as owner %}
+	{% endif %}
+{% endif %}
+
+{% url toggle_lock pofile.slug as toggle_lock_url %}
+{% url remove_assigned_translator pofile.slug as remove_translate_url %}
+{% url remove_assigned_reviewer pofile.slug as remove_review_url %}
+{% url set_assigned_translator pofile.slug as set_assigned_translator %}
+{% url set_assigned_reviewer pofile.slug as set_assigned_reviewer %}
+{% url toggle_mark pofile.slug as toggle_mark_url %}
+
+<div id="details-box">
+	<!-- TOOLBOX -->
+	<div id="details-toolbox">
+		{% if pofile.submits.all_pending %}
+			{% url view_submit_file pofile.slug as view_url %}
+		{% else %}
+			{% url view_file pofile.slug as view_url %}
+		{% endif %}
+	
+		<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view">{% trans "View" %}</a>
+		<a href="{% url get_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download">{% trans "Download" %}</a>
 		
-				
-	</table>
-</div>
-<div class="file-detail-wrapper">
-	<div class="side-left">
-		<div id="log-file-table">
+		{% if user.is_authenticated %}
+			{% if enabled and not readonly %}
+				{% if editable or can_manage %}
+					<a href="{% url edit_file pofile.slug %}" class="nodecoration_icon action_icon file-edit">{% trans "Edit online" %}</a>
+				{% endif %}			
+			{% endif %}
+		{% endif %}
+		{% if potfile %}
+		<a href="{% url get_pot_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download">{% trans "Download POT file" %}</a>
+		{% endif %}
+	</div>
+	<!-- END TOOLBOX -->
+	
+	<div id="details-infobox">
+		<div class="left-layout">
+		{% if potfile %}
+			<p>
+			{% blocktrans count potfile.total as counter %}
+			<span>Source Total:</span> {{ counter }} string
+			{% plural %}
+			<span>Source Total:</span> {{ counter }} strings
+			{% endblocktrans %}
+			</p>
+		{% endif %}
+		
+		<p>
+		{% blocktrans count pofile.total as counter %}
+		<span>Total:</span> {{ counter }} string
+		{% plural %}
+		<span>Total:</span> {{ counter }} strings
+		{% endblocktrans %}
+		</p>
+		
+		<p>
+		{% blocktrans count pofile.trans as counter %}
+		<span>Translated:</span> {{ counter }} string
+		{% plural %}
+		<span>Translated:</span> {{ counter }} strings
+		{% endblocktrans %}
+		</p>
+		
+		<p>
+		{% blocktrans count pofile.untrans as counter %}
+		<span>Untranslated:</span> {{ counter }} string
+		{% plural %}
+		<span>Untranslated:</span> {{ counter }} strings
+		{% endblocktrans %}
+		</p>
+		
+		<p>
+		{% blocktrans count pofile.fuzzy as counter %}
+		<span>Changed:</span> {{ counter }} string
+		{% plural %}
+		<span>Changed:</span> {{ counter }} strings
+		{% endblocktrans %}
+		</p>
+		
+		<div class="graph_comp">
+			<div class="translated_comp" style="width: {{pofile.trans_perc}}%;"></div>
+			<div class="fuzzy_comp" style="left: {{pofile.trans_perc}}%; width: {{pofile.fuzzy_perc}}%;"></div>
+			<div class="untranslated_comp" style="left: {{pofile|sum_trans_fuzzy}}%; width: {{pofile.untrans_perc}}%;"></div>
+		</div>
+		<div alt="{{pofile.trans_perc}}" class="stats_string_comp">{{pofile.trans_perc}}%</div>
+		<div class="clear"></div>
+		
+		</div> <!-- END LEFT -->
+		
+		<div class="right-layout">
+			<div id="details-assignblock">
+			{% include "files/detail/detail-assignblock.html" with included=True %}
+			</div>
+		</div> <!-- END RIGHT -->
+		<div class="clear"></div>
+	</div>
+	
+	<div id="details-definition">
+		{% if pofile.need_merge %}
+			<p class="icon warn">{% trans "The PO file differs from the source POT file." %} <input class="icon merge" type="button" value="{% trans "Force merge" %}" rel="{% url file_merge pofile.slug %}" name="confirm_href"/></p>
+		{% endif %}
+	
+		{% if potfile.updated %}
+		{% if user.is_authenticated %}
+			{% set potupdated=potfile.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}
+		{% else %}
+			{% set potupdated=potfile.updated|date:"M d, Y H:i O" %}
+		{% endif %}
+		<p>{% blocktrans with since=potfile.updated|timesince updated=potupdated %}Source file updated on {{updated}} ({{since}} ago){% endblocktrans %}</p>
+		{% endif %}
+	
+		{% if user.is_authenticated %}
+			{% set pofile_potupdated=pofile.potupdated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}
+		{% else %}
+			{% set pofile_potupdated=pofile.potupdated|date:"M d, Y H:i O" %}
+		{% endif %}
+		<p>{% blocktrans with since=pofile.potupdated|timesince updated=pofile_potupdated %}File last merged on {{updated}} ({{since}} ago){% endblocktrans %}</p>
+		
+		{% if pofile.buildcachedata %}
+			{% with pofile.buildcachedata as cache %}
+				{% if cache.rev %}
+					{% if user.is_authenticated %}
+						{% set cacheupdated=cache.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}
+					{% else %}
+						{% set cacheupdated=cache.updated|date:"M d, Y H:i O" %}
+					{% endif %}
+					{% if pofile.release.project.viewurl %}
+						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated viewurl=pofile.viewurl %}Repositoy revision <a href="{{viewurl}}">{{rev}}</a> (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
+					{% else %}
+						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated %}Repositoy revision {{rev}} (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
+					{% endif %}
+				{% endif %}
+			{% endwith %}
+		{% endif %}
+
+		{% with pofile.submits.get_pending as submit %}
+		{% if submit %}
+			<a href="{% url get_submit_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+			{% if user.is_authenticated %}
+				{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
+			{% else %}
+				{% blocktrans with since=submit.created|timesince created=submit.created|date:"M d, Y H:i O" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
+			{% endif %}
+		{% endif %}
+		{% endwith %}
+		<br/><br/>
+		<p class="help_text">{% trans "(*) The information displayed is local and may be out dated." %}</p>
+	</div>
+
+	<div id="details-history">
+			
+		   {% if user.is_authenticated and pofile.submits.all %}
+		   <table id="submit-history" class="stats-table collapsible">
+		        <caption title="{% trans "Click to open/close" %}">{% trans "Submit History" %}</caption>
+	            <thead>
+	                <tr>
+	                    <th class="title-center">&nbsp;</th>
+	                    <th class="title-center">{% trans "Date" %}</th>
+	                    <th class="title-center">{% trans "User" %}</th>
+	                    <th class="title-center">{% trans "Status" %}</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                {% for sfile in pofile.submits.all|slice:":5" %}
+	                <tr>
+	                    <td><a href="{% url get_submit_file_arch sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
+	                    <td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	                    <td>{% if sfile.owner.get_full_name %}
+				            {{ sfile.owner.get_full_name }} ({{ sfile.owner.username }})
+				            {% else %}
+				            {{ sfile.owner.username }}
+				            {% endif %}</td>
+	                    <td>{{ sfile.get_status_display }}</td>
+	                </tr>
+	                {% endfor %}
+	            </tbody>
+	            <tfoot>
+	            <tr>
+	            <td colspan="4" class="title-center"><span class="help_text">{% setting "BACKUP_CLEAN_AGE" as days %}{% blocktrans %}Files older than {{days}} days are removed.{%endblocktrans%}</span></td>
+	            </tr> 
+	            </tfoot>
+	        </table>
+	        {% endif %}
+	        
 			{% with pofile.log.all as logs %}
 			{% if logs %}
 			{% autopaginate logs %}
-			<table class="stats-table">
+			<table id="log-file-table" class="stats-table">
+				<caption>{% trans "File History" %}</caption>
 				<thead>
 					<tr>
-						<th class="title-center">{% trans "Action" %}</th>
-						<th class="title-center">{% trans "Date" %}</th>
-						<th class="title-center">{% trans "User" %}</th>
-						<th class="title-center">{% trans "Comments" %}</th>
+						<th class="title-center log-action">{% trans "Action" %}</th>
+						<th class="title-center log-date">{% trans "Date" %}</th>
+						<th class="title-center log-user">{% trans "User" %}</th>
+						<th class="title-center log-comments">{% trans "Comments" %}</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for log in logs %}
 					<tr>
-						<td>{{ log.get_action_display }}</td>
-						<td>{% if user.is_authenticated %}
+						<td class="log-action">{{ log.get_action_display }}</td>
+						<td class="log-date">{% if user.is_authenticated %}
 							{{ log.created|localtime:request.user.get_profile.timezone|date:"M d, H:i" }}
 							{% else %}
 							{{ log.created|date:"M d, H:i O" }}
 							{% endif %}	
 						</td>
-						<td>
+						<td class="log-user">
 							{% if log.user.get_full_name %}
 							{{ log.user.get_full_name }} ({{ log.user.username }})
 							{% else %}
 							{{ log.user.username }}
 							{% endif %}					
 						</td>
-						<td>{{ log.comment }}</td>
+						<td class="log-comments wordwrap">{{ log.comment }}</td>
 					</tr>
 					{% endfor %}			
 				</tbody>
@@ -175,45 +305,28 @@ $(document).ready(function(){
 					</tr>
 				</tfoot>
 			</table>
-			{% else %}
-			<p>{% trans "No actions registered yet" %}</p>
 			{% endif %}
 			{% endwith %}
-		</div>
-	</div>
-	<div class="side-right">
-	   {% if user.is_authenticated and pofile.submits.all %}
-	   <table id="submit-history" class="stats-table">
-	        <caption>{% trans "Submit History" %}</caption>
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th class="title-center">{% trans "Date" %}</th>
-                    <th class="title-center">{% trans "User" %}</th>
-                    <th class="title-center">{% trans "Status" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sfile in pofile.submits.all|slice:":5" %}
-                <tr>
-                    <td><a href="{% url get_submit_file_arch sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
-                    <td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
-                    <td>{% if sfile.owner.get_full_name %}
-			            {{ sfile.owner.get_full_name }} ({{ sfile.owner.username }})
-			            {% else %}
-			            {{ sfile.owner.username }}
-			            {% endif %}</td>
-                    <td>{{ sfile.get_status_display }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-            <tr>
-            <td colspan="4" class="title-center"><span class="help_text">{% setting "BACKUP_CLEAN_AGE" as days %}{% blocktrans %}Files older than {{days}} days are removed.{%endblocktrans%}</span></td>
-            </tr> 
-            </tfoot>
-        </table>
-        {% endif %}
 	</div>
 </div>
+
+<div id="user-selection-list" class="floating-box">
+<select id="user-select" style="width: 150px;">
+{% for user in team.team_members %}
+	<option value="{{user.id}}">{{user.username}}{%if user.get_full_name%} ({{user.get_full_name}}){%endif%}</option>
+{% endfor %}
+</select>
+<span id="select_ok" onclick="$('#user-selection-list').submit()" class="nodecoration_icon action_icon2 submit link" style="padding-right: 0px;">&nbsp;</span>
+<span id="select_nok" onclick="$('#user-selection-list').hide()" class="nodecoration_icon action_icon2 cancel link" style="padding-right: 0px; margin-left: 0px;">&nbsp;</span>
+</div>
+
+<div id="lock_comment" style="display: none;">
+<fieldset>
+	<p class="validateTips help_text"></p>
+	<span id="comment_text"></span><br/><br/>
+	<label for="comment_input">{% trans "Comments" %}:</label>
+	<input id="comment_input" maxlength="255" size="15" type="text" value="" class="text ui-widget-content ui-corner-all">
+</fieldset>
+</div> 
+
 {% endblock %}
