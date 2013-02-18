@@ -1,6 +1,5 @@
 {% load i18n extendtags timezone_filters pagination_tags paginator smartiftag settingstag stats %}
 
-{% if not included %}
 {% if not release %}
 	{% if pofile.release.enabled and pofile.release.project.enabled %}
 		{% set 'enabled' as enabled %}
@@ -18,26 +17,24 @@
 {% endif %}
 
 {% set lock=pofile.locks.get %}
+{% set assign=pofile.assigns.get %}
 {% if lock %}
     {% if user == lock.owner %}
 		{% set 'editable' as editable %}
 		{% set 'owner' as lockowner %}
 	{% endif %}
 {% else %}
-	{% if translate  or review %}
-	{% set 'editable' as editable %}
-	{% set 'owner' as owner %}
+	{% if user == assign.translate or user == assign.review %}
+	{% set editable='editable' %}
+	{% set owner='owner' %}
 	{% endif %}
 {% endif %}
 
-{% url toggle_lock pofile.slug as toggle_lock_url %}
-{% url remove_assigned_translator pofile.slug as remove_translate_url %}
-{% url remove_assigned_reviewer pofile.slug as remove_review_url %}
-{% url set_assigned_translator pofile.slug as set_assigned_translator %}
-{% url set_assigned_reviewer pofile.slug as set_assigned_reviewer %}
-{% url toggle_mark pofile.slug as toggle_mark_url %}
-
-{% endif %}
+{% url toggle_lock_detail pofile.slug as toggle_lock_url %}
+{% url remove_assigned_translator_detail pofile.slug as remove_translate_url %}
+{% url remove_assigned_reviewer_detail pofile.slug as remove_review_url %}
+{% url set_assigned_translator_detail pofile.slug as set_assigned_translator %}
+{% url set_assigned_reviewer_detail pofile.slug as set_assigned_reviewer %}
 
 {% if user.is_authenticated %}
 <div class="details-assignblock">
@@ -47,7 +44,7 @@
 			<span>{% trans "Translator:" %}</span>
 			{% if assign.translate %}
 				{% if can_manage or translate %}
-					<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove translator" %}"></span>
+					<span onclick="try_toggle_detail_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove translator" %}"></span>
 				{% endif %}	
 				{% if translate %}
 					<sortext>{% trans "(you)" %}</sortext>
@@ -56,9 +53,9 @@
 				{% endif %}
 			{% else %}
 				{% if can_manage %}
-					<span onclick="select_user(this,try_toggle,'{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
+					<span onclick="select_user(this,try_toggle_detail,'{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
 				{% else %}
-					<span onclick="try_toggle('{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
+					<span onclick="try_toggle_detail('{{ set_assigned_translator }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign translator" %}">&nbsp;</span>
 				{% endif %}
 			{% endif %}
 			</li>
@@ -66,7 +63,7 @@
 			<span>{% trans "Reviewer:" %}</span>
 			{% if assign.review %}
 				{% if can_manage or review %}
-					<span onclick="try_toggle_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove reviewer" %}"></span>
+					<span onclick="try_toggle_detail_cnf('{{ remove_review_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove reviewer" %}"></span>
 				{% endif %}	
 				{% if review %}
 					<sortext>{% trans "(you)" %}</sortext>
@@ -75,16 +72,15 @@
 				{% endif %}
 			{% else %}
 				{% if can_manage %}
-					<span onclick="select_user(this,try_toggle,'{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+					<span onclick="select_user(this,try_toggle_detail,'{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
 				{% else %}
-					<span onclick="try_toggle('{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
+					<span onclick="try_toggle_detail('{{ set_assigned_reviewer }}')" class="nodecoration_icon action_icon addassg link" title="{% trans "Assign reviewer" %}">&nbsp;</span>
 				{% endif %}
 			{% endif %}
 			</li>
 		</ul>
 	{% endwith %}				
 </div>
-
 <p>
 {% if lock %}
 	{% if lockowner or can_manage %}
@@ -101,7 +97,8 @@
 	{% endif %}
 {% else %}
 	{% if owner %}
-		<span onclick="try_toggle('{{ toggle_lock_url }}')" class="nodecoration_icon action_icon lock-open link" title="{% trans "Lock the file to notify others you're working on it." %}"></span>
+		<span onclick="try_toggle_detail('{{ toggle_lock_url }}')" class="nodecoration_icon action_icon lock-open link" title="{% trans "Lock the file to notify others you're working on it." %}"></span>
+		{% trans "File is unlocked." %}
 	{% endif %}
 {% endif %}
 </p>

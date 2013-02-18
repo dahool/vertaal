@@ -8,33 +8,9 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
 <script type="text/javascript" src="{{STATIC_URL}}js/filelist.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/filedetail.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){ 
-	var icon_open = 'ui-icon-circle-triangle-s';
-	var icon_closed = 'ui-icon-circle-triangle-w';
-	$("#log-file-table").on('click', 'div.pagination a', function(ev) {
-		ev.preventDefault();
-		var url = $(this).attr('href');
-		$("#log-file-table").load(url + " #log-file-table");
-	})
-	$(".collapsible").each(function() {
-		$(this).find("caption").on('click', function() {
-			var sp = $(this).find('span.ui-icon');
-			if ($(sp).hasClass(icon_closed)) {
-				$(sp).removeClass(icon_closed);
-				$(sp).addClass(icon_open);
-				$(this).parent().find('thead,tbody').show();
-			} else {
-				$(sp).removeClass(icon_open);
-				$(sp).addClass(icon_closed);
-				$(this).parent().find('thead,tbody').hide();			
-			}
-		}).append('<span class="ui-icon '+icon_closed+'"></span>');
-		$(this).find("thead,tbody").hide();
-	});
-	init_select_events();
-	init_filedialogs();
-})
+
 </script>
 {% set pofile.filename as filename %}
 {% ifsetting ENABLE_RSS %}
@@ -70,24 +46,18 @@ $(document).ready(function(){
 {% endif %}
 
 {% set lock=pofile.locks.get %}
+{% set assign=pofile.assigns.get %}
 {% if lock %}
     {% if user == lock.owner %}
-		{% set 'editable' as editable %}
-		{% set 'owner' as lockowner %}
+		{% set editable='editable' %}
+		{% set lockowner='owner' %}
 	{% endif %}
 {% else %}
-	{% if translate  or review %}
-	{% set 'editable' as editable %}
-	{% set 'owner' as owner %}
+	{% if user == assign.translate or user == assign.review %}
+	{% set editable='editable' %}
+	{% set owner='owner' %}
 	{% endif %}
 {% endif %}
-
-{% url toggle_lock pofile.slug as toggle_lock_url %}
-{% url remove_assigned_translator pofile.slug as remove_translate_url %}
-{% url remove_assigned_reviewer pofile.slug as remove_review_url %}
-{% url set_assigned_translator pofile.slug as set_assigned_translator %}
-{% url set_assigned_reviewer pofile.slug as set_assigned_reviewer %}
-{% url toggle_mark pofile.slug as toggle_mark_url %}
 
 <div id="details-box">
 	<!-- TOOLBOX -->
@@ -170,7 +140,7 @@ $(document).ready(function(){
 		
 		<div class="right-layout">
 			<div id="details-assignblock">
-			{% include "files/detail/detail-assignblock.html" with included=True %}
+			{% include "files/detail/detail_assignblock.html" with included=True %}
 			</div>
 		</div> <!-- END RIGHT -->
 		<div class="clear"></div>
@@ -183,11 +153,11 @@ $(document).ready(function(){
 	
 		{% if potfile.updated %}
 		{% if user.is_authenticated %}
-			{% set potupdated=potfile.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}
+			{% set potupdated=potfile.updated|localtime:user.get_profile.timezone %}
 		{% else %}
-			{% set potupdated=potfile.updated|date:"M d, Y H:i O" %}
+			{% set potupdated=potfile.updated %}
 		{% endif %}
-		<p>{% blocktrans with since=potfile.updated|timesince updated=potupdated %}Source file updated on {{updated}} ({{since}} ago){% endblocktrans %}</p>
+		<p>{% blocktrans with since=potfile.updated|timesince updated=potupdated|date:"M d, Y H:i" %}Source file updated on {{updated}} ({{since}} ago){% endblocktrans %}</p>
 		{% endif %}
 	
 		{% if user.is_authenticated %}
@@ -242,7 +212,7 @@ $(document).ready(function(){
 	                </tr>
 	            </thead>
 	            <tbody>
-	                {% for sfile in pofile.submits.all|slice:":5" %}
+	                {% for sfile in pofile.submits.all|slice:":10" %}
 	                <tr>
 	                    <td><a href="{% url get_submit_file_arch sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
 	                    <td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
@@ -256,14 +226,14 @@ $(document).ready(function(){
 	                {% endfor %}
 	            </tbody>
 	            <tfoot>
-	            <tr>
-	            <td colspan="4" class="title-center"><span class="help_text">{% setting "BACKUP_CLEAN_AGE" as days %}{% blocktrans %}Files older than {{days}} days are removed.{%endblocktrans%}</span></td>
-	            </tr> 
+		            <tr>
+		            	<td colspan="4" class="title-center"><span class="help_text">{% setting "BACKUP_CLEAN_AGE" as days %}{% blocktrans %}Files older than {{days}} days are removed.{%endblocktrans%}</span></td>
+		            </tr>
 	            </tfoot>
 	        </table>
 	        {% endif %}
 	        
-			{% with pofile.log.all as logs %}
+			{% with logs=pofile.log.all %}
 			{% if logs %}
 			{% autopaginate logs %}
 			<table id="log-file-table" class="stats-table">

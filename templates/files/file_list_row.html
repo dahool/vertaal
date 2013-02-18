@@ -1,10 +1,10 @@
 {% load i18n extendtags timezone_filters stats smartiftag %}
 
 {% if not release %}
-	{% if file.release.enabled and file.release.project.enabled %}
+	{% if pofile.release.enabled and pofile.release.project.enabled %}
 		{% set 'enabled' as enabled %}
 	{% endif %}
-	{% if file.release.read_only or file.release.project.read_only %}
+	{% if pofile.release.read_only or pofile.release.project.read_only %}
 		{% set 'read_only' as readonly %}
 	{% endif %}
 	{% iftrue team.can_manage user %}
@@ -12,7 +12,7 @@
 	{% endiftrue %}
 {% endif %}
 
-{% set file.assigns.get as assign %}
+{% set pofile.assigns.get as assign %}
 {% if assign %}
 	{% ifequal user assign.translate %}
 		{% set 'translate' as translate %}
@@ -22,7 +22,7 @@
 		{% endifequal %} 
 	{% endifequal %}
 	{# % if translate  or review % #}
-		{% set file.locks.get as lock %}
+		{% set pofile.locks.get as lock %}
 		{% if lock %}
 		    {% if user == lock.owner %}
 				{% set 'editable' as editable %}
@@ -37,47 +37,47 @@
 	{# % endif % #}
 {% endif %}
 
-{% url toggle_lock file.slug as toggle_lock_url %}
-{% url remove_assigned_translator file.slug as remove_translate_url %}
-{% url remove_assigned_reviewer file.slug as remove_review_url %}
-{% url set_assigned_translator file.slug as set_assigned_translator %}
-{% url set_assigned_reviewer file.slug as set_assigned_reviewer %}
-{% url toggle_mark file.slug as toggle_mark_url %}
+{% url toggle_lock pofile.slug as toggle_lock_url %}
+{% url remove_assigned_translator pofile.slug as remove_translate_url %}
+{% url remove_assigned_reviewer pofile.slug as remove_review_url %}
+{% url set_assigned_translator pofile.slug as set_assigned_translator %}
+{% url set_assigned_reviewer pofile.slug as set_assigned_reviewer %}
+{% url toggle_mark pofile.slug as toggle_mark_url %}
 
-{% if file.submits.all_pending %}
-	{% url view_submit_file file.slug as view_url %}
+{% if pofile.submits.all_pending %}
+	{% url view_submit_file pofile.slug as view_url %}
 {% else %}
-	{% url view_file file.slug as view_url %}
+	{% url view_file pofile.slug as view_url %}
 {% endif %}
 <td class="filename">
 <!-- buttons -->
-	<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view" title="{% with file.filename as filename %}{% blocktrans %}View {{filename}}{% endblocktrans %}{% endwith %}"></a>
-	<a href="{% url get_file file.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% with file.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
+	<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view" title="{% with pofile.filename as filename %}{% blocktrans %}View {{filename}}{% endblocktrans %}{% endwith %}"></a>
+	<a href="{% url get_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% with pofile.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
 	{% if user.is_authenticated %}
 		{% if enabled and not readonly %}
 			{% if editable or can_manage %}
-				<a href="{% url edit_file file.slug %}" class="nodecoration_icon action_icon file-edit" title="{% with file.filename as filename %}{% blocktrans %}Edit {{filename}}{% endblocktrans %}{% endwith %}"></a>
+				<a href="{% url edit_file pofile.slug %}" class="nodecoration_icon action_icon file-edit" title="{% with pofile.filename as filename %}{% blocktrans %}Edit {{filename}}{% endblocktrans %}{% endwith %}"></a>
                 
-                {% switch file.status %}
+                {% switch pofile.status %}
                 {% case 0 %}
                 {% captureas status_message %}{% trans "Mark the file as Translated." %}{% endcaptureas %}
                 {% set 'mark-translated' as status_icon %}
-                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{pofile.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
                 {% case 1 %}
                 {% captureas status_message %}{% trans "File translated. Mark as Reviewed." %}{% endcaptureas %}
                 {% set 'mark-reviewed' as status_icon %}
-                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{pofile.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
                 {% case 2 %}
                 {% captureas status_message %}{% trans "File reviewed. Mark as Completed." %}{% endcaptureas %}
                 {% set 'mark-completed' as status_icon %}
-                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{file.status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
+                <span onclick="try_toggle_cnf('{{ toggle_mark_url }}',{mark:'{{pofile..status}}'})" class="nodecoration_icon action_icon {{status_icon}} link" title="{{status_message}}"></span>
                 {% else %}
                 <span class="nodecoration_icon action_icon file-done" title='{% trans "File completed." %}'></span>
                 {% endswitch %}
                 
 				{% if lock %}				
 					{% if lockowner or can_manage %}
-						<span onclick="add_comment('{{file.filename}}', '{{toggle_lock_url}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
+						<span onclick="add_comment('{{pofile.filename}}', '{{toggle_lock_url}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
 					{% endif %}
 				{% else %}
 				{% if owner %}
@@ -91,33 +91,33 @@
 	<!-- FIX SAFARI -->
 	<span>&nbsp;</span>	
 <!-- end buttons -->
-	<a class="highlight" name="{{ file.slug }}" href="{% url file_detail file.slug %}">
-	<sortext>{{ file.filename }}</sortext></a>
-	{% if file.need_merge %}
+	<a class="highlight" name="{{ pofile.slug }}" href="{% url file_detail pofile.slug %}">
+	<sortext>{{ pofile.filename }}</sortext></a>
+	{% if pofile.need_merge %}
 		<span class="icon action_icon warnmerge" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
 	{% endif %}	
-	{% with file.submits.get_pending as submit %}
+	{% with pofile.submits.get_pending as submit %}
 		{% if  submit %}
 			{% if submit.enabled %}
-			<a href="{% url get_submit_file file.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
+			<a href="{% url get_submit_file pofile.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
 			{% else %}
 			<span class="action_icon nodecoration_icon file-submit-edit" title="{% trans "This file is being edited" %}"></span>
 			{% endif %}
 		{% endif %}
 	{% endwith %}
 </td>
-<td class="title-center">{{ file.component.name }}</td>
+<td class="title-center">{{ pofile.component.name }}</td>
 <td>
 	<div class="graph_comp">
-	  <div class="translated_comp" style="width: {{file.trans_perc}}px;"></div>
-	  <div class="fuzzy_comp" style="left: {{file.trans_perc}}px; width: {{file.fuzzy_perc}}px;"></div>
-	  <div class="untranslated_comp" style="left: {{file|sum_trans_fuzzy}}px; width: {{file.untrans_perc}}px;"></div>
+	  <div class="translated_comp" style="width: {{pofile.trans_perc}}px;"></div>
+	  <div class="fuzzy_comp" style="left: {{pofile.trans_perc}}px; width: {{pofile.fuzzy_perc}}px;"></div>
+	  <div class="untranslated_comp" style="left: {{pofile|sum_trans_fuzzy}}px; width: {{pofile.untrans_perc}}px;"></div>
 	</div>
-	<div alt="{{file.trans_perc}}" row="file_row_{{ file.slug }}" class="stats_string_comp" title="{% trans "Total:" %}{{file.total}}<br>{% trans "Translated:" %}{{file.trans}}<br>{% trans "Untranslated:" %}{{file.untrans}}<br>{% trans "Fuzzy:" %}{{file.fuzzy}}" >{{file.total}}/{{file.untrans}}/{{file.fuzzy}} [{{file.trans_perc}}%]</div>					
+	<div alt="{{pofile.trans_perc}}" row="file_row_{{ pofile.slug }}" class="stats_string_comp" title="{% trans "Total:" %}{{pofile.total}}<br>{% trans "Translated:" %}{{pofile.trans}}<br>{% trans "Untranslated:" %}{{pofile.untrans}}<br>{% trans "Fuzzy:" %}{{pofile.fuzzy}}" >{{pofile.total}}/{{pofile.untrans}}/{{pofile.fuzzy}} [{{pofile.trans_perc}}%]</div>					
 </td>
 {% if user.is_authenticated %}
 <td class="assigns">
-{% with file.assigns.get as assign %}
+{% with pofile.assigns.get as assign %}
 	{% if assign.translate %}
 		{% if can_manage or translate %}
 			<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove translator" %}"></span>

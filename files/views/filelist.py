@@ -82,7 +82,7 @@ def toggle(request, slug, template='files/file_list_row.html'):
                 file.locks.create(owner=request.user)
                 res['message'] = ResponseMessage.success(_('Locked %s') % file.filename)
         page = render_to_string(template,
-                                {'file': file, 'team': team},
+                                {'pofile': file, 'team': team},
                                 context_instance = RequestContext(request))
         res['content_HTML'] = page
         return XMLResponse(res)
@@ -90,7 +90,7 @@ def toggle(request, slug, template='files/file_list_row.html'):
         raise Http403
 
 @login_required
-def toggle_assigned(request, slug, translator=False, remove=False):
+def toggle_assigned(request, slug, translator=False, remove=False, template='files/file_list_row.html'):
     res = {}
     if request.method == "POST":
         try:
@@ -194,8 +194,8 @@ def toggle_assigned(request, slug, translator=False, remove=False):
             POFileLog.objects.create(pofile=file, user=request.user, action=act, comment=cmt)
             assign.save()
             
-        page = render_to_string('files/file_list_row.html',
-                                {'file': file, 'team': team},
+        page = render_to_string(template,
+                                {'pofile': file, 'team': team},
                                 context_instance = RequestContext(request))
         res['content_HTML'] = page
         return XMLResponse(res)
@@ -250,7 +250,7 @@ def toggle_mark(request, slug):
             return XMLResponse({'message': _('You are not authorized to perform this action.')})
 
         page = render_to_string('files/file_list_row.html',
-                                {'file': file, 'team': team},
+                                {'pofile': file, 'team': team},
                                 context_instance = RequestContext(request))
         res['content_HTML'] = page
         return XMLResponse(res)
@@ -298,7 +298,7 @@ def file_log(request, slug):
     return render_to_response("files/file_log.html",
                               {'pofile': file},
                               context_instance = RequestContext(request))
-    
+
 @render("files/file_detail.html")
 def file_detail(request, slug):
     pofile = get_object_or_404(POFile, slug=slug)

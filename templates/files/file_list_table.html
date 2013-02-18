@@ -25,8 +25,8 @@
 		</thead>
 		<tbody>
 			{% for file_item in file_list %}
-			{% with file_item as file %}
-			<tr component="{{file.component.slug}}" id="file_row_{{ file.slug }}" class="file-list-row {% cycle "odd" "even" %} {% if highlight == file.slug %}row_highlight{%endif%}">
+			{% with pofile=file_item %}
+			<tr component="{{file.component.slug}}" id="file_row_{{ pofile.slug }}" class="file-list-row {% cycle "odd" "even" %}">
 				{% include "files/file_list_row.html" %}
 			</tr>
 			{% endwith %}
