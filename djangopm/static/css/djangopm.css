@@ -38,7 +38,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 }
 #mailbox-content {
 	float: right;
-	height: 300px;
+	min-height: 300px;
+	/*display: inline-block;
+	margin-left: 10px;*/
 }
 .mailbox-wrapper ul {
     list-style-image: none;
@@ -96,11 +98,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 	padding-left: 10px;
 }
 .mbox-subject {
-	width: 485px;
+	/*width: 485px;*/
 }
 .mbox-date {
 	text-align: right;
 	width: 65px;
+	margin-top: 5px;
+	float: right;
 }
 .pm_detail_subject {
 	font-size: 18px;

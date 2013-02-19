@@ -24,11 +24,11 @@
 		<li href="{% url pm_draftbox %}">{% trans "Draft" %}</li>
 	</ul>
 </div>
-<div id="mailbox-content">
-    {% include "djangopm/message_list.html" %}
+<div id="mailbox-content" style="display: none;">
+    {% include "djangopm/message_list.html" with isinbox='true' %}
 </div>
 <div class="clear"></div>
 </div>
-<div id="pm_detail"></div>
-<div id="pm_compose">{% include "djangopm/message_compose.html" %}</div>
+<div id="pm_detail" style="display: none;"></div>
+<div id="pm_compose" style="display: none;">{% include "djangopm/message_compose.html" %}</div>
 {% endblock %}

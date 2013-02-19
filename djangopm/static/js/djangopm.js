@@ -223,65 +223,7 @@ $(function() {
         $('#id_message').height(ui.size.height-170);
     });
     
-    /*
-	$("#mailbox").show();
-	$("#mailbox").on( "tabsactivate", function(event, ui) {
-		var panel = ui.newPanel;
-		if ($(panel).find('.mailboxtable').length == 0) loadPanel(panel);
-	});
-	loadPanel($("#pminbox"));
-	
-	$(".mailbox_holder").on("click","tr[alt]", function(ev) {
-		var elem = $($(this).attr('alt'));
-		if ($(this).hasClass('pm_unread') && !$(elem).is(":visible")) {
-			$this = $(this);
-			$.post($(elem).attr('href'), function() {
-				$this.removeClass('pm_unread');
-			});
-		}
-		$(elem).toggle();
-	});
-	
-	$(".mailbox_holder").on("click","tr[id^='inbox_detail']", function(ev) {
-		$(this).hide();
-	});
-
-	$(".mailbox_holder").on("click","input[type=checkbox]", function(ev) {
-		ev.stopPropagation();
-	});
-	
-	$("#mailbox button[href^='#']").click(function(ev) {
-		$($(this).attr('href')).dialog('open');
-	});
-	
-	$("#pm_detail").dialog({
-	    autoOpen: false,
-	    modal: true,
-	    resizable: true,
-	});
-
-	var _SAVE = gettext("Save");
-	var _SEND = gettext("Send");
-	var _CLOSE = gettext("Close");
-	
-	$("#pm_compose").dialog({
-	    autoOpen: false,
-	    modal: true,
-	    resizable: true,
-	    buttons: [{
-	    	text: _SAVE,
-	    	click: function() {
-	    	},
-	    	text: _SEND,
-	    	click: function() {
-	    	},
-	    	text: _CLOSE
-	    	click: function() {
-	    		$( this ).dialog( "close" );
-	    	},
-	    }],
-
-	});*/
+    $mboxct.show('slow');
 	
 });
 
