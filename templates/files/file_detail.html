@@ -236,7 +236,7 @@
 			{% with logs=pofile.log.all %}
 			{% if logs %}
 			{% autopaginate logs %}
-			<table id="log-file-table" class="stats-table">
+			<table id="log-file-table" class="stats-table" href="{% url file_detail pofile.slug %}" >
 				<caption>{% trans "File History" %}</caption>
 				<thead>
 					<tr>

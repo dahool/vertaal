@@ -12,29 +12,27 @@
 	{% endiftrue %}
 {% endif %}
 
-{% set pofile.assigns.get as assign %}
+{% set assign=pofile.assigns.get %}
+{% set lock=pofile.locks.get %}
 {% if assign %}
-	{% ifequal user assign.translate %}
-		{% set 'translate' as translate %}
+	{% if user == assign.translate %}
+		{% set translate='translate' %}
 	{% else %}	
-		{% ifequal user assign.review %}
-			{% set 'review' as review %}
-		{% endifequal %} 
-	{% endifequal %}
-	{# % if translate  or review % #}
-		{% set pofile.locks.get as lock %}
-		{% if lock %}
-		    {% if user == lock.owner %}
-				{% set 'editable' as editable %}
-				{% set 'owner' as lockowner %}
-			{% endif %}
-		{% else %}
-			{% if translate  or review %}
-			{% set 'editable' as editable %}
-			{% set 'owner' as owner %}
-			{% endif %}
-		{% endif %}
-	{# % endif % #}
+		{% if user == assign.review %}
+			{% set review='review' %}
+		{% endif %} 
+	{% endif %}
+{% endif %}
+{% if lock %}
+    {% if user == lock.owner %}
+		{% set editable='editable' %}
+		{% set lockowner='owner' %}
+	{% endif %}
+{% else %}
+	{% if translate or review %}
+		{% set editable='editable' %}
+		{% set owner='owner' %}
+	{% endif %}
 {% endif %}
 
 {% url toggle_lock pofile.slug as toggle_lock_url %}
@@ -117,7 +115,6 @@
 </td>
 {% if user.is_authenticated %}
 <td class="assigns">
-{% with pofile.assigns.get as assign %}
 	{% if assign.translate %}
 		{% if can_manage or translate %}
 			<span onclick="try_toggle_cnf('{{ remove_translate_url }}')" class="nodecoration_icon action_icon removeassg link" title="{% trans "Remove translator" %}"></span>
@@ -172,6 +169,5 @@
 			{% trans "None" %}
 		{% endif %}
 	{% endif %}
-{% endwith %}
 </td>
 {% endif %}

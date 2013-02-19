@@ -3,7 +3,6 @@ function try_toggle_detail(url, opc) {
 	if (opc!=undefined) {
 		data = opc
 	}
-	check_current();
 	$.post(url,
 		  data,
 		  process_toggle_response_detail,
@@ -17,6 +16,7 @@ function try_toggle_detail_cnf(url, opc) {
 	});
 }
 function process_toggle_response_detail(data) {
+	$("#log-file-table").load($("#log-file-table").attr('href') + " #log-file-table");
 	$(data).find('response').each(function(){
 		var m = $(this).find('message');
 		if (m.length>0) {
@@ -66,5 +66,37 @@ $(document).ready(function(){
 		$(this).find("thead,tbody").hide();
 	});
 	init_select_events();
-	init_filedialogs();
+
+    $("#comment_input").keyup(function (e) {
+        if( e.keyCode == $.ui.keyCode.ENTER ) {
+            e.preventDefault();
+            $("#lock_comment ~ div.ui-dialog-buttonpane").find('button').click();
+        }
+    });
+		
+    $( "#lock_comment" ).dialog({
+        autoOpen: false,
+        width: 350,
+        modal: true,
+        resizable: false,
+        buttons: [{
+        	text: _OK,
+        	click : function() {
+                var bValid = true;
+                bValid = bValid && checkLength( $("#comment_input"), gettext("Comments"), 4, 255 );
+                if ( bValid ) {
+                	try_toggle_detail($("#lock_comment").attr('action'),{'text': $('#comment_input').val()});
+                    $( this ).dialog( "close" );
+                }
+            }
+        }],
+        open: function() {
+            $(".validateTips").text('');
+            $("#comment_input").val('');
+        },
+        close: function() {
+            $("#comment_input").removeClass( "ui-state-error" );
+        }
+    });
+    
 })

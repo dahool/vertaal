@@ -16,17 +16,26 @@
 	{% set pofile.potfile.get as potfile %}
 {% endif %}
 
-{% set lock=pofile.locks.get %}
 {% set assign=pofile.assigns.get %}
+{% set lock=pofile.locks.get %}
+{% if assign %}
+	{% if user == assign.translate %}
+		{% set translate='translate' %}
+	{% else %}	
+		{% if user == assign.review %}
+			{% set review='review' %}
+		{% endif %} 
+	{% endif %}
+{% endif %}
 {% if lock %}
     {% if user == lock.owner %}
-		{% set 'editable' as editable %}
-		{% set 'owner' as lockowner %}
+		{% set editable='editable' %}
+		{% set lockowner='owner' %}
 	{% endif %}
 {% else %}
-	{% if user == assign.translate or user == assign.review %}
-	{% set editable='editable' %}
-	{% set owner='owner' %}
+	{% if translate or review %}
+		{% set editable='editable' %}
+		{% set owner='owner' %}
 	{% endif %}
 {% endif %}
 
@@ -84,7 +93,7 @@
 <p>
 {% if lock %}
 	{% if lockowner or can_manage %}
-		<span onclick="add_comment('{{pofile.filename}}', '{{toggle_lock_url}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock the file when you finish working on it." %}"></span>
+		<span onclick="add_comment('{{pofile.filename}}', '{{toggle_lock_url}}')" class="nodecoration_icon action_icon lock-break link" title="{% trans "Unlock file." %}"></span>
 	{% endif %}
 	{% if lockowner %}
 		{% blocktrans with created=lock.created|localtime:user.get_profile.timezone|date:"M d, H:i" locked=lock.created|timesince %}

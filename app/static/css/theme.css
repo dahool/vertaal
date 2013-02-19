@@ -1460,6 +1460,7 @@ button.icon {
 	font-weight: bold;
 }
 #details-definition {
+	padding-left: 10px;
 	margin-top: 10px;
 	border-top: 2px solid #D9D9D9;
 	border-bottom: 2px solid #D9D9D9;
