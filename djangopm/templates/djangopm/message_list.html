@@ -1,6 +1,13 @@
-{% load i18n djangopm %}
+{% load i18n djangopm pagination_tags paginator %}
 
+<div class="pm-info-span">{%blocktrans with current=pmmessages|length max=MAX_DISPLAY%}Your current mailbox size {{current}} of {{max}}.{%endblocktrans%}
+{% if pmmessages|length >= MAX_DISPLAY %}
+<br/><span class="icon warn">{% trans "You are using your maximum mailbox capacity." %}</span> 
+{% endif %}
+</div> 
 {% if pmmessages %}
+{% autopaginate pmmessages 10 %}
+<div class="pagination_box">{% paginatepage %}</div>
 <div id="message_delete_target" style="display: none;" href="{{ delete_url }}"></div>
 <ul>
 {% for mob in pmmessages %}
@@ -20,8 +27,3 @@
 {% else %}
     <div class="pm_box_empty">{% trans "Mailbox empty." %}</div>
 {% endif %}
-<span class="help_text pm-info-span" style="position: absolute; bottom: 0">{%blocktrans with current=pmmessages|length max=MAX_DISPLAY%}Your current mailbox size {{current}} of {{max}}.{%endblocktrans%}
-{% if pmmessages|length_is:MAX_DISPLAY %}
-<br/><span class="icon warn">{% trans "You are using your maximum mailbox capacity." %}</span> 
-{% endif %}
-</span> 

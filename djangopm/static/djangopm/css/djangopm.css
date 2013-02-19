@@ -38,10 +38,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 }
 #mailbox-content {
 	float: right;
-	min-height: 300px;
+	/*min-height: 300px;*/
+	height: 480px;
 	position: relative;
 	/*display: inline-block;
 	margin-left: 10px;*/
+	/*padding-bottom: 50px;*/
 }
 .mailbox-wrapper ul {
     list-style-image: none;
@@ -258,8 +260,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 	background: transparent url(../images/cancel.png) no-repeat !important;
 }
 .pm-info-span {
-	bottom: 0;
-	position: absolute;
+	/*bottom: 0;
+	position: absolute;*/
 	text-align: center;
-	width: 100%;
+    color:gray;
+    font-size:90%;
+    padding-top: 5px;
+}
+#mailbox-content .pagination_box {
+/*	bottom: 25px;
+	position: absolute;
+	width: 100%;*/
+	text-align: center;
+	padding-top: 5px;
 }

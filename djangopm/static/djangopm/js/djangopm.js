@@ -169,6 +169,11 @@ $(function() {
         }).appendTo('#compose_form');
     });
     
+	$("#mailbox-content").on('click', 'div.pagination a', function(ev) {
+		ev.preventDefault();
+		$('#mailbox-content').load($("#mailbox-menu li.active").attr('href') + $(this).attr('href'));
+	});
+	
     $("#pm_compose").on('click', "a[href=#pm_add_recipient]", function(ev) {
         ev.preventDefault();
         var si = $('<input/>', {
