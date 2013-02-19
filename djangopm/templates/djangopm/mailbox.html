@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/djangopm.css" />
-<script type="text/javascript" src="{{STATIC_URL}}js/djangopm.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}djangopm/css/djangopm.css" />
+<script type="text/javascript" src="{{STATIC_URL}}djangopm/js/djangopm.js"></script>
 <!-- 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
  -->
@@ -11,7 +11,7 @@
 <div id="form-action">
     <button action="pm_compose" href="{% url pm_inbox_delete %}" class="icon compose" title="{% trans "Compose new message" %}">{% trans "Compose" %}</button>
     <div class="right">
-    <button action="pm_delete" href="{% url pm_inbox_delete %}" class="icon delete" title="{% trans "Delete selected messages" %}">{% trans "Delete" %}</button>
+    <button action="pm_delete" class="icon delete" title="{% trans "Delete selected messages" %}">{% trans "Delete" %}</button>
     </div>
     <div class="clear"></div>
 </div>
@@ -25,7 +25,8 @@
 	</ul>
 </div>
 <div id="mailbox-content" style="display: none;">
-    {% include "djangopm/message_list.html" with isinbox='true' %}
+	{% url pm_inbox_delete as inbox_delete_url %}
+    {% include "djangopm/message_list.html" with isinbox='true' delete_url=inbox_delete_url %}
 </div>
 <div class="clear"></div>
 </div>

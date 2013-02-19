@@ -33,6 +33,7 @@ from common.middleware.exceptions import Http403
 
 import datetime
 from files.views import ResponseMessage
+from django.core.urlresolvers import reverse
 
 
 MAX_DISPLAY = getattr(settings, 'PM_COUNT_DISPLAY', 50)
@@ -40,27 +41,37 @@ MAX_DISPLAY = getattr(settings, 'PM_COUNT_DISPLAY', 50)
 @login_required
 def home(request):
     messages = request.user.pm_inbox.all()[:MAX_DISPLAY]
-    return render_to_response("djangopm/mailbox.html", {'pmmessages': messages}, context_instance = RequestContext(request))
+    return render_to_response("djangopm/mailbox.html", {'pmmessages': messages,
+                                                        'MAX_DISPLAY': MAX_DISPLAY},
+                              context_instance = RequestContext(request))
 
 @login_required
 def inbox(request):
     messages = request.user.pm_inbox.all()[:MAX_DISPLAY]
     return render_to_response('djangopm/message_list.html',
-                            {'pmmessages': messages, 'isinbox': True}, 
+                            {'pmmessages': messages,
+                             'isinbox': True,
+                             'delete_url': reverse('pm_inbox_delete'),
+                             'MAX_DISPLAY': MAX_DISPLAY}, 
                             context_instance = RequestContext(request))
 
 @login_required
 def outbox(request):
     messages = request.user.pm_outbox.all()[:MAX_DISPLAY]
     return render_to_response('djangopm/message_list.html',
-                            {'pmmessages': messages}, 
+                            {'pmmessages': messages,
+                             'delete_url': reverse('pm_outbox_delete'),
+                             'MAX_DISPLAY': MAX_DISPLAY}, 
                             context_instance = RequestContext(request))
 
 @login_required
 def draftbox(request):
     messages = request.user.pmmessage_set.filter(draft=True)[:MAX_DISPLAY]
     return render_to_response('djangopm/message_list.html',
-                            {'pmmessages': messages, 'compose': 'compose'}, 
+                            {'pmmessages': messages,
+                             'compose': 'compose',
+                             'delete_url': reverse('pm_draftbox_delete'),
+                             'MAX_DISPLAY': MAX_DISPLAY}, 
                             context_instance = RequestContext(request))
 
 @login_required
@@ -84,11 +95,17 @@ def outbox_detail(request, id):
                             context_instance = RequestContext(request))  
 
 @login_required
-def inbox_delete(request):
+def message_delete(request, type='inbox'):
     if request.method != 'POST':
         raise Http403
-    request.user.pm_inbox.filter(id__in=request.POST.getlist('id')).delete()
-    return XMLResponse({'pk': request.POST.getlist('id')})
+    ids_list = request.POST.getlist('id')
+    if type == 'inbox':
+        request.user.pm_inbox.filter(id__in=ids_list).delete()
+    elif type == 'outbox':
+        request.user.pm_outbox.filter(id__in=ids_list).delete()
+    else:
+        PMMessage.objects.filter(id__in=ids_list, draft=True).delete()
+    return XMLResponse({'pk': ids_list})
     
 @login_required    
 def message_detail(request, id):
@@ -96,6 +113,31 @@ def message_detail(request, id):
     form = MessageForm(instance=message)
     return render_to_response('djangopm/message_compose.html',
                             {'form': form, 'recipients': message.recipients.all(), 'instance': message}, 
+                            context_instance = RequestContext(request))          
+
+@login_required    
+def message_reply(request, id, all=False):
+    from timezones.utils import localtime_for_timezone
+    from django.utils import dateformat
+    message = get_object_or_404(PMMessage, pk=id)
+    if not (request.user == message.sender or request.user in message.recipients.all()):
+        raise Http403
+    recipients = set([message.sender])
+    if all:
+        recipients.update(message.recipients.all())
+    recipients.remove(request.user)
+    if message.subject.startswith("RE: "):
+        subject = message.subject
+    else:
+        subject = u"RE: %s" % message.subject
+    messageDate = localtime_for_timezone(message.created, request.user.get_profile().timezone)
+    text = [_('On %(date)s, %(name)s wrote:') % {'date': dateformat.format(messageDate, "r"), 'name': message.sender}]
+    for line in message.text.splitlines():
+        text.append(u"> %s" % line)
+    text.append(u"\n")  
+    form = MessageForm(initial={'subject': subject, 'text': "\n".join(text)})
+    return render_to_response('djangopm/message_compose.html',
+                            {'form': form, 'recipients': recipients}, 
                             context_instance = RequestContext(request))          
     
 @login_required    

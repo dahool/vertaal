@@ -39,6 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 #mailbox-content {
 	float: right;
 	min-height: 300px;
+	position: relative;
 	/*display: inline-block;
 	margin-left: 10px;*/
 }
@@ -170,7 +171,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 	background-image: url("../images/pmfwd_hov.png");
 }
 .pm-to-add {
-	background: url("../images/icons/user_add.png") no-repeat scroll 0 50% transparent;
+	background: url("../images/user_add.png") no-repeat scroll 0 50% transparent;
 	padding: 5px 10px;
 }
 .pm_detail_action {
@@ -202,7 +203,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 #compose_recipients {
 	padding: 1px 2px;
 	margin-bottom: 5px;
-	background: url("../images/form/text-bg.gif") repeat-x scroll 0 0 #FFFFFF;
+	background: url("../images/text-bg.gif") repeat-x scroll 0 0 #FFFFFF;
 	height: 20px;
 }
 #compose_recipients span.placeholder {
@@ -210,8 +211,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
     padding-left: 1px;
 }
 #compose_recipients .pm_recipient {
-	padding: 2px 20px 2px 2px;
-	background: url("../images/recremove.gif") no-repeat scroll 95% 50% #D9D9D9;
+	padding: 2px 20px 1px 2px;
+	background: url("../images/remove.gif") no-repeat scroll 95% 50% #D9D9D9;
 	margin-right: 5px;
 	display: inline-block;
 	cursor: pointer;
@@ -246,4 +247,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 	font-weight: bold;
 	margin-top: 10px;
 	text-align: center;
+}
+.pm-icon-send {
+	background: transparent url(../images/email_go.png) no-repeat !important;
+}
+.pm-icon-save {
+	background: transparent url(../images/bullet_disk.png) no-repeat !important;
+}
+.pm-icon-cancel {
+	background: transparent url(../images/cancel.png) no-repeat !important;
+}
+.pm-info-span {
+	bottom: 0;
+	position: absolute;
+	text-align: center;
+	width: 100%;
 }

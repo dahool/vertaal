@@ -1,7 +1,10 @@
 {% load i18n %}
 <div id="message_detail">
     <div class="pm_detail_subject">{{pmmessage.subject}}</span></div>
-	<div class="pm_detail_from"><span>{{pmmessage.sender}}</span><span class="pm_detail_action"><a class="pm-icon-reply" title="{% trans "Reply" %}"></a><a class="pm-icon-reply-all" title="{% trans "Reply all" %}"></a></span></div>
+	<div class="pm_detail_from">
+	{% if pmmessage.sender %}
+	<span>{{pmmessage.sender}}</span><span class="pm_detail_action"><a class="pm-icon-reply" href="{% url pm_reply pmmessage.pk %}" title="{% trans "Reply" %}"></a><a class="pm-icon-reply-all" href="{% url pm_reply_all pmmessage.pk %}" title="{% trans "Reply all" %}"></a></span>
+	{%endif%}</div>
 	<div class="pm_detail_to"><div class="pm_recipients">{% for recip in pmmessage.recipients.all %}<span class="pm_recipient">{{recip}}</span>{%endfor%}</div><div class="pm_detail_date">{{pmmessage.created}}</div></div>
-	<div class="pm_detail_message">{{pmmessage.text}}</div>
+	<div class="pm_detail_message">{{pmmessage.text|linebreaks}}</div>
 </div>

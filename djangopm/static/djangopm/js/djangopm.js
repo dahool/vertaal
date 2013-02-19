@@ -20,9 +20,10 @@ function pm_delete(url) {
 			if (r) {
 				$.post(url, $("#mailbox-content :checked"), function(data) {
 					$(data).find('response').each(function() {
-						$(this).find('pk').each(function() {
+						/*$(this).find('pk').each(function() {
 							$("#mob_"+$(this).text()).remove();
-						})
+						})*/
+				        $('#mailbox-content').load($("#mailbox-menu li.active").attr('href'));
 					});	
 				},"xml");
 			}
@@ -64,13 +65,21 @@ function process_submit(ev, action) {
         }); 
     },"xml");
 }
-function compose_new() {
+function compose_new(load) {
     $("#compose_form").find(":text, textarea").val('');
     $('#compose_recipients > .pm_recipient').remove();
     $('#compose_recipients > .placeholder').show();
     $("#compose_form > input[name='recipients']").remove();
     $("#compose_form > input[name='id']").remove();
-    $("#pm_compose").dialog('open');
+    if (load != undefined) {
+    	$("#pm_compose").load(load, function() {
+    		$("#pm_compose").dialog('open');
+    		var v = $("#id_message").val();
+    		$("#id_message").focus().val("").val(v);
+    	});	
+    } else {
+    	$("#pm_compose").dialog('open');	
+    }
 }
 function process_query_response(data) {
     $(data).find('response').each(function(){
@@ -118,7 +127,7 @@ $(function() {
     });
     
     $("button[action=pm_delete]").click(function(ev) {
-        pm_delete($(this).attr('href'));
+        pm_delete($("#message_delete_target").attr('href'));
     });
     $("button[action=pm_compose]").click(function(ev) {
         compose_new();
@@ -126,6 +135,7 @@ $(function() {
 
     $("#pm_compose").on('click', '.pm_recipient', function() {
         var elem = $(this).attr('id');
+        $(this).mouseout();
         $(this).remove();
         $("input[id=input_"+elem+"]").remove();
         if ($('#compose_recipients > .pm_recipient').length == 0) {
@@ -133,7 +143,17 @@ $(function() {
         }
     });
     
+    $("#pm_detail").on('click', '.pm_detail_from a', function(ev) {
+        ev.preventDefault();
+        url = $(this).attr('href');
+        $("#pm_detail").dialog('close');
+        compose_new($(this).attr('href'));
+    });
+    
     $("#pm_compose").on('click', '.pm-to-search-result li', function() {
+    	if ($('#to_' + $(this).attr('value')).length > 0) {
+    		return false;
+    	}
         $('<span/>', {
             html: $(this).text(),
             title: gettext('Remove'),
@@ -197,18 +217,23 @@ $(function() {
         resizable: true,
         width: 700,
         height: 400,
-        buttons: [{
+        buttons: [
+            {
+		    text: gettext("Send"),
+		    icons: { primary: "pm-icon-send"},
+		    click: function() {
+		        process_submit(this, 'send');
+		        }
+		    },                  
+            {
             text: gettext("Save"),
+            icons: { primary: "pm-icon-save"},
             click: function() {
                     process_submit(this, 'save');
                 }
             },{
-            text: gettext("Send"),
-            click: function() {
-                process_submit(this, 'send');
-                }
-            },{
             text: gettext("Close"),
+            icons: { primary: "pm-icon-cancel"},
             click: function() {
                     $( this ).dialog( "close" );
                 }
@@ -224,7 +249,6 @@ $(function() {
     });
     
     $mboxct.show('slow');
-	
 });
 
 
