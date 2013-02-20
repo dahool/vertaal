@@ -101,7 +101,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 	padding-left: 10px;
 }
 .mbox-subject {
-	/*width: 485px;*/
+	width: 485px;
 }
 .mbox-date {
 	text-align: right;

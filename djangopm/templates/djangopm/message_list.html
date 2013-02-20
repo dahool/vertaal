@@ -15,9 +15,9 @@
         <div class="mbox-act"><input type="checkbox" value="{{mob.pk}}" name="id"/></div>
         {% if isinbox %}
         <div class="mbox-from">{% if mob.message.sender %}{{mob.message.sender}}{%else%}-{%endif%}</div>
-        <div class="mbox-subject">{{mob.message.subject}}</div>
+        <div class="mbox-subject wordwrap">{{mob.message.subject|truncatechars:60}}</div>
         {% else %}
-        <div class="mbox-subject">{{mob.message.subject}}</div>
+        <div class="mbox-subject wordwrap">{{mob.message.subject|truncatechars:75}}</div>
         <div class="mbox-from">&nbsp;</div>
         {% endif %}
         <div class="mbox-date">{{mob.message.created|date_todaytime}}</div>
