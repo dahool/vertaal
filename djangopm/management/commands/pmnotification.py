@@ -43,17 +43,15 @@ class Command(LogBaseCommand):
         
         mailing = []
         
-        #for user in User.objects.filter(pm_inbox__unread=True, pm_inbox__notified__isnull=True, pm_inbox__message__created__lt=meta_diff).distinct():
-        for user in User.objects.filter(pm_inbox__unread=True).distinct():
-            #messages = user.pm_inbox.filter(unread=True, notified__isnull=True, message__created__lt=meta_diff)
-            messages = user.pm_inbox.filter(unread=True)
+        for user in User.objects.filter(pm_inbox__unread=True, pm_inbox__notified__isnull=True, pm_inbox__message__created__lt=meta_diff).distinct():
+            messages = user.pm_inbox.filter(unread=True, notified__isnull=True, message__created__lt=meta_diff)
             count = messages.count()
             logger.debug("There are %s messages for %s" % (count, user))
             set_user_language(user)
             subject = ungettext('You have %(count)d unread message', 'You have %(count)d unread messages', count) % {
                 'count': count,
             }
-            message = render_to_string('updater/unread_messages.mail', {'message_count': count,
+            message = render_to_string('djangopm/mail/unread_messages.mail', {'message_count': count,
                                                                         'user': user,
                                                                         'messages':  messages.all()})
             mailing.append((subject, message, None, [ user.email ]))
