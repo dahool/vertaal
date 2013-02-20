@@ -158,7 +158,7 @@ def edit_file(request, slug):
             if form.is_valid():
                 try:
                     filehandler.handle_text_file(file, form.cleaned_data['content'], request.user, form.cleaned_data['comment'])
-                    messages.info(request, message=_("Your file was added to the submission queue."))
+                    messages.info(request, message=_("%s was added to the submission queue.") % file.filename)
                     return redirect
                 except Exception, e:
                     res = str(e).split("$$")
@@ -173,8 +173,9 @@ def edit_file(request, slug):
             return redirect
     else:
         if file.locked:
-            if file.locks.get().owner.username != request.user.username:
-                messages.warning(request, message=_("The file is locked by another user."))
+            locks = file.locks.get()
+            if locks.owner.username != request.user.username:
+                messages.warning(request, message=_("The file %(filename)s is locked by %(username)s.") % {'filename': file.filename, 'username': locks.owner.username})
                 return redirect
         else:
             team = Team.objects.get(project=file.component.project, language=file.language)
@@ -184,24 +185,24 @@ def edit_file(request, slug):
             if file.assigns.all():
                 assign = file.assigns.get()
                 if not assign.translate == request.user and not assign.review == request.user:
-                    messages.warning(request, message=_("You are not assigned to this file."))
+                    messages.warning(request, message=_("You are not assigned to %s.") % file.filename)
                     return redirect                    
             else:
-                messages.warning(request, message=_("You are not assigned to this file."))
+                messages.warning(request, message=_("You are not assigned to %s.") % file.filename)
                 return redirect
-            messages.info(request, message=_("The file is now locked on your name."))       
+            messages.info(request, message=_("%s is now locked on your name." % file.filename))       
             POFileLock.objects.create(pofile=file, owner=request.user)
         try:
             if file.submits.all_pending():
                 s = file.submits.get_pending()
                 if s.locked:
-                    messages.warning(request, message=_("This file is being processed. It can't be modified."))
+                    messages.warning(request, message=_("%s is being processed. It can't be modified right now.") % file.filename)
                     return redirect                
                 s.enabled = False
                 s.save()
                 content = s.handler.get_content()
-                messages.info(request, message=_("You are editing the uploaded version of this file."))
-                messages.info(request, message=_("The file was removed from the submission queue, remember to either save your work or cancel to put the file back in the queue."))
+                messages.info(request, message=_("You are editing the uploaded version %s.") % file.filename)
+                messages.info(request, message=_("%s was removed from the submission queue, remember to either save your work or cancel to put the file back in the queue.") % file.filename)
             else:
                 content = file.handler.get_content(True)
         except:
