@@ -122,10 +122,12 @@ def message_reply(request, id, all=False):
     message = get_object_or_404(PMMessage, pk=id)
     if not (request.user == message.sender or request.user in message.recipients.all()):
         raise Http403
-    recipients = set([message.sender])
+    if message.sender != request.user:
+        recipients = set([message.sender])
+    else:
+        recipients = set()
     if all:
-        recipients.update(message.recipients.all())
-    recipients.remove(request.user)
+        recipients.update(message.recipients.exclude(pk=request.user.pk))
     if message.subject.startswith("RE: "):
         subject = message.subject
     else:
