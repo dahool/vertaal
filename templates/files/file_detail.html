@@ -176,7 +176,7 @@
 						{% set cacheupdated=cache.updated|date:"M d, Y H:i O" %}
 					{% endif %}
 					{% if pofile.release.project.viewurl %}
-						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated viewurl=pofile.viewurl %}Repositoy revision <a href="{{viewurl}}">{{rev}}</a> (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
+						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated viewurl=pofile.viewurl %}Repositoy revision <a href="{{viewurl}}" target="_blank">{{rev}}</a> (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
 					{% else %}
 						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated %}Repositoy revision {{rev}} (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
 					{% endif %}
