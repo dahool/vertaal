@@ -14,19 +14,19 @@
 </script>
 {% set pofile.filename as filename %}
 {% ifsetting ENABLE_RSS %}
-<link rel="alternate" type="application/rss+xml" title="{% blocktrans %}Latest actions on {{filename}}{% endblocktrans %}" href="{% url file_feed pofile.slug %}">
+<link rel="alternate" type="application/rss+xml" title="{% blocktrans %}Latest actions on {{filename}}{% endblocktrans %}" href="{% url 'file_feed' pofile.slug %}">
 {% endifsetting %}
 {% endblock %}
 {% block quick_menu %}
 {% set pofile.component as component %}
 {% set pofile.release as release %}
 {{ block.super }}
-<a href="{% url list_files pofile.release.slug, pofile.language.code %}">{{ pofile.language.name }}</a>
+<a href="{% url 'list_files' pofile.release.slug pofile.language.code %}">{{ pofile.language.name }}</a>
 <span>{{ pofile.filename }}</span>
 {% endblock %}
 {% block content %}
 {% ifsetting ENABLE_RSS %}
-<h1>{{ pofile.filename }}&nbsp;&nbsp;<a class="icon feed" href="{% url file_feed pofile.slug %}">&nbsp;</a></h1>
+<h1>{{ pofile.filename }}&nbsp;&nbsp;<a class="icon feed" href="{% url 'file_feed' pofile.slug %}">&nbsp;</a></h1>
 {% endifsetting %}
 
 {% if not release %}
@@ -63,23 +63,23 @@
 	<!-- TOOLBOX -->
 	<div id="details-toolbox">
 		{% if pofile.submits.all_pending %}
-			{% url view_submit_file pofile.slug as view_url %}
+			{% url 'view_submit_file' pofile.slug as view_url %}
 		{% else %}
-			{% url view_file pofile.slug as view_url %}
+			{% url 'view_file' pofile.slug as view_url %}
 		{% endif %}
 	
 		<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view">{% trans "View" %}</a>
-		<a href="{% url get_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download">{% trans "Download" %}</a>
+		<a href="{% url 'get_file' pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download">{% trans "Download" %}</a>
 		
 		{% if user.is_authenticated %}
 			{% if enabled and not readonly %}
 				{% if editable or can_manage %}
-					<a href="{% url edit_file pofile.slug %}" class="nodecoration_icon action_icon file-edit">{% trans "Edit online" %}</a>
+					<a href="{% url 'edit_file' pofile.slug %}" class="nodecoration_icon action_icon file-edit">{% trans "Edit online" %}</a>
 				{% endif %}			
 			{% endif %}
 		{% endif %}
 		{% if potfile %}
-		<a href="{% url get_pot_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download">{% trans "Download POT file" %}</a>
+		<a href="{% url 'get_pot_file' pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download">{% trans "Download POT file" %}</a>
 		{% endif %}
 	</div>
 	<!-- END TOOLBOX -->
@@ -148,7 +148,7 @@
 	
 	<div id="details-definition">
 		{% if pofile.need_merge %}
-			<p class="icon warn">{% trans "The PO file differs from the source POT file." %} <input class="icon merge" type="button" value="{% trans "Force merge" %}" rel="{% url file_merge pofile.slug %}" name="confirm_href"/></p>
+			<p class="icon warn">{% trans "The PO file differs from the source POT file." %} <input class="icon merge" type="button" value="{% trans "Force merge" %}" rel="{% url 'file_merge' pofile.slug %}" name="confirm_href"/></p>
 		{% endif %}
 	
 		{% if potfile.updated %}
@@ -186,7 +186,7 @@
 
 		{% with pofile.submits.get_pending as submit %}
 		{% if submit %}
-			<a href="{% url get_submit_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
+			<a href="{% url 'get_submit_file' pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
 			{% if user.is_authenticated %}
 				{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
 			{% else %}
@@ -214,7 +214,7 @@
 	            <tbody>
 	                {% for sfile in pofile.submits.all|slice:":10" %}
 	                <tr>
-	                    <td><a href="{% url get_submit_file_arch sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
+	                    <td><a href="{% url 'get_submit_file_arch' sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
 	                    <td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
 	                    <td>{% if sfile.owner.get_full_name %}
 				            {{ sfile.owner.get_full_name }} ({{ sfile.owner.username }})
@@ -236,7 +236,7 @@
 			{% with logs=pofile.log.all %}
 			{% if logs %}
 			{% autopaginate logs %}
-			<table id="log-file-table" class="stats-table" href="{% url file_detail pofile.slug %}" >
+			<table id="log-file-table" class="stats-table" href="{% url 'file_detail' pofile.slug %}" >
 				<caption>{% trans "File History" %}</caption>
 				<thead>
 					<tr>

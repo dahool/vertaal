@@ -11,7 +11,7 @@
 </ul>
 </div>
 <div class="center-box" style="width:400px;" >
-<form class="form-style" action="{% url user_register %}" method="post" accept-charset="utf-8">
+<form class="form-style" action="{% url 'user_register' %}" method="post" accept-charset="utf-8">
 {% csrf_token %}
 <input type="hidden" name="next" value="{{ next }}" />
 <fieldset>
@@ -26,7 +26,7 @@
 </div>
 </form>
 
-<form class="form-style" action="{% url user_register %}" method="post" accept-charset="utf-8">
+<form class="form-style" action="{% url 'user_register' %}" method="post" accept-charset="utf-8">
 <input type="hidden" name="next" value="{{ next }}" />
 <fieldset>
 	<legend>{% trans "Associate with an existing account" %}</legend>

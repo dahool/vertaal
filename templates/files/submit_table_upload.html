@@ -43,7 +43,7 @@ $(function() {
     });
     
 	{% if form.errors %}
-    $("#upload_form").attr('action','{% url submit_new_file uploadfile.slug %}');
+    $("#upload_form").attr('action','{% url 'submit_new_file' uploadfile.slug %}');
     //$("#file_name").html(interpolate(gettext('Replacing %s'), ['{{uploadfile.filename}}']));
     $("#new_upload").dialog("option", "title", interpolate(gettext('Replace %s'), ['{{uploadfile.filename}}']) );
 	$("#new_upload").dialog('open');

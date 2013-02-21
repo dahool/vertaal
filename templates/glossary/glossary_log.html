@@ -6,8 +6,8 @@
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
-<a href="{% url gloss_list term.project.slug, term.language.code %}">{% trans "Glossary" %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
+<a href="{% url 'gloss_list' term.project.slug term.language.code %}">{% trans "Glossary" %}</a>
 <span>{{ term.word }}</span>
 {% endblock %}
 {% block content %}

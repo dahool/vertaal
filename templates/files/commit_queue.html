@@ -2,7 +2,7 @@
 {% load i18n extendtags %}
 {% block title %}{{ block.super }} | {% trans "Submission Queue" %}{% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
 <span>{% trans "Submission Queue" %}</span>
 {% endblock %}
 {% block content %}
@@ -13,7 +13,7 @@
 {% if teams %}
 {% regroup teams|dictsort:"project.pk" by project as project_list %}
 {% for teamproject in project_list %}
-	<form id="submit_form_{{teamproject.grouper.pk}}" method="post" action="{% url file_qsubmit %}">
+	<form id="submit_form_{{teamproject.grouper.pk}}" method="post" action="{% url 'file_qsubmit' %}">
 	{% csrf_token %}
 	<h3>
 	{% blocktrans with projectname=teamproject.grouper.name %}Submission Queue for Project {{ projectname }}{% endblocktrans %}

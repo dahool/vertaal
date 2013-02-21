@@ -13,12 +13,12 @@
 {% set file.component as component %}
 {% set file.release as release %}
 {{ block.super }}
-<a href="{% url list_files file.release.slug, file.language.code %}">{{ file.language.name }}</a>
+<a href="{% url 'list_files' file.release.slug file.language.code %}">{{ file.language.name }}</a>
 <span>{{ file.filename }}</span>
 {% endblock %}
 {# % endif % #}
 {% block content %}
-<form id="file_editor" class="form-style" action="{% if action %}{{action}}{%else%}{% url edit_file file.slug %}{%endif%}" method="post" accept-charset="utf-8">
+<form id="file_editor" class="form-style" action="{% if action %}{{action}}{%else%}{% url 'edit_file' file.slug %}{%endif%}" method="post" accept-charset="utf-8">
 {% csrf_token %}
 <div class="button-menu">
 	<span class="help_text">{% trans "Comments" %}:&nbsp;<em>*</em></span>

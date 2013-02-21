@@ -14,7 +14,7 @@
 	{% for file in files|dictsort:"pofile.filename" %}
 	{% if file.pofile.release.enabled and file.pofile.release.project.enabled %}
 	<tr>
-		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile }}</a></td>
+		<td><a href="{% url 'list_files' file.pofile.release.slug file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile }}</a></td>
 		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y" }}</td>
 	</tr>
 	{% endif %}
@@ -46,7 +46,7 @@
 	{% for file in files|dictsort:"pofile.filename" %}
 	{% if file.pofile.release.enabled and file.pofile.release.project.enabled %}
 	<tr>
-		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile }}</a></td>
+		<td><a href="{% url 'list_files' file.pofile.release.slug file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile }}</a></td>
 		<td>{{ file.pofile.modified|localtime:request.user.get_profile.timezone|date:"M d, Y" }}</td>
 	</tr>
 	{% endif %}
@@ -77,7 +77,7 @@
 	<tbody>
 	{% for file in files|dictsort:"pofile.filename" %}
 	<tr>
-		<td><a href="{% url list_files file.pofile.release.slug,file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
+		<td><a href="{% url 'list_files' file.pofile.release.slug file.pofile.language.code %}?h={{ file.pofile.slug }}">{{ file.pofile.filename }}</a></td>
 		<td>{{ file.last_update|localtime:request.user.get_profile.timezone|date:"M d, Y" }}</td>
 	</tr>
 	{% endfor %}
@@ -105,7 +105,7 @@
 	<tbody id="sub_table">
 	{% for sfile in submits|dictsort:"pofile.filename" %}
 	<tr>
-		<td><a href="{% url list_files sfile.pofile.release.slug, sfile.pofile.language.code %}?h={{ sfile.pofile.slug }}">{{ sfile.pofile.filename }}</a></td>
+		<td><a href="{% url 'list_files' sfile.pofile.release.slug sfile.pofile.language.code %}?h={{ sfile.pofile.slug }}">{{ sfile.pofile.filename }}</a></td>
 		<td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y" }}{% if not sfile.enabled %}&nbsp;<span class="stat-message">{% trans "This file is locked, which means it won't be submitted. It looks like you forgot to save the changes after editing it."%}{% endif %}</td>
 	</tr>
 	{% endfor %}
@@ -134,8 +134,8 @@
 	<tbody>
 	{% for team in teams %}
 	<tr>
-		<td><a href="{% url project_detail team.project.slug %}">{{ team.project.name }}</a></td>
-		<td><a href="{% url team_detail team.project.slug, team.language.code %}">{{ team.language.name }}</a></td>
+		<td><a href="{% url 'project_detail' team.project.slug %}">{{ team.project.name }}</a></td>
+		<td><a href="{% url 'team_detail' team.project.slug team.language.code %}">{{ team.language.name }}</a></td>
 	</tr>
 	{% endfor %}
 	</tbody>
@@ -156,8 +156,8 @@
 	<tbody>
 	{% for team in teams %}
 	<tr>
-		<td><a href="{% url project_detail team.project.slug %}">{{ team.project.name }}</a></td>
-		<td><a href="{% url team_detail team.project.slug, team.language.code %}">{{ team.language.name }}</a></td>
+		<td><a href="{% url 'project_detail' team.project.slug %}">{{ team.project.name }}</a></td>
+		<td><a href="{% url 'team_detail' team.project.slug team.language.code %}">{{ team.language.name }}</a></td>
 	</tr>
 	{% endfor %}
 	</tbody>
@@ -178,7 +178,7 @@
 	<tbody id="lock_table">
 	{% for lfile in locks %}
 	<tr>
-		<td><a href="{% url list_files lfile.pofile.release.slug,lfile.pofile.language.code %}?h={{ lfile.pofile.slug }}">{{ lfile.pofile }}</a></td>
+		<td><a href="{% url 'list_files' lfile.pofile.release.slug lfile.pofile.language.code %}?h={{ lfile.pofile.slug }}">{{ lfile.pofile }}</a></td>
 		<td>{{ lfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
 	</tr>
 	{% endfor %}

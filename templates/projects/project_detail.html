@@ -63,9 +63,9 @@ function process_response(data) {
 
 {% iftrue project.is_maintainer request.user %}
 <div id="form-action">
-<input name="href" type="button" class="icon edit" rel="{% url project_edit project.slug %}" value="{% trans "Edit" %}"/>
-<input name="href" type="button" class="icon add" rel="{% url release_create project.slug %}" value="{% trans "Add Release" %}"/>
-<input name="href" type="button" class="icon add" rel="{% url component_create project.slug %}" value="{% trans "Add Component" %}"/>
+<input name="href" type="button" class="icon edit" rel="{% url 'project_edit' project.slug %}" value="{% trans "Edit" %}"/>
+<input name="href" type="button" class="icon add" rel="{% url 'release_create' project.slug %}" value="{% trans "Add Release" %}"/>
+<input name="href" type="button" class="icon add" rel="{% url 'component_create' project.slug %}" value="{% trans "Add Component" %}"/>
 </div>
 <br/>
 {% endiftrue %}
@@ -96,9 +96,9 @@ function process_response(data) {
   <td class="detail_value">
     {% for m in maintainers %}
       {% if m.get_full_name %}
-        <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+        <a class="icon email" href="{% url 'contact_me' m.username %}">{{ m.get_full_name }}</a>
       {% else %}
-      	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+      	<a class="icon email" href="{% url 'contact_me' m.username %}">{{ m.username }}</a>
         {% endif %}{% if not forloop.last %},{% endif %}
     {% endfor %}
   </td>
@@ -145,7 +145,7 @@ function process_response(data) {
 <option value="{{ lang.code }}">{{ lang.name }}</option>
 {% endfor %}
 </select>
-<span class="icon add link" onclick="add_lang('{% url team_create project.slug %}')">&nbsp;</span>
+<span class="icon add link" onclick="add_lang('{% url 'team_create' project.slug %}')">&nbsp;</span>
 </div>
 {% endiftrue %}
 
@@ -153,7 +153,7 @@ function process_response(data) {
 {% if teams %}
 <div id="team-list" class="multicolumn2 detail-box">
 {% for t in teams %}
-<p class="icon team indent" id="T{{t.pk}}"><a href="{{ t.get_absolute_url }}">{{ t.language.name }}</a>{% iftrue project.is_maintainer request.user %}<span onclick="remove_lang('{% url team_remove project.slug t.language.code %}','#T{{t.pk}}')" class="icon delete link" title='{% trans "Remove team" %}'>&nbsp;</span>{% endiftrue %}</p>
+<p class="icon team indent" id="T{{t.pk}}"><a href="{{ t.get_absolute_url }}">{{ t.language.name }}</a>{% iftrue project.is_maintainer request.user %}<span onclick="remove_lang('{% url 'team_remove' project.slug t.language.code %}','#T{{t.pk}}')" class="icon delete link" title='{% trans "Remove team" %}'>&nbsp;</span>{% endiftrue %}</p>
 {% endfor %}
 </div>
 {% else %}

@@ -27,7 +27,7 @@
 	});
 --></script>
 <div class="filter-box">
-	<form id="filter_form" action="{% url list_files release.slug,language.code %}"
+	<form id="filter_form" action="{% url 'list_files' release.slug language.code %}"
 		method="post">
 	{% csrf_token %}
 		<fieldset>
@@ -56,7 +56,7 @@
 	</form> 
 </div>
 <div class="filter-box">
-	<form id="extrafunc_form" action="{% url list_files release.slug,language.code %}"
+	<form id="extrafunc_form" action="{% url 'list_files' release.slug language.code %}"
 		method="post">
 		<fieldset>
 			<ul class="simple">

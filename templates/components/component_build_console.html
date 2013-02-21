@@ -5,12 +5,12 @@
 {% block title %}{{block.super}} | {% trans "Build log" %} {{ component.name }} - {{ release.name }} ({{ component.project.name }}){% endblock %}}
 {% block quick_menu %}
 {{ block.super }}
-<a href="{% url component_detail component.slug,release.slug %}">{{ component.name }}</a>
+<a href="{% url 'component_detail' component.slug release.slug %}">{{ component.name }}</a>
 {% endblock %}
 {% block extra_head %}
 <script type="text/javascript">
 
-	var url = '{% url build_log release.project.slug, release.slug, component.slug %}';
+	var url = '{% url 'build_log' release.project.slug release.slug component.slug %}';
 	
 	$(document).ready(function(){
 		request_log(0);

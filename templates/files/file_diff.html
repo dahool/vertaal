@@ -12,8 +12,8 @@
 </style>
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
-<a href="{% url commit_queue %}">{% trans "Submission Queue" %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
+<a href="{% url 'commit_queue' %}">{% trans "Submission Queue" %}</a>
 <span>{{ pofile.filename }}</span>
 {% endblock %}
 {% block favs %}{% endblock %}

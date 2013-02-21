@@ -1,4 +1,4 @@
-{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull home as home %}{% urlfull team_admin teamid as join_link %} 
+{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull 'home' as home %}{% urlfull 'team_admin' teamid as join_link %} 
 {% blocktrans %}
 Hello,
 

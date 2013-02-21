@@ -1,5 +1,5 @@
 {% if count > 0 %}
-<a href="{% url pm_home %}" class="icon email_unread" title="{{title}}"><sub class="pm_count">{{count}}</sub></a>
+<a href="{% url 'pm_home' %}" class="icon email_unread" title="{{title}}"><sub class="pm_count">{{count}}</sub></a>
 {% else %}
-<a href="{% url pm_home %}" class="icon email" title="{{title}}"></a>
+<a href="{% url 'pm_home' %}" class="icon email" title="{{title}}"></a>
 {% endif %}

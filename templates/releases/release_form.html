@@ -11,16 +11,16 @@
 {% block quick_menu %}
 {{ block.super }}
 {% if release %}
-<a href="{% url release_detail release.slug %}">{{release.name}}</a>
+<a href="{% url 'release_detail' release.slug %}">{{release.name}}</a>
 {%else%}
 <span>{%trans "New Release"%}</span>
 {%endif%}
 {% endblock %}
 {% block content %}
 {% if release %}
-	{% url release_edit release.slug as form_url %}
+	{% url 'release_edit' release.slug as form_url %}
 {% else %}
-	{% url release_create project.slug as form_url %}
+	{% url 'release_create' project.slug as form_url %}
 {% endif %}
 <div id="project-form" class="center">
 	<form class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
@@ -44,7 +44,7 @@
 			<input class="icon save" type="submit" value="{% trans "Save" %}"/>
 			{% if release %}
 				{% iftrue project.is_maintainer request.user %}
-				{% url release_delete release.slug as delete_url %}
+				{% url 'release_delete' release.slug as delete_url %}
 				<input name="confirm_href" rel="{{ delete_url }}" class="icon delete" type="button" value="{% trans "Delete" %}"/>
 				{% endiftrue %}
 			{% endif %}

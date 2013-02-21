@@ -12,8 +12,8 @@
 
 {% iftrue component.project.is_maintainer request.user %}
 <div id="form-action">
-<input type="button" name="href" class="icon edit" rel="{% url component_edit component.slug %}" value="{% trans "Edit" %}"/>
-<input type="button" name="href" class="icon add" rel="{% url component_create component.project.slug %}" value="{% trans "Add" %}"/>
+<input type="button" name="href" class="icon edit" rel="{% url 'component_edit' component.slug %}" value="{% trans "Edit" %}"/>
+<input type="button" name="href" class="icon add" rel="{% url 'component_create' component.project.slug %}" value="{% trans "Add" %}"/>
 </div>
 <br/>
 {% endiftrue %}
@@ -41,7 +41,7 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				<td><a href="{% url release_detail stat.release.slug %}">{{ stat.release.name }}</a></td>
+				<td><a href="{% url 'release_detail' stat.release.slug %}">{{ stat.release.name }}</a></td>
                 <td class="total_col">{{stat.total}}</td>
                 <td class="total_col">{{stat.untrans}}</td>
                 <td class="total_col">{{stat.fuzzy}}</td>

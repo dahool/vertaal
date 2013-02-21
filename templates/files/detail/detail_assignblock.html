@@ -39,11 +39,11 @@
 	{% endif %}
 {% endif %}
 
-{% url toggle_lock_detail pofile.slug as toggle_lock_url %}
-{% url remove_assigned_translator_detail pofile.slug as remove_translate_url %}
-{% url remove_assigned_reviewer_detail pofile.slug as remove_review_url %}
-{% url set_assigned_translator_detail pofile.slug as set_assigned_translator %}
-{% url set_assigned_reviewer_detail pofile.slug as set_assigned_reviewer %}
+{% url 'toggle_lock_detail' pofile.slug as toggle_lock_url %}
+{% url 'remove_assigned_translator_detail' pofile.slug as remove_translate_url %}
+{% url 'remove_assigned_reviewer_detail' pofile.slug as remove_review_url %}
+{% url 'set_assigned_translator_detail' pofile.slug as set_assigned_translator %}
+{% url 'set_assigned_reviewer_detail' pofile.slug as set_assigned_reviewer %}
 
 {% if user.is_authenticated %}
 <div class="details-assignblock">
@@ -58,7 +58,7 @@
 				{% if translate %}
 					<sortext>{% trans "(you)" %}</sortext>
 				{% else %}
-					<a href="{% url contact_me assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
+					<a href="{% url 'contact_me' assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
 				{% endif %}
 			{% else %}
 				{% if can_manage %}
@@ -77,7 +77,7 @@
 				{% if review %}
 					<sortext>{% trans "(you)" %}</sortext>
 				{% else %}
-					<a href="{% url contact_me assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
+					<a href="{% url 'contact_me' assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
 				{% endif %}
 			{% else %}
 				{% if can_manage %}

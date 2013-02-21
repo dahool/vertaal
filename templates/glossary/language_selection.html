@@ -7,7 +7,7 @@
 <script type="text/javascript">
 pro_pat = /(-P0)/gi;
 lan_pat = /(-L0)/gi;
-var url = "{% url gloss_list "-P0","-L0" %}";
+var url = "{% url 'gloss_list' "-P0" "-L0" %}";
 $(document).ready(function(){
 	$("#submit_button").click(function() {
 		var project = $("#project_selection option:selected");
@@ -19,7 +19,7 @@ $(document).ready(function(){
 </script>
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
 <span>{% trans "Glossary" %}</span>
 {% endblock %}
 {% block content %}

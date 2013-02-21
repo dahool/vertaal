@@ -3,7 +3,7 @@
 {% block title %}{{ block.super }} | {{ release.name }} ({{release.project.name}}){% endblock %}
 {% block quick_menu %}
 {{ block.super }}
-<a name="top" href="{% url release_detail release.slug %}">{{ release.name }}</a>
+<a name="top" href="{% url 'release_detail' release.slug %}">{{ release.name }}</a>
 <span>{% trans "Merge" %}</span>
 {% endblock %}
 {% block extra_head %}
@@ -44,7 +44,7 @@ $(document).ready(function()
 {% block content_title %}<h1>{{ release.name }}</h1>{% endblock %}
 
 {% if not files|length_is:"0" %}
-<form id="submit_form_merge" method="post" action="{% url multimerge release.slug %}">
+<form id="submit_form_merge" method="post" action="{% url 'multimerge' release.slug %}">
 {% csrf_token %}
 <div id="form-action">
 <input type="button" id="submit_button" class="icon submit" value="{% trans "Submit" %}"/>
@@ -64,7 +64,7 @@ $(document).ready(function()
 			<tr>
 				<td><input type="checkbox" name="file" value="{{ file.pk }}"></td>
 				<td class="filename">
-					<a name="{{ file.slug }}" href="{% url file_detail file.slug %}">
+					<a name="{{ file.slug }}" href="{% url 'file_detail' file.slug %}">
 					{{file.filename}}
 					</a>
 				</td>

@@ -35,26 +35,26 @@
 	{% endif %}
 {% endif %}
 
-{% url toggle_lock pofile.slug as toggle_lock_url %}
-{% url remove_assigned_translator pofile.slug as remove_translate_url %}
-{% url remove_assigned_reviewer pofile.slug as remove_review_url %}
-{% url set_assigned_translator pofile.slug as set_assigned_translator %}
-{% url set_assigned_reviewer pofile.slug as set_assigned_reviewer %}
-{% url toggle_mark pofile.slug as toggle_mark_url %}
+{% url 'toggle_lock' pofile.slug as toggle_lock_url %}
+{% url 'remove_assigned_translator' pofile.slug as remove_translate_url %}
+{% url 'remove_assigned_reviewer' pofile.slug as remove_review_url %}
+{% url 'set_assigned_translator' pofile.slug as set_assigned_translator %}
+{% url 'set_assigned_reviewer' pofile.slug as set_assigned_reviewer %}
+{% url 'toggle_mark' pofile.slug as toggle_mark_url %}
 
 {% if pofile.submits.all_pending %}
-	{% url view_submit_file pofile.slug as view_url %}
+	{% url 'view_submit_file' pofile.slug as view_url %}
 {% else %}
-	{% url view_file pofile.slug as view_url %}
+	{% url 'view_file' pofile.slug as view_url %}
 {% endif %}
 <td class="filename">
 <!-- buttons -->
 	<a href="{{ view_url }}" class="nodecoration_icon action_icon file-view" title="{% with pofile.filename as filename %}{% blocktrans %}View {{filename}}{% endblocktrans %}{% endwith %}"></a>
-	<a href="{% url get_file pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% with pofile.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
+	<a href="{% url 'get_file' pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% with pofile.filename as filename %}{% blocktrans %}Download {{filename}}{% endblocktrans %}{% endwith %}"></a>
 	{% if user.is_authenticated %}
 		{% if enabled and not readonly %}
 			{% if editable or can_manage %}
-				<a href="{% url edit_file pofile.slug %}" class="nodecoration_icon action_icon file-edit" title="{% with pofile.filename as filename %}{% blocktrans %}Edit {{filename}}{% endblocktrans %}{% endwith %}"></a>
+				<a href="{% url 'edit_file' pofile.slug %}" class="nodecoration_icon action_icon file-edit" title="{% with pofile.filename as filename %}{% blocktrans %}Edit {{filename}}{% endblocktrans %}{% endwith %}"></a>
                 
                 {% switch pofile.status %}
                 {% case 0 %}
@@ -89,7 +89,7 @@
 	<!-- FIX SAFARI -->
 	<span>&nbsp;</span>	
 <!-- end buttons -->
-	<a class="highlight" name="{{ pofile.slug }}" href="{% url file_detail pofile.slug %}">
+	<a class="highlight" name="{{ pofile.slug }}" href="{% url 'file_detail' pofile.slug %}">
 	<sortext>{{ pofile.filename }}</sortext></a>
 	{% if pofile.need_merge %}
 		<span class="icon action_icon warnmerge" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
@@ -97,7 +97,7 @@
 	{% with pofile.submits.get_pending as submit %}
 		{% if  submit %}
 			{% if submit.enabled %}
-			<a href="{% url get_submit_file pofile.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
+			<a href="{% url 'get_submit_file' pofile.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
 			{% else %}
 			<span class="action_icon nodecoration_icon file-submit-edit" title="{% trans "This file is being edited" %}"></span>
 			{% endif %}
@@ -122,7 +122,7 @@
 		{% if translate %}
 			<sortext>{% trans "(you)" %}</sortext>
 		{% else %}
-			<a href="{% url contact_me assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
+			<a href="{% url 'contact_me' assign.translate.username %}"><sortext>{{ assign.translate }}</sortext></a>
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.translate %}
 		<span class="icon action_icon filelocked tooltip" title="{% spaceless %}
@@ -150,7 +150,7 @@
 		{% if review %}
 			<sortext>{% trans "(you)" %}</sortext>
 		{% else %}
-			<a href="{% url contact_me assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
+			<a href="{% url 'contact_me' assign.review.username %}"><sortext>{{ assign.review }}</sortext></a>
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.review %}
 		<span class="icon action_icon filelocked tooltip" title="{% spaceless %}

@@ -51,7 +51,7 @@ function createPagination() {
 	}
 }
 function remove_pro_fav(id) {
-	$.post('{% url profile_remove_fav %}',
+	$.post('{% url 'profile_remove_fav' %}',
 			{id: id},
 			process_remove_pro_fav_response,
 			  "xml");	
@@ -67,10 +67,10 @@ function process_remove_pro_fav_response(data) {
 }
 function startup_set(id, remove) {
 	if (remove == undefined) {
-		url = '{% url add_startup %}';
+		url = '{% url 'add_startup' %}';
 		proc = process_set_startup 
 	} else {
-		url = '{% url remove_startup %}';
+		url = '{% url 'remove_startup' %}';
 		proc = process_remove_startup
 	}
 	$.post(url,
@@ -101,7 +101,7 @@ function process_set_startup(data) {
 --></script>
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
 <span>{% trans "Profile" %}</span>
 {% endblock %}
 {% block content %}

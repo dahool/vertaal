@@ -10,16 +10,16 @@
 {% block quick_menu %}
 {{ block.super }}
 {% if project %}
-<a href="{% url project_detail project.slug %}">{{ project.name }}</a>
+<a href="{% url 'project_detail' project.slug %}">{{ project.name }}</a>
 {% else %}
 <span>{% trans "New Project" %}</span>
 {% endif %}
 {% endblock %}
 {% block content %}
 {% if project %}
-	{% url project_edit project.slug as form_url %}
+	{% url 'project_edit' project.slug as form_url %}
 {% else %}
-	{% url project_create as form_url %}
+	{% url 'project_create' as form_url %}
 {% endif %}
 <div id="project-form" class="center">
 	<form class="form-style" action="{{ form_url }}" method="post" accept-charset="utf-8">
@@ -48,7 +48,7 @@
 		<div id="form-action">
 			<input class="icon save" type="submit" value="{% trans "Save" %}"/>
 			{% if perms.project.can_delete and project %}
-			{% url project_delete project.slug as delete_url %}
+			{% url 'project_delete' project.slug as delete_url %}
 			<input name="confirm_href" rel="{{ delete_url }}" class="icon delete" type="button" value="{% trans "Delete" %}"/>
 			{% endif %}
 		</div>

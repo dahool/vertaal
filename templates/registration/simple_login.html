@@ -2,7 +2,7 @@
 <fieldset>
 	<legend>{% trans "Sign in" %}</legend>
 	<div class="form-block">
-	<form id="form_auth" action="{% url user_signin %}" method="post">
+	<form id="form_auth" action="{% url 'user_signin' %}" method="post">
 {% csrf_token %}
 		<div class="form-row">
 			<label for="id_username">{% trans "Username:" %}</label>
@@ -17,6 +17,6 @@
 			<input class="icon signin" type="submit" value="{% trans "Sign in" %}" />
 		</div>
 	</form>
-	<div class="lost_passwd compact">&nbsp;&nbsp;<a href="{% url password_reset %}">{% trans "Lost your password?" %}</a></div>
+	<div class="lost_passwd compact">&nbsp;&nbsp;<a href="{% url 'password_reset' %}">{% trans "Lost your password?" %}</a></div>
 	</div>
 </fieldset>

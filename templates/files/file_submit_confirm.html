@@ -5,7 +5,7 @@
 <span>{% trans "Confirm" %}</span>
 {% endblock %}
 {% block content %}
-<form class="form-style" action="{% url confirm_submit %}" method="post">
+<form class="form-style" action="{% url 'confirm_submit' %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="back" value="{{ back }}">
 <input type="hidden" name="reject" value="{{ reject }}">
@@ -41,7 +41,7 @@
 	{% for sfile in files %}
 	<tr>
 		<input type="hidden" name="file" value="{{ sfile.id }}">
-		<td><a href="{% url file_detail sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a></td>
+		<td><a href="{% url 'file_detail' sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a></td>
 		<td>{{ sfile.pofile.component.name }}</td>
 		<td>{{ sfile.pofile.release.name }}</td>
 		<td>{{ sfile.pofile.release.project.name }}</td>

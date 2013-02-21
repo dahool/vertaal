@@ -1,4 +1,4 @@
-{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull home as home %}
+{% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull 'home' as home %}
 {% blocktrans %}
 Hello,
 

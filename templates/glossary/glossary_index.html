@@ -11,7 +11,7 @@ $(document).ready(function(){
 </script>
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
 <span>{% trans "Glossary" %} [{{ project.name }} ({{ lang.name }})]</span>
 {% endblock %}
 {% block content %}
@@ -19,22 +19,22 @@ $(document).ready(function(){
 	<span>{% trans "Project:" %}</span>
 	<select name="item_selection">
 	{% for prj in projects %}
-	<option {% ifequal prj.id project.id %}selected{% endifequal %} value="{% url gloss_list prj.slug,lang.code %}">{{ prj.name }}</option>
+	<option {% ifequal prj.id project.id %}selected{% endifequal %} value="{% url 'gloss_list' prj.slug lang.code %}">{{ prj.name }}</option>
 	{% endfor %}
 	</select>
 	<span>{% trans "Language:" %}</span>
 	<select name="item_selection">
 	{% for language in languages %}
-	<option {% ifequal language.code lang.code %}selected{% endifequal %} value="{% url gloss_list project.slug,language.code %}">{{ language.name }}</option>
+	<option {% ifequal language.code lang.code %}selected{% endifequal %} value="{% url 'gloss_list' project.slug language.code %}">{{ language.name }}</option>
 	{% endfor %}
 	</select>
 </div>
 <h1>{% trans "Glossary" %}</h1>
 <div id="form-action">
 {% if perms.glossary %}
-<a href="{% url gloss_add project.slug, lang.code %}" class="icon add">{% trans "New" %}</a>
+<a href="{% url 'gloss_add' project.slug lang.code %}" class="icon add">{% trans "New" %}</a>
 {% endif %}
-<a href="{% url export_tbx project.slug, lang.code %}" class="icon glossaryexport">{% trans "Download TBX" %}</a>
+<a href="{% url 'export_tbx' project.slug lang.code %}" class="icon glossaryexport">{% trans "Download TBX" %}</a>
 </div>
 <br/>
 <table id="quick-index">
@@ -83,10 +83,10 @@ $(document).ready(function(){
 	</tr>
 	{% for item in term.list %}
 	<tr class="body">
-		<td class="word"><a href="{% url gloss_log item.id %}">{{ item.word }}</a>:</td>
+		<td class="word"><a href="{% url 'gloss_log' item.id %}">{{ item.word }}</a>:</td>
 		<td class="translation">
 		{% if perms.glossary %}
-		<a href="{% url gloss_edit item.id %}" class="nodecoration_icon action_icon edit" title="{% trans "Edit" %}"></a>&nbsp;
+		<a href="{% url 'gloss_edit' item.id %}" class="nodecoration_icon action_icon edit" title="{% trans "Edit" %}"></a>&nbsp;
 		{% endif %}
 		{{ item.translation }}</td>
 		<td class="comment">{{ item.comment }}</td>

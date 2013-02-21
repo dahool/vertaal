@@ -4,12 +4,12 @@
 {% block favs %}
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
 <span>{% trans "Contact" %}</span>
 {% endblock %}
 {% block content %}
 <div id="contact" class="center-box">
-<form class="form-style" action="{% url contact_form %}" method="post" accept-charset="utf-8">
+<form class="form-style" action="{% url 'contact_form' %}" method="post" accept-charset="utf-8">
 {% csrf_token %}
 <input type="hidden" name="username" value="{{ username }}" />
 <fieldset>

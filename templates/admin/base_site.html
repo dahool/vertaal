@@ -17,7 +17,7 @@ a.section:link, a.section:visited { color: #666666; }
 <h1 id="site-name">{% setting "PROJECT_NAME" as site %}{%blocktrans%}{{site}} Admin{%endblocktrans%}</h1>
 {% endblock %}
 
-{% block userlinks %}<a href="{% url home %}">{% trans 'Site Index' %}</a> / {{block.super}}{% endblock %}
+{% block userlinks %}<a href="{% url 'home' %}">{% trans 'Site Index' %}</a> / {{block.super}}{% endblock %}
 
 {% block nav-global %}{% endblock %}
 

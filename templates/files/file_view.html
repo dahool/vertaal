@@ -13,7 +13,7 @@
 {% set pofile.component as component %}
 {% set pofile.release as release %}
 {{ block.super }}
-<a href="{% url list_files pofile.release.slug, pofile.language.code %}">{{ pofile.language.name }}</a>
+<a href="{% url 'list_files' pofile.release.slug pofile.language.code %}">{{ pofile.language.name }}</a>
 <span>{{ pofile.filename }}</span>
 {% endblock %}
 {% block content %}
@@ -21,10 +21,10 @@
 <div class="message">
 <ul class="simple">
 {% if submit %}
-{% url view_file pofile.slug as view_url %}
+{% url 'view_file' pofile.slug as view_url %}
 <li>{% blocktrans %}You are viewing the uploaded version of this file. To view the original one, click <a href="{{view_url}}">here</a>{% endblocktrans %}</li>
 {% else %}
-{% url view_submit_file pofile.slug as submit_url %}
+{% url 'view_submit_file' pofile.slug as submit_url %}
 <li>{% blocktrans %}You are viewing the original version of this file. To view the uploaded one, click <a href="{{submit_url}}">here</a>{% endblocktrans %}</li>
 {% endif %}
 </ul>

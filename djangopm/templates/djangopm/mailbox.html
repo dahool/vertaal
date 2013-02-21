@@ -11,7 +11,7 @@
 {% endblock %}
 {% block content %}
 <div id="form-action">
-    <button action="pm_compose" href="{% url pm_inbox_delete %}" class="icon compose" title="{% trans "Compose new message" %}">{% trans "Compose" %}</button>
+    <button action="pm_compose" href="{% url 'pm_inbox_delete' %}" class="icon compose" title="{% trans "Compose new message" %}">{% trans "Compose" %}</button>
     <div class="right">
     <button action="pm_delete" class="icon delete" title="{% trans "Delete selected messages" %}">{% trans "Delete" %}</button>
     </div>
@@ -21,13 +21,13 @@
 <div class="mailbox-wrapper">
 <div id="mailbox-menu">
 	<ul>
-		<li href="{% url pm_inbox %}" class="active">{% trans "Inbox" %}</li>
-		<li href="{% url pm_outbox %}">{% trans "Sent" %}</li>
-		<li href="{% url pm_draftbox %}">{% trans "Draft" %}</li>
+		<li href="{% url 'pm_inbox' %}" class="active">{% trans "Inbox" %}</li>
+		<li href="{% url 'pm_outbox' %}">{% trans "Sent" %}</li>
+		<li href="{% url 'pm_draftbox' %}">{% trans "Draft" %}</li>
 	</ul>
 </div>
 <div id="mailbox-content" style="display: none;">
-	{% url pm_inbox_delete as inbox_delete_url %}
+	{% url 'pm_inbox_delete' as inbox_delete_url %}
     {% include "djangopm/message_list.html" with isinbox='true' delete_url=inbox_delete_url %}
 </div>
 <div class="clear"></div>

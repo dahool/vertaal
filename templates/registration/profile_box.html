@@ -13,7 +13,7 @@ function confirmDelete(url) {
 </script>
 <div class="left-layout" style="display: inline;">
 <div id="profile-box">
-	<form class="form-style" action="{% url user_profile %}" method="post" accept-charset="utf-8">
+	<form class="form-style" action="{% url 'user_profile' %}" method="post" accept-charset="utf-8">
 	{% csrf_token %}
 	<fieldset>
 		<legend>{% trans "Profile" %}</legend>
@@ -24,7 +24,7 @@ function confirmDelete(url) {
 			<li>{% formfield form.language %}</li>
 			<li>{% formfield form.timezone %}</li>
 			{% if user.userassociation_set.all and not user.has_usable_password %}
-			{% url openid_password_change as change_pass_url %}
+			{% url 'openid_password_change' as change_pass_url %}
 			<br/>
 			<span class="icon info">&nbsp;{% blocktrans %}You are logged in with OpenID. Click <a href="{{ change_pass_url }}">here</a> to setup a local password.{% endblocktrans %}</span>
 			<br/>
@@ -46,7 +46,7 @@ function confirmDelete(url) {
 			</ul>
 			{% endwith %}
 			<br/>
-			<span class="icon add">&nbsp;<a href="{% url user_associate %}">{% trans "Add another OpenID" %}</a></span>
+			<span class="icon add">&nbsp;<a href="{% url 'user_associate' %}">{% trans "Add another OpenID" %}</a></span>
 			{% endif %}
 		</ol>    
 	</fieldset>
@@ -55,7 +55,7 @@ function confirmDelete(url) {
 	</div>
 	</form>
 </div>
-<form id="dissociateurl" style="display: none;" action="{% url user_dissociate %}" method="post">
+<form id="dissociateurl" style="display: none;" action="{% url 'user_dissociate' %}" method="post">
 	<input type="hidden" id="openid_url" name="openid_url" value="">
 </form>
 </div>
@@ -65,7 +65,7 @@ function confirmDelete(url) {
 	<h3>{% trans "Bookmarks" %}</h3>
 	<table class="grid">
 		<tbody>
-		{% url remove_favorites as removefavorites %}
+		{% url 'remove_favorites' as removefavorites %}
 		{% for fav in favs %}
 		<tr>
 			<td id="fav_{{fav.id}}">

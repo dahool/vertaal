@@ -1,5 +1,5 @@
 {% load i18n formtags %}
-<form id="compose_form" action="{% url pm_compose %}">
+<form id="compose_form" action="{% url 'pm_compose' %}">
 {% if instance %}<input type="hidden" name="id" value="{{instance.pk}}"/>{% endif %}
 {% for u in recipients %}
     <input type="hidden" name="recipients" id="input_to_{{u.pk}}" value="{{u.pk}}"/>

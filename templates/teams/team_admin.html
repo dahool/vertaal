@@ -27,7 +27,7 @@ function confirmReject(url) {
 	});
 }
 function do_query(text) {
-	$.post('{% url user_query %}',
+	$.post('{% url 'user_query' %}',
 			{'search': text},
 			process_query_response,
 			"xml");			
@@ -47,7 +47,7 @@ function process_query_response(data) {
 	});	
 }	
 function add_user(id) {
-	$.post('{% url add_member team.id %}',
+	$.post('{% url 'add_member' team.id %}',
 			{'id': id},
 			process_table_response,
 			"xml");			
@@ -85,10 +85,10 @@ function update_member(url) {
 --></script>
 {% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
-<a href="{% url language_list %}">{% trans "Languages" %}</a>
-<a href="{% url language_detail team.language.code %}">{{ team.language.name }}</a>
-<a href="{% url team_detail team.project.slug,team.language.code %}">{{ team.project.name }}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
+<a href="{% url 'language_list' %}">{% trans "Languages" %}</a>
+<a href="{% url 'language_detail' team.language.code %}">{{ team.language.name }}</a>
+<a href="{% url 'team_detail' team.project.slug team.language.code %}">{{ team.project.name }}</a>
 <span>{% trans "Manage" %}</span>
 {% endblock %}
 {% block content %}
@@ -112,7 +112,7 @@ function update_member(url) {
 		<tr>
 			<td>
 				{% with req.user as m %}
-				<a href="{% url contact_me m.username %}">
+				<a href="{% url 'contact_me' m.username %}">
 				{% if m.get_full_name %}
 				{{ m.get_full_name }} ({{ m.username }})
 				{% else %}
@@ -123,8 +123,8 @@ function update_member(url) {
 			</td>
 			<td>{{ req.created|localtime:user.get_profile.timezone }}</td>
 			<td>
-			<a href="{% url join_accept req.id %}" class="nodecoration_icon icon submit link" title="{% trans "Accept" %}"></a>
-			<span id="button_reject" onclick="confirmReject('{% url join_reject req.id %}');" class="nodecoration_icon icon delete link" title="{% trans "Reject" %}"></span>
+			<a href="{% url 'join_accept' req.id %}" class="nodecoration_icon icon submit link" title="{% trans "Accept" %}"></a>
+			<span id="button_reject" onclick="confirmReject('{% url 'join_reject' req.id %}');" class="nodecoration_icon icon delete link" title="{% trans "Reject" %}"></span>
 			</td>
 		</tr>
 	{% endfor %}
@@ -136,7 +136,7 @@ function update_member(url) {
 
 {% if team.project.repo_user %}
 <div class="grid">
-<form class="form-style" action="{% url team_admin team.id %}" method="post" accept-charset="utf-8">
+<form class="form-style" action="{% url 'team_admin' team.id %}" method="post" accept-charset="utf-8">
 {% csrf_token %}
 {{ form }}
 <input class="icon save" type="submit" value="{% trans "Save" %}" />

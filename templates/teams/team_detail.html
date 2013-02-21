@@ -2,9 +2,9 @@
 {% load i18n extendtags %}
 {% block title %}{{ block.super }} | {{ team.language.name }} ({{ team.project.name }}){% endblock %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
-<a href="{% url language_list %}">{% trans "Languages" %}</a>
-<a href="{% url language_detail team.language.code %}">{{ team.language.name }}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
+<a href="{% url 'language_list' %}">{% trans "Languages" %}</a>
+<a href="{% url 'language_detail' team.language.code %}">{{ team.language.name }}</a>
 <span>{{ team.project.name }}</span>
 {% endblock %}
 {% block content %}
@@ -20,12 +20,12 @@
 
 {% if is_member or can_manage %}
 <div id="form-action">
-<input type="button" name="href" class="icon team" rel="{% url team_admin team.pk %}" value="{% trans "Manage" %}"/>
-<input type="button" name="href" class="icon email" rel="{% url team_contact team.pk %}" value="{% trans "Contact" %}"/>
+<input type="button" name="href" class="icon team" rel="{% url 'team_admin' team.pk %}" value="{% trans "Manage" %}"/>
+<input type="button" name="href" class="icon email" rel="{% url 'team_contact' team.pk %}" value="{% trans "Contact" %}"/>
 </div>
 {% else %}
 <div class="buttons">
-<input type="button" name="href" class="icon join" rel="{% url join_request team.id %}" value="{% trans "Join this team" %}"/>
+<input type="button" name="href" class="icon join" rel="{% url 'join_request' team.id %}" value="{% trans "Join this team" %}"/>
 </div>
 <br/>
 {% endif %}
@@ -40,9 +40,9 @@
 <tr>
   <td class="detail_value">
   {% if m.get_full_name %}
-    <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+    <a class="icon email" href="{% url 'contact_me' m.username %}">{{ m.get_full_name }}</a>
   {% else %}
-  	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+  	<a class="icon email" href="{% url 'contact_me' m.username %}">{{ m.username }}</a>
     {% endif %}
   </td>
 </tr>
@@ -61,9 +61,9 @@
   <td class="detail_value">
       {% if not m.is_coord %}
       {% if m.get_full_name %}
-        <a class="icon email" href="{% url contact_me m.username %}">{{ m.get_full_name }}</a>
+        <a class="icon email" href="{% url 'contact_me' m.username %}">{{ m.get_full_name }}</a>
       {% else %}
-      	<a class="icon email" href="{% url contact_me m.username %}">{{ m.username }}</a>
+      	<a class="icon email" href="{% url 'contact_me' m.username %}">{{ m.username }}</a>
         {% endif %}
       {% endif %}
   </td>
@@ -78,7 +78,7 @@
 <div class="right-layout" style="width: 60%">
 <h3>{% trans "Submission Queue:" %}</h3>
 {% if submit_files %}
-<form id="submit_form" method="post" action="{% url file_submit team.id %}">
+<form id="submit_form" method="post" action="{% url 'file_submit' team.id %}">
 {% csrf_token %}
 <table id="submit_table" class="grid">
 	<thead>

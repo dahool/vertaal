@@ -1,6 +1,6 @@
 {% load i18n formtags %}
 {% load errors %}
-<form id="signup_form" class="form-style" action="{% url user_signup %}" method="post" accept-charset="utf-8">
+<form id="signup_form" class="form-style" action="{% url 'user_signup' %}" method="post" accept-charset="utf-8">
 {% csrf_token %}
 <fieldset>
 	<legend>{% trans "Sign up" %}</legend>

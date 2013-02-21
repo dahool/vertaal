@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block quick_menu %}
-<a class="none" href="{% url home %}">{% trans 'Home' %}</a>
-<a href="{% url project_list %}">{% trans "Projects" %}</a>
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
+<a href="{% url 'project_list' %}">{% trans "Projects" %}</a>
 {% if project %}
-<a href="{% url project_detail project.slug %}">{{ project.name }}</a>
+<a href="{% url 'project_detail' project.slug %}">{{ project.name }}</a>
 {% else %}
-<a href="{% url project_detail release.project.slug %}">{{ release.project.name }}</a>
+<a href="{% url 'project_detail' release.project.slug %}">{{ release.project.name }}</a>
 {% endif %}
 {% endblock %}

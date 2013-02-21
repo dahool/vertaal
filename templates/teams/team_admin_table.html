@@ -16,7 +16,7 @@
 	<tr>
 		<td class="icon coordinator">{% trans "Coordinator" %}</td>
 		<td>
-			<a href="{% url contact_me m.username %}">
+			<a href="{% url 'contact_me' m.username %}">
 			{% if m.get_full_name %}
 			{{ m.get_full_name }} ({{ m.username }})
 			{% else %}
@@ -30,8 +30,8 @@
 		<td>
 			{% ifnotequal request.user m %}
 			{% if request.user.is_staff or maintainer %}
-			<span class="nodecoration_icon icon delete link" onclick="update_member('{% url remove_member team.id, m.username %}')" title="{% trans "Remove" %}"></span>
-			<span class="nodecoration_icon icon group_remove link" onclick="update_member('{% url change_group team.id, m.username,'member' %}')" title="{% trans "Remove coordinator" %}"></span>
+			<span class="nodecoration_icon icon delete link" onclick="update_member('{% url 'remove_member' team.id m.username %}')" title="{% trans "Remove" %}"></span>
+			<span class="nodecoration_icon icon group_remove link" onclick="update_member('{% url 'change_group' team.id m.username 'member' %}')" title="{% trans "Remove coordinator" %}"></span>
 			{% endif %}
 			{% endifnotequal %}
 		</td>
@@ -46,7 +46,7 @@
     <tr>
         <td class="icon committer">{% trans "Committer" %}</td>
         <td>
-            <a href="{% url contact_me m.username %}">
+            <a href="{% url 'contact_me' m.username %}">
             {% if m.get_full_name %}
             {{ m.get_full_name }} ({{ m.username }})
             {% else %}
@@ -58,13 +58,13 @@
           {% blocktrans with time=m.last_activity|timesince%}{{time}} ago{%endblocktrans%}
         </td>        
         <td>
-            <span class="nodecoration_icon icon delete link" onclick="update_member_cnf('{% url remove_member team.id, m.username %}')" title="{% trans "Remove" %}"></span>
-            <span class="nodecoration_icon icon group_add link" onclick="update_member('{% url change_group team.id, m.username,'coord' %}')" title="{% trans "Set as coordinator" %}"></span>
-            <span class="nodecoration_icon icon commit-p-del link" onclick="update_member('{% url change_group team.id, m.username,'member' %}')" title="{% trans "Remove submit grants" %}"></span>
+            <span class="nodecoration_icon icon delete link" onclick="update_member_cnf('{% url 'remove_member' team.id m.username %}')" title="{% trans "Remove" %}"></span>
+            <span class="nodecoration_icon icon group_add link" onclick="update_member('{% url 'change_group' team.id m.username 'coord' %}')" title="{% trans "Set as coordinator" %}"></span>
+            <span class="nodecoration_icon icon commit-p-del link" onclick="update_member('{% url 'change_group' team.id m.username 'member' %}')" title="{% trans "Remove submit grants" %}"></span>
             {% iftrue m.has_perm "glossary.add_glossary" %}
-            <span class="nodecoration_icon icon gloss-p-del link" onclick="update_member('{% url remove_grant team.id, m.username,"add_glossary" %}')" title="{% trans "This user can update the glossary. Disallow." %}"></span>
+            <span class="nodecoration_icon icon gloss-p-del link" onclick="update_member('{% url 'remove_grant' team.id m.username "add_glossary" %}')" title="{% trans "This user can update the glossary. Disallow." %}"></span>
             {% else %}
-            <span class="nodecoration_icon icon gloss-p-add link" onclick="update_member('{% url add_grant team.id, m.username,"add_glossary" %}')" title="{% trans "This user cannot update the glossary. Allow." %}"></span>
+            <span class="nodecoration_icon icon gloss-p-add link" onclick="update_member('{% url 'add_grant' team.id m.username "add_glossary" %}')" title="{% trans "This user cannot update the glossary. Allow." %}"></span>
             {% endiftrue %}         
         </td>
     </tr>	
@@ -78,7 +78,7 @@
 	<tr>
 		<td class="icon member">{% trans "Member" %}</td>
 		<td>
-			<a href="{% url contact_me m.username %}">
+			<a href="{% url 'contact_me' m.username %}">
 			{% if m.get_full_name %}
 			{{ m.get_full_name }} ({{ m.username }})
 			{% else %}
@@ -90,13 +90,13 @@
           {% blocktrans with time=m.last_activity|timesince%}{{time}} ago{%endblocktrans%}
         </td>		
 		<td>
-			<span class="nodecoration_icon icon delete link" onclick="update_member_cnf('{% url remove_member team.id, m.username %}')" title="{% trans "Remove" %}"></span>
-			<span class="nodecoration_icon icon group_add link" onclick="update_member('{% url change_group team.id, m.username,'coord' %}')" title="{% trans "Set as coordinator" %}"></span>
-			<span class="nodecoration_icon icon commit-p-add link" onclick="update_member('{% url change_group team.id, m.username,'commit' %}')" title="{% trans "Add repository submit grants" %}"></span>
+			<span class="nodecoration_icon icon delete link" onclick="update_member_cnf('{% url 'remove_member' team.id m.username %}')" title="{% trans "Remove" %}"></span>
+			<span class="nodecoration_icon icon group_add link" onclick="update_member('{% url 'change_group' team.id m.username 'coord' %}')" title="{% trans "Set as coordinator" %}"></span>
+			<span class="nodecoration_icon icon commit-p-add link" onclick="update_member('{% url 'change_group' team.id m.username 'commit' %}')" title="{% trans "Add repository submit grants" %}"></span>
 			{% iftrue m.has_perm "glossary.add_glossary" %}
-			<span class="nodecoration_icon icon gloss-p-del link" onclick="update_member('{% url remove_grant team.id, m.username,"add_glossary" %}')" title="{% trans "This user can update the glossary. Disallow." %}"></span>
+			<span class="nodecoration_icon icon gloss-p-del link" onclick="update_member('{% url 'remove_grant' team.id m.username "add_glossary" %}')" title="{% trans "This user can update the glossary. Disallow." %}"></span>
 			{% else %}
-			<span class="nodecoration_icon icon gloss-p-add link" onclick="update_member('{% url add_grant team.id, m.username,"add_glossary" %}')" title="{% trans "This user cannot update the glossary. Allow." %}"></span>
+			<span class="nodecoration_icon icon gloss-p-add link" onclick="update_member('{% url 'add_grant' team.id m.username "add_glossary" %}')" title="{% trans "This user cannot update the glossary. Allow." %}"></span>
 			{% endiftrue %}			
 		</td>
 	</tr>

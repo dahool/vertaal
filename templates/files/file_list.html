@@ -4,9 +4,9 @@
 {% block extra_head %}
 {% include "browser_fixes.html" %}
 {% ifsetting ENABLE_RSS %}
-<link rel="alternate" type="application/rss+xml" title="{% trans "Latest updates" %}" href="{% url language_release_feed release.slug, language.code %}">
+<link rel="alternate" type="application/rss+xml" title="{% trans "Latest updates" %}" href="{% url 'language_release_feed' release.slug language.code %}">
 {% if user.is_authenticated %}
-<link rel="alternate" type="application/rss+xml" title="{% trans "Latest updates for you" %}" href="{% url language_release_feed release.slug, language.code %}?user={{user.username}}">
+<link rel="alternate" type="application/rss+xml" title="{% trans "Latest updates for you" %}" href="{% url 'language_release_feed' release.slug language.code %}?user={{user.username}}">
 {% endif %}
 {% endifsetting %}
 {% iftrue team.can_manage user %}
@@ -14,7 +14,7 @@
 {% endiftrue %}
 {% ifsetting ENABLE_RSS %}
 {% if can_manage or perms.teams.can_commit %}
-<link rel="alternate" type="application/rss+xml" title="{% trans "Submission queue" %}" href="{% url language_project_queue_feed release.project.slug, language.code %}">
+<link rel="alternate" type="application/rss+xml" title="{% trans "Submission queue" %}" href="{% url 'language_project_queue_feed' release.project.slug language.code %}">
 {% endif %}
 {% endifsetting %}
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.metadata.min.js"></script>
@@ -25,7 +25,7 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.aop.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/filelist.js"></script>
 <script type="text/javascript"><!--
-var RELOAD_LIST_FILES_URL = "{% url reload_list_files release.slug,language.code %}";
+var RELOAD_LIST_FILES_URL = "{% url 'reload_list_files' release.slug language.code %}";
 var LIST_PROJECT_RELEASE = "{{release.slug}}";
 $(document).ready(function(){ 
 	initialize_filelist();
@@ -54,9 +54,9 @@ $(document).ready(function(){
 
 {% block content_title %}<h1>{{ language.name }}&nbsp;<sup>({{ language.code }})</sup>
 {% ifsetting ENABLE_RSS %}
-&nbsp;&nbsp;<a class="icon feed" title="{% trans "Latest updates" %}" href="{% url language_release_feed release.slug, language.code %}">&nbsp;</a>
+&nbsp;&nbsp;<a class="icon feed" title="{% trans "Latest updates" %}" href="{% url 'language_release_feed' release.slug language.code %}">&nbsp;</a>
 {% if user.is_authenticated %}
-<a class="icon feed_user" title="{% trans "Latest updates for you" %}" href="{% url language_release_feed release.slug, language.code %}?user={{user.username}}">&nbsp;</a>
+<a class="icon feed_user" title="{% trans "Latest updates for you" %}" href="{% url 'language_release_feed' release.slug language.code %}?user={{user.username}}">&nbsp;</a>
 {% endif %}
 {% endifsetting %}
 </h1>{% endblock %}
@@ -67,7 +67,7 @@ $(document).ready(function(){
 		<tr>
 		<td colspan="2">
 		  {% ifsetting ENABLE_RSS %}
-			<a class="icon feed soft_text" href="{% url language_project_queue_feed release.project.slug, language.code %}">{% trans "Submission queue" %}</a>
+			<a class="icon feed soft_text" href="{% url 'language_project_queue_feed' release.project.slug language.code %}">{% trans "Submission queue" %}</a>
 		  {% endifsetting %}
 		</td>
 		</tr>
@@ -123,7 +123,7 @@ $(document).ready(function(){
 <div id="component_list" style="display: none;">
 {% with release.project.components.all as components %}
 	{% for component in components|dictsort:"pk" %}
-    <input type="checkbox" id="cmp_{{component.pk}}" name="{{component.slug}}" value="{% url list_files_component release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}"/>
+    <input type="checkbox" id="cmp_{{component.pk}}" name="{{component.slug}}" value="{% url 'list_files_component' release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}"/>
     <label for="cmp_{{component.pk}}">{{ component.name }}</label>
 	{% endfor %}
 {% endwith %}
@@ -139,7 +139,7 @@ $(document).ready(function(){
     <h2>{% trans "Recent activity" %}</h2>
     <ul class="simple">
 	{% for log in last_actions %}
-    {% url file_detail log.pofile.slug as logfileurl %}
+    {% url 'file_detail' log.pofile.slug as logfileurl %}
 	<li class="icon info">
 	{% blocktrans with filename=log.pofile.filename log_action=log.get_action_display|lower username=log.user.username updated=log.created|localtime:request.user.get_profile.timezone|timesince %}
 	File <b><a href="{{logfileurl}}">{{filename}}</a></b> {{log_action}} by <b>{{username}}</b> {{updated}} ago.

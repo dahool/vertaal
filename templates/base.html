@@ -23,7 +23,7 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/tiptip.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}toast/css/jquery.toastmessage.css" />
     <link media="screen" href="{{STATIC_URL}}css/widgets/simpletooltip2.css" type="text/css" rel="stylesheet" />
-	<script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
+	<script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.alerts.src.js"></script>
@@ -39,7 +39,7 @@
 	<script type="text/javascript" src="{{STATIC_URL}}js/base.js"></script>	
 	<script type="text/javascript">
 		var _TITLE = '{% setting "PROJECT_NAME" %}';
-		var _UQUERY = '{% url user_query %}';
+		var _UQUERY = '{% url 'user_query' %}';
 	</script>
 	{% block extra_head %}{% endblock %}
 </head>

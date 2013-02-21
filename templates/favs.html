@@ -1,10 +1,10 @@
 {% load i18n extendtags %}
 {% if user.is_authenticated %}
 	{% iftrue user.user_favorites.by_path path %}
-		{% url remove_favorites as removefavorites %}
+		{% url 'remove_favorites' as removefavorites %}
 		<div class="del" title="{% trans "Remove from bookmarks" %}" onclick="update_favorites('{{removefavorites}}','{{path}}')"></div>
 	{% else %}
-		{% url add_favorites as addfavorites %}
+		{% url 'add_favorites' as addfavorites %}
 		<div class="add" title="{% trans "Add to bookmarks" %}" onclick="update_favorites('{{addfavorites}}','{{path}}')"></div>
 	{% endiftrue %}
 {% endif %}

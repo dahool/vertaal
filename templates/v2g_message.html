@@ -4,8 +4,8 @@
 {% load i18n settingstag extendtags %}
 {% block content %}
 {% captureas ticket_url %}{% setting "TICKET_URL" %}{% endcaptureas %}
-{% url user_signin as user_signin %}
-{% url user_signup as user_signup %}
+{% url 'user_signin' as user_signin %}
+{% url 'user_signup' as user_signup %}
 <pre style="font-size: 12px; font-family: Verdana,Helvetica,Arial,sans-serif; line-height:20px;">
 {% blocktrans %}
 Hi former Verbum user!. You expected to see verbum and got this instead? Scroll to the end if you want the short version or continue reading.

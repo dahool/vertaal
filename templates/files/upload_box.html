@@ -38,7 +38,7 @@ $(function() {
         $('#id_fakefile').show();
         removeoverlay();
     }).bind('fileuploaddone', function(e, data) {
-        $("#message-container").load('{% url user_messages %}');    
+        $("#message-container").load('{% url 'user_messages' %}');    
         if (data.result.success) {
             reset_upload_form();
             load_component(RELOAD_LIST_FILES_URL, true);
@@ -48,7 +48,7 @@ $(function() {
 </script>
 <div id="upload-box">
     <input type="file" id="id_file_holder" style="display: none;"/>
-	<form id="upload_form" class="form-style" action="{% url file_upload release.slug, language.code %}"
+	<form id="upload_form" class="form-style" action="{% url 'file_upload' release.slug language.code %}"
 		method="post" enctype="multipart/form-data" accept-charset="utf-8">
 		{% csrf_token %}
 		<span class="help_text title">{% trans "File Upload" %}</span><br/>

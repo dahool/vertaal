@@ -5,9 +5,9 @@
 <br/>
 {% for article in news %}
 <div id="news_{{article.slug}}" class="news_article">
-<a href="{% url news_view article.slug %}" class="news_title">{{article.title}}</a>
+<a href="{% url 'news_view' article.slug %}" class="news_title">{{article.title}}</a>
 <p class="news_content">{{article.hometext|safe}}</p>
-<p class="news_content" style="text-align: right;">{% if article.bodytext %}<a style="font-size: 10px;" href="{% url news_view article.slug %}">{% trans "(read more...)" %}</a>{% endif %}</p>
+<p class="news_content" style="text-align: right;">{% if article.bodytext %}<a style="font-size: 10px;" href="{% url 'news_view' article.slug %}">{% trans "(read more...)" %}</a>{% endif %}</p>
 <p class="news_footer">{% trans "Published on" %} {{article.created|date:"M d, Y"}} {% trans "by" %} {{article.author}}</p>
 </div>
 {% endfor %}
