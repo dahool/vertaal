@@ -24,7 +24,8 @@ class POFileAdmin(admin.ModelAdmin):
 
 class POTFileAdmin(admin.ModelAdmin):
     search_fields=['name']
-
+    readonly_fields = ('pofiles',)
+    
 class POTFileNotificationAdmin(admin.ModelAdmin):
     search_fields=['pofile__filename', 'potfile__name']
     

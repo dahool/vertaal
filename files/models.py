@@ -62,11 +62,13 @@ class SUBMIT_STATUS_ENUM:
     PENDING = 0
     SUBMITTED = 1
     REJECTED = 2
+    REMOVED = 3
     
 SUBMIT_STATUS_CHOICES = (
     (SUBMIT_STATUS_ENUM.PENDING, _('Pending')),
     (SUBMIT_STATUS_ENUM.SUBMITTED, _('Submitted')),
     (SUBMIT_STATUS_ENUM.REJECTED, _('Rejected')),
+    (SUBMIT_STATUS_ENUM.REMOVED, _('Removed')),
 )
 
 LOG_ACTION = {'ACT_LOCK_ADD': 'A',
@@ -195,8 +197,9 @@ class POFileManager(models.Manager):
         sql = "SELECT p.language_id,p.component_id, p.release_id, p.slug, p.total, p.filename, p.status, p.id "\
                 "FROM pofile p INNER JOIN pofile_pot_pofiles pol ON pol.pofile_id = p.id "\
                 "INNER JOIN pofile_pot pot ON pol.potfile_id = pot.id "\
+                "LEFT JOIN pofile_submit psub ON psub.pofile_id = p.id AND psub.status = %s "\
                 "INNER JOIN language l ON p.language_id = l.id "\
-                "INNER JOIN components c ON p.component_id = c.id WHERE "
+                "INNER JOIN components c ON p.component_id = c.id WHERE psub.id IS NULL AND " % SUBMIT_STATUS_ENUM.PENDING
         if release:
             sql += "p.release_id = %s AND " % release.id
         if languages:
