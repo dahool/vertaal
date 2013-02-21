@@ -94,7 +94,6 @@ function process_query_response(data) {
         }
     }); 
 }   
-
 $(function() {
     
     var $formact = $("#form-action");

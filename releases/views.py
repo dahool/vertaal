@@ -242,8 +242,6 @@ def multimerge(request, slug):
             raise Http404
         
         from files.lib.handlers import process_merge
-        from django.http import QueryDict
-        from files import views as filesview
         
         fail=[]
         submitted = []
@@ -251,6 +249,7 @@ def multimerge(request, slug):
             try:
                 submitted.append(process_merge(pofile, request.user))
             except Exception, e:
+                logger.error(e)
                 fail.append(pofile)
         
         if len(fail)>0:
