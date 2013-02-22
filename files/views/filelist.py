@@ -227,7 +227,7 @@ def toggle_mark(request, slug):
             (assign and (assign.translate==request.user or assign.review==request.user))):
             # to avoid mark collision
             current_mark = request.POST.get('mark')
-            if int(current_mark) == file.status:
+            if current_mark != None and current_mark != '' and int(current_mark) == file.status:
                 st = None
                 if file.status == 0:
                     file.status = 1
