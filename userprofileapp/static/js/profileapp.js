@@ -4,26 +4,26 @@ function createPagination() {
 		$("#trans_table_pages").jPages({
 	        containerID  : "trans_table",
 	        perPage      : maxPages,
-	        previous: '{% trans "previous" %}',
-	        next: '{% trans "next" %}',
+	        previous: gettext("previous"),
+	        next: gettext("next"),
 		});
 		$("#rev_table_pages").jPages({
 	        containerID  : "rev_table",
 	        perPage      : maxPages,
-	        previous: '{% trans "previous" %}',
-	        next: '{% trans "next" %}',
+	        previous: gettext("previous"),
+	        next: gettext("next"),
 		});				
 		$("#sub_table_pages").jPages({
 	        containerID  : "sub_table",
 	        perPage      : maxPages,
-	        previous: '{% trans "previous" %}',
-	        next: '{% trans "next" %}',
+	        previous: gettext("previous"),
+	        next: gettext("next"),
 		});
 		$("#lock_table_pages").jPages({
 	        containerID  : "lock_table",
 	        perPage      : maxPages,
-	        previous: '{% trans "previous" %}',
-	        next: '{% trans "next" %}',
+	        previous: gettext("previous"),
+	        next: gettext("next"),
 		});						
 	}
 }
