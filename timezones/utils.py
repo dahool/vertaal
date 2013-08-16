@@ -20,6 +20,8 @@ def adjust_datetime_to_timezone(value, from_tz, to_tz=None):
     """
     if to_tz is None:
         to_tz = settings.TIME_ZONE
+    if value is None:
+        return None
     if getattr(value,'tzinfo', None) is None:
         if not hasattr(from_tz, "localize"):
             from_tz = pytz.timezone(smart_str(from_tz))
