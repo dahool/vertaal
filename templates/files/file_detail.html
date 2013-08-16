@@ -165,8 +165,9 @@
 		{% else %}
 			{% set pofile_potupdated=pofile.potupdated|date:"M d, Y H:i O" %}
 		{% endif %}
+		{% if pofile.potupdated %}
 		<p>{% blocktrans with since=pofile.potupdated|timesince updated=pofile_potupdated %}File last merged on {{updated}} ({{since}} ago){% endblocktrans %}</p>
-		
+		{% endif %}
 		{% if pofile.buildcachedata %}
 			{% with pofile.buildcachedata as cache %}
 				{% if cache.rev %}
@@ -175,7 +176,7 @@
 					{% else %}
 						{% set cacheupdated=cache.updated|date:"M d, Y H:i O" %}
 					{% endif %}
-					{% if pofile.release.project.viewurl %}
+					{% if pofile.releasfile.project.viewurl %}
 						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated viewurl=pofile.viewurl %}Repositoy revision <a href="{{viewurl}}" target="_blank">{{rev}}</a> (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
 					{% else %}
 						<p>{% blocktrans with rev=cache.rev since=cache.updated|timesince updated=cacheupdated %}Repositoy revision {{rev}} (updated {{updated}} - {{since}} ago)*{% endblocktrans %}</p>
