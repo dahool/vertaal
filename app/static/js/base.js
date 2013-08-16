@@ -84,15 +84,12 @@ $(document).ready(function() {
             window.location.href = $(this).attr('rel')
         });
     });
-    $("input[type='button'][name='confirm_href']").each(function() {
-        $(this).click(function(){
-            elem = $(this);
-            confirmSimple(function(r){
-                if (r) {
-                    window.location.href = $(elem).attr('rel')
-                }
-            });
-            
+    $("input[type='button'][name='confirm_href']").on('click', function() {
+        elem = $(this);
+        confirmSimple(function(r){
+            if (r) {
+                window.location.href = $(elem).attr('rel')
+            }
         });
     }); 
     $("input[name='selector']").click( function() {

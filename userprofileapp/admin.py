@@ -19,6 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from django.contrib import admin
 from userprofileapp.models import *
 
+class UserAuditLogAdmin(admin.ModelAdmin):
+    search_fields=['username','ip']
+    list_display = ['created', 'username','ip', 'action']
+
 admin.site.register(UserFile)
 admin.site.register(Favorite)
 admin.site.register(UserProfile)
+admin.site.register(UserAuditLog,UserAuditLogAdmin)

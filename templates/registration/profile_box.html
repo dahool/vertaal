@@ -51,6 +51,7 @@ function confirmDelete(url) {
 		</ol>    
 	</fieldset>
 	<div id="form-action" class="text-right">
+		<input rel="{% url 'drop_account' %}" name="confirm_href" class="icon remove" style="float: left;" type="button" value="{% trans "Drop Account" %}" />
 		<input class="icon save" type="submit" value="{% trans "Save" %}" />
 	</div>
 	</form>

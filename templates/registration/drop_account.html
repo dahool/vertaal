@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Drop account" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<div class="message center-box warn">
+<ul class="simple">
+<li class="bold">{% trans "ATTENTION: your are about to remove your account." %}</li>
+<li class="bold">{% trans "All related information will be removed. This process can't be undone." %}</li>
+</ul>
+</div>
+
+<div id="login" class="form-box center-box" style="padding-top:10px;">
+<fieldset>
+	<p class="bold">{% trans "Enter your password twice to confirm." %}</p>
+	<div class="form-block">
+	<form action="{% url 'drop_account' %}" method="post">
+		{% csrf_token %}
+		<div class="form-row">
+			<label for="id_password">{% trans "Password:" %}</label>
+			<input id="id_password" class="required login" name="password1" autocomplete="off" maxlength="128" size="15" type="password"/>
+		</div>
+		<div class="form-row">
+			<label for="id_password2">{% trans "Repeat Password:" %}</label>
+			<input id="id_password2" class="required login" name="password2" autocomplete="off" maxlength="128" size="15" type="password"/>
+		</div>		
+		<div class="submit-row">
+			<input class="icon go-back" type="button" style="float: left;" rel="{% url 'user_profile' %}" name="href" value="{% trans "Cancel" %}" />
+			<input class="icon user-delete" type="submit" value="{% trans "Drop my account" %}" />
+		</div>
+	</form>
+</fieldset>
+</div>
+
+{% endblock %}

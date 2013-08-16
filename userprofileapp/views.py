@@ -41,6 +41,8 @@ from django.contrib import messages
 
 from teams.models import Team
 
+from django.contrib.auth import logout as auth_logout
+
 @login_required
 def update_favorites(request, remove=False, idtype=False):
     if request.method != 'POST':
@@ -145,6 +147,25 @@ def startup_redirect(request):
     else:
         return HttpResponseRedirect(profile.startup.url)
 
+@login_required
+def drop_account(request):
+    if request.method == 'POST':
+        pass1 = request.POST['password1']
+        pass2 = request.POST['password2']
+        if pass1 == pass2:
+            if request.user.check_password(pass1):
+                current_user = request.user
+                auth_logout(request)
+                UserAuditLog.objects.create(action='DELETE',username=current_user.username,ip=request.META.get('REMOTE_ADDR'))
+                current_user.delete()
+                #messages.success(request, _('Your account has been removed.'))
+                return HttpResponseRedirect(reverse('home'))
+        messages.error(request, _('The information provided is invalid.'))
+        return HttpResponseRedirect(reverse('user_profile'))  
+    else:
+        return render_to_response("registration/drop_account.html",
+                                  context_instance = RequestContext(request))
+        
 @login_required
 def mass_notification(request):
     if request.method != 'POST' or not request.user.is_superuser:

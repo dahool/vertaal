@@ -26,6 +26,15 @@ from timezones.fields import TimeZoneField
 import logging
 logger = logging.getLogger('vertaal.userprofile')
 
+class UserAuditLog(models.Model):
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    ip = models.CharField(max_length=15)
+    username = models.CharField(max_length=30)
+    action = models.CharField(max_length=30)
+    
+    class Meta:
+        ordering  = ('-created',)
+    
 class FavoriteManager(models.Manager):
     
     def by_path(self, url):

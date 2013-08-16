@@ -183,3 +183,9 @@
 .compose {
 	background-image: url(../images/icons/email_open.png);
 }
+.user-delete {
+	background-image: url(../images/icons/exclamation.png);
+}
+.go-back {
+	background-image: url(../images/icons/arrow_left.png);
+}
