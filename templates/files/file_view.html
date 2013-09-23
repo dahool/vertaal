@@ -17,7 +17,7 @@
 <span>{{ pofile.filename }}</span>
 {% endblock %}
 {% block content %}
-{% if pofile.submits.all %}
+{% if pofile.submits.get_pending %}
 <div class="message">
 <ul class="simple">
 {% if submit %}
