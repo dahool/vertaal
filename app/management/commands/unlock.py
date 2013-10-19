@@ -46,6 +46,7 @@ class Command(BaseCommand):
                 teams = bc.release.project.teams.all()                    
                 for team in teams:
                     lk = LockRepo(bc.release.project.slug, bc.release.slug, bc.component.slug, team.language.code)
+                    lk.is_locked = True
                     lk.release()
         except Exception, e:
             logger.error(e.args)
