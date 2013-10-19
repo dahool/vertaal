@@ -47,7 +47,8 @@ class Lock(object):
             called at the end.
         """
         if self.is_locked:
-            os.rmdir(self.lockpath)
+            if os.path.exists(self.lockpath):
+                os.rmdir()
             self.is_locked = False
 
  
