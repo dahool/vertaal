@@ -16,3 +16,4 @@ build_logs
 /appcache/
 /django/
 .pydevproject
+*.log

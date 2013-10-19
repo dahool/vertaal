@@ -17,6 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 from django.contrib import admin
-from versioncontrol.models import *
+from versioncontrol.models import BuildCache
 
-admin.site.register(BuildCache)
+class BuildCacheAdmin(admin.ModelAdmin):
+    list_display = ['release', 'component', 'rev', 'locked']
+    list_editable=['locked']
+    
+admin.site.register(BuildCache, BuildCacheAdmin)
