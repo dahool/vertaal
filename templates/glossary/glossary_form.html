@@ -6,7 +6,7 @@
 {% block title %}{{block.super}} | {% trans "Editing Glossary" %} {{ project.name }} ({{ lang.name }}){% endblock %}}
 {% block quick_menu %}
 <a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
-<a href="{% url 'gloss_list' project.slug,lang.code %}">{% trans "Glossary" %} [{{ project.name }} ({{ lang.name }})]</a>
+<a href="{% url 'gloss_list' project.slug lang.code %}">{% trans "Glossary" %} [{{ project.name }} ({{ lang.name }})]</a>
 <span>{% trans "Editing" %}</span>
 {% endblock %}
 {% block content %}
