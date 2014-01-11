@@ -187,7 +187,7 @@ class SvnBrowser(browser.RepositoryBrowser):
         self.cleanup()
         self._send_callback(self.callback_on_action_notify,_('Updating repository %s') % self._remote_path)        
         try:
-            self.client.update(self.location)
+            self.client.update(self.location, recurse=False, ignore_externals=True)
         except pysvn.ClientError, e:
             if self._checkerror(e, 155000): # relocate
                 logger.debug("Must relocate")
