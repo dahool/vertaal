@@ -106,7 +106,8 @@ def process_queue():
                 c.run(True)
                 # if success the file is removed when the fk gets removed.
             except LockException, e:
-                logger.error(e)
+                logger.warn('Project %s is currently locked.' % project)
+                erc += 1
                 for sf in userfile.deffiles: sf.lock(False)
             except Exception, e:
                 for sf in userfile.deffiles:

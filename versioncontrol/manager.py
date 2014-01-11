@@ -56,7 +56,7 @@ class LockRepo(Lock):
     def __init__(self, project_slug, release_slug,
                         component_slug, lang_code):
         name = "_".join([project_slug, release_slug, component_slug, lang_code] )
-        super(LockRepo, self).__init__(name=name)
+        super(LockRepo, self).__init__(name=name, timeout=15, delay=0.5)
     
 class SubmitClient():
     

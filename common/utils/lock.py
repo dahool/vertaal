@@ -3,7 +3,7 @@ import tempfile
 import time
 
 import logging
-logger = logging.getLogger('common.utils')
+logger = logging.getLogger('vertaal.common.utils')
 
 class LockException(Exception):
     pass

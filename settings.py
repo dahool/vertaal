@@ -16,6 +16,7 @@ for f in conffiles:
 LOG_FILENAME = os.path.join(ROOT_PATH,'logs','vertaal.log')
 ERROR_LOG_FILENAME = os.path.join(ROOT_PATH,'logs','error_vertaal.log')
 BATCH_LOG_FILENAME = os.path.join(ROOT_PATH,'logs','bot_vertaal.log')
+COMMAND_LOG_FILENAME = os.path.join(ROOT_PATH,'logs','cmd_vertaal.log')
 RPC_LOG_FILENAME = os.path.join(ROOT_PATH,'logs','rpc_vertaal.log')
 
 TEMP_UPLOAD_PATH = os.path.join(ROOT_PATH, 'tmp')
@@ -25,3 +26,4 @@ BUILD_LOG_PATH = os.path.join(ROOT_PATH, 'build_logs')
 
 if LOCAL_CONFIG and os.path.exists(LOCAL_CONFIG):
     execfile(LOCAL_CONFIG)
+    
