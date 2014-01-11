@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from django.core.management.base import BaseCommand
 from models import CommandLog
+import time
 
 class LogBaseCommand(BaseCommand):
     
@@ -26,6 +27,7 @@ class LogBaseCommand(BaseCommand):
     
     def handle(self, *args, **options):
         cmd = CommandLog(command=self._getname())
+        start = int(time.time()) 
         try:
             rsp = self.do_handle(*args, **options)
             if rsp:
@@ -35,6 +37,8 @@ class LogBaseCommand(BaseCommand):
             cmd.exception = str(e)
             raise
         finally:
+            end = int(time.time())
+            cmd.duration = int((end - start) / 60)
             cmd.save()
     
     def do_handle(self, *args, **options):

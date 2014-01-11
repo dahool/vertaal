@@ -24,6 +24,7 @@ class CommandLog(models.Model):
     exception = models.CharField(verbose_name=_('Exception'), max_length=500, null=True)
     response = models.CharField(verbose_name=_('Response'), max_length=500, null=True)
     success = models.BooleanField(default=True)
+    duration = models.IntegerField(default=0)
     
     def __unicode__(self):
         return _('%(command)s - Success: %(success)s - %(run)s - %(response)s') % {'command': self.command, 'success': self.success, 'run': self.lastrun, 'response': self.response}
