@@ -7,6 +7,7 @@ python manage.py appupdate
 python manage.py collectstatic --noinput
 python manage.py evolve --execute --noinput
 python manage.py compilemessages
+touch buildinfo
 echo "Reload"
 touch wsgi.py
 echo ""
