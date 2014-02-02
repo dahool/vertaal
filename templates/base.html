@@ -110,7 +110,7 @@
 <div id="footer">
 {% block footer %}
 {% endblock %}
-<p class="copyright">{% setting "PROJECT_NAME" %} v{% setting "VERSION" %} | &copy; 2009-{% now "Y" %} Sergio Gabriel Teves - <a href="http://www.sgtdev.com.ar">SGT Dev</a>
+<p class="copyright">{% setting "PROJECT_NAME" %} v{% setting "VERSION" %} {% setting "BUILD_VERSION" %} | &copy; 2009-{% now "Y" %} Sergio Gabriel Teves - <a href="http://www.sgtdev.com.ar">SGT Dev</a>
 <span class="buggie"><a href="{% setting "TICKET_URL" %}" target="_blank">{% trans "Found a bug?" %}</a></span>
 </p>
 </div>

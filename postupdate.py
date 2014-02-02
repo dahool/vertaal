@@ -10,7 +10,7 @@ import optparse
 import re
 from minmedia import minimizejs
 
-version = getattr(settings,'VERSION').split('-')[0]
+version = getattr(settings,'VERSION')
 target_path = getattr(settings,'CDN_PATH')
 cdn_media_path = 'media/app/vertaal'
 source_path = getattr(settings,'STATIC_ROOT')
