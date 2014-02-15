@@ -21,21 +21,22 @@ import commands
 import re
 from common.utils.commands import *
 
-def msgmerge(new_file, source, destination=None):
-    
-    if not destination:
-        destination = source
+def msgmerge(pofile, potfile, destination=None):
         
     if os.name == "posix":
-        command = "msgmerge %(new)s %(source)s --previous -N -o %(dest)s " % {'new': new_file,
-                                                                   'source': source,
+        if not destination:
+            command = "msgmerge %(new)s %(source)s --previous -N -U" % {'new': pofile,
+                                                                   'source': potfile}
+        else:
+            command = "msgmerge %(new)s %(source)s --previous -N -o %(dest)s" % {'new': pofile,
+                                                                   'source': potfile,
                                                                    'dest': destination}
         output = get_command_output(command)
                
-    else:
+    elif destination:
         import shutil
         try:
-            shutil.copy(new_file, destination)
+            shutil.copy(pofile, destination)
             output = ''
         except Exception, e:
             output = str(e)
