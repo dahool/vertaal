@@ -44,6 +44,12 @@ from teams.models import Team
 from django.contrib.auth import logout as auth_logout
 
 @login_required
+def get_migration_token(request):
+    from openidmigration import get_user_token
+    token = get_user_token(request.user)
+    return XMLResponse({'token': token})
+
+@login_required
 def update_favorites(request, remove=False, idtype=False):
     if request.method != 'POST':
         raise Http403

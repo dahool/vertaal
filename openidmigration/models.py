@@ -18,13 +18,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
+from django.conf import settings
 
+class MigrationTokenManager(models.Manager):
+    use_for_related_fields = True
+    
+    def valid(self):
+        meta_diff = datetime.datetime.now() - datetime.timedelta(days=getattr(settings, 'MIG_EXPIRES', 2))
+        return self.filter(used=False, created__gte=meta_diff)
+    
 class MigrationToken(models.Model):
     
     token = models.CharField(max_length=40, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     used = models.BooleanField(default=False)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="migtoken")
+    
+    objects = MigrationTokenManager()
     
     def __unicode__(self):
         return self.token

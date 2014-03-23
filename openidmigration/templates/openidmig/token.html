@@ -8,7 +8,7 @@
 <div class="form-box center-box" style="padding-top:10px; background-color: rgba(0, 0, 0, 0);">
 {% url 'user_register' as userregister %}
 <p>{% trans "Use the following migration token to link your account:" %}</p>
-<p><span style="color: red;">{{tokenid}}</span></p>
+<p><span id="openidtoken">{{tokenid}}</span></p>
 <p>{% blocktrans %}Login to <a href="{{secondarysite}}{{userregister}}" target="_blank">{{secondarysite}}</a> using your openID service. Then use the provided token to link your account.{% endblocktrans %}</p>
 <br/>
 <p>{% trans "Have in mind this token is temporal and for one use only." %}</p>
