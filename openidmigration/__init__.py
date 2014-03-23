@@ -20,16 +20,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import datetime, time
 from models import MigrationToken
 from django.conf import settings
-
+from django.db.utils import IntegrityError
 from django.utils.crypto import salted_hmac
 
 def link_user_account(token):
     try:
-        m = MigrationToken.objects.get(pk=token)
+        m = MigrationToken.objects.get(pk=token, used=False)
         meta_diff = datetime.datetime.now() - datetime.timedelta(days=getattr(settings, 'MIG_EXPIRES', 2))
         if m.created >= meta_diff and m.user.is_active:
             associate_user_backend(m.user)
-            m.delete()
+            m.used = True
+            m.save()
             return m.user
     except MigrationToken.DoesNotExist:
         pass
@@ -38,15 +39,22 @@ def link_user_account(token):
 def get_user_token(user):
     try:
         meta_diff = datetime.datetime.now() - datetime.timedelta(days=getattr(settings, 'MIG_EXPIRES', 2))
-        m = MigrationToken.objects.filter(user=user, created__gte=meta_diff)
+        m = MigrationToken.objects.filter(user=user, used=False, created__gte=meta_diff)
         if len(m) > 0:
             return m[0].token
     except MigrationToken.DoesNotExist:
         pass
-    token = generate_token(user)
-    MigrationToken.objects.create(token=token, user=user)
+    token = addNewToken(user)
     return token
-        
+
+def addNewToken(user):
+    token = generate_token(user)
+    try:
+        MigrationToken.objects.create(token=token, user=user)
+    except IntegrityError:
+        token = addNewToken(user)
+    return token
+            
 def generate_token(user):
     timestamp = str(time.time())
     key_salt = "openidmigration"+timestamp

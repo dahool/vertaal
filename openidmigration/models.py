@@ -23,6 +23,7 @@ class MigrationToken(models.Model):
     
     token = models.CharField(max_length=40, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
     user = models.ForeignKey(User)
     
     def __unicode__(self):
