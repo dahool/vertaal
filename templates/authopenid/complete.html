@@ -41,7 +41,7 @@
 </div>
 </form>
 
-{% ifsetting ENABLE_MIG %}
+{% ifsetting ENABLE_MIG_TOKEN %}
 <form class="form-style" action="{% url 'user_register' %}" method="post" accept-charset="utf-8">
 <input type="hidden" name="next" value="{{ next }}" />
 <fieldset>
