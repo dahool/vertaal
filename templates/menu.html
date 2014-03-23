@@ -1,4 +1,6 @@
-{% load i18n %}
+{% load i18n settingstag %}
+{% ifsetting ENABLE_MIG %}
+{% else %}
 {% block menu %}
 <ul id="menu">
 	{% if user.is_authenticated %}
@@ -25,3 +27,4 @@
 	{% endif %}		
 </ul>
 {% endblock %}
+{% endifsetting %}

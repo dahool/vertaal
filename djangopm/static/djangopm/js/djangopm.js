@@ -255,4 +255,6 @@ $(function() {
     $mboxct.show('slow');
 });
 
-
+function query_user(text, callback) {
+    $.post(_UQUERY, {'search': text}, callback, "json");         
+}

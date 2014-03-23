@@ -19,6 +19,8 @@
 # I made some modifications to adapt the code to my use case.
 #
 
+from django.contrib import messages
+
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import *
@@ -59,6 +61,9 @@ from django_authopenid.signals import oid_register
 from django_authopenid.utils import *
 
 from django.contrib import messages
+
+from openidmigration.forms import OpenIdMigrationForm
+from openidmigration import link_user_account
 
 def _build_context(request, extra_context=None):
     if extra_context is None:
@@ -110,7 +115,7 @@ def ask_openid(request, openid_url, redirect_to, on_failure=None):
         ax_attrs = getattr(settings, 'OPENID_AX', [])
         for attr in ax_attrs:
             if len(attr) == 2:
-                ax_req.add(ax.AttrInfo(attr[0], required=alias[1]))
+                ax_req.add(ax.AttrInfo(attr[0], required=attr[1]))
             else:
                 ax_req.add(ax.AttrInfo(attr[0]))
        
@@ -388,12 +393,21 @@ def register(request, template_name='authopenid/complete.html',
     form2 = auth_form(initial={ 
         'username': nickname,
     })
+    form3 = OpenIdMigrationForm()
     
     if request.POST:
         user_ = None
         if not redirect_to or '//' in redirect_to or ' ' in redirect_to:
             redirect_to = settings.LOGIN_REDIRECT_URL
-        if 'email' in request.POST.keys():
+        if 'migrationtoken' in request.POST.keys():
+            form3 = OpenIdMigrationForm(data=request.POST)
+            if form3.is_valid():
+                user_ = link_user_account(form3.cleaned_data['migrationtoken'])
+                if user_ is None:
+                    messages.error(request, _("Invalid or expired token"))
+                else:
+                    login(request, user_)
+        elif 'email' in request.POST.keys():
             form1 = register_form(data=request.POST)
             if form1.is_valid():
                 user_ = register_account(form1, openid_)
@@ -414,6 +428,7 @@ def register(request, template_name='authopenid/complete.html',
     return render(template_name, {
         'form1': form1,
         'form2': form2,
+        'form3': form3,
         redirect_field_name: redirect_to,
         'nickname': nickname,
         'email': email
