@@ -9,7 +9,7 @@ STARTUP_REDIRECT_URL = '/'
 
 MAINTEINANCE_ALLOW_URLS = (LOGIN_URL, '/man/',) 
 
-TICKET_URL = 'http://issues.vertaal.com.ar/'
+TICKET_URL = 'http://github.com/dahool/vertaal/issues'
 
 PAGINATION_DEFAULT_PAGINATION = 10
 SHOW_LATEST_PROJECTS = 8
