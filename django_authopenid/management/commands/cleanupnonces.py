@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 # Copyright 2007, 2008,2009 by Benoît Chesneau <benoitc@e-engura.org>
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,4 +22,4 @@ class Command(NoArgsCommand):
     
     def handle_noargs(self, **options):
         openid = DjangoOpenIDStore()
-        openid.cleanupNonce()
+        openid.cleanupNonces()

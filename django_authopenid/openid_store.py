@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 # Copyright 2007, 2008, 2009 by Benoît Chesneau <benoitc@e-engura.org>
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,7 @@ from django.db.models.query import Q
 from django.conf import settings
 from openid.association import Association as OIDAssociation
 import openid.store.interface
+import openid.store.nonce
 import openid.store
 
 from django_authopenid.models import Association, Nonce
