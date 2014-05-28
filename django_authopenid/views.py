@@ -325,7 +325,9 @@ def register_account(form, _openid):
     user = User.objects.create_user(form.cleaned_data['username'], 
                             form.cleaned_data['email'])
     user.backend = "django.contrib.auth.backends.ModelBackend"
-    user.set_unusable_password()
+    #user.set_unusable_password()
+    # lets allow a user to reset his/her password if necessary
+    user.set_password(User.objects.make_random_password(length=20))
     oid_register.send(sender=user, openid=_openid)
     return user
 
