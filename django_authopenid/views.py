@@ -19,8 +19,6 @@
 # I made some modifications to adapt the code to my use case.
 #
 
-from django.contrib import messages
-
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import *
