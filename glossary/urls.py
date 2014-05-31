@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('glossary.views',
     url(r'^(?P<project>[-\w]+)/(?P<lang>[-_@\w]+)/list/$', 'show_all', name="gloss_list"),

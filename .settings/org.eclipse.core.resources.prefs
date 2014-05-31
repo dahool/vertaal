@@ -43,6 +43,7 @@ encoding//deferredsubmit/models.py=utf-8
 encoding//django_authopenid/forms.py=utf-8
 encoding//django_authopenid/management/commands/cleanupassociations.py=utf-8
 encoding//django_authopenid/management/commands/cleanupnonces.py=utf-8
+encoding//django_authopenid/openid_store.py=utf-8
 encoding//django_authopenid/urls.py=utf-8
 encoding//django_authopenid/views.py=utf-8
 encoding//django_xmlrpc/decorators.py=utf-8

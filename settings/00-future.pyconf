@@ -1,2 +1,2 @@
-import django.template
-django.template.add_to_builtins('django.templatetags.future')
+#import django.template
+#django.template.add_to_builtins('django.templatetags.future')
