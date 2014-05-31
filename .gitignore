@@ -4,7 +4,6 @@ settings_local.py
 *.sqlite
 local.pyconf
 settings/60-local.pyconf
-.settings/**
 logs
 openid
 pagination
@@ -17,3 +16,4 @@ build_logs
 /django/
 .pydevproject
 *.log
+/.settings/
