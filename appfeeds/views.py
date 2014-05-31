@@ -1,5 +1,7 @@
-from django.contrib.syndication.views import feed
+from django.contrib.syndication.views import Feed
+from django.views.decorators.cache import cache_page
 
+@cache_page(60 * 360)
 def common_feed(request, slug, language = None, feed_slug = None, feeds = {}):
     
     if language:
@@ -9,4 +11,4 @@ def common_feed(request, slug, language = None, feed_slug = None, feeds = {}):
     
     url = "%s/%s" % (feed_slug, param)
 
-    return feed(request, url, feeds)
+    return Feed(request, url, feeds)
