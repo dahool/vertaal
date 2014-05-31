@@ -121,7 +121,7 @@ function update_member(url) {
 				</a>
 				{% endwith %}
 			</td>
-			<td>{{ req.created|localtime:user.get_profile.timezone }}</td>
+			<td>{{ req.created|localtime:user.profile.get.timezone }}</td>
 			<td>
 			<a href="{% url 'join_accept' req.id %}" class="nodecoration_icon icon submit link" title="{% trans "Accept" %}"></a>
 			<span id="button_reject" onclick="confirmReject('{% url 'join_reject' req.id %}');" class="nodecoration_icon icon delete link" title="{% trans "Reject" %}"></span>

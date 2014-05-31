@@ -48,10 +48,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.markup',
     'django_evolution',
     'django_authopenid',
-    #'django_openidconsumer',
     'app',
     'vertaalevolve',
     'auditor',
@@ -70,7 +68,6 @@ INSTALLED_APPS = (
     'maintenancemode',
     'glossary',
     'appfeeds',
-    #'notifications',
     'exceptionlogger',
     'news',
     'deferredsubmit',
@@ -78,12 +75,11 @@ INSTALLED_APPS = (
     'djangopm',
     'djangoapp',
     'openidmigration'
-#    'debug_toolbar',
 )
 
 ROOT_URLCONF = 'urls'
 
-AUTH_PROFILE_MODULE = 'userprofileapp.UserProfile'
+#AUTH_PROFILE_MODULE = 'userprofileapp.UserProfile'
 
 TEST_RUNNER = 'tests.test_runner.run_tests'
 

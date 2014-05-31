@@ -80,13 +80,11 @@ class UserProfileManager(models.Manager):
         """ catch exception when userprofile doesn't exists and create a new one
         this is better than doing it every time I need the profile
         """
-        if args:
-            kwargs['user__id__exact'] = args[0] 
-        print ">>>>>>>>>>>>>>> ESTOY USANDO EL MANAGER"
-        return self.get_or_create(kwargs)
+        obj, created = self.get_or_create(**kwargs)
+        return obj
     
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User, unique=True, related_name='profile')
     timezone = TimeZoneField(default='UTC')
     language = models.CharField(max_length=5, null=True, blank=True) 
     startup = models.ForeignKey(Favorite, null=True, blank=True)

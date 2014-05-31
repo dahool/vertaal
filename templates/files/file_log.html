@@ -29,7 +29,7 @@ $(document).ready(function()
 			<tr>
 				<td>{{ log.get_action_display }}</td>
 				<td>{% if user.is_authenticated %}
-					{{ log.created|localtime:request.user.get_profile.timezone }}
+					{{ log.created|localtime:request.user.profile.get.timezone }}
 					{% else %}
 					{{ log.created }}
 					{% endif %}	

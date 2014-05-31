@@ -28,7 +28,7 @@
 			{% for log in logs %}
 			<tr>
 				<td>{{ log.get_action_flag_display }}</td>
-				<td>{{ log.created|localtime:request.user.get_profile.timezone }}</td>
+				<td>{{ log.created|localtime:request.user.profile.get.timezone }}</td>
 				<td>
 					{% if log.user.get_full_name %}
 					{{ log.user.get_full_name }} ({{ log.user.username }})

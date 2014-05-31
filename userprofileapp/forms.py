@@ -21,7 +21,6 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.forms.util import ErrorList
 from timezones.forms import TimeZoneField
-from common.forms import TipErrorList
 from django.conf import settings
 
 LANGUAGE_CHOICES = (('', _('<Browser defined>')),) + settings.LANGUAGES
@@ -41,7 +40,7 @@ class UserProfileForm(forms.ModelForm):
             if kw.has_key('initial'):
                 val = kw['initial']
             obj = kw['instance']
-            p = obj.get_profile()
+            p = obj.profile.get()
             val['timezone']=p.timezone
             val['language']=p.language
             kw['initial']=val
@@ -67,7 +66,6 @@ class UserProfileForm(forms.ModelForm):
         """
         old_password = self.cleaned_data.get('old_password')
         password1 = self.cleaned_data.get('new_password1')
-        password2 = self.cleaned_data.get('new_password2')
         
         if password1 and not old_password:
             raise forms.ValidationError(_("Please, type your current password."))
@@ -107,15 +105,15 @@ class UserProfileForm(forms.ModelForm):
         if self.cleaned_data.get('new_password1'):
             user.set_password(self.cleaned_data.get('new_password1'))
         if self.cleaned_data.get('timezone'):
-            p = user.get_profile()
+            p = user.profile.get()
             p.timezone = self.cleaned_data.get('timezone')
             p.save()
         if self.cleaned_data.get('language'):
-            p = user.get_profile()
+            p = user.profile.get()
             p.language = self.cleaned_data.get('language')
             p.save()
         else:
-            p = user.get_profile()
+            p = user.profile.get()
             p.language = None
             p.save()
         if commit:

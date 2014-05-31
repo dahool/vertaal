@@ -27,7 +27,7 @@ class UserLocaleMiddleware(object):
     def process_request(self, request):
         if request.user.is_authenticated():
             try:
-                lang = request.user.get_profile().language    
+                lang = request.user.profile.get().language    
             except:
                 lang = translation.get_language_from_request(request)
             else:

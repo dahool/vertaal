@@ -3,7 +3,7 @@ from django.conf import settings
 
 def set_user_language(user):
     try:
-        lang = user.get_profile().language
+        lang = user.profile.get().language
         if lang:
             language = translation.to_locale(lang)
             translation.activate(language)

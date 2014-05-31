@@ -19,11 +19,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from django.contrib import admin
 from userprofileapp.models import *
 
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
+
 class UserAuditLogAdmin(admin.ModelAdmin):
     search_fields=['username','ip']
     list_display = ['created', 'username','ip', 'action']
 
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    max_num = 1
+    can_delete = False
+
+class UserAdmin(AuthUserAdmin):
+    def add_view(self, *args, **kwargs):
+        self.inlines = []
+        return super(UserAdmin, self).add_view(*args, **kwargs)
+
+    def change_view(self, *args, **kwargs):
+        self.inlines = [UserProfileInline]
+        return super(UserAdmin, self).change_view(*args, **kwargs)
+  
+  
+# unregister old user admin
+admin.site.unregister(User)
+# register new user admin
+admin.site.register(User, UserAdmin)
+
 admin.site.register(UserFile)
 admin.site.register(Favorite)
-admin.site.register(UserProfile)
 admin.site.register(UserAuditLog,UserAuditLogAdmin)

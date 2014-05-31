@@ -7,7 +7,7 @@ There are {{ counter }} unread messages in your profile.{% endblocktrans %}
 
 {% trans "Latest messages:" %}
 {% for mesa in messages %}
-> ---------- {{ mesa.message.created|localtime:user.get_profile.timezone }} ----------
+> ---------- {{ mesa.message.created|localtime:user.profile.get.timezone }} ----------
 > 
 > {{ mesa.message.subject }}
 {% endfor %}

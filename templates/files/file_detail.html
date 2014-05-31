@@ -153,7 +153,7 @@
 	
 		{% if potfile.updated %}
 		{% if user.is_authenticated %}
-			{% set potupdated=potfile.updated|localtime:user.get_profile.timezone %}
+			{% set potupdated=potfile.updated|localtime:user.profile.get.timezone %}
 		{% else %}
 			{% set potupdated=potfile.updated %}
 		{% endif %}
@@ -161,7 +161,7 @@
 		{% endif %}
 	
 		{% if user.is_authenticated %}
-			{% set pofile_potupdated=pofile.potupdated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}
+			{% set pofile_potupdated=pofile.potupdated|localtime:user.profile.get.timezone|date:"M d, Y H:i" %}
 		{% else %}
 			{% set pofile_potupdated=pofile.potupdated|date:"M d, Y H:i O" %}
 		{% endif %}
@@ -172,7 +172,7 @@
 			{% with pofile.buildcachedata as cache %}
 				{% if cache.rev %}
 					{% if user.is_authenticated %}
-						{% set cacheupdated=cache.updated|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}
+						{% set cacheupdated=cache.updated|localtime:user.profile.get.timezone|date:"M d, Y H:i" %}
 					{% else %}
 						{% set cacheupdated=cache.updated|date:"M d, Y H:i O" %}
 					{% endif %}
@@ -189,7 +189,7 @@
 		{% if submit %}
 			<a href="{% url 'get_submit_file' pofile.slug %}" target="_blank" class="nodecoration_icon action_icon download" title="{% trans "Download" %}"></a>
 			{% if user.is_authenticated %}
-				{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.get_profile.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
+				{% blocktrans with since=submit.created|timesince created=submit.created|localtime:user.profile.get.timezone|date:"M d, Y H:i" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
 			{% else %}
 				{% blocktrans with since=submit.created|timesince created=submit.created|date:"M d, Y H:i O" %}Pending submit, in queue since {{created}} ({{since}} ago){% endblocktrans %}
 			{% endif %}
@@ -216,7 +216,7 @@
 	                {% for sfile in pofile.submits.all|slice:":10" %}
 	                <tr>
 	                    <td><a href="{% url 'get_submit_file_arch' sfile.pk %}" class="action_icon nodecoration_icon download" title="{% trans "Download" %}" style="padding-right: 0px;"></a></td>
-	                    <td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	                    <td>{{ sfile.created|localtime:request.user.profile.get.timezone|date:"M d, Y H:i" }}</td>
 	                    <td>{% if sfile.owner.get_full_name %}
 				            {{ sfile.owner.get_full_name }} ({{ sfile.owner.username }})
 				            {% else %}
@@ -252,7 +252,7 @@
 					<tr>
 						<td class="log-action">{{ log.get_action_display }}</td>
 						<td class="log-date">{% if user.is_authenticated %}
-							{{ log.created|localtime:request.user.get_profile.timezone|date:"M d, H:i" }}
+							{{ log.created|localtime:request.user.profile.get.timezone|date:"M d, H:i" }}
 							{% else %}
 							{{ log.created|date:"M d, H:i O" }}
 							{% endif %}	

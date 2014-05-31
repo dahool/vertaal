@@ -29,7 +29,7 @@
 	</td>
 	<td>{{ sfile.pofile.component.name }}</td>
 	<td>{{ sfile.pofile.release.name }}</td>
-	<td>{{ sfile.created|localtime:request.user.get_profile.timezone|date:"M d, Y H:i" }}</td>
+	<td>{{ sfile.created|localtime:request.user.profile.get.timezone|date:"M d, Y H:i" }}</td>
    	<td>{% if sfile.owner.get_full_name %}
            {{ sfile.owner.get_full_name }} ({{ sfile.owner.username }})
            {% else %}

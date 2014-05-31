@@ -132,7 +132,7 @@ def message_reply(request, id, all=False):
         subject = message.subject
     else:
         subject = u"RE: %s" % message.subject
-    messageDate = localtime_for_timezone(message.created, request.user.get_profile().timezone)
+    messageDate = localtime_for_timezone(message.created, request.user.profile.get().timezone)
     text = [_('On %(date)s, %(name)s wrote:') % {'date': dateformat.format(messageDate, "r"), 'name': message.sender}]
     for line in message.text.splitlines():
         text.append(u"> %s" % line)

@@ -84,7 +84,7 @@ function confirmDelete(url) {
 		{% for fav in favs %}
 		<tr>
 			<td id="fav_{{fav.id}}">
-				{% ifequal fav request.user.get_profile.startup %}
+				{% ifequal fav request.user.profile.get.startup %}
 					<span id='start_set_{{fav.id}}' style="display: none;" onclick="startup_set('{{fav.id}}')" class="nodecoration_icon action_icon2 startup-add link" title="{% trans "Set as startup page" %}"></span>
 					<span id='start_del_{{fav.id}}' onclick="startup_set('{{fav.id}}', true)" class="nodecoration_icon action_icon2 startup-del link" title="{% trans "Unset startup page" %}"></span>
 				{% else %}

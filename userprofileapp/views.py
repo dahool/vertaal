@@ -100,7 +100,7 @@ def account_profile(request):
         form = UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             u = form.save()
-            lang = u.get_profile().language
+            lang = u.profile.get().language
             if lang and request.LANGUAGE_CODE <> lang:
                 from django.utils import translation
                 translation.activate(lang)
@@ -122,7 +122,7 @@ def set_startup(request, remove=False):
 
     res = {}
     res['id'] = fav_id = request.POST.get('id')
-    profile = request.user.get_profile()
+    profile = request.user.profile.get()
     if remove:
         res['success'] = True
         if profile.startup:
@@ -144,7 +144,7 @@ def set_startup(request, remove=False):
 @login_required
 def startup_redirect(request):
     try:
-        profile = request.user.get_profile()
+        profile = request.user.profile.get()
     except:
         profile = UserProfile.objects.create(user=request.user)
         

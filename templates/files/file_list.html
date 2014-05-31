@@ -141,7 +141,7 @@ $(document).ready(function(){
 	{% for log in last_actions %}
     {% url 'file_detail' log.pofile.slug as logfileurl %}
 	<li class="icon info">
-	{% blocktrans with filename=log.pofile.filename log_action=log.get_action_display|lower username=log.user.username updated=log.created|localtime:request.user.get_profile.timezone|timesince %}
+	{% blocktrans with filename=log.pofile.filename log_action=log.get_action_display|lower username=log.user.username updated=log.created|localtime:request.user.profile.get.timezone|timesince %}
 	File <b><a href="{{logfileurl}}">{{filename}}</a></b> {{log_action}} by <b>{{username}}</b> {{updated}} ago.
 	{% endblocktrans %}
 	</li>

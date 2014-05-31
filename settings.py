@@ -1,6 +1,9 @@
 import os
 import glob
 
+#enforce old serializer to support openid
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
 PROJECT_PATH = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 
 LOCAL_CONFIG = None
