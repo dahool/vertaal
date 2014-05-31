@@ -1,0 +1,10 @@
+Migration notes from 1.4 to 1.6
+
+* urls where already using future tags. Just removed pre load of tags in settings
+* Removed verify_exists URLFields in models
+* Change django.conf.urls.defaults to django.conf.urls
+* Use old session serializer to keep support with authopenid 
+  SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+* AUTH_PROFILE_MODULE was deprecated. Using AUTH_USER_MODEL doesn't work the trouble.
+  obj.get_profile() was change to use related manager. obj.profile.get()
+ 
