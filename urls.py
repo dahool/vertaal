@@ -65,14 +65,22 @@ else:
         url(r'^feeds/', disabled),
     )
 
-if settings.ENABLE_OPENID:
-    urlpatterns += patterns('',    
-        url(r'^openid/', include('django_authopenid.urls')),
-    )
-
 if settings.ENABLE_RPC:
     urlpatterns += patterns('',
         url(r'xmlrpc/$', 'django_xmlrpc.views.handle_xmlrpc',),
     )
-    
+
+if getattr(settings, 'ENABLE_MIG', False):
+    urlpatterns = patterns('',
+        url(r'^', include('openidmigration.urls'),),
+        url(r'^accounts/', include('registration.urls')),
+        url(r'^man/', include(admin.site.urls)),        
+        url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict)
+    )
+
+if settings.ENABLE_OPENID:
+    urlpatterns += patterns('',    
+        url(r'^openid/', include('django_authopenid.urls'))
+    )
+        
 urlpatterns += staticfiles_urlpatterns()

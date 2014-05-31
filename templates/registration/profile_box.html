@@ -1,4 +1,4 @@
-{% load i18n formtags extendtags %}
+{% load i18n formtags extendtags settingstag %}
 <script type="text/javascript">
 <!--
 function confirmDelete(url) {
@@ -45,6 +45,20 @@ function confirmDelete(url) {
 				{% endfor %}
 			</ul>
 			{% endwith %}
+			{% ifsetting ENABLE_MIG_TOKEN %}
+			<br/>
+			<span class="icon openidmig-icon">&nbsp;{% trans "Link Token:" %}</span>
+			<ul>
+			     <li>{% if user.migtoken.valid %}
+			         {% with user.migtoken.valid|first as tokenvalue %}
+                        <span id="openidtoken">{{ tokenvalue }}</span>
+                    {% endwith %}
+                    {% else %}
+                        <span id="openidtoken"><a href="{% url 'migration_gettoken' %}">{% trans "Create" %}</a></span>
+                    {% endif %}
+                    </li>
+			</ul>
+			{% endifsetting %}
 			<br/>
 			<span class="icon add">&nbsp;<a href="{% url 'user_associate' %}">{% trans "Add another OpenID" %}</a></span>
 			{% endif %}

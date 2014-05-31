@@ -28,5 +28,6 @@ urlpatterns = patterns('',
     url(r'^favorites/remove/$', update_favorites, name="remove_favorites", kwargs = {'remove': True }),
     url(r'^favorites/remove/profile$', update_favorites, name="profile_remove_fav", kwargs = {'remove': True, 'idtype': True}),
     url(r'^notification/$', mass_notification, name="profile_contact"),
-    url(r'^drop-account/$', drop_account, name="drop_account")
+    url(r'^drop-account/$', drop_account, name="drop_account"),
+    url(r'^migration-token/get/$', get_migration_token, name="migration_gettoken"),
 )

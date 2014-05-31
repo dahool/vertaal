@@ -1,5 +1,14 @@
-{% load i18n djangopm %}
-{% block auth %}     
+{% load i18n djangopm settingstag %}
+{% block auth %}
+{% ifsetting ENABLE_MIG %}
+    {% if user.is_authenticated %}
+        {% trans "Welcome" %} {{ user.username }}
+        &nbsp;|&nbsp;
+        <a href="{% url 'user_signout' %}">{% trans "Sign out" %}</a>
+    {% else %}
+        <a class="menu_link" href="{% url 'user_signin' %}">{% trans "Sign in" %}</a>
+    {% endif %}
+{% else %}
 	{% if user.is_authenticated %}
 		{% url 'user_profile' as profile %}
 		{% trans "Welcome" %} <a title="{% trans "Profile settings" %}" href="{{ profile }}">{{ user.username }}</a>
@@ -13,4 +22,5 @@
 		<a class="menu_link" href="{% url 'user_signup' %}">{% trans "Register" %}</a>
 		{% endif %}
 	{% endif %}
+{% endifsetting %}
 {% endblock %}

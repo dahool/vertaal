@@ -1250,6 +1250,9 @@ input.openid {
 .openid-icon {
     background-image: url('../images/openid-icon.png');
 }
+.openidmig-icon {
+    background-image: url('../images/icons/key.png');
+}
 #login-openid {
     width: 24em;
 }
@@ -1475,4 +1478,7 @@ button.icon {
 }
 .bold {
 	font-weight: bold;
+}
+#openidtoken {
+	color: red;
 }

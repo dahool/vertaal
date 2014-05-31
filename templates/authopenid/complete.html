@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n formtags %}
+{% load i18n formtags settingstag %}
 {% load errors %}
 {% block title %}{{ block.super }} | {% trans "OpenID Registration" %}{% endblock %}
 {% block favs %}
@@ -40,5 +40,22 @@
 	<input class="icon signup" type="submit" value="{% trans "Verify" %}" />
 </div>
 </form>
+
+{% ifsetting ENABLE_MIG_TOKEN %}
+<form class="form-style" action="{% url 'user_register' %}" method="post" accept-charset="utf-8">
+<input type="hidden" name="next" value="{{ next }}" />
+<fieldset>
+    <legend>{% trans "Migrate existing account" %}</legend>
+    <ol>
+        <li>{% formfield form3.migrationtoken %}</li>
+    </ol>
+    {{ form3.non_field_errors }}
+</fieldset>
+<div id="form-action" class="text-right">
+    <input class="icon signup" type="submit" value="{% trans "Link" %}" />
+</div>
+</form>
+{% endifsetting %}
+
 </div>
 {% endblock %}

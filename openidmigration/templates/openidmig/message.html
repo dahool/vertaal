@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Migration Token" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<div class="center-box">
+<div class="form-box center-box" style="padding-top:10px; background-color: rgba(0, 0, 0, 0);">
+{% url 'user_register' as userregister %}
+{% url 'token_generation' as migrationurl %}
+<p>{% blocktrans %}We are moving to <a href="{{secondarysite}}{{userregister}}" target="_blank">{{secondarysite}}</a>{% endblocktrans %}</p>
+<br/>
+<p>{% trans "As some openID providers (like google) doesn't support domain change, you'll need to perform an user migration process." %}</p>
+<p>{% blocktrans %}If you remember your local credentials, you can just go to <a href="{{secondarysite}}{{userregister}}" target="_blank">{{secondarysite}}{{userregister}}</a><br/>
+sign in with your openID service and then link you accounts using your Vertaal's username and password.{% endblocktrans %}</p>
+<p>{% blocktrans %}If you don't remember, or never used your local credentials, or just wan't to make it simple, go <a href="{{migrationurl}}">here</a> to get your migration token<br/>
+and then proceed to <a href="{{secondarysite}}{{userregister}}" target="_blank">{{secondarysite}}</a> to link your account signing in with your openID service.{% endblocktrans %}</p>
+</div>
+</div>
+{% endblock %}

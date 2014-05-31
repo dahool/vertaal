@@ -73,6 +73,17 @@ function process_set_startup(data) {
 		}
 	});	
 }
+function get_user_token() {
+	url = $("#openidtoken > a").attr('href');
+	$.post(url, function(data) {
+		$(data).find('response').each(function() {
+			var c = $(this).find('token');
+			if (c.length>0) {
+				$("#openidtoken").html(c.text());
+			}
+		});
+	}, "xml");
+}
 
 $(document).ready(function(){
 	$( "#tabs" ).tabs({
@@ -84,5 +95,9 @@ $(document).ready(function(){
 			$.cookie('profile_tab', ui.newTab.index());
 			createPagination();
 		}
-	});	
+	});
+	$("#openidtoken > a").on('click', function(ev) {
+		ev.preventDefault();
+		get_user_token();
+	});
 });

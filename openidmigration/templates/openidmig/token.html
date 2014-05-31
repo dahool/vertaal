@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ block.super }} | {% trans "Migration Token" %}{% endblock %}
+{% block favs %}
+{% endblock %}
+{% block content %}
+<div class="center-box">
+<div class="form-box center-box" style="padding-top:10px; background-color: rgba(0, 0, 0, 0);">
+{% url 'user_register' as userregister %}
+<p>{% trans "Use the following migration token to link your account:" %}</p>
+<p><span id="openidtoken">{{tokenid}}</span></p>
+<p>{% blocktrans %}Login to <a href="{{secondarysite}}{{userregister}}" target="_blank">{{secondarysite}}</a> using your openID service. Then use the provided token to link your account.{% endblocktrans %}</p>
+<br/>
+<p>{% trans "Have in mind this token is temporal and for one use only." %}</p>
+<p>{% trans "If you fail to link you account while this site is up, you'll have to login using your local credentials and use password recovery tool in case you don't remember it." %}</p> 
+</div>
+</div>
+{% endblock %}
