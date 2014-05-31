@@ -1,10 +1,10 @@
 import time
 import datetime
 import types
-from decimal import *
+from decimal import Decimal
+import json
 
 from django.db import models
-from django.utils import simplejson as json
 from django.core.serializers.json import DateTimeAwareJSONEncoder
 from django.http import HttpResponse
 

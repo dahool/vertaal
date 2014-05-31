@@ -18,11 +18,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import time
 import datetime
-from decimal import *
+from decimal import Decimal
+import json
 
 from django.http import HttpResponse
 from django.db import models
-from django.utils import simplejson as json
 from django.core.serializers.json import DateTimeAwareJSONEncoder
 
 def isiterable(elem):
