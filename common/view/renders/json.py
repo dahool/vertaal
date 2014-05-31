@@ -7,13 +7,14 @@ import json
 from django.db import models
 from django.core.serializers.json import DateTimeAwareJSONEncoder
 from django.http import HttpResponse
+from django.conf import settings
 
 def render_to_json(context):
     resp = []
     for k in context.iterkeys():
         resp.append('"%s": %s' % (k, parse(context[k])))
     data = '{%s}' % ','.join(resp)
-    return HttpResponse(data, mimetype='application/json')    
+    return HttpResponse(data, content_type = "application/json; charset=%s" % settings.DEFAULT_CHARSET)    
     
 def parse(data):
     """

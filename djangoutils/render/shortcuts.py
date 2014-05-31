@@ -24,6 +24,7 @@ import json
 from django.http import HttpResponse
 from django.db import models
 from django.core.serializers.json import DateTimeAwareJSONEncoder
+from django.conf import settings
 
 def isiterable(elem):
     return hasattr(elem, "__iter__")
@@ -32,7 +33,7 @@ def isdictlike(elem):
     return hasattr(elem, 'keys') and hasattr(elem, 'values')
         
 def XMLResponse(data):
-    response = HttpResponse(mimetype='text/xml')
+    response = HttpResponse(content_type = "text/xml; charset=utf-8")
     response.write(parseXml(data))
     return response
         
@@ -41,7 +42,7 @@ def JSONResponse(data):
     for k in data.iterkeys():
         resp.append('"%s": %s' % (k, parseJson(data[k])))
     data = '{%s}' % ','.join(resp)
-    return HttpResponse(data, mimetype='application/json')    
+    return HttpResponse(data, content_type = "application/json; charset=%s" % settings.DEFAULT_CHARSET)    
 
 def parseXml(data):
     xml = '<?xml version="1.0" encoding="UTF-8"?><response>'

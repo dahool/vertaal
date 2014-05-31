@@ -164,6 +164,6 @@ def export_tbx(request, project, lang):
     exfile = tbx.VertaalTbxFile()
     exfile.parse_glossary(list)
 
-    response = HttpResponse(str(exfile), mimetype='application/xml; charset=UTF-8')
+    response = HttpResponse(str(exfile), content_type='application/xml; charset=UTF-8')
     response['Content-Disposition'] = '%s filename=%s' % ("attachment;", "%s_%s.tbx" % (p.slug,l.code))        
     return response

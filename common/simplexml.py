@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 
 def XMLResponse(data):
-    response = HttpResponse(mimetype='text/xml')
+    response = HttpResponse(content_type = "text/xml; charset=utf-8")
     xml = '<?xml version="1.0" encoding="UTF-8"?><response>'
     for k in data.iterkeys():
         if k[-5:]=='_HTML':

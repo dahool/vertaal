@@ -12,13 +12,14 @@ import os,sys,zlib
 
 from django.db import models
 from django.http import HttpResponse
+from django.conf import settings
 
 def render_to_xml(context):
     resp = []
     for k in context.iterkeys():
         resp.append('"%s": %s' % (k, parse(context[k])))
     data = '{%s}' % ','.join(resp)
-    return HttpResponse(data, mimetype='text/xml')    
+    return HttpResponse(data, content_type = "text/xml; charset=%s" % settings.DEFAULT_CHARSET)    
     
 class XMLDictionaryHandler(ContentHandler):
     """SAX Handler class which converts an XML

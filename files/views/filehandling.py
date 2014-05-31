@@ -61,7 +61,7 @@ def get_pot_file(request, slug):
         except Exception, e:
             logger.error(e)
             raise Http404            
-        response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
+        response = HttpResponse(content, content_type='application/x-gettext; charset=UTF-8')
         attach = "attachment;"
         response['Content-Disposition'] = '%s filename=%s' % (attach, potfile.name)        
     return response
@@ -77,7 +77,7 @@ def get_file_arch(request, id):
         response = redirect(url)
     else:
         content = sfile.handler.get_content()
-        response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
+        response = HttpResponse(content, content_type='application/x-gettext; charset=UTF-8')
         attach = "attachment;"
         response['Content-Disposition'] = '%s filename=%s' % (attach, sfile.filename)   
     return response
@@ -140,7 +140,7 @@ def get_file(request, slug, view=False, submit=False):
                 content = handler.get_content()
             else:
                 content = handler.get_content(not view)            
-            response = HttpResponse(content, mimetype='application/x-gettext; charset=UTF-8')
+            response = HttpResponse(content, content_type='application/x-gettext; charset=UTF-8')
             attach = "attachment;"
             response['Content-Disposition'] = '%s filename=%s' % (attach, file.filename)        
     return response
