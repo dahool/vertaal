@@ -64,7 +64,7 @@ class Project(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     vcsurl = models.CharField(verbose_name=_('Repository URL'), max_length=200, blank=False, help_text=_("Subversion repository URL"))
-    viewurl = models.URLField(verbose_name=_('View Repository URL'), blank=True, verify_exists=False, null=True)
+    viewurl = models.URLField(verbose_name=_('View Repository URL'), blank=True, null=True)
     viewurlparams = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('View URL parameters'), help_text=_("Parameters separated by semicolon (;). Ex: view=log;down=False"))
     
     repo_type = models.CharField(choices=settings.REPOSITORIES,
