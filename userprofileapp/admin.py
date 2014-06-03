@@ -21,6 +21,7 @@ from userprofileapp.models import *
 
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
+from django.utils.translation import ugettext_lazy as _
 
 class UserAuditLogAdmin(admin.ModelAdmin):
     search_fields=['username','ip']
@@ -32,6 +33,15 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
 
 class UserAdmin(AuthUserAdmin):
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), { 'classes': ('grp-collapse grp-closed',),
+                             'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    
     def add_view(self, *args, **kwargs):
         self.inlines = []
         return super(UserAdmin, self).add_view(*args, **kwargs)

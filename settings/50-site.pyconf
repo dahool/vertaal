@@ -1,3 +1,5 @@
 PROJECT_NAME = 'Vertaal'
 VERSION = '1.6.0'
 VERSION_HIST = ()
+
+GRAPPELLI_ADMIN_TITLE = 'Vertaal Administration'
