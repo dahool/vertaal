@@ -20,7 +20,7 @@ def copy_media():
     if not os.path.exists(tgt):
         os.makedirs(tgt)
     print "Prepare..."
-    os.system("cp -R %s/* %s" % (source_path, tgt))
+    os.system("cp -vR %s/* %s" % (source_path, tgt))
     if prompt_min(): minimizejs(tgt)
     
 def upload():
