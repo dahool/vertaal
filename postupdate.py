@@ -24,9 +24,14 @@ def copy_media():
     if prompt_min(): minimizejs(tgt)
     
 def upload():
-    cmd = 'appcfg.py update %s' % target_path
+    cmd = 'appcfg.py'
+    if getattr(settings,'APP_TOKEN', False):
+        cmd += ' --oauth2_refresh_token=%s' % settings.APP_TOKEN
+    else:
+        cmd += ' --oauth2 --noauth_local_webserver'
     if getattr(settings, 'APP_USER',False):
         cmd += ' --email=%s' % settings.APP_USER
+    cmd += ' update %s' % target_path
     os.system(cmd)
             
 def prompt_continue():
