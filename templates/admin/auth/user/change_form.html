@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+
+<!-- LOADING -->
+{% load admin_static i18n admin_modify admin_urls grp_tags %}
+
+{% block javascripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block object-tools-items %}
+    <li><a href="{% url opts|admin_urlname:'passwordreset' original.pk %}">{% trans "Send Password Reset" %}</a></li>
+    {{ block.super }}
+{% endblock %}

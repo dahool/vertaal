@@ -21,8 +21,14 @@ from userprofileapp.models import *
 
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext, ugettext_lazy as _
 
+from django.core import urlresolvers
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+        
 class UserAuditLogAdmin(admin.ModelAdmin):
     search_fields=['username','ip']
     list_display = ['created', 'username','ip', 'action']
@@ -33,6 +39,8 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
 
 class UserAdmin(AuthUserAdmin):
+    change_form_template = 'admin/auth/user/change_form.html'
+
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
@@ -50,6 +58,42 @@ class UserAdmin(AuthUserAdmin):
         self.inlines = [UserProfileInline]
         return super(UserAdmin, self).change_view(*args, **kwargs)
   
+    def get_urls(self):
+        from django.conf.urls import patterns, url
+        return patterns('',
+            url(r'^(\d+)/passwordreset/$',
+            self.admin_site.admin_view(self.user_password_reset), name='%s_%s_passwordreset' % (self.model._meta.app_label, self.model._meta.model_name))
+        ) + super(UserAdmin, self).get_urls()
+  
+    def user_password_reset(self, request, id, form_url=''):
+        from django.contrib.auth.tokens import default_token_generator
+        from django.contrib.auth.forms import PasswordResetForm
+        
+        if not self.has_change_permission(request):
+            raise PermissionDenied
+        user = get_object_or_404(self.get_queryset(request), pk=id)
+        post_reset_redirect = urlresolvers.reverse('admin:%s_%s_change' % (self.model._meta.app_label, self.model._meta.model_name), args=(id,))
+
+        form = PasswordResetForm({'email': user.email})
+        if form.is_valid():
+            opts = {
+                'use_https': request.is_secure(),
+                'token_generator': default_token_generator,
+                'from_email': None,
+                'email_template_name': 'registration/password_reset_email.html',
+                'subject_template_name': 'registration/password_reset_subject.txt',
+                'request': request,
+            }
+            opts = dict(opts, domain_override=request.get_host())
+            form.save(**opts)
+
+            msg = ugettext('Password reset link sent.')
+            messages.success(request, msg)
+        else:
+            msg = ugettext('Error ocurred while sending password reset link.')
+            messages.error(request, msg)
+        
+        return HttpResponseRedirect(post_reset_redirect)
   
 # unregister old user admin
 admin.site.unregister(User)
