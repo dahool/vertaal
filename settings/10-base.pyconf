@@ -57,7 +57,7 @@ SECRET_KEY = r"[[SECRETKEY]]"
 SITE_ID = 1
 
 ADMINS = (
-    ('Administrator', 'admin@vertaal.com.ar'),
+    ('Administrator', 'admin@email.com'),
 )
 
 MANAGERS = ADMINS
