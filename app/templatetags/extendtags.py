@@ -354,15 +354,18 @@ def do_urlfull(parser, token):
 class URLFullNode(defaulttags.URLNode):
     def render(self, context): 
         retval = super(URLFullNode, self).render(context)
-        host = getattr(settings, 'FQDN', '')
-        if not host.endswith('/'): host = host + '/'
-        retval = host + retval
+        retval = get_full_url(retval)
         
         if self.asvar:
             context[self.asvar] = retval
             return ''
         else:
             return retval
+
+def get_full_url(url):
+    host = getattr(settings, 'FQDN', '')
+    if not host.endswith('/'): host = host + '/'
+    return host + retval
 
 @register.tag(name="switch")
 def do_switch(parser, token):
