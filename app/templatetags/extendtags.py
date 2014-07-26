@@ -365,7 +365,7 @@ class URLFullNode(defaulttags.URLNode):
 def get_full_url(url):
     host = getattr(settings, 'FQDN', '')
     if not host.endswith('/'): host = host + '/'
-    return host + retval
+    return host + url
 
 @register.tag(name="switch")
 def do_switch(parser, token):
