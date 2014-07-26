@@ -342,52 +342,28 @@ class IfMatchNode(Node):
         else:
             return self.nodelist_false.render(context)
 
-from django.template.defaulttags import URLNode
+from django.template import defaulttags
 from django.conf import settings
 
 @register.tag(name="urlfull")     
 def do_urlfull(parser, token):
-    bits = token.contents.split(' ')
-    if len(bits) < 2:
-        raise TemplateSyntaxError("'%s' takes at least one argument"
-                                  " (path to a view)" % bits[0])
-    viewname = bits[1]
-    args = []
-    kwargs = {}
-    asvar = None
-        
-    if len(bits) > 2:
-        bits = iter(bits[2:])
-        for bit in bits:
-            if bit == 'as':
-                asvar = bits.next()
-                break
-            else:
-                for arg in bit.split(","):
-                    if '=' in arg:
-                        k, v = arg.split('=', 1)
-                        k = k.strip()
-                        kwargs[k] = parser.compile_filter(v)
-                    elif arg:
-                        args.append(parser.compile_filter(arg))
-    return URLFullNode(viewname, args, kwargs, asvar)
-
-class URLFullNode(URLNode):
+    retval = defaulttags.url(parser, token)
+    retval.__class__ = URLFullNode
+    return retval
+    
+class URLFullNode(defaulttags.URLNode):
     def render(self, context): 
-        url = super(URLFullNode, self).render(context)
-
-        value = get_full_url(url)
+        retval = super(URLFullNode, self).render(context)
+        host = getattr(settings, 'FQDN', '')
+        if not host.endswith('/'): host = host + '/'
+        retval = host + retval
+        
         if self.asvar:
-            url = context[self.asvar]
-            context[self.asvar] = value
+            context[self.asvar] = retval
             return ''
         else:
-            return value
+            return retval
 
-def get_full_url(url):
-    host = getattr(settings, 'SITE_DOMAIN', '--SITE_DOMAIN--')
-    return 'http://%s%s' % (host, url)
-            
 @register.tag(name="switch")
 def do_switch(parser, token):
     """
