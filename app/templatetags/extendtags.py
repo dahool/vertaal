@@ -347,15 +347,19 @@ from django.conf import settings
 
 @register.tag(name="urlfull")     
 def do_urlfull(parser, token):
-    retval = defaulttags.url(parser, token)
-    retval.__class__ = URLFullNode
-    return retval
+    node_instance = defaulttags.url(parser, token)
+    return URLFullNode(view_name=node_instance.view_name,
+        args=node_instance.args,
+        kwargs=node_instance.kwargs,
+        asvar=node_instance.asvar)    
     
 class URLFullNode(defaulttags.URLNode):
     def render(self, context): 
         retval = super(URLFullNode, self).render(context)
+        if self.asvar:
+            retval = context[self.asvar]
         retval = get_full_url(retval)
-        
+
         if self.asvar:
             context[self.asvar] = retval
             return ''
@@ -364,7 +368,6 @@ class URLFullNode(defaulttags.URLNode):
 
 def get_full_url(url):
     host = getattr(settings, 'FQDN', '')
-    if not host.endswith('/'): host = host + '/'
     return host + url
 
 @register.tag(name="switch")
