@@ -114,7 +114,8 @@ ul.errorlist li {
 #footer p,
 #powered p {
     display: inline;
-    vertical-align: middle; 
+    vertical-align: middle;
+    margin-right: 5px;
 }
 #powered {
     text-align: right;
