@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
-{% load i18n %}
+{% load i18n grp_tags %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% get_admin_title %} | {{ title }}{% endblock %}
 
 {% block userlinks %}
 <li>
