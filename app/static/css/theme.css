@@ -1483,3 +1483,6 @@ button.icon {
 #openidtoken {
 	color: red;
 }
+.pagination_sizefix .pagination {
+  font-size: 1.1em;
+}

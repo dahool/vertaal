@@ -3,7 +3,7 @@ from os import listdir
 from os.path import isdir
 from common.utils.commands import get_command_output
 
-JS_FILES = ['base.js','djangopm.js','filedetail.js','filelist.js','jquery.alerts.src.js','jquery.fileupload.js','jquery.iframe-transport.js',
+JS_FILES = ['base.js','djangopm.js','filedetail.js','filelist.js','filesubmit.js','jquery.alerts.src.js','jquery.fileupload.js','jquery.iframe-transport.js',
 'jquery.json.js','jquery.loading.js','jquery.measure.js','jquery.place.js','jquery.pulse.js','jquery.tablesorter.js','jquery.ui.draggable.js',
 'multiselectbox.js','orbited.js','profileapp.js','simpletooltip.js','simpletooltip2.js','stomp.js']
 

@@ -46,6 +46,7 @@ class POFileSubmitAdmin(admin.ModelAdmin):
     readonly_fields = ('pofile',)
     search_fields=['pofile__filename', 'pofile__slug']
                 
+admin.site.register(POFileSubmitSet)           
 admin.site.register(POFile,POFileAdmin)
 admin.site.register(POTFile,POTFileAdmin)
 admin.site.register(POFileLock, POFileLockAdmin)

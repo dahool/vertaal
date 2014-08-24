@@ -767,7 +767,7 @@ class POFileSubmit(models.Model):
     """
         
     pofile = models.ForeignKey(POFile, related_name='submits')
-    created = models.DateTimeField(auto_now=True, auto_now_add=True, editable=True)
+    created = models.DateTimeField(auto_now=True, auto_now_add=True, editable=True, db_index=True)
     owner = models.ForeignKey(User, related_name='files_submitted')
     enabled = models.BooleanField(default=True, db_index=True)
     locked = models.BooleanField(default=False, db_index=True)
@@ -787,9 +787,10 @@ class POFileSubmit(models.Model):
         get_latest_by = 'created'
     
     def __unicode__(self):
-        return u"%(pofile)s (%(owner)s)" % {
+        return u"%(pofile)s (%(owner)s) - %(created)s" % {
             'owner': self.owner.username,
-            'pofile': self.pofile.filename,} 
+            'pofile': self.pofile.filename,
+            'created': self.created} 
 
     def __repr__(self):
         return '<POFileSubmit: %s>' % self.pofile.filename
@@ -805,6 +806,22 @@ class POFileSubmit(models.Model):
     def handler(self):
         return SubmitFileHandler(self)
 
+class POFileSubmitSet(models.Model):
+    
+    files = models.ManyToManyField(POFileSubmit)
+    created = models.DateTimeField(auto_now=True, auto_now_add=True)
+    
+    def __unicode__(self):
+        return u'<POFileSubmitSet: %s - %s>' % (self.pk, self.created)
+
+    def __repr__(self):
+        return '<POFileSubmitSet: %s>' % self.pk
+    
+    class Meta:
+        db_table = 'pofile_submitset'
+        #ordering  = ('-created',)
+        get_latest_by = 'created'
+    
 def createlock_callback(sender, **kwargs):
     obj = kwargs['instance']
     try:

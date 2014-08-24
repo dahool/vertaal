@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.utils.translation import ugettext as _
+from django.utils.translation import ungettext, ugettext as _
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -32,7 +32,7 @@ import files.lib.handlers as filehandler
 from releases.models import Release
 from languages.models import Language
 from teams.models import Team, HasheableTeam
-from files.models import SUBMIT_STATUS_ENUM, POFile,  POFileSubmit, POFileLog
+from files.models import SUBMIT_STATUS_ENUM, POFile,  POFileSubmit, POFileLog, POFileSubmitSet
 from files.forms import UploadFileForm
 
 from files.views import check_status
@@ -109,14 +109,21 @@ def submit_team_file(request, team = None):
 
     files = []
     teams = set()
-    for fid in request.POST.getlist('file'):
-        try:
-            sfile = POFileSubmit.objects.get(pk=fid)
-            files.append(sfile)
-            h = HasheableTeam(language=sfile.pofile.language.pk, project=sfile.pofile.release.project.pk)
-            teams.add(h)
-        except Exception, e:
-            logger.error("Submit Queue: %s" % (e))
+    
+    files = POFileSubmit.objects.filter(pk__in=request.POST.getlist('file'))
+    
+    for sfile in files:
+        h = HasheableTeam(language=sfile.pofile.language.pk, project=sfile.pofile.release.project.pk)
+        teams.add(h)
+                
+#     for fid in request.POST.getlist('file'):
+#         try:
+#             sfile = POFileSubmit.objects.get(pk=fid)
+#             files.append(sfile)
+#             h = HasheableTeam(language=sfile.pofile.language.pk, project=sfile.pofile.release.project.pk)
+#             teams.add(h)
+#         except Exception, e:
+#             logger.error("Submit Queue: %s" % (e))
             
     if len(teams) == 0:
         messages.warning(request, _("You are not authorized to perform this action."))
@@ -137,10 +144,14 @@ def submit_team_file(request, team = None):
         messages.warning(request, _("Please, select one or more files."))
         return HttpResponseRedirect(back)
 
+    count = len(files)
     if reject:
         needuser = False
         form = RejectSubmitForm()
-        messages.info(request, _("You are about to reject the following files."))
+        #messages.info(request, _("You are about to reject the following files."))
+        msg = ungettext('You are about to reject 1 file', 'You are about to reject %(count)s files', count) % {
+            'count': count,
+        }        
     else:
         if t.project.repo_user:
             needuser=False
@@ -148,10 +159,18 @@ def submit_team_file(request, team = None):
         else:
             needuser=True
             form = HttpCredForm()
-        messages.info(request, _("You are about to submit the following files."))
+        #messages.info(request, _("You are about to submit the following files."))
+        msg = ungettext('You are about to submit 1 file', 'You are about to submit %(count)s files', count) % {
+            'count': count,
+        }        
+    messages.info(request, msg)
+    
+    fileSet = POFileSubmitSet.objects.create()
+    #fileSet.files.add(*files.all())
+    fileSet.files = files
     
     return render_to_response("files/file_submit_confirm.html",
-                               {'files': files,
+                               {'files': fileSet,
                                 'back': back,
                                 'form': form,
                                 'reject': reject,
@@ -183,40 +202,56 @@ def confirm_submit(request):
             form = CommentForm(request.POST)
         
     if not form.is_valid():
-        files = []
-        for fid in request.POST.getlist('file'):
-            try:
-                sfile = POFileSubmit.objects.get(pk=fid)
-                files.append(sfile)
-            except:
-                pass            
+#         files = []
+#         for fid in request.POST.getlist('file'):
+#             try:
+#                 sfile = POFileSubmit.objects.get(pk=fid)
+#                 files.append(sfile)
+#             except:
+#                 pass            
         messages.warning(request, message=_("Complete the form and try again."))
         return render_to_response("files/file_submit_confirm.html",
-                                   {'files': files,
+                                   {'files': request.POST.get('file'),
                                     'back': request.POST['back'],
                                     'form': form,
                                     'reject': reject},
                                    context_instance = RequestContext(request))
 
     files = []
-    for fid in request.POST.getlist('file'):
-        try:
-            submfile = POFileSubmit.objects.get(pk=fid)
-            if reject:
-                send_pm(submfile.owner, _("Submit rejected"), message=_("The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]") % 
-                                        {'file': submfile.pofile.filename,
-                                         'user': request.user.username,
-                                         'project': submfile.pofile.release.project.name,
-                                         'comment': form.cleaned_data.get('message')},)
-                POFileLog.objects.create(pofile=submfile.pofile,
-                                         user=request.user, action='X',
-                                         comment=form.cleaned_data.get('message'))
-                submfile.status = SUBMIT_STATUS_ENUM.REJECTED
-                submfile.save()
-            else:
-                files.append(submfile)
-        except:
-            pass
+    fileSet = get_object_or_404(POFileSubmitSet, pk=request.POST.get('file'))
+    for submfile in fileSet.files.all():
+        if reject:
+            send_pm(submfile.owner, _("Submit rejected"), message=_("The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]") % 
+                                    {'file': submfile.pofile.filename,
+                                     'user': request.user.username,
+                                     'project': submfile.pofile.release.project.name,
+                                     'comment': form.cleaned_data.get('message')},)
+            POFileLog.objects.create(pofile=submfile.pofile,
+                                     user=request.user, action='X',
+                                     comment=form.cleaned_data.get('message'))
+            submfile.status = SUBMIT_STATUS_ENUM.REJECTED
+            submfile.save()
+        else:
+            files.append(submfile)
+    
+#     for fid in request.POST.getlist('file'):
+#         try:
+#             submfile = POFileSubmit.objects.get(pk=fid)
+#             if reject:
+#                 send_pm(submfile.owner, _("Submit rejected"), message=_("The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]") % 
+#                                         {'file': submfile.pofile.filename,
+#                                          'user': request.user.username,
+#                                          'project': submfile.pofile.release.project.name,
+#                                          'comment': form.cleaned_data.get('message')},)
+#                 POFileLog.objects.create(pofile=submfile.pofile,
+#                                          user=request.user, action='X',
+#                                          comment=form.cleaned_data.get('message'))
+#                 submfile.status = SUBMIT_STATUS_ENUM.REJECTED
+#                 submfile.save()
+#             else:
+#                 files.append(submfile)
+#         except:
+#             pass
 
     if reject:
         messages.info(request, message=_("The files were rejected."))
@@ -236,6 +271,8 @@ def confirm_submit(request):
                  ppass,
                  form.cleaned_data.get('message'))
 
+    fileSet.delete()
+    
     return HttpResponseRedirect(request.POST['back'])
     
 @login_required
@@ -317,3 +354,11 @@ def submit_new_file(request, slug):
         res['form']=form
 
     return commit_queue(request, res)
+
+@login_required
+def confirm_submit_files(request, id):
+    fileSet = get_object_or_404(POFileSubmitSet, pk=id)
+
+    return render_to_response("files/file_submit_confirm_filelist.html",
+                               {'fileSet': fileSet},
+                               context_instance = RequestContext(request))

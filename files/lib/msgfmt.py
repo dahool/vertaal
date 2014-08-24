@@ -20,9 +20,13 @@ import os
 import commands
 import re
 from common.utils.commands import *
+from django.conf import settings
 
 def msgmerge(pofile, potfile, destination=None):
         
+    if getattr(settings, 'MSGFMT_DEVMODE', False):
+        return ''
+    
     if os.name == "posix":
         if not destination:
             command = "msgmerge %(new)s %(source)s --previous -N -U" % {'new': pofile,
@@ -48,6 +52,10 @@ def msgfmt_check(pofile, lang='C'):
     Run a `msgfmt -c` on a file (file object).
     Raises a ValueError in case the file has errors.
     """
+    
+    if getattr(settings, 'MSGFMT_DEVMODE', False):
+        return
+    
     error = False
     
     if lang!='C':

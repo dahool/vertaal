@@ -47,7 +47,7 @@ def paginate(data, params=None):
     return {'data': data, 'params': url}
 
 @register.inclusion_tag('tags/pagination_page.html', takes_context = True)
-def paginatepage(context, data=None):
+def paginatepage(context, data=None, url=None):
     " Initialize variables "
     
     if not data:
@@ -75,7 +75,7 @@ def paginatepage(context, data=None):
         pages_outside_leading_range = [n + tagContext["pages"] for n in range(0, -NUM_PAGES_OUTSIDE_RANGE, -1)]
         pages_outside_trailing_range = [n + 1 for n in range(0, NUM_PAGES_OUTSIDE_RANGE)]
 
-    pdata = ''
+    pdata = '' if url is None else url
     if 'request' in context:
         request = context['request']
         getvars = request.GET.copy()
@@ -86,7 +86,7 @@ def paginatepage(context, data=None):
             params['server'] = getattr(request, 'server')
         params.update(getvars)
         if len(params.keys()) > 0:
-            pdata = '?%s' % serialize_params(params)
+            pdata += '?%s' % serialize_params(params)
      
     return {'data': data,
             'numbers': page_numbers,

@@ -1,0 +1,35 @@
+{% load i18n formtags pagination_tags paginator %}
+{% with files=fileSet.files.all %}
+{% url 'confirm_submit_files' fileSet.pk as detailUrl %}
+{% autopaginate files %}
+<div id="submit_table_files_container">
+<table id="submit_table_files" class="grid center-box" href="{{detailUrl}}">
+	<thead>
+		<th>{% trans "File" %}</th>
+		<th>{% trans "Component" %}</th>
+		<th>{% trans "Release" %}</th>
+		<th>{% trans "Project" %}</th>
+		<th>{% trans "Language" %}</th>
+	</thead>
+	<tbody>
+	{% for sfile in files %}
+	<tr>
+		<input type="hidden" name="file" value="{{ sfile.id }}">
+		<td><a href="{% url 'file_detail' sfile.pofile.slug %}">{{ sfile.pofile.filename }}</a></td>
+		<td>{{ sfile.pofile.component.name }}</td>
+		<td>{{ sfile.pofile.release.name }}</td>
+		<td>{{ sfile.pofile.release.project.name }}</td>
+		<td>{{ sfile.pofile.language.name }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="5">
+				<div class="pagination_box pagination_sizefix">{% paginatepage url=detailUrl %}</div>
+			</td>
+		</tr>
+	</tfoot>	
+</table>
+</div>
+{% endwith %}

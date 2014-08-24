@@ -61,6 +61,7 @@ urlpatterns += patterns('files.views.filesubmit',
     url(r'^(?P<team>[-\w]+)/submit/$', 'submit_team_file', name="file_submit"),
     url(r'^qsubmit/$', 'submit_team_file', name="file_qsubmit"),
     url(r'^confirm/$', 'confirm_submit', name="confirm_submit"),
+    url(r'^confirm/(?P<id>[\d]+)/files/$', 'confirm_submit_files', name="confirm_submit_files"),
     url(r'^commit_queue/$', 'commit_queue', name="commit_queue"),
     url(r'^(?P<team>[-\w]+)/reject/$', 'submit_team_file', name="file_reject", kwargs = {'reject': True }),
 )

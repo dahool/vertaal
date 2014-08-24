@@ -24,7 +24,8 @@ from commandlogger import LogBaseCommand
 from django.conf import settings
 import time
 import datetime
-from files.models import POFileSubmit
+from files.models import POFileSubmit, POFileSubmitSet
+
 from django.utils.encoding import smart_unicode
 
 import logging
@@ -43,7 +44,8 @@ class Command(LogBaseCommand):
         
         CLEAN_AGE = getattr(settings, 'BACKUP_CLEAN_AGE', 15)
         TODAY = datetime.datetime.today()
-
+        AGE_DELTA = TODAY - datetime.timedelta(days=CLEAN_AGE)
+        
         logger.debug("Processing project backup ...")
         for dir in os.walk(settings.UPLOAD_PATH):
             pathname, s, files = dir
@@ -94,6 +96,10 @@ class Command(LogBaseCommand):
                 fsub.delete()
                 count+=1
         
+        logger.debug("Clean stalled submits ...")
+        for fsub in POFileSubmitSet.objects.filter(created__lt=AGE_DELTA):
+            fsub.delete()
+            
         logger.info("Removed %d orphaned submits" % count)
         self.stdout.write("Removed %d orphaned submits\n" % count)
         

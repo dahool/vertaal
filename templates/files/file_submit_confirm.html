@@ -1,8 +1,15 @@
 {% extends "base.html" %}
-{% load i18n formtags %}
+{% load i18n formtags pagination_tags paginator %}
 {% block title %}{{ block.super }} | {% trans "Confirm action" %}{%endblock%}
 {% block quick_menu %}
+<a class="none" href="{% url 'home' %}">{% trans 'Home' %}</a>
+<a href="{% url 'commit_queue' %}">{% trans 'Submission Queue' %}</a>
 <span>{% trans "Confirm" %}</span>
+{% endblock %}
+{% block extra_head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/paginator.css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/filesubmit.js"></script>
 {% endblock %}
 {% block content %}
 <form class="form-style" action="{% url 'confirm_submit' %}" method="post">
@@ -28,7 +35,21 @@
 	</ol>
 	</fieldset>
 {% endif %}
+<fieldset>
+<p>{% blocktrans count counter=files.files.count %}
+Ready to process 1 file
+{%plural%}
+Ready to process {{counter}} files
+{%endblocktrans%}</p>
+<a style="float: right;" href="{% url 'confirm_submit_files' files.pk %}" id="aShowMore">{% trans "Show files" %}</a>
+</fieldset>
+<fieldset style="text-align: right;">
+  <input class="icon submit" type="submit" onclick="popoverlay('{% trans "Please wait, this could take some time..." %}')" name="submit" value="{% trans "Confirm" %}">
+  <input name="href" rel="{{ back }}" type="button" class="icon cancel" value="{% trans "Cancel" %}">
+</fieldset>
 </div>
+<input type="hidden" name="file" value="{{files.pk}}">
+{% comment %}
 <table id="submit_table" class="grid center-box">
 	<thead>
 		<th>{% trans "File" %}</th>
@@ -58,5 +79,7 @@
 		</tr>
 	</tfoot>
 </table>
+{% endcomment %}
 </form>
+<div id="submitConfirmFileListDialog" style="display: none;"></div>
 {% endblock %}
