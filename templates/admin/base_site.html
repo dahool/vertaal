@@ -1,6 +1,8 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
 
+{% block title %}{{ title }}{% endblock %}
+
 {% block userlinks %}
 <li>
 <a href="{% url 'home' %}"><i class="icon-home"></i> {% trans 'Site Index' %}</a>
