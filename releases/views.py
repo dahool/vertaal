@@ -31,7 +31,7 @@ from projects.models import Project
 from projects.util import get_build_log_file
 from releases.forms import ReleaseForm
 from releases.models import Release
-from files.models import POFile, POFileAssign
+from files.models import POFile, POFileAssign, POFileSubmitSet
 from teams.models import Team
 from common.simplexml import XMLResponse
 from versioncontrol.models import BuildCache
@@ -244,20 +244,23 @@ def multimerge(request, slug):
         from files.lib.handlers import process_merge
         
         fail=[]
-        submitted = []
+        fileSet = POFileSubmitSet.objects.create()
         for pofile in files:
             try:
-                submitted.append(process_merge(pofile, request.user))
+                fileSet.files.add(process_merge(pofile, request.user))
             except Exception, e:
                 logger.error(e)
-                fail.append(pofile)
+                fail.append(str(e))
+                #fail.append(pofile)
         
         if len(fail)>0:
             if len(fail) == len(files):
                 messages.error(request, _("The files could not be merged."))
+                messages.error(request, ", ".join(fail))
                 redirect = False
             else:
                 messages.warning(request, _("Some files could not be merged."))
+                messages.warning(request, ", ".join(fail))
 
         if redirect:
             if release.project.repo_user:
@@ -268,7 +271,7 @@ def multimerge(request, slug):
                 form = HttpCredForm()
             messages.info(request, _("You are about to submit the following files."))
             return render_to_response("files/file_submit_confirm.html",
-                               {'files': submitted,
+                               {'files': fileSet,
                                 'back': reverse('multimerge', kwargs={'slug': slug}),
                                 'form': form,
                                 'needuser': needuser,

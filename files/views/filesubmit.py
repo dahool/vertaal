@@ -200,7 +200,8 @@ def confirm_submit(request):
             form = HttpCredForm(request.POST)
         else:
             form = CommentForm(request.POST)
-        
+
+    fileSet = get_object_or_404(POFileSubmitSet, pk=request.POST.get('file'))        
     if not form.is_valid():
 #         files = []
 #         for fid in request.POST.getlist('file'):
@@ -211,14 +212,13 @@ def confirm_submit(request):
 #                 pass            
         messages.warning(request, message=_("Complete the form and try again."))
         return render_to_response("files/file_submit_confirm.html",
-                                   {'files': request.POST.get('file'),
+                                   {'files': fileSet,
                                     'back': request.POST['back'],
                                     'form': form,
                                     'reject': reject},
                                    context_instance = RequestContext(request))
 
     files = []
-    fileSet = get_object_or_404(POFileSubmitSet, pk=request.POST.get('file'))
     for submfile in fileSet.files.all():
         if reject:
             send_pm(submfile.owner, _("Submit rejected"), message=_("The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]") % 

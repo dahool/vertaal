@@ -26,6 +26,17 @@
 	<tfoot>
 		<tr>
 			<td colspan="5">
+				<span class="right">
+				{% blocktrans count total=paginator.count %}
+				1 file in total
+				{%plural%}
+				{{total}} files in total
+				{%endblocktrans%}
+				</span>
+			</td>
+		</tr>	
+		<tr>
+			<td colspan="5">
 				<div class="pagination_box pagination_sizefix">{% paginatepage url=detailUrl %}</div>
 			</td>
 		</tr>

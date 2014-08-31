@@ -72,7 +72,6 @@ class POFileHandler():
                 raise
             finally:
                 b.unlock()
-                del man
         
     def get_file_path(self):
         return smart_unicode(self.pofile.file)
