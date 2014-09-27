@@ -6,8 +6,11 @@
 {% for article in news %}
 <div id="news_{{article.slug}}" class="news_article">
 <a href="{% url 'news_view' article.slug %}" class="news_title">{{article.title}}</a>
+{% if user.is_staff and perms.news.change_article %}
+<a href="{% url 'admin:news_article_change' article.id %}" class="icon edit boxed right">&nbsp;</a>
+{% endif %}
 <p class="news_content">{{article.hometext|safe}}</p>
-<p class="news_content" style="text-align: right;">{% if article.bodytext %}<a style="font-size: 10px;" href="{% url 'news_view' article.slug %}">{% trans "(read more...)" %}</a>{% endif %}</p>
+<p class="news_content" style="text-align: right;">{% if article.bodytext|striptags|length > 0 %}<a style="font-size: 10px;" href="{% url 'news_view' article.slug %}">{% trans "(read more...)" %}</a>{% endif %}</p>
 <p class="news_footer">{% trans "Published on" %} {{article.created|date:"M d, Y"}} {% trans "by" %} {{article.author}}</p>
 </div>
 {% endfor %}

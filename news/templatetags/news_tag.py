@@ -23,6 +23,8 @@ from news.models import Article
 
 register = template.Library()
 
-@register.inclusion_tag('news/latest.html')
-def latest_news():
-    return {'news': Article.objects.all_active().order_by("-created")[:getattr(settings, 'LATEST_NEWS',10)]}
+@register.inclusion_tag('news/latest.html', takes_context=True)
+def latest_news(context):
+    return {'news': Article.objects.all_active().order_by("-created")[:getattr(settings, 'LATEST_NEWS',10)],
+			'user': context['user'],
+			'perms': context['perms']}
