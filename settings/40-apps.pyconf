@@ -11,6 +11,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'django_authopenid.context_processors.authopenid',
+	'common.context_processors.media',
 )
 
 TEMPLATE_DIRS = (
@@ -85,3 +86,6 @@ ROOT_URLCONF = 'urls'
 TEST_RUNNER = 'tests.test_runner.run_tests'
 
 LANGUAGE_COOKIE_NAME = 'vertaal_language'
+
+JQUERY = '2.1.1'
+JQUERY_UI = '1.11.1'

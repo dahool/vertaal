@@ -7,10 +7,19 @@
 .news-article label { float: none; }
 .redactor_box { width: 625px; }
 </style>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+if(!window.jQuery)
+{
+   var script = document.createElement('script');
+   script.type = "text/javascript";
+   script.src = "//ajax.googleapis.com/ajax/libs/jquery/{{JQUERY}}/jquery.min.js";
+   document.getElementsByTagName('head')[0].appendChild(script);
+}
+</script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{JQUERY}}/jquery.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}redactor/js/redactor.min.js"></script>
 <script type="text/javascript">
-	$().ready(function() {
+	$(function() {
 		$('textarea').redactor();
 	});
 </script>
