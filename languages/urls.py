@@ -26,11 +26,11 @@ urlpatterns = patterns('',
                                 queryset=Language.objects.all(), 
                                 slug_field='code',
                                 context_object_name='language', 
-                                template_name='languages/language_detail'),
+                                template_name='languages/language_detail.html'),
         name = 'language_detail'),                       
     url(r'^$', ListView.as_view(
                                 queryset=Language.objects.all(), 
                                 context_object_name='language_list', 
-                                template_name='languages/language_list'),
+                                template_name='languages/language_list.html'),
         name = 'language_list'),
 )
