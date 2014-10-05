@@ -16,13 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from django import dispatch
+from django.dispatch import receiver
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
 from django.contrib.auth.models import User
 from projects.models import Project
 from languages.models import Language
 import itertools
+
+team_member_remove = dispatch.Signal(providing_args=["user", "team"])
 
 SUBMISSION_TYPE = (
     (0, _('Review all submits')),
@@ -147,7 +152,8 @@ class Team(models.Model):
             self.members.remove(user)
         else:
             self.coordinators.remove(user)
-
+        team_member_remove.send(sender=self.__class__, user=user, team=self)
+        
     @property
     def list_coordinators(self):
         '''Returns a proxy user instead of the original model.
@@ -171,7 +177,7 @@ class Team(models.Model):
         and the parent model is not taken into account when the relation ship is done
         '''
         return ProxyIterator(TeamUser, self.members.all())
-    
+
     @property
     def team_members(self):
         '''this method execute the query in db'''
@@ -200,3 +206,15 @@ class JoinRequest(models.Model):
     class Meta:
         db_table = 'join_requests'
         unique_together = ("user", "team")
+
+@receiver(team_member_remove, dispatch_uid="team_member_remove") 
+def team_member_remove_callback(sender, **kwargs):
+    from files.models import POFileAssign
+    user = kwargs['user']
+    team = kwargs['team']
+    for assign in POFileAssign.objects.filter(Q(translate=user) | Q(review=user), pofile__language=team.language, pofile__release__project=team.project):
+        if assign.translate == user:
+            assign.translate = None
+        else:
+            assign.review = None
+        assign.save()
