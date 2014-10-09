@@ -115,6 +115,7 @@ def add_user_file(sender, **kwargs):
         except Exception, e:
             logger.error(e)
 
+#deprecated
 def create_default_profile(sender, **kwargs):
     obj = kwargs['instance']
     if not hasattr(obj, '_profile_cache'):
@@ -122,5 +123,5 @@ def create_default_profile(sender, **kwargs):
             obj._profile_cache, created = UserProfile.objects.get_or_create(user=obj)
 
 post_save.connect(add_user_file, sender=POFileLock)
-post_save.connect(create_default_profile, sender=User)
-post_init.connect(create_default_profile, sender=User)
+#post_save.connect(create_default_profile, sender=User)
+#post_init.connect(create_default_profile, sender=User)

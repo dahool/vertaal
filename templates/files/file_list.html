@@ -48,10 +48,6 @@ $(document).ready(function(){
 {% endblock %}
 {% block content %}
 
-{% iftrue team.can_manage user %}
-{% set 'true' as can_manage %}
-{% endiftrue %}
-
 {% block content_title %}<h1>{{ language.name }}&nbsp;<sup>({{ language.code }})</sup>
 {% ifsetting ENABLE_RSS %}
 &nbsp;&nbsp;<a class="icon feed" title="{% trans "Latest updates" %}" href="{% url 'language_release_feed' release.slug language.code %}">&nbsp;</a>
@@ -141,7 +137,7 @@ $(document).ready(function(){
 	{% for log in last_actions %}
     {% url 'file_detail' log.pofile.slug as logfileurl %}
 	<li class="icon info">
-	{% blocktrans with filename=log.pofile.filename log_action=log.get_action_display|lower username=log.user.username updated=log.created|localtime:request.user.profile.get.timezone|timesince %}
+	{% blocktrans with filename=log.pofile.filename log_action=log.get_action_display|lower username=log.user.username updated=log.created|localtime:user.profile.get.timezone|timesince %}
 	File <b><a href="{{logfileurl}}">{{filename}}</a></b> {{log_action}} by <b>{{username}}</b> {{updated}} ago.
 	{% endblocktrans %}
 	</li>

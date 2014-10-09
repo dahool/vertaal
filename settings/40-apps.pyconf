@@ -76,7 +76,8 @@ INSTALLED_APPS = (
     'commandlogger',
     'djangopm',
     'djangoapp',
-    'openidmigration'
+    'openidmigration',
+    #'debug_toolbar'
 )
 
 ROOT_URLCONF = 'urls'

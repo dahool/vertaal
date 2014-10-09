@@ -188,12 +188,12 @@ class POFileManager(models.Manager):
         cache_rel = {}
         cache_comp = {}
         
-        langq = ''
+        langlist = []
         for lang in languages:
             cache_lang[lang.id] = lang
-            if len(langq) > 0: langq += ' OR '
-            langq += str(lang.id)
-            
+            langlist.append(str(lang.id))
+        langlist.sort()
+        
         sql = "SELECT p.language_id,p.component_id, p.release_id, p.slug, p.total, p.filename, p.status, p.id "\
                 "FROM pofile p INNER JOIN pofile_pot_pofiles pol ON pol.pofile_id = p.id "\
                 "INNER JOIN pofile_pot pot ON pol.potfile_id = pot.id "\
@@ -202,8 +202,8 @@ class POFileManager(models.Manager):
                 "INNER JOIN components c ON p.component_id = c.id WHERE psub.id IS NULL AND " % SUBMIT_STATUS_ENUM.PENDING
         if release:
             sql += "p.release_id = %s AND " % release.id
-        if languages:
-            sql += "(%s) AND " % langq
+        if langlist:
+            sql += "p.language_id IN (%s) AND " % ",".join(langlist)
         sql += "c.project_id = %(project_id)s AND NOT (c.potlocation IS NULL OR c.potlocation = '') "\
                 "AND (pot.total <> p.total OR (pot.updated IS NOT NULL AND pot.updated > p.potupdated))" % {'project_id': project.id}
         
@@ -478,8 +478,9 @@ class POFile(models.Model):
     
     @property
     def need_merge(self):
-        if self.potfile.all():
-            potfile = self.potfile.get()
+        potfiles = self.potfile.all()
+        if potfiles:
+            potfile = potfiles[0]
             if potfile.total != self.total or (potfile.updated is not None and potfile.updated > self.potupdated):
 #            if potfile.updated is not None and potfile.updated > self.potupdated:
                 return True
@@ -588,11 +589,8 @@ class POFileLock(models.Model):
         return '<Lock: %s>' % self.pofile.filename
     
 class POFileLogManager(models.Manager):
-    
-    def last_actions(self, release, limit, language=None, user=None):
-        from django.db import connection
-        cursor = connection.cursor()
 
+    def last_actions(self, release, limit, language=None, user=None):
         sqlu = "SELECT pl.pofile_id, max(pl.id) as id FROM pofile_log pl"
         if user:
             sqlu += " LEFT OUTER JOIN pofile_assigns a ON pl.pofile_id = a.pofile_id"
@@ -606,21 +604,48 @@ class POFileLogManager(models.Manager):
                 sqlu += " WHERE pl.user_id <> %d" % bot.pk
         sqlu += " group by pl.pofile_id"
         
-        sql = "SELECT p.id FROM pofile_log p INNER JOIN (%s) p2 "\
+        sql = "SELECT p.id, p.pofile_id, p.created, p.user_id, p.action, p.comment FROM pofile_log p INNER JOIN (%s) p2 "\
               "INNER JOIN pofile f ON p.id = p2.id AND f.id = p.pofile_id" % sqlu 
         
-            
         sql += " WHERE f.release_id = %d" % release.id
         if language:
             sql += " AND f.language_id=%d" % language.id 
         sql += " ORDER BY p.id DESC LIMIT %d" % limit
+
+        return self.raw(sql)
+        
+    # def last_actions(self, release, limit, language=None, user=None):
+        # from django.db import connection
+        # cursor = connection.cursor()
+
+        # sqlu = "SELECT pl.pofile_id, max(pl.id) as id FROM pofile_log pl"
+        # if user:
+            # sqlu += " LEFT OUTER JOIN pofile_assigns a ON pl.pofile_id = a.pofile_id"
+            # sqlu += " WHERE a.translate_id=%(userid)s or a.review_id=%(userid)s" % {'userid': user.id}
+        # else:
+            # try:
+                # bot = User.objects.get(username=getattr(settings, 'BOT_USERNAME','bot'))
+            # except:
+                # bot = None
+            # if bot:            
+                # sqlu += " WHERE pl.user_id <> %d" % bot.pk
+        # sqlu += " group by pl.pofile_id"
+        
+        # sql = "SELECT p.id FROM pofile_log p INNER JOIN (%s) p2 "\
+              # "INNER JOIN pofile f ON p.id = p2.id AND f.id = p.pofile_id" % sqlu 
+        
+            
+        # sql += " WHERE f.release_id = %d" % release.id
+        # if language:
+            # sql += " AND f.language_id=%d" % language.id 
+        # sql += " ORDER BY p.id DESC LIMIT %d" % limit
                
-        cursor.execute(sql)
+        # cursor.execute(sql)
               
-        files = []
-        for row in cursor.fetchall():
-            files.append(self.get(pk=row[0]))
-        return files        
+        # files = []
+        # for row in cursor.fetchall():
+            # files.append(self.get(pk=row[0]))
+        # return files        
     
 #    def last_actions(self, release, limit, language=None, user=None):
 #        from django.db import connection
