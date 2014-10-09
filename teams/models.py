@@ -212,9 +212,6 @@ def team_member_remove_callback(sender, **kwargs):
     from files.models import POFileAssign
     user = kwargs['user']
     team = kwargs['team']
-    for assign in POFileAssign.objects.filter(Q(translate=user) | Q(review=user), pofile__language=team.language, pofile__release__project=team.project):
-        if assign.translate == user:
-            assign.translate = None
-        else:
-            assign.review = None
-        assign.save()
+    
+    POFileAssign.objects.filter(translate=user, pofile__language=team.language, pofile__release__project=team.project).update(translate=None)
+    POFileAssign.objects.filter(review=user, pofile__language=team.language, pofile__release__project=team.project).update(review=None)
