@@ -612,7 +612,10 @@ class POFileLogManager(models.Manager):
             sql += " AND f.language_id=%d" % language.id 
         sql += " ORDER BY p.id DESC LIMIT %d" % limit
 
-        return self.raw(sql)
+        from django.db.models.query import prefetch_related_objects
+        result = list(self.raw(sql))
+        prefetch_related_objects(result, ('user',))
+        return result
         
     # def last_actions(self, release, limit, language=None, user=None):
         # from django.db import connection

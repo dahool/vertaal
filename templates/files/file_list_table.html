@@ -26,7 +26,7 @@
 		<tbody>
 			{% for file_item in file_list %}
 			<tr component="{{file_item.component.slug}}" id="file_row_{{ file_item.slug }}" class="file-list-row {% cycle "odd" "even" %}">
-				{% include "files/file_list_row.html" with pofile=file_item team=team user=user only %}
+				{% include "files/file_list_row.html" with pofile=file_item team=team user=user %}
 			</tr>
 			{% empty %}
 			<tr><td>&nbsp;</td><td>&nbsp;</td>

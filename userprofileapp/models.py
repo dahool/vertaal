@@ -82,7 +82,13 @@ class UserProfileManager(models.Manager):
         """
         obj, created = self.get_or_create(**kwargs)
         return obj
-    
+
+class AnonymousUserProfile(object):
+    import pytz
+    timezone = pytz.timezone('UTC')
+    language = None
+    startup = None
+        
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True, related_name='profile')
     timezone = TimeZoneField(default='UTC')

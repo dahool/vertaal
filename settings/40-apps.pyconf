@@ -12,6 +12,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django_authopenid.context_processors.authopenid',
 	'common.context_processors.media',
+    'userprofileapp.context_processors.profile',
 )
 
 TEMPLATE_DIRS = (

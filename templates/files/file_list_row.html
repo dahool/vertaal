@@ -11,7 +11,6 @@
 		{% set 'true' as can_manage %}
 	{% endiftrue %}
 {% endif %}
-
 {% set assign=pofile.assigns.get %}
 {% set lock=pofile.locks.get %}
 {% if assign %}
@@ -42,7 +41,8 @@
 {% url 'set_assigned_reviewer' pofile.slug as set_assigned_reviewer %}
 {% url 'toggle_mark' pofile.slug as toggle_mark_url %}
 
-{% if pofile.submits.all_pending %}
+{% set submit=pofile.submits.get_pending %}
+{% if submit %}
 	{% url 'view_submit_file' pofile.slug as view_url %}
 {% else %}
 	{% url 'view_file' pofile.slug as view_url %}
@@ -94,15 +94,13 @@
 	{% if pofile.need_merge %}
 		<span class="icon action_icon warnmerge" title='{% trans "This file requires a merge." %}'>&nbsp;</span>
 	{% endif %}	
-	{% with pofile.submits.get_pending as submit %}
-		{% if  submit %}
-			{% if submit.enabled %}
-			<a href="{% url 'get_submit_file' pofile.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
-			{% else %}
-			<span class="action_icon nodecoration_icon file-submit-edit" title="{% trans "This file is being edited" %}"></span>
-			{% endif %}
-		{% endif %}
-	{% endwith %}
+    {% if  submit %}
+        {% if submit.enabled %}
+        <a href="{% url 'get_submit_file' pofile.slug %}" target="_blank" class="action_icon nodecoration_icon file-submit" title="{% trans "This file has a pending submit. Click here if you want to download it." %}"></a>
+        {% else %}
+        <span class="action_icon nodecoration_icon file-submit-edit" title="{% trans "This file is being edited" %}"></span>
+        {% endif %}
+    {% endif %}
 </td>
 <td class="title-center">{{ pofile.component.name }}</td>
 <td>
@@ -126,7 +124,7 @@
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.translate %}
 		<span class="icon action_icon filelocked tooltip" title="{% spaceless %}
-		{% blocktrans with created=lock.created|localtime:user.profile.get.timezone|date:"M d, H:i" locked=lock.created|timesince %}
+		{% blocktrans with created=lock.created|localtime:user_profile.timezone|date:"M d, H:i" locked=lock.created|timesince %}
 			Locked on {{created}} ({{locked}} ago).
 		{% endblocktrans %}{% endspaceless %}"></span>
 		{% endif %}
@@ -154,7 +152,7 @@
 		{% endif %}
 		{% if lock and user.is_authenticated and lock.owner == assign.review %}
 		<span class="icon action_icon filelocked tooltip" title="{% spaceless %}
-		{% blocktrans with lock.created|localtime:user.profile.get.timezone|timesince as locked %}
+		{% blocktrans with lock.created|localtime:user_profile.timezone|timesince as locked %}
 			Locked {{locked}} ago.
 		{% endblocktrans %}{% endspaceless %}"></span>
 		{% endif %}		

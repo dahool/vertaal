@@ -26,16 +26,22 @@ class UserLocaleMiddleware(object):
     """
     def process_request(self, request):
         if request.user.is_authenticated():
-            try:
-                lang = request.user.profile.get().language    
-            except:
-                lang = translation.get_language_from_request(request)
-            else:
-                supported = dict(settings.LANGUAGES)
-                if lang not in supported:
-                    lang = translation.get_language_from_request(request)
+            if not hasattr(request,'user_profile'):
+                setattr(request,'user_profile', request.user.profile.get())
+            lang = self._get_user_lang(request, request.user_profile)
             translation.activate(lang)
         request.LANGUAGE_CODE = translation.get_language()
+    
+    def _get_user_lang(self, request, profile):
+        try:
+            lang = profile.language    
+        except:
+            lang = translation.get_language_from_request(request)
+        else:
+            supported = dict(settings.LANGUAGES)
+            if lang not in supported:
+                lang = translation.get_language_from_request(request)
+        return lang
     
     def process_response(self, request, response):
         patch_vary_headers(response, ('Accept-Language',))
