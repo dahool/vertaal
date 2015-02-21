@@ -9,3 +9,4 @@ recaptcha-client
 python-dateutil
 python-openid
 (optional) python-memcached
+python-social-auth

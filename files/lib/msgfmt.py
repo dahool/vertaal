@@ -22,24 +22,30 @@ import re
 from common.utils.commands import *
 from django.conf import settings
 
+import logging
+logger = logging.getLogger('vertaal.files')
+
 def msgmerge(pofile, potfile, destination=None):
         
     if getattr(settings, 'MSGFMT_DEVMODE', False):
+        logger.debug("Running in dev mode")
         return ''
     
     if os.name == "posix":
         if not destination:
-            command = "msgmerge %(new)s %(source)s --previous -N -U" % {'new': pofile,
+            command = "msgmerge --no-wrap --previous -N -U %(new)s %(source)s" % {'new': pofile,
                                                                    'source': potfile}
         else:
-            command = "msgmerge %(new)s %(source)s --previous -N -o %(dest)s" % {'new': pofile,
+            command = "msgmerge --no-wrap --previous -N -o %(dest)s %(new)s %(source)s" % {'new': pofile,
                                                                    'source': potfile,
                                                                    'dest': destination}
+        logger.debug('Execute: %s' % command)
         output = get_command_output(command)
                
     elif destination:
         import shutil
         try:
+            logger.debug('Copy %s to %s' % (pofile, destination))
             shutil.copy(pofile, destination)
             output = ''
         except Exception, e:

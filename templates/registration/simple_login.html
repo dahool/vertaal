@@ -5,7 +5,7 @@
 	<form id="form_auth" action="{% url 'user_signin' %}" method="post">
 {% csrf_token %}
 		<div class="form-row">
-			<label for="id_username">{% trans "Username:" %}</label>
+			<label for="id_username">{% trans "Username/e-mail:" %}</label>
 			<input id="id_username" class="required login" name="username" maxlength="30" size="15" type="text"/>
 		</div>
 		<div class="form-row">

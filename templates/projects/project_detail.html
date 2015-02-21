@@ -74,12 +74,12 @@ function process_response(data) {
 	<table class="definition">
 		<tr>
 			<th class="icon repository">{% trans "Repository:" %}</th>
-			<td>{{ project.vcsurl }}</td>
+			<td><a href="{{ project.vcsurl }}" target="_blank">{{ project.vcsurl }}</a></td>
 		</tr>
 		{% if project.viewurl %}
 		<tr>
 			<th class="icon view-url">{% trans "Repository View URL:" %}</th>
-			<td>{{ project.viewurl }}</td>
+			<td><a href="{{ project.viewurl }}" target="_blank">{{ project.viewurl }}</a></td>
 		</tr>		
 		{% endif %}
 	</table>

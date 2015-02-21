@@ -275,11 +275,17 @@ class SubmitClient():
 
         logger.debug("end")
 
-def get_repository_location(project, release, component, lang):
+def get_repository_location(project, release=None, component=None, lang=None):
     return os.path.join(getattr(settings,'REPOSITORY_LOCATION'), get_repository_path(project, release, component, lang))
 
-def get_repository_path(project, release, component, lang):
-    return os.path.join(project.slug, release.slug, component.slug, lang.code)
+def get_repository_path(project, release=None, component=None, lang=None):
+    parts = []
+    parts.append(project.slug)
+    if release is not None: parts.append(release.slug)
+    if component is not None: parts.append(component.slug)
+    if lang is not None: parts.append(lang.code)
+    return os.path.join(*parts)
+    #return os.path.join(project.slug, release.slug, component.slug, lang.code)
 
 def get_potrepository_path(project, release, component):
     return os.path.join(project.slug, release.slug, component.slug, 'POT-CACHE')

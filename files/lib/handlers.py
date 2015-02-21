@@ -267,7 +267,10 @@ def process_merge(pofile, user):
         
         # update the file first
         pofile.handler.update_repo()
-        out = msgmerge(pofile.file, pofile.potfile.get().file, new_file)
+        pofile_file = pofile.file
+        potfile_file = pofile.potfile.get().file
+        logger.debug("Merge %s with %s" % (pofile_file, potfile_file))
+        out = msgmerge(pofile_file, potfile_file, new_file)
 
     except Exception, e:
         logger.error(e)

@@ -41,6 +41,7 @@ class Command(BaseCommand):
         proc = 0
         projects = Project.objects.all()
         lastproc = None
+        self.stdout.write('\nRelocating to %s' % settings.REPOSITORY_LOCATION)
         for project in projects:
             self.stdout.write('\nProcessing %s ... ' % project.name)
             teams = project.teams.all()
