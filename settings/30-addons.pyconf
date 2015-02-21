@@ -1,3 +1,4 @@
+import os
 from django.contrib.messages import constants as message_constants
 # default message level to show
 MESSAGE_LEVEL = message_constants.INFO
@@ -11,30 +12,37 @@ MAINTEINANCE_ALLOW_URLS = (LOGIN_URL, '/man/',)
 
 TICKET_URL = 'http://github.com/dahool/vertaal/issues'
 
-PAGINATION_DEFAULT_PAGINATION = 10
-SHOW_LATEST_PROJECTS = 8
-MESSAGE_DAYS_AGE = 15
-LOG_EXCEPTION_DB = True
-AUTO_UNLOCK_BUILD = 30 # in minutes
-BACKUP_CLEAN_AGE = 30
+PAGINATION_DEFAULT_PAGINATION = int(os.environ.get('VERTAAL_OPT_PAGINATION_DEFAULT_PAGINATION', 10))
+SHOW_LATEST_PROJECTS = int(os.environ.get('VERTAAL_OPT_SHOW_LATEST_PROJECTS', 8))
+LOG_EXCEPTION_DB = optbool(os.environ.get('VERTAAL_OPT_LOG_EXCEPTION_DB', True))
+AUTO_UNLOCK_BUILD = int(os.environ.get('VERTAAL_OPT_AUTO_UNLOCK_BUILD', 30)) # in minutes
+BACKUP_CLEAN_AGE = int(os.environ.get('VERTAAL_OPT_BACKUP_CLEAN_AGE', 30)) # in days
+
+MSGFMT_DEVMODE = optbool(os.environ.get('VERTAAL_OPT_MSGFMT_DEVMODE', True))
+DEFERRED_SUBMIT = optbool(os.environ.get('VERTAAL_OPT_DEFERRED_SUBMIT', False))
+ADSENSE_SEGMENT = optbool(os.environ.get('VERTAAL_OPT_ADSENSE_SEGMENT', True))
+SUBMIT_OFFLINE = optbool(os.environ.get('VERTAAL_OPT_SUBMIT_OFFLINE', False))
+DISABLE_ADSENSE = optbool(os.environ.get('VERTAAL_OPT_DISABLE_ADSENSE', False))
+MESSAGE_DAYS_AGE = int(os.environ.get('VERTAAL_OPT_MESSAGE_DAYS_AGE', 15))
+FILE_UPDATE_GAP = int(os.environ.get('VERTAAL_OPT_FILE_UPDATE_GAP', 0))
 
 FEED_CACHE = 7200
 
 ADMIN_USER = 'admin'
 
-USE_CAPTCHA = True
-CONTACT_USE_CAPTCHA = True
-JOIN_USE_CAPTCHA = True
+USE_CAPTCHA = optbool(os.environ.get('VERTAAL_OPT_USE_CAPTCHA', True))
+CONTACT_USE_CAPTCHA = optbool(os.environ.get('VERTAAL_OPT_CONTACT_USE_CAPTCHA', True))
+JOIN_USE_CAPTCHA = optbool(os.environ.get('VERTAAL_OPT_JOIN_USE_CAPTCHA', True))
 
-ENABLE_RPC = False
-BACKUP_UPLOADS = True
-ENABLE_OPENID = True
-ENABLE_RSS = False
+ENABLE_RPC = optbool(os.environ.get('VERTAAL_OPT_ENABLE_RPC', False))
+BACKUP_UPLOADS = optbool(os.environ.get('VERTAAL_OPT_BACKUP_UPLOADS', True))
+ENABLE_OPENID = optbool(os.environ.get('VERTAAL_OPT_ENABLE_OPENID', True))
+ENABLE_RSS = optbool(os.environ.get('VERTAAL_OPT_ENABLE_RSS', False))
 
 RECAPTCHA_PRIVATE_KEY = '-'
 RECAPTCHA_PUBLIC_KEY = '-'
 
-MAINTENANCE_MODE = False
+MAINTENANCE_MODE = optbool(os.environ.get('VERTAAL_OPT_MAINTENANCE_MODE', False))
 BOT_USERNAME = 'bot'
 
 FILE_UPLOAD_PERMISSIONS = 0644
@@ -53,6 +61,6 @@ XMLRPC_VIEWS = (
     'rpc.views',
 )
 
-ADSENSE_SEGMENT = True
-DISABLE_ADSENSE = False
+
+
 

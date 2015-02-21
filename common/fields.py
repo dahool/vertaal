@@ -14,7 +14,7 @@ class CryptField(models.CharField):
 
     def pre_save(self, model_instance, add):
         cleartext = getattr(model_instance, self.attname)
-        key = getattr(settings, 'SECRET_KEY')
+        key = getattr(settings, 'CIPHER_KEY')
         bc = BCipher(key)
         enc = bc.encrypt(cleartext)
         setattr(model_instance, self.attname, enc)
@@ -23,7 +23,7 @@ class CryptField(models.CharField):
     def to_python(self, value):
         value = super(CryptField, self).to_python(value)
         if value is not None:
-            key = getattr(settings, 'SECRET_KEY')
+            key = getattr(settings, 'CIPHER_KEY')
             bc = BCipher(key)
             return bc.decrypt(value)
         return value

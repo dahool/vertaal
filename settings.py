@@ -12,11 +12,13 @@ LOCAL_CONFIG = None
 VERSION = None
 ROOT_PATH = os.path.join(PROJECT_PATH, 'appcache')
 
-conffiles = glob.glob(os.path.join(os.path.dirname(__file__), 'settings','*.pyconf'))
+conffiles = glob.glob(os.path.join(PROJECT_PATH, 'settings','*.pyconf'))
 conffiles.sort()
 
 for f in conffiles:
     execfile(os.path.abspath(f)) 
+
+FQDN = "https://%s" % SITE_DOMAIN
 
 LOG_PATH = os.path.join(ROOT_PATH,'logs')
 LOG_FILENAME = os.path.join(LOG_PATH,'vertaal.log')
@@ -35,7 +37,6 @@ if os.path.exists(version_file):
     import datetime
     BUILD_VERSION = datetime.datetime.fromtimestamp(os.path.getmtime(version_file)).strftime('%Y%m%d')
     
-
 if LOCAL_CONFIG and os.path.exists(LOCAL_CONFIG):
     execfile(LOCAL_CONFIG)
     
@@ -46,4 +47,3 @@ for checkpath in (LOG_PATH, TEMP_UPLOAD_PATH, UPLOAD_PATH, REPOSITORY_LOCATION, 
             os.makedirs(checkpath)
         except:
             pass
-

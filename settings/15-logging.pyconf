@@ -1,9 +1,9 @@
 import logging
-import sys
+import os
 
-DEBUG = True
+DEBUG = optbool(os.environ.get('VERTAAL_OPT_DEBUG', True))
 TEMPLATE_DEBUG = DEBUG
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = int(os.environ.get('VERTAAL_OPT_LOG_LEVEL', logging.DEBUG))
 BATCH_LOG_LEVEL = LOG_LEVEL
 RPC_LOG_LEVEL = LOG_LEVEL
 

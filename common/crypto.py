@@ -24,6 +24,8 @@ class BCipher:
     def __init__(self, key=None):
         if not key:
             key = getattr(settings, 'CIPHER_KEY', settings.SECRET_KEY)
+        if not key or len(key) < 8 or len(key) > 56:
+            raise RuntimeError, "Attempted to initialize Cipher with key of invalid length (min: 8, max: 56)"
         self.__cipher = cipher(key)
         
     def encrypt(self, text):
