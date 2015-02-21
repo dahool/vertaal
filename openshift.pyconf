@@ -1,0 +1,100 @@
+import logging
+from django.http import UnreadablePostError, Http404
+
+STATIC_URL = '//appmediaserver.appspot.com/media/app/vertaal/%s/' % VERSION
+
+def skip_unreadable_post(record):
+    if record.exc_info:
+        exc_type, exc_value = record.exc_info[:2]
+        if isinstance(exc_value, UnreadablePostError):
+            return False
+    return True
+    
+def skip_http_not_found(record):
+    if record.exc_info:
+        exc_type, exc_value = record.exc_info[:2]
+        if isinstance(exc_value, Http404):
+            return False
+    return True
+    
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '[%(asctime)s %(filename)s %(levelname)s %(module)s (%(lineno)d)] <%(username)s> [%(sessionid)s] %(funcName)s: %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'usercontext': {
+            '()': 'app.logging.formatter.UserFilter',
+        },
+        'skip_unreadable_posts': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': skip_unreadable_post,
+        },
+        'skip_http_not_found': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': skip_http_not_found,
+        }        
+    },    
+    'handlers': {
+        'file': {
+            'level': logging.DEBUG,
+            'class': 'app.logging.formatter.ChmodRotatingFileHandler',
+            'filename': LOG_FILENAME,
+            'maxBytes': 5242880,
+            'backupCount': 10,
+            'formatter': 'verbose',
+            'filters': ['usercontext']
+        },
+        'errorfile': {
+            'level': logging.ERROR,
+            'class': 'app.logging.formatter.ChmodRotatingFileHandler',
+            'filename': ERROR_LOG_FILENAME,
+            'maxBytes': 5242880,
+            'backupCount': 10,
+            'formatter': 'verbose',
+            'filters': ['usercontext']
+        },
+        'batchfile': {
+            'level': logging.DEBUG,
+            'class': 'app.logging.formatter.ChmodRotatingFileHandler',
+            'filename': BATCH_LOG_FILENAME,
+            'maxBytes': 5242880,
+            'backupCount': 10,
+            'formatter': 'verbose',
+            'filters': ['usercontext']
+        },
+        'mail_admins': {
+            'level': logging.ERROR,
+            'filters': ['skip_unreadable_posts','skip_http_not_found'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': False,
+        }                    
+    },
+    'loggers': {
+        'vertaal': {
+            'handlers': ['file', 'errorfile'],
+            'level': LOG_LEVEL,
+            'propagate': True,
+        },
+        'vertaal.vcs': {
+            'handlers': ['batchfile'],
+            'level': LOG_LEVEL,
+            'propagate': True,
+        },
+        'svnclient': {
+            'handlers': ['batchfile'],
+            'level': LOG_LEVEL,
+            'propagate': True,
+        },
+        'exceptionlogger': {
+            'handlers': ['errorfile','mail_admins'],
+            'level': logging.ERROR,
+        },
+    }
+}

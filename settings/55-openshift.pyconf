@@ -1,0 +1,34 @@
+import os
+from socket import gethostname
+import urlparse
+ 
+if 'OPENSHIFT_APP_NAME' in os.environ:
+    DATABASES = {}
+    url = urlparse.urlparse(os.environ.get('OPENSHIFT_MYSQL_DB_URL'))
+ 
+    DATABASES['default'] = {
+        'ENGINE' : 'django.db.backends.mysql',
+        'NAME': os.environ['OPENSHIFT_APP_NAME'],
+        'USER': url.username,
+        'PASSWORD': url.password,
+        'HOST': url.hostname,
+        'PORT': url.port,
+        }
+
+    STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'static')
+    ROOT_PATH = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'appcache')
+    
+    ALLOWED_HOSTS = [
+      gethostname(), # For internal OpenShift load balancer security purposes
+      os.environ.get('OPENSHIFT_APP_DNS'), # Dynamically map to the OpenShift gear name
+      '.vertaal.tk',
+    ]
+
+    RECAPTCHA_PRIVATE_KEY = os.environ.get('VERTAAL_RECAPTCHA_PRIVATE_KEY')
+    RECAPTCHA_PUBLIC_KEY = os.environ.get('VERTAAL_RECAPTCHA_PUBLIC_KEY')
+    SECRET_KEY = os.environ.get('OPENSHIFT_SECRET_TOKEN')
+    CIPHER_KEY = os.environ.get('VERTAAL_CIPHER_KEY')
+
+    SITE_DOMAIN = os.environ.get('OPENSHIFT_APP_DNS')
+    
+    LOCAL_CONFIG = os.path.join(PROJECT_PATH, 'openshift.pyconf')
