@@ -1,7 +1,7 @@
 import os
 import glob
 
-WSGI_APPLICATION='vertaal.wsgi.application'
+#WSGI_APPLICATION='vertaal.wsgi.application'
 
 #enforce old serializer to support openid
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

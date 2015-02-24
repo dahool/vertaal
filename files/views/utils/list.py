@@ -27,6 +27,9 @@ from languages.models import Language
 from teams.models import Team
 from files.models import POFile, POFileLog
 
+import logging
+logger = logging.getLogger('vertaal.files')
+
 def get_file_list(request, component=None, release=None, language=None):
     q = POFile.objects.filter()
     res = {}
@@ -94,7 +97,7 @@ def get_file_list(request, component=None, release=None, language=None):
     q = q.select_related('release','potfile','component').prefetch_related('locks','submits','assigns__translate','assigns__review')
     res['file_list']=q
     res['last_actions'] = POFileLog.objects.last_actions(res['release'],10,res['language'])
-    
+
     return res
 
 

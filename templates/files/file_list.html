@@ -38,7 +38,7 @@ $(document).ready(function(){
     $("#component_list").find('input:not(:checked)').button("option", "icons", {primary:'ui-icon-circle-plus'});
     check_filter_button();
     $("#component_list").show();
-    $("#filestabs").show();
+    $("#filestabs").show('fast', function(){load_component(RELOAD_LIST_FILES_URL, true)});
 }); 
 --></script>
 {% endblock %}
@@ -119,7 +119,7 @@ $(document).ready(function(){
 <div id="component_list" style="display: none;">
 {% with release.project.components.all as components %}
 	{% for component in components|dictsort:"pk" %}
-    <input type="checkbox" id="cmp_{{component.pk}}" name="{{component.slug}}" value="{% url 'list_files_component' release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}"/>
+    <input type="checkbox" id="cmp_{{component.pk}}" name="{{component.slug}}" value="{% url 'list_files_component' release=release.slug language=language.code component=component.slug %}{% if highlight %}?h={{highlight}}{%endif%}" autocomplete="off"/>
     <label for="cmp_{{component.pk}}">{{ component.name }}</label>
 	{% endfor %}
 {% endwith %}

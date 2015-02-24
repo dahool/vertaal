@@ -268,6 +268,7 @@ def list_files(request, component=None, release=None, language=None, filter = Fa
     if filter:
         template = "files/file_list_table.html"
     else:
+        res.pop('file_list')
         template = "files/file_list.html"
     
     if request.GET.get('h', None):

@@ -21,7 +21,7 @@ function loading(show) {
         show = true;
     }
     if (show) {
-        $.loading(true, {text: gettext("Working..."), loadingClass: 'context-loader', update: {texts: [gettext("Please, wait..."), gettext("Oops!, something went wrong.")]}});
+        $.loading(true, {at: 'center', text: gettext("Working..."), loadingClass: 'context-loader', update: {texts: [gettext("Please, wait..."), gettext("Oops!, something went wrong.")]}});
     } else {
         $.loading(false);
     }

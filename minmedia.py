@@ -19,6 +19,9 @@ def minfile(filename):
     insize = os.path.getsize(filename)
     print "Processing %s: %d ->" % (filename, insize),
     cmd = CMD % {'type': 'js', 'file': filename}
-    get_command_output(cmd)
+    print get_command_output(cmd)
     outsize = os.path.getsize(filename)
     print "%d [%.2f%%]" % (outsize, ((insize-outsize)*100)/insize)
+
+if __name__ == "__main__":
+    minimizejs(os.path.normpath('/workspace/cdn/media/app/vertaal/1.6.1/'))

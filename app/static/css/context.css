@@ -6,15 +6,18 @@
     -moz-border-top-colors: none;
     background: url('../images/metabox_loader.gif') no-repeat scroll 10px 50% #EEEEEE;
     border-color: #FFFFFF #DDDDDD #DDDDDD;
-    border-radius: 0 0 5px 5px;
-    border-right: 1px solid #DDDDDD;
+    //border-radius: 0 0 5px 5px;
+    //border-right: 1px solid #DDDDDD;
+    border-color: #DDDDDD;
+    border-radius: 5px;
+    border-style: solid;    
     border-width: 1px;
     color: #666666;
     font-size: 12px;
     font-weight: bold;
     left: 50%;
     margin-left: -75px;
-    padding: 10px 10px 10px 30px;
+    padding: 10px 20px 10px 30px;
     position: absolute;
     z-index: 20;
     -webkit-box-shadow: 0 0 10px rgb(0, 0, 0);
@@ -33,6 +36,7 @@
     -webkit-box-shadow: 0 0 10px rgb(0, 0, 0);
     -moz-box-shadow: 0 0 10px rgb(0, 0, 0);
     box-shadow: 0 0 5px rgb(0, 0, 0);
+    padding: 10px 10px 10px 30px;
 }
 .context-message {
     text-align: center;
