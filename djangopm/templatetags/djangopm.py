@@ -61,5 +61,5 @@ def pmcount(context):
             'count': count,
         } 
     else:
-        title = gettext("Priivate Messages")
+        title = gettext("Private Messages")
     return {'count': count, 'title': title}

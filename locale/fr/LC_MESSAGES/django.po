@@ -485,7 +485,7 @@ msgid "Mailbox empty."
 msgstr ""
 
 #: .\djangopm\templatetags\djangopm.py:64
-msgid "Priivate Messages"
+msgid "Private Messages"
 msgstr ""
 
 #: .\files\_views.py:95 .\files\views\__init__.py:68
