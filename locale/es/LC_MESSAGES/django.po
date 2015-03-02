@@ -516,7 +516,7 @@ msgstr ""
 
 #: .\djangopm\templatetags\djangopm.py:64
 #, fuzzy
-msgid "Priivate Messages"
+msgid "Private Messages"
 msgstr "Ultimos mensajes:"
 
 #: .\files\_views.py:95 .\files\views\__init__.py:68
