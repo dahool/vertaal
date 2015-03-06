@@ -18,9 +18,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 import os.path
+import string
 
 from django.utils.translation import ugettext as _
-
+from django.utils.encoding import smart_text
 import versioncontrol.lib.browser as browser
 from versioncontrol.lib.support import svnclient
 
@@ -43,6 +44,15 @@ def need_update(fn):
         self.update()
         return fn(self, *args, **kw)
     return repo_fn
+
+def encode_text(text, encoding='utf-8'):
+    xv = filter(lambda x: x in string.printable, text)
+    return smart_text(xv, encoding=encoding)    
+#    try:
+#        return smart_text(text, encoding=encoding)
+#    except UnicodeDecodeError:
+#        xv = filter(lambda x: x in string.printable, text)
+#        return smart_text(xv, encoding=encoding)    
 
 class SubversionBrowser(browser.RepositoryBrowser):
 
@@ -188,7 +198,7 @@ class SubversionBrowser(browser.RepositoryBrowser):
                     files.append(event['path'])
             if len(files) > 0:
                 self.client.add(files)
-        rev = self.client.commit(message=msg.encode('utf-8'))
+        rev = self.client.commit(message=encode_text(msg))
         return rev
         
     def submit(self, auth, files, msg):
