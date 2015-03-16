@@ -503,7 +503,7 @@ msgid "Mailbox empty."
 msgstr "Boîte mail vide."
 
 #: .\djangopm\templatetags\djangopm.py:64
-msgid "Priivate Messages"
+msgid "Private Messages"
 msgstr "Messages privés"
 
 #: .\files\_views.py:95 .\files\views\__init__.py:68
