@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-20 16:26-0300\n"
+"POT-Creation-Date: 2015-03-17 20:15-0300\n"
 "PO-Revision-Date: 2009-12-05 14:01+0100\n"
 "Last-Translator: Manuel A. Vazquez <xixirei@yahoo.es>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 
 #: .\app\management\commands\messagecheck.py:72
-#: .\app\management\commands\pmnotification.py:53
+#: .\djangopm\management\commands\pmnotification.py:51
 #: .\djangopm\templatetags\djangopm.py:58
 #, python-format
 msgid "You have %(count)d unread message"
@@ -76,26 +76,26 @@ msgstr "%(file)s ::  %(project)s %(release)s"
 msgid "Latest actions for %(file)s in %(project)s %(release)s"
 msgstr "Últimas accións para %(file)s en %(project)s %(release)s"
 
-#: .\appfeeds\templates\feeds\commit_queue_description.html.py:2
-#: .\templates\components\component_detail.html.py:24
+#: .\appfeeds\templates\feeds\commit_queue_description.html:2
+#: .\templates\components\component_detail.html:24
 msgid "Component:"
 msgstr "Compoñente:"
 
-#: .\appfeeds\templates\feeds\commit_queue_description.html.py:3
-#: .\templates\files\file_list.html.py:85
+#: .\appfeeds\templates\feeds\commit_queue_description.html:3
+#: .\templates\files\file_list.html:81
 msgid "Release:"
 msgstr "Lanzamento:"
 
-#: .\appfeeds\templates\feeds\commit_queue_description.html.py:4
+#: .\appfeeds\templates\feeds\commit_queue_description.html:4
 msgid "Submitted on:"
 msgstr "Enviado o:"
 
-#: .\appfeeds\templates\feeds\updates_description.html.py:5
+#: .\appfeeds\templates\feeds\updates_description.html:5
 #, python-format
 msgid " The file is fully completed. With %(translated)s messages."
 msgstr "O ficheiro está completo. Con %(translated)s mensaxes."
 
-#: .\appfeeds\templates\feeds\updates_description.html.py:12
+#: .\appfeeds\templates\feeds\updates_description.html:12
 #, fuzzy, python-format
 msgid ""
 "The file is %(complete_status)s%% complete. With %(translated)s translated "
@@ -109,7 +109,11 @@ msgid "Addition"
 msgstr "Adición"
 
 #: .\auditor\models.py:30 .\glossary\models.py:35
-#: .\templates\glossary\glossary_log.html.py:24
+#: .\grappelli\dashboard\templates\grappelli\dashboard\modules\app_list.html:24
+#: .\grappelli\dashboard\templates\grappelli\dashboard\modules\model_list.html:10
+#: .\grappelli\templates\admin\app_index.html:31
+#: .\grappelli\templates\admin\index.html:50
+#: .\templates\glossary\glossary_log.html:24
 msgid "Change"
 msgstr "Cambio"
 
@@ -118,6 +122,7 @@ msgid "Deletion"
 msgstr "Eliminado"
 
 #: .\commandlogger\models.py:22 .\components\models.py:55
+#: .\grappelli\templates\admin\constance\change_list.html:61
 #: .\projects\models.py:55 .\releases\models.py:74
 msgid "Name"
 msgstr "Nome"
@@ -131,7 +136,7 @@ msgstr "Acción"
 msgid "Response"
 msgstr ""
 
-#: .\commandlogger\models.py:29
+#: .\commandlogger\models.py:30
 #, python-format
 msgid "%(command)s - Success: %(success)s - %(run)s - %(response)s"
 msgstr ""
@@ -140,8 +145,7 @@ msgstr ""
 msgid "Files changed"
 msgstr "Ficheiros cambiados"
 
-#: .\common\notification.py:78 .\files\_views.py:337
-#: .\files\views\filelist.py:248
+#: .\common\notification.py:78 .\files\views\filelist.py:248
 #, python-format
 msgid "File %s ready for review."
 msgstr "Ficheiro %s listo para revisión."
@@ -227,11 +231,11 @@ msgid "This message was sent through the %(app_name)s contact form.\n"
 msgstr ""
 "Esta mensaxe enviouse usando o formulario de contacto de %(app_name)s.\n"
 
-#: .\contact\views.py:71 .\teams\views.py:121 .\userprofileapp\views.py:176
+#: .\contact\views.py:71 .\teams\views.py:121 .\userprofileapp\views.py:203
 msgid "Your message has been sent."
 msgstr "A túa mensaxe foi enviada."
 
-#: .\deferredsubmit\handler.py:124
+#: .\deferredsubmit\handler.py:125
 #, fuzzy
 msgid "File submit failed"
 msgstr "Ficheiro enviado"
@@ -242,7 +246,7 @@ msgid "OpenID URL"
 msgstr "URL de OpenID"
 
 #: .\django_authopenid\forms.py:45 .\django_authopenid\forms.py:113
-#: .\django_authopenid\views.py:83
+#: .\django_authopenid\views.py:86
 msgid "i-names are not supported"
 msgstr "Os i-names non están soportados"
 
@@ -286,13 +290,15 @@ msgstr ""
 msgid "You already associated this openid to your account."
 msgstr "Este OpenID xa está asociado á túa conta."
 
-#: .\django_authopenid\models.py:66 .\templates\files\file_detail.html.py:210
-#: .\templates\files\file_detail.html.py:245
-#: .\templates\files\file_log.html.py:23
-#: .\templates\glossary\glossary_log.html.py:23
-#: .\templates\teams\team_admin.html.py:105
-#: .\templates\teams\team_admin_table.html.py:7
-#: .\templates\teams\team_contact.html.py:51
+#: .\django_authopenid\models.py:66
+#: .\grappelli\templates\admin\object_history.html:25
+#: .\grappelli\templates\reversion\object_history.html:14
+#: .\templates\files\file_detail.html:211
+#: .\templates\files\file_detail.html:246 .\templates\files\file_log.html:23
+#: .\templates\glossary\glossary_log.html:23
+#: .\templates\teams\team_admin.html:105
+#: .\templates\teams\team_admin_table.html:7
+#: .\templates\teams\team_contact.html:51
 msgid "User"
 msgstr "Usuario"
 
@@ -306,422 +312,252 @@ msgstr "Confirmación do novo contrasinal"
 msgid "User associations"
 msgstr "Confirmación do novo contrasinal"
 
-#: .\django_authopenid\views.py:89
+#: .\django_authopenid\views.py:92
 #, python-format
 msgid "The OpenID %s was invalid"
 msgstr "O OpenID %s non é válido"
 
-#: .\django_authopenid\views.py:499
+#: .\django_authopenid\views.py:407
+#, fuzzy
+msgid "Invalid or expired token"
+msgstr "sesión non válida ou caducada."
+
+#: .\django_authopenid\views.py:514
 msgid "Password changed"
 msgstr "Contrasinal cambiado"
 
-#: .\django_authopenid\views.py:619
+#: .\django_authopenid\views.py:634
 msgid "You can't remove this openid. You should set a password first."
 msgstr ""
 "Non se pode eliminar este openid. Debes establecer un contrasinal antes."
 
-#: .\django_authopenid\views.py:631
+#: .\django_authopenid\views.py:646
 #, python-format
 msgid "%s is not associated to your account"
 msgstr "%s non está asociado á túa conta"
 
-#: .\django_authopenid\views.py:637
+#: .\django_authopenid\views.py:652
 msgid "OpenID removed."
 msgstr "OpenID eliminado"
 
-#: .\django_authopenid\views.py:644
+#: .\django_authopenid\views.py:659
 msgid "Invalid OpenID url."
 msgstr "URL OpenID non válido."
 
-#: .\djangoapp\templates\tags\pagination.html.py:6
+#: .\djangoapp\templates\tags\pagination.html:6
 msgid "&laquo; first"
 msgstr ""
 
-#: .\djangoapp\templates\tags\pagination.html.py:7
-#: .\pagination\templates\pagination\pagination.html.py:5
-#: .\pagination\templates\pagination\pagination.html.py:7
-#: .\templates\pagination\pagination.html.py:5
-#: .\templates\pagination\pagination.html.py:7
-#: .\templates\registration\profile.html.py:30
-#: .\templates\registration\profile.html.py:36
-#: .\templates\registration\profile.html.py:42
-#: .\templates\registration\profile.html.py:48
+#: .\djangoapp\templates\tags\pagination.html:7
+#: .\templates\pagination\pagination.html:5
+#: .\templates\pagination\pagination.html:7
 msgid "previous"
 msgstr "anterior"
 
-#: .\djangoapp\templates\tags\pagination.html.py:13
+#: .\djangoapp\templates\tags\pagination.html:13
 #, python-format
 msgid "Page %(page_number)s of %(num_pages)s"
 msgstr ""
 
-#: .\djangoapp\templates\tags\pagination.html.py:19
-#: .\pagination\templates\pagination\pagination.html.py:21
-#: .\pagination\templates\pagination\pagination.html.py:23
-#: .\templates\pagination\pagination.html.py:21
-#: .\templates\pagination\pagination.html.py:23
-#: .\templates\registration\profile.html.py:31
-#: .\templates\registration\profile.html.py:37
-#: .\templates\registration\profile.html.py:43
-#: .\templates\registration\profile.html.py:49
+#: .\djangoapp\templates\tags\pagination.html:19
+#: .\templates\pagination\pagination.html:21
+#: .\templates\pagination\pagination.html:23
 msgid "next"
 msgstr "seguinte"
 
-#: .\djangoapp\templates\tags\pagination.html.py:20
+#: .\djangoapp\templates\tags\pagination.html:20
 msgid "last &raquo;"
 msgstr ""
 
-#: .\djangoapp\templates\tags\pagination_page.html.py:5
+#: .\djangoapp\templates\tags\pagination_page.html:5
 msgid "&laquo; Previous"
 msgstr ""
 
-#: .\djangoapp\templates\tags\pagination_page.html.py:28
+#: .\djangoapp\templates\tags\pagination_page.html:28
 msgid "Next &raquo;"
 msgstr ""
 
-#: .\djangoapp\templates\tags\sorting.html.py:5
-#: .\djangoapp\templates\tags\sorting.html.py:12
+#: .\djangoapp\templates\tags\sorting.html:5
+#: .\djangoapp\templates\tags\sorting.html:12
 msgid "Sort descending"
 msgstr ""
 
-#: .\djangoapp\templates\tags\sorting.html.py:7
-#: .\djangoapp\templates\tags\sorting.html.py:11
+#: .\djangoapp\templates\tags\sorting.html:7
+#: .\djangoapp\templates\tags\sorting.html:11
 msgid "Sort ascending"
 msgstr ""
 
-#: .\djangoapp\templates\tags\userinfo.html.py:3
+#: .\djangoapp\templates\tags\userinfo.html:3
 #, fuzzy, python-format
 msgid "Welcome %(name)s"
 msgstr "Benvido/a a %(project)s"
 
-#: .\djangoapp\templates\tags\userinfo.html.py:4 .\templates\auth.html.py:8
+#: .\djangoapp\templates\tags\userinfo.html:4 .\templates\auth.html:7
+#: .\templates\auth.html.py:17
 msgid "Sign out"
 msgstr "Pechar sesión"
 
-#: .\djangoapp\templates\tags\userinfo.html.py:6
+#: .\djangoapp\templates\tags\userinfo.html:6
 msgid "Sign in or register"
 msgstr ""
 
 #: .\djangopm\models.py:48
-#: .\djangopm\templates\djangopm\message_compose.html.py:13
+#: .\djangopm\templates\djangopm\message_compose.html:13
 msgid "To"
 msgstr ""
 
 #: .\djangopm\models.py:51
-#: .\djangopm\templates\djangopm\message_compose.html.py:17
-#: .\djangopm\templates\djangopm\message_compose.html.py:22
+#: .\djangopm\templates\djangopm\message_compose.html:17
+#: .\djangopm\templates\djangopm\message_compose.html:22
 #, fuzzy
 msgid "Subject"
 msgstr "Rexeitar"
 
 #: .\djangopm\models.py:52
-#: .\djangopm\templates\djangopm\message_compose.html.py:27
-#: .\djangopm\templates\djangopm\message_compose.html.py:29
+#: .\djangopm\templates\djangopm\message_compose.html:27
+#: .\djangopm\templates\djangopm\message_compose.html:29
 msgid "Message"
 msgstr ""
 
-#: .\djangopm\views.py:134
+#: .\djangopm\views.py:136
 #, fuzzy, python-format
 msgid "On %(date)s, %(name)s wrote:"
 msgstr "%(user)s escribió:"
 
-#: .\djangopm\views.py:156
+#: .\djangopm\views.py:158
 #, fuzzy
 msgid "Message sent."
 msgstr "A túa mensaxe foi enviada."
 
-#: .\djangopm\views.py:159
+#: .\djangopm\views.py:161
 msgid "Message saved as draft."
 msgstr ""
 
-#: .\djangopm\views.py:161
+#: .\djangopm\views.py:163
 msgid "You didn't select any recipient"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:13
+#: .\djangopm\templates\djangopm\mailbox.html:14
 msgid "Compose new message"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:13
+#: .\djangopm\templates\djangopm\mailbox.html:14
 #, fuzzy
 msgid "Compose"
 msgstr "Compoñente"
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:15
+#: .\djangopm\templates\djangopm\mailbox.html:16
 #, fuzzy
 msgid "Delete selected messages"
 msgstr "Últimas mensaxes:"
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:15
-#: .\templates\components\component_form.html.py:48
-#: .\templates\glossary\glossary_form.html.py:38
-#: .\templates\projects\project_form.html.py:52
-#: .\templates\releases\release_form.html.py:48
+#: .\djangopm\templates\djangopm\mailbox.html:16
+#: .\grappelli\templates\admin\delete_confirmation.html:17
+#: .\grappelli\templates\admin\submit_line.html:6
+#: .\templates\components\component_form.html:48
+#: .\templates\glossary\glossary_form.html:38
+#: .\templates\projects\project_form.html:52
+#: .\templates\releases\release_form.html:48
 msgid "Delete"
 msgstr "Eliminar"
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:23
+#: .\djangopm\templates\djangopm\mailbox.html:24
 msgid "Inbox"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:24
+#: .\djangopm\templates\djangopm\mailbox.html:25
 msgid "Sent"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\mailbox.html.py:25
+#: .\djangopm\templates\djangopm\mailbox.html:26
 msgid "Draft"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\message_compose.html.py:9
+#: .\djangopm\templates\djangopm\message_compose.html:9
 #, fuzzy
 msgid "Add recipient"
 msgstr "Engadir compoñente"
 
-#: .\djangopm\templates\djangopm\message_compose.html.py:11
-#: .\templates\registration\profile_box.html.py:42
-#: .\templates\registration\profile_box.html.py:79
-#: .\templates\teams\team_admin_table.html.py:33
-#: .\templates\teams\team_admin_table.html.py:61
-#: .\templates\teams\team_admin_table.html.py:93
+#: .\djangopm\templates\djangopm\message_compose.html:11
+#: .\templates\registration\profile_box.html:42
+#: .\templates\registration\profile_box.html:94
+#: .\templates\teams\team_admin_table.html:33
+#: .\templates\teams\team_admin_table.html:61
+#: .\templates\teams\team_admin_table.html:93
 msgid "Remove"
 msgstr "Eliminar"
 
-#: .\djangopm\templates\djangopm\message_detail.html.py:6
+#: .\djangopm\templates\djangopm\message_detail.html:6
 msgid "Reply"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\message_detail.html.py:6
+#: .\djangopm\templates\djangopm\message_detail.html:6
 msgid "Reply all"
 msgstr ""
 
-#: .\djangopm\templates\djangopm\message_list.html.py:3
+#: .\djangopm\templates\djangopm\message_list.html:3
 #, python-format
 msgid "Your current mailbox size %(current)s of %(max)s."
 msgstr ""
 
-#: .\djangopm\templates\djangopm\message_list.html.py:5
+#: .\djangopm\templates\djangopm\message_list.html:5
 msgid "You are using your maximum mailbox capacity."
 msgstr ""
 
-#: .\djangopm\templates\djangopm\message_list.html.py:28
+#: .\djangopm\templates\djangopm\message_list.html:28
 msgid "Mailbox empty."
 msgstr ""
+
+#: .\djangopm\templates\djangopm\mail\unread_messages.mail:2
+#: .\templates\updater\confirmcommit.mail:2
+#: .\templates\updater\queuestatus.mail:2
+#: .\templates\updater\unread_messages.mail:2
+msgid ""
+"\n"
+"Hello,\n"
+msgstr ""
+"\n"
+"Ola,\n"
+
+#: .\djangopm\templates\djangopm\mail\unread_messages.mail:4
+#: .\templates\updater\unread_messages.mail:4
+#, python-format
+msgid ""
+"\n"
+"There is one unread message in your profile."
+msgid_plural ""
+"\n"
+"There are %(counter)s unread messages in your profile."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\djangopm\templates\djangopm\mail\unread_messages.mail:8
+#: .\templates\updater\unread_messages.mail:8
+msgid "Latest messages:"
+msgstr "Últimas mensaxes:"
+
+#: .\djangopm\templates\djangopm\mail\unread_messages.mail:14
+#: .\templates\updater\unread_messages.mail:14
+#, fuzzy, python-format
+msgid ""
+"\n"
+"Go to %(pmhome)s to check your messages.\n"
+" \n"
+"Sincerely,\n"
+"\n"
+"The %(product_name)s team\n"
+"%(home)s\n"
+msgstr ""
+" \n"
+"Atentamente,\n"
+"\n"
+"O equipo de %(product_name)s\n"
+"%(home)s\n"
 
 #: .\djangopm\templatetags\djangopm.py:64
 #, fuzzy
 msgid "Private Messages"
 msgstr "Últimas mensaxes:"
-
-#: .\files\_views.py:95 .\files\views\__init__.py:68
-msgid "This project is disabled. You shouldn't change anything here."
-msgstr "Este proxecto está desactivado. Non debería cambiar nada aquí."
-
-#: .\files\_views.py:97 .\files\views\__init__.py:70
-msgid "This release is disabled. You shouldn't change anything here."
-msgstr "Este lanzamento está desactivado. Non deberías modificar nada."
-
-#: .\files\_views.py:126 .\files\_views.py:1079 .\files\views\filesubmit.py:73
-#: .\files\views\filesubmit.py:304
-msgid "Your file was uploaded and added to the submission queue."
-msgstr "O ficheiro foi almacenado e engadido á cola de envíos."
-
-#: .\files\_views.py:147 .\files\_views.py:191 .\files\_views.py:301
-#: .\files\views\filelist.py:55 .\files\views\filelist.py:99
-#: .\files\views\filelist.py:212
-msgid "File not found."
-msgstr "Ficheiro non atopado"
-
-#: .\files\_views.py:150 .\files\_views.py:194 .\files\_views.py:304
-#: .\files\views\filelist.py:58 .\files\views\filelist.py:102
-#: .\files\views\filelist.py:215
-msgid "Sorry, you are not supposed to change anything on a disabled component."
-msgstr ""
-"Desculpa, suponse que non podes modificar nada nun compoñente desactivado."
-
-#: .\files\_views.py:154 .\files\_views.py:198 .\files\_views.py:308
-#: .\files\_views.py:596 .\files\_views.py:1015
-#: .\files\views\filehandling.py:183 .\files\views\filehandling.py:274
-#: .\files\views\filelist.py:62 .\files\views\filelist.py:106
-#: .\files\views\filelist.py:219
-msgid "You are not a member of this team."
-msgstr "Non pertence a este equipo."
-
-#: .\files\_views.py:162
-msgid "The file will be unlocked once submitted."
-msgstr "O ficheiro desbloquerase despois do seu envío."
-
-#: .\files\_views.py:171
-msgid "This file is already locked by someone else."
-msgstr "Este ficheiro xa está bloqueado por outro usuario."
-
-#: .\files\_views.py:213 .\files\_views.py:226
-msgid "The file has a pending submit. Cannot be released right now."
-msgstr "O ficheiro ten un envío pendente. Non pode ser liberado agora."
-
-#: .\files\_views.py:217 .\files\_views.py:230 .\files\views\filelist.py:125
-#: .\files\views\filelist.py:139
-#, python-format
-msgid "Removed %s"
-msgstr "Eliminado %s"
-
-#: .\files\_views.py:220 .\files\_views.py:233 .\files\_views.py:339
-#: .\files\_views.py:666 .\files\_views.py:673 .\files\_views.py:677
-#: .\files\_views.py:1057 .\files\views\filelist.py:129
-#: .\files\views\filelist.py:143 .\files\views\filelist.py:250
-#: .\files\views\filesubmit.py:122 .\files\views\filesubmit.py:129
-#: .\files\views\filesubmit.py:133 .\files\views\filesubmit.py:282
-msgid "You are not authorized to perform this action."
-msgstr "Non estás autorizado para realizar esta acción."
-
-#: .\files\_views.py:253
-#, fuzzy
-msgid "This file already has an assigned translator."
-msgstr "O ficheiro xa ten un tradutor asignado."
-
-#: .\files\_views.py:260 .\files\_views.py:274 .\files\views\filelist.py:170
-#: .\files\views\filelist.py:185
-#, fuzzy
-msgid "File assigned"
-msgstr "Ficheiro engadido"
-
-#: .\files\_views.py:260 .\files\views\filelist.py:170
-#, python-format
-msgid "You had been designated as translator of %(file)s"
-msgstr "Fuches asignado como tradutor de %(file)s"
-
-#: .\files\_views.py:262 .\files\_views.py:277 .\files\views\filelist.py:173
-#: .\files\views\filelist.py:188
-#, python-format
-msgid "Assigned to %s"
-msgstr "Asignado a %s"
-
-#: .\files\_views.py:267
-#, fuzzy
-msgid "This file already has an assigned reviewer."
-msgstr "O ficheiro xa ten un revisor asignado."
-
-#: .\files\_views.py:274 .\files\views\filelist.py:185
-#, python-format
-msgid "You had been designated as reviewer of %(file)s"
-msgstr "Fuches asignado como revisor de %(file)s"
-
-#: .\files\_views.py:281 .\files\views\filelist.py:192
-msgid "Sorry, the translator and the reviewer cannot be the same user."
-msgstr "O tradutor e o revisor non poden ser o mesmo usuario."
-
-#: .\files\_views.py:357 .\files\views\utils\list.py:38
-msgid "This component is read only."
-msgstr "Este compoñente é de só lectura."
-
-#: .\files\_views.py:575
-msgid "Your file was added to the submission queue."
-msgstr "O ficheiro engadíuse á cola de envíos."
-
-#: .\files\_views.py:591
-msgid "The file is locked by another user."
-msgstr "O ficheiro está bloqueado por outro usuario."
-
-#: .\files\_views.py:601 .\files\_views.py:604
-#, fuzzy
-msgid "You are not assigned to this file."
-msgstr "Non pertence a este equipo."
-
-#: .\files\_views.py:606
-msgid "The file is now locked on your name."
-msgstr "O ficheiro foi bloqueado ao teu nome."
-
-#: .\files\_views.py:612 .\files\_views.py:869 .\files\_views.py:1063
-#: .\files\views\filehandling.py:245 .\files\views\filesubmit.py:288
-#, fuzzy
-msgid "This file is being processed. It can't be modified."
-msgstr "Este ficheiro esta a ser editado"
-
-#: .\files\_views.py:617
-msgid "You are editing the uploaded version of this file."
-msgstr "Estás editando a versión subida deste ficheiro."
-
-#: .\files\_views.py:618 .\files\_views.py:875
-#: .\files\views\filehandling.py:251
-msgid ""
-"The file was removed from the submission queue, remember to either save your "
-"work or cancel to put the file back in the queue."
-msgstr ""
-"O ficheiro eliminouse da cola de envíos, lembre gardar o teu traballo ou "
-"cancelar para devolvelo á cola."
-
-#: .\files\_views.py:628 .\files\_views.py:885
-#: .\files\views\filehandling.py:215 .\files\views\filehandling.py:261
-#, python-format
-msgid "Editing %s"
-msgstr "Editando %s"
-
-#: .\files\_views.py:681 .\files\views\filesubmit.py:137
-#: .\templates\releases\release_merge.html.py:27
-msgid "Please, select one or more files."
-msgstr "Selecciona un ou máis ficheiros."
-
-#: .\files\_views.py:687 .\files\views\filesubmit.py:143
-msgid "You are about to reject the following files."
-msgstr "Estás a piques de rexeitar os seguintes ficheiros."
-
-#: .\files\_views.py:695 .\files\views\filesubmit.py:151
-#: .\releases\views.py:270
-msgid "You are about to submit the following files."
-msgstr "Estás a piques de enviar os seguintes ficheiros."
-
-#: .\files\_views.py:737 .\files\views\filesubmit.py:193
-msgid "Complete the form and try again."
-msgstr "Completa o formulario e téntao de novo."
-
-#: .\files\_views.py:750 .\files\views\filesubmit.py:206
-#, fuzzy
-msgid "Submit rejected"
-msgstr "Enviado o"
-
-#: .\files\_views.py:750 .\files\views\filesubmit.py:206
-#, python-format
-msgid "The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]"
-msgstr ""
-"O ficheiro %(file)s (%(project)s) foi rexeitado por %(user)s [%(comment)s]"
-
-#: .\files\_views.py:772 .\files\views\filesubmit.py:222
-msgid "The files were rejected."
-msgstr "Os ficheiros foron rexeitados."
-
-#: .\files\_views.py:794
-#, fuzzy
-msgid "The file was added to the queue for later processing."
-msgid_plural "The files were added to the queue for later processing."
-msgstr[0] "Engadíuse de novo o ficheiro á cola de envíos."
-msgstr[1] "Engadíuse de novo o ficheiro á cola de envíos."
-
-#: .\files\_views.py:805 .\files\views\utils\commit.py:45
-#, fuzzy
-msgid "File submitted."
-msgid_plural "Files submitted."
-msgstr[0] "Ficheiro enviado"
-msgstr[1] "Ficheiro enviado"
-
-#: .\files\_views.py:811 .\files\views\utils\commit.py:51
-#, fuzzy, python-format
-msgid "Failed. Reason: %s"
-msgstr "Fallou. Motivo: %s."
-
-#: .\files\_views.py:852 .\files\views\filehandling.py:228
-msgid "The file was added back to the submission queue."
-msgstr "Engadíuse de novo o ficheiro á cola de envíos."
-
-#: .\files\_views.py:1019 .\files\views\filehandling.py:278
-msgid "The file has a pending submit. You can't force a merge right now."
-msgstr ""
-"Este ficheiro ten un envío pendente. Non podes forzalo a fusionar agora."
-
-#: .\files\_views.py:1023 .\files\views\filehandling.py:282
-msgid "POT file not found."
-msgstr "Ficheiro POT non atopado."
-
-#: .\files\_views.py:1031 .\files\views\filehandling.py:290
-msgid "File merged and added to the submission queue."
-msgstr "O ficheiro fusionado e engadido á cola de envíos."
 
 #: .\files\forms.py:25
 msgid "Please select a file to upload."
@@ -736,14 +572,12 @@ msgid "You are trying to submit an empty file."
 msgstr "Estás querendo enviar un ficheiro baleiro."
 
 #: .\files\forms.py:44 .\files\forms.py:47 .\glossary\forms.py:31
-#: .\glossary\models.py:47 .\templates\files\file_detail.html.py:246
-#: .\templates\files\file_detail.html.py:297
-#: .\templates\files\file_edit.html.py:24
-#: .\templates\files\file_list.html.py:166
-#: .\templates\files\file_log.html.py:24
-#: .\templates\files\submit_table_upload.html.py:68
-#: .\templates\files\upload_box.html.py:68
-#: .\templates\glossary\glossary_index.html.py:82 .\versioncontrol\forms.py:25
+#: .\glossary\models.py:47 .\templates\files\file_detail.html:247
+#: .\templates\files\file_detail.html:298 .\templates\files\file_edit.html:24
+#: .\templates\files\file_list.html:162 .\templates\files\file_log.html:24
+#: .\templates\files\submit_table_upload.html:68
+#: .\templates\files\upload_box.html:68
+#: .\templates\glossary\glossary_index.html:82 .\versioncontrol\forms.py:25
 msgid "Comments"
 msgstr "Observacións"
 
@@ -751,98 +585,98 @@ msgstr "Observacións"
 msgid "Unreviewed"
 msgstr "Sen revisar"
 
-#: .\files\models.py:56 .\files\models.py:98
+#: .\files\models.py:56 .\files\models.py:100
 msgid "Translated"
 msgstr "Traducido"
 
-#: .\files\models.py:57 .\files\models.py:99
+#: .\files\models.py:57 .\files\models.py:101
 msgid "Reviewed"
 msgstr "Revisado"
 
-#: .\files\models.py:58 .\files\models.py:100
+#: .\files\models.py:58 .\files\models.py:102
 msgid "Completed"
 msgstr "Completado"
 
-#: .\files\models.py:67
+#: .\files\models.py:68
 #, fuzzy
 msgid "Pending"
 msgstr "Envío pendente:"
 
-#: .\files\models.py:68 .\files\models.py:93
+#: .\files\models.py:69 .\files\models.py:95
 #, fuzzy
 msgid "Submitted"
 msgstr "Enviado o"
 
-#: .\files\models.py:69 .\files\models.py:94
+#: .\files\models.py:70 .\files\models.py:96
 #, fuzzy
 msgid "Rejected"
 msgstr "Rexeitar"
 
-#: .\files\models.py:90
-msgid "Locked"
-msgstr "Bloqueado"
-
-#: .\files\models.py:91
-#, fuzzy
-msgid "Unlocked"
-msgstr "Bloqueado"
-
-#: .\files\models.py:92
-#, fuzzy
-msgid "Uploaded"
-msgstr "Subir"
-
-#: .\files\models.py:95 .\teams\views.py:80
-#, fuzzy
-msgid "Updated"
-msgstr "Subir"
-
-#: .\files\models.py:96
-#, fuzzy
-msgid "Added"
-msgstr "Engadir"
-
-#: .\files\models.py:97
+#: .\files\models.py:71 .\files\models.py:99
 #, fuzzy
 msgid "Removed"
 msgstr "Eliminar"
 
-#: .\files\models.py:101
+#: .\files\models.py:92
+msgid "Locked"
+msgstr "Bloqueado"
+
+#: .\files\models.py:93
+#, fuzzy
+msgid "Unlocked"
+msgstr "Bloqueado"
+
+#: .\files\models.py:94
+#, fuzzy
+msgid "Uploaded"
+msgstr "Subir"
+
+#: .\files\models.py:97 .\teams\views.py:80
+#, fuzzy
+msgid "Updated"
+msgstr "Subir"
+
+#: .\files\models.py:98
+#, fuzzy
+msgid "Added"
+msgstr "Engadir"
+
+#: .\files\models.py:103
 #, fuzzy
 msgid "Need Review"
 msgstr "Eliminar revisor"
 
-#: .\files\models.py:102
+#: .\files\models.py:104
 #, fuzzy
 msgid "Assigned Translator"
 msgstr "Asignar tradutor"
 
-#: .\files\models.py:103
+#: .\files\models.py:105
 #, fuzzy
 msgid "Assigned Reviewer"
 msgstr "Asignar revisor"
 
-#: .\files\models.py:104
+#: .\files\models.py:106
 #, fuzzy
 msgid "Removed Translator"
 msgstr "Eliminar tradutor"
 
-#: .\files\models.py:105
+#: .\files\models.py:107
 #, fuzzy
 msgid "Removed Reviewer"
 msgstr "Eliminar revisor"
 
-#: .\files\models.py:359
+#: .\files\models.py:362
 #, fuzzy, python-format
 msgid "%(file)s (%(component)s - Release: %(release)s)"
 msgstr "%(file)s (Compoñente: %(component)s - Lanzamento: %(release)s)"
 
-#: .\files\models.py:699
+#: .\files\models.py:730
 #, python-format
 msgid "%(pofile)s :: %(action)s"
 msgstr "%(pofile)s :: %(action)s"
 
-#: .\files\models.py:703
+#: .\files\models.py:734
 #, python-format
 msgid "%(pofile)s :: %(action)s by %(user)s"
 msgstr "%(pofile)s :: %(action)s por %(user)s"
@@ -888,14 +722,22 @@ msgstr ""
 msgid "The tar file should not contain any directories."
 msgstr "O ficheiro tar non debe conter directorios."
 
-#: .\files\lib\handlers.py:274 .\files\lib\handlers.py:278
+#: .\files\lib\handlers.py:277 .\files\lib\handlers.py:281
 #, python-format
 msgid "An error occurred while performing file merge. %s"
 msgstr "Ocorreu un erro ao tentar fusionar o ficheiro. %s"
 
-#: .\files\lib\handlers.py:280
+#: .\files\lib\handlers.py:283
 msgid "Merged."
 msgstr "Fusionado."
+
+#: .\files\views\__init__.py:68
+msgid "This project is disabled. You shouldn't change anything here."
+msgstr "Este proxecto está desactivado. Non debería cambiar nada aquí."
+
+#: .\files\views\__init__.py:70
+msgid "This release is disabled. You shouldn't change anything here."
+msgstr "Este lanzamento está desactivado. Non deberías modificar nada."
 
 #: .\files\views\filehandling.py:161
 #, fuzzy, python-format
@@ -906,6 +748,12 @@ msgstr "O ficheiro engadíuse á cola de envíos."
 #, fuzzy, python-format
 msgid "The file %(filename)s is locked by %(username)s."
 msgstr "O ficheiro foi bloqueado ao teu nome."
+
+#: .\files\views\filehandling.py:183 .\files\views\filehandling.py:274
+#: .\files\views\filelist.py:62 .\files\views\filelist.py:106
+#: .\files\views\filelist.py:219
+msgid "You are not a member of this team."
+msgstr "Non pertence a este equipo."
 
 #: .\files\views\filehandling.py:188 .\files\views\filehandling.py:191
 #, fuzzy, python-format
@@ -936,6 +784,52 @@ msgstr ""
 "O ficheiro eliminouse da cola de envíos, lembre gardar o teu traballo ou "
 "cancelar para devolvelo á cola."
 
+#: .\files\views\filehandling.py:215 .\files\views\filehandling.py:261
+#, python-format
+msgid "Editing %s"
+msgstr "Editando %s"
+
+#: .\files\views\filehandling.py:228
+msgid "The file was added back to the submission queue."
+msgstr "Engadíuse de novo o ficheiro á cola de envíos."
+
+#: .\files\views\filehandling.py:245 .\files\views\filesubmit.py:325
+#, fuzzy
+msgid "This file is being processed. It can't be modified."
+msgstr "Este ficheiro esta a ser editado"
+
+#: .\files\views\filehandling.py:251
+msgid ""
+"The file was removed from the submission queue, remember to either save your "
+"work or cancel to put the file back in the queue."
+msgstr ""
+"O ficheiro eliminouse da cola de envíos, lembre gardar o teu traballo ou "
+"cancelar para devolvelo á cola."
+
+#: .\files\views\filehandling.py:278
+msgid "The file has a pending submit. You can't force a merge right now."
+msgstr ""
+"Este ficheiro ten un envío pendente. Non podes forzalo a fusionar agora."
+
+#: .\files\views\filehandling.py:282
+msgid "POT file not found."
+msgstr "Ficheiro POT non atopado."
+
+#: .\files\views\filehandling.py:290
+msgid "File merged and added to the submission queue."
+msgstr "O ficheiro fusionado e engadido á cola de envíos."
+
+#: .\files\views\filelist.py:55 .\files\views\filelist.py:99
+#: .\files\views\filelist.py:212
+msgid "File not found."
+msgstr "Ficheiro non atopado"
+
+#: .\files\views\filelist.py:58 .\files\views\filelist.py:102
+#: .\files\views\filelist.py:215
+msgid "Sorry, you are not supposed to change anything on a disabled component."
+msgstr ""
+"Desculpa, suponse que non podes modificar nada nun compoñente desactivado."
+
 #: .\files\views\filelist.py:70
 #, fuzzy, python-format
 msgid "%s will be automatically unlocked once submitted."
@@ -961,10 +855,22 @@ msgstr "Bloqueado"
 msgid "%s has a pending submit. Cannot be released right now."
 msgstr "O ficheiro ten un envío pendente. Non pode ser liberado agora."
 
+#: .\files\views\filelist.py:125 .\files\views\filelist.py:139
+#, python-format
+msgid "Removed %s"
+msgstr "Eliminado %s"
+
 #: .\files\views\filelist.py:126
 #, fuzzy, python-format
 msgid "%s translator removed."
 msgstr "Asignar tradutor"
+
+#: .\files\views\filelist.py:129 .\files\views\filelist.py:143
+#: .\files\views\filelist.py:250 .\files\views\filesubmit.py:129
+#: .\files\views\filesubmit.py:136 .\files\views\filesubmit.py:140
+#: .\files\views\filesubmit.py:319
+msgid "You are not authorized to perform this action."
+msgstr "Non estás autorizado para realizar esta acción."
 
 #: .\files\views\filelist.py:140
 #, fuzzy, python-format
@@ -976,20 +882,48 @@ msgstr "Ficheiro eliminado"
 msgid "%s already has an assigned translator."
 msgstr "O ficheiro xa ten un tradutor asignado."
 
+#: .\files\views\filelist.py:170 .\files\views\filelist.py:185
+#, fuzzy
+msgid "File assigned"
+msgstr "Ficheiro engadido"
+
+#: .\files\views\filelist.py:170
+#, python-format
+msgid "You had been designated as translator of %(file)s"
+msgstr "Fuches asignado como tradutor de %(file)s"
+
 #: .\files\views\filelist.py:171
 #, fuzzy, python-format
 msgid "Translator set for %s."
 msgstr "Tradutor"
+
+#: .\files\views\filelist.py:173 .\files\views\filelist.py:188
+#, python-format
+msgid "Assigned to %s"
+msgstr "Asignado a %s"
 
 #: .\files\views\filelist.py:178
 #, fuzzy, python-format
 msgid "%s already has an assigned reviewer."
 msgstr "O ficheiro xa ten un revisor asignado."
 
+#: .\files\views\filelist.py:185
+#, python-format
+msgid "You had been designated as reviewer of %(file)s"
+msgstr "Fuches asignado como revisor de %(file)s"
+
 #: .\files\views\filelist.py:186
 #, python-format
 msgid "Reviewer set for %s."
 msgstr ""
+
+#: .\files\views\filelist.py:192
+msgid "Sorry, the translator and the reviewer cannot be the same user."
+msgstr "O tradutor e o revisor non poden ser o mesmo usuario."
+
+#: .\files\views\filesubmit.py:73 .\files\views\filesubmit.py:341
+msgid "Your file was uploaded and added to the submission queue."
+msgstr "O ficheiro foi almacenado e engadido á cola de envíos."
 
 #: .\files\views\filesubmit.py:77
 #, fuzzy, python-format
@@ -1002,18 +936,79 @@ msgstr "Corrixe os seguintes erros e sobe o ficheiro de novo."
 msgid "Complete the required information and try again."
 msgstr "Completa o formulario e téntao de novo."
 
-#: .\files\views\utils\commit.py:34
+#: .\files\views\filesubmit.py:144 .\templates\releases\release_merge.html:27
+msgid "Please, select one or more files."
+msgstr "Selecciona un ou máis ficheiros."
+
+#: .\files\views\filesubmit.py:152
+#, fuzzy, python-format
+msgid "You are about to reject 1 file"
+msgid_plural "You are about to reject %(count)s files"
+msgstr[0] "Estás a piques de rexeitar os seguintes ficheiros."
+msgstr[1] "Estás a piques de rexeitar os seguintes ficheiros."
+
+#: .\files\views\filesubmit.py:163
+#, fuzzy, python-format
+msgid "You are about to submit 1 file"
+msgid_plural "You are about to submit %(count)s files"
+msgstr[0] "Estás a piques de enviar os seguintes ficheiros."
+msgstr[1] "Estás a piques de enviar os seguintes ficheiros."
+
+#: .\files\views\filesubmit.py:213
+msgid "Complete the form and try again."
+msgstr "Completa o formulario e téntao de novo."
+
+#: .\files\views\filesubmit.py:224
 #, fuzzy
-msgid "The file was added to the queue for further processing."
-msgid_plural "The files were added to the queue for further processing."
+msgid "Submit rejected"
+msgstr "Enviado o"
+
+#: .\files\views\filesubmit.py:224
+#, python-format
+msgid "The file %(file)s (%(project)s) was rejected by %(user)s [%(comment)s]"
+msgstr ""
+"O ficheiro %(file)s (%(project)s) foi rexeitado por %(user)s [%(comment)s]"
+
+#: .\files\views\filesubmit.py:257
+msgid "The files were rejected."
+msgstr "Os ficheiros foron rexeitados."
+
+#: .\files\views\utils\commit.py:38
+#, fuzzy
+msgid "File submitted."
+msgid_plural "Files submitted."
+msgstr[0] "Ficheiro enviado"
+msgstr[1] "Ficheiro enviado"
+
+#: .\files\views\utils\commit.py:46
+#, fuzzy, python-format
+msgid "Submit failed. Reason: %s"
+msgstr "Fallou. Motivo: %s."
+
+#: .\files\views\utils\commit.py:55
+#, fuzzy
+msgid "File added to the queue for further processing."
+msgid_plural "Files added to the queue for further processing."
 msgstr[0] "Engadíuse de novo o ficheiro á cola de envíos."
 msgstr[1] "Engadíuse de novo o ficheiro á cola de envíos."
+
+#: .\files\views\utils\commit.py:70
+#, fuzzy
+msgid "The file is being processed. You'll be notified once completed."
+msgid_plural ""
+"The files are being processed. You'll be notified once completed."
+msgstr[0] "Este ficheiro esta a ser editado"
+msgstr[1] "Este ficheiro esta a ser editado"
+
+#: .\files\views\utils\list.py:41
+msgid "This component is read only."
+msgstr "Este compoñente é de só lectura."
 
 #: .\glossary\forms.py:27 .\glossary\models.py:45
 msgid "Recommended translations"
 msgstr "Traducións recomendadas"
 
-#: .\glossary\forms.py:28 .\templates\glossary\glossary_index.html.py:81
+#: .\glossary\forms.py:28 .\templates\glossary\glossary_index.html:81
 msgid "Translation"
 msgstr "Tradución"
 
@@ -1021,7 +1016,7 @@ msgstr "Tradución"
 msgid "Original word"
 msgstr "Termo orixinal"
 
-#: .\glossary\models.py:43 .\templates\glossary\glossary_index.html.py:80
+#: .\glossary\models.py:43 .\templates\glossary\glossary_index.html:80
 msgid "Word"
 msgstr "Termo"
 
@@ -1047,6 +1042,883 @@ msgstr "Eliminada a tradución de '%s'"
 
 #: .\glossary\views.py:152
 msgid "Sorry, export is not available at this time."
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:95
+msgid "Dashboard"
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:139
+msgid "Quick links"
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:142
+msgid "Return to site"
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:143
+#: .\grappelli\templates\admin\base.html:86
+#: .\grappelli\templates\admin\auth\user\change_password.html:11
+#: .\grappelli\templates\admin\auth\user\change_password.html:57
+#: .\grappelli\templates\admin\includes_grappelli\header.html:21
+#, fuzzy
+msgid "Change password"
+msgstr "Modificar o meu contrasinal"
+
+#: .\grappelli\dashboard\dashboards.py:145
+#: .\grappelli\templates\admin\base.html:89
+#: .\grappelli\templates\admin\includes_grappelli\header.html:30
+#, fuzzy
+msgid "Log out"
+msgstr "Pechar sesión"
+
+#: .\grappelli\dashboard\dashboards.py:151
+#: .\grappelli\dashboard\modules.py:214
+#, fuzzy
+msgid "Applications"
+msgstr "Acción"
+
+#: .\grappelli\dashboard\dashboards.py:157 .\templates\menu.html:26
+#, fuzzy
+msgid "Administration"
+msgstr "Adición"
+
+#: .\grappelli\dashboard\dashboards.py:162
+#: .\grappelli\dashboard\modules.py:290
+#: .\grappelli\templates\admin\index.html:76
+#, fuzzy
+msgid "Recent Actions"
+msgstr "Acción"
+
+#: .\grappelli\dashboard\dashboards.py:166
+#, fuzzy
+msgid "Latest Django News"
+msgstr "Últimas noticias"
+
+#: .\grappelli\dashboard\dashboards.py:173
+msgid "Support"
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:176
+msgid "Django documentation"
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:181
+msgid "Django \"django-users\" mailing list"
+msgstr ""
+
+#: .\grappelli\dashboard\dashboards.py:186
+msgid "Django irc channel"
+msgstr ""
+
+#: .\grappelli\dashboard\modules.py:188
+msgid "Links"
+msgstr ""
+
+#: .\grappelli\dashboard\modules.py:350
+msgid "RSS Feed"
+msgstr ""
+
+#: .\grappelli\dashboard\templates\admin\index.html:25
+#: .\grappelli\templates\admin\500.html:9
+#: .\grappelli\templates\admin\app_index.html:11
+#: .\grappelli\templates\admin\base.html:112
+#: .\grappelli\templates\admin\change_form.html:134
+#: .\grappelli\templates\admin\change_list.html:137
+#: .\grappelli\templates\admin\change_list_filter_sidebar.html:151
+#: .\grappelli\templates\admin\csv_export_selected_confirmation.html:9
+#: .\grappelli\templates\admin\delete_confirmation.html:13
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:13
+#: .\grappelli\templates\admin\index.html:18
+#: .\grappelli\templates\admin\invalid_setup.html:9
+#: .\grappelli\templates\admin\object_history.html:9
+#: .\grappelli\templates\admin\auth\user\change_password.html:7
+#: .\grappelli\templates\admin\constance\change_list.html:44
+#: .\grappelli\templates\admin_doc\bookmarklets.html:8
+#: .\grappelli\templates\admin_doc\index.html:9
+#: .\grappelli\templates\admin_doc\missing_docutils.html:8
+#: .\grappelli\templates\admin_doc\model_detail.html:20
+#: .\grappelli\templates\admin_doc\model_index.html:23
+#: .\grappelli\templates\admin_doc\template_filter_index.html:25
+#: .\grappelli\templates\admin_doc\template_tag_index.html:27
+#: .\grappelli\templates\admin_doc\view_detail.html:7
+#: .\grappelli\templates\admin_doc\view_index.html:23
+#: .\grappelli\templates\grp_doc\basic_page_structure.html:132
+#: .\grappelli\templates\grp_doc\context_navigation.html:55
+#: .\grappelli\templates\registration\password_change_done.html:6
+#: .\grappelli\templates\registration\password_change_form.html:6
+#: .\grappelli\templates\reversion\recover_form.html:7
+#: .\grappelli\templates\reversion\recover_list.html:6
+#: .\grappelli\templates\reversion\revision_form.html:7
+#: .\grappelli\templates\smuggler\load_data_form.html:27
+#: .\templates\base.html:77 .\templates\menu.html:24
+#: .\templates\components\component_base.html:4
+#: .\templates\contact\contact.html:7 .\templates\files\commit_queue.html:5
+#: .\templates\files\file_base.html:4 .\templates\files\file_diff.html:15
+#: .\templates\files\file_submit_confirm.html:5
+#: .\templates\glossary\glossary_form.html:8
+#: .\templates\glossary\glossary_index.html:14
+#: .\templates\glossary\glossary_log.html:9
+#: .\templates\glossary\language_selection.html:22
+#: .\templates\languages\language_base.html:4
+#: .\templates\projects\project_base.html:4
+#: .\templates\projects\project_list.html:10
+#: .\templates\registration\profile.html:18
+#: .\templates\releases\release_base.html:4 .\templates\teams\join.html:5
+#: .\templates\teams\team_admin.html:88 .\templates\teams\team_contact.html:21
+#: .\templates\teams\team_detail.html:5
+msgid "Home"
+msgstr "Inicio"
+
+#: .\grappelli\dashboard\templates\grappelli\dashboard\modules\app_list.html:19
+#: .\grappelli\dashboard\templates\grappelli\dashboard\modules\model_list.html:9
+#: .\grappelli\templates\admin\app_index.html:30
+#: .\grappelli\templates\admin\change_form.html:137
+#: .\grappelli\templates\admin\index.html:45
+#: .\templates\components\component_detail.html:16
+#: .\templates\projects\project_list.html:17
+#: .\templates\releases\release_detail.html:15
+msgid "Add"
+msgstr "Engadir"
+
+#: .\grappelli\dashboard\templates\grappelli\dashboard\modules\recent_actions.html:18
+#, fuzzy
+msgid "None Available"
+msgstr "Páxina non dispoñible"
+
+#: .\grappelli\templates\admin\404.html:7
+#: .\grappelli\templates\admin\404.html:11 .\templates\404.html:5
+#: .\templates\404.html.py:15
+msgid "Page not found"
+msgstr "Páxina non atopada"
+
+#: .\grappelli\templates\admin\404.html:12
+msgid "We're sorry, but the requested page could not be found."
+msgstr ""
+
+#: .\grappelli\templates\admin\500.html:10
+msgid "Server error"
+msgstr ""
+
+#: .\grappelli\templates\admin\500.html:15
+msgid "Server error (500)"
+msgstr ""
+
+#: .\grappelli\templates\admin\500.html:19
+msgid "Server Error <em>(500)</em>"
+msgstr ""
+
+#: .\grappelli\templates\admin\500.html:20
+msgid ""
+"There's been an error. It's been reported to the site administrators via e-"
+"mail and should be fixed shortly. Thanks for your patience."
+msgstr ""
+
+#: .\grappelli\templates\admin\actions.html:10
+msgid "Click here to select the objects across all pages"
+msgstr ""
+
+#: .\grappelli\templates\admin\actions.html:10
+#, python-format
+msgid "Select all %(total_count)s %(module_name)s"
+msgstr ""
+
+#: .\grappelli\templates\admin\actions.html:11
+#, fuzzy
+msgid "Clear selection"
+msgstr "Por favor, selecciona un ficheiro para subir."
+
+#: .\grappelli\templates\admin\app_index.html:13
+#, python-format
+msgid "<li>%(name)s</li>"
+msgstr ""
+
+#: .\grappelli\templates\admin\app_index.html:38
+#: .\grappelli\templates\admin\index.html:59
+msgid "You don´t have permission to edit anything."
+msgstr ""
+
+#: .\grappelli\templates\admin\base.html:97
+#: .\grappelli\templates\admin\includes_grappelli\header.html:41
+#: .\grappelli\templates\admin_doc\bookmarklets.html:9
+msgid "Documentation"
+msgstr ""
+
+#: .\grappelli\templates\admin\base_site.html:4
+#, fuzzy
+msgid "Django site admin"
+msgstr "Sitio de administración de Vertaal"
+
+#: .\grappelli\templates\admin\change_form.html:124
+#: .\grappelli\templates\admin\edit_inline\stacked.html:8
+msgid "Open All Items"
+msgstr ""
+
+#: .\grappelli\templates\admin\change_form.html:125
+#: .\grappelli\templates\admin\edit_inline\stacked.html:9
+msgid "Close All Items"
+msgstr ""
+
+#: .\grappelli\templates\admin\change_form.html:149
+#: .\grappelli\templates\admin\object_history.html:13
+#: .\grappelli\templates\reversion\revision_form.html:11
+#, fuzzy
+msgid "History"
+msgstr "Ver historial"
+
+#: .\grappelli\templates\admin\change_form.html:150
+#, fuzzy
+msgid "View on site"
+msgstr "Ver consola"
+
+#: .\grappelli\templates\admin\change_form.html:168
+#: .\grappelli\templates\admin\change_list.html:218
+#: .\grappelli\templates\admin\change_list_filter_sidebar.html:229
+#: .\grappelli\templates\admin\login.html:32
+#: .\grappelli\templates\admin\auth\user\change_password.html:27
+#: .\grappelli\templates\smuggler\load_data_form.html:45
+#, fuzzy
+msgid "Please correct the error below."
+msgstr "Corrixe os seguintes erros e sobe o ficheiro de novo."
+
+#: .\grappelli\templates\admin\change_form.html:168
+#: .\grappelli\templates\admin\change_list.html:218
+#: .\grappelli\templates\admin\change_list_filter_sidebar.html:229
+#: .\grappelli\templates\admin\login.html:32
+#: .\grappelli\templates\admin\auth\user\change_password.html:27
+#, fuzzy
+msgid "Please correct the errors below."
+msgstr "Corrixe os seguintes erros e sobe o ficheiro de novo."
+
+#: .\grappelli\templates\admin\change_list.html:155
+#: .\grappelli\templates\admin\change_list_filter_sidebar.html:168
+#: .\grappelli\templates\smuggler\change_list.html:15
+#, fuzzy, python-format
+msgid "Add %(name)s"
+msgstr "Editar %(fname)s "
+
+#: .\grappelli\templates\admin\change_list.html:184
+#: .\grappelli\templates\admin\change_list_filter_sidebar.html:183
+#: .\templates\files\component_filter.html:53
+msgid "Filter"
+msgstr "Filtro"
+
+#: .\grappelli\templates\admin\change_list.html:245
+#: .\grappelli\templates\admin\submit_line.html:9
+#: .\grappelli\templates\admin\constance\change_list.html:110
+#: .\news\templates\news\editor.html:30
+#: .\templates\components\component_form.html:44
+#: .\templates\glossary\glossary_form.html:35
+#: .\templates\projects\project_form.html:49
+#: .\templates\registration\profile_box.html:69
+#: .\templates\releases\release_form.html:44
+#: .\templates\teams\team_admin.html:142
+msgid "Save"
+msgstr "Gardar"
+
+#: .\grappelli\templates\admin\change_list_results.html:19
+#, fuzzy
+msgid "Toggle sorting"
+msgstr "Configuración do perfil"
+
+#: .\grappelli\templates\admin\change_list_results.html:20
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr ""
+
+#: .\grappelli\templates\admin\change_list_results.html:21
+#, fuzzy
+msgid "Remove from sorting"
+msgstr "Eliminar de favoritos"
+
+#: .\grappelli\templates\admin\csv_export_selected_confirmation.html:12
+msgid "Export selection as CSV"
+msgstr ""
+
+#: .\grappelli\templates\admin\csv_export_selected_confirmation.html:31
+msgid "Export following fields:"
+msgstr ""
+
+#: .\grappelli\templates\admin\csv_export_selected_confirmation.html:34
+msgid "Select all"
+msgstr ""
+
+#: .\grappelli\templates\admin\csv_export_selected_confirmation.html:54
+#: .\templates\files\upload_failed.html:14
+#: .\templates\releases\release_build_console.html:54
+msgid "Back"
+msgstr "Atrás"
+
+#: .\grappelli\templates\admin\csv_export_selected_confirmation.html:55
+msgid "Export"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_confirmation.html:27
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would result in deleting "
+"related objects, but your account doesn't have permission to delete the "
+"following types of objects:"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_confirmation.html:35
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would require deleting the "
+"following protected related objects:"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_confirmation.html:45
+#, python-format
+msgid ""
+"Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? "
+"All of the following related items will be deleted:"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_confirmation.html:51
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:57
+#: .\templates\files\file_edit.html:32
+#: .\templates\files\file_submit_confirm.html:48
+#: .\templates\registration\drop_account.html:29
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: .\grappelli\templates\admin\delete_confirmation.html:52
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:58
+msgid "Yes, I'm sure"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:16
+msgid "Delete multiple objects"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:26
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would result in deleting related "
+"objects, but your account doesn't have permission to delete the following "
+"types of objects:"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:34
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would require deleting the following "
+"protected related objects:"
+msgstr ""
+
+#: .\grappelli\templates\admin\delete_selected_confirmation.html:44
+#, python-format
+msgid ""
+"Are you sure you want to delete the selected %(objects_name)s? All of the "
+"following objects and their related items will be deleted:"
+msgstr ""
+
+#: .\grappelli\templates\admin\filter.html:4
+#: .\grappelli\templates\admin\filter_listing.html:3
+#, python-format
+msgid "%(filter_title)s"
+msgstr ""
+
+#: .\grappelli\templates\admin\index.html:65
+msgid "Custom Views"
+msgstr ""
+
+#: .\grappelli\templates\admin\index.html:78
+#, fuzzy
+msgid "My Actions"
+msgstr "Acción"
+
+#: .\grappelli\templates\admin\index.html:81
+#, fuzzy
+msgid "None available"
+msgstr "Páxina non dispoñible"
+
+#: .\grappelli\templates\admin\invalid_setup.html:16
+msgid ""
+"Something's wrong with your database installation. Make sure the appropriate "
+"database tables have been created, and make sure the database is readable by "
+"the appropriate user."
+msgstr ""
+
+#: .\grappelli\templates\admin\login.html:26
+msgid "Login"
+msgstr ""
+
+#: .\grappelli\templates\admin\login.html:54
+#: .\templates\registration\drop_account.html:21
+#: .\templates\registration\simple_login.html:12
+msgid "Password:"
+msgstr "Contrasinal:"
+
+#: .\grappelli\templates\admin\login.html:63
+#, fuzzy
+msgid "Forgotten your password or username?"
+msgstr "Esqueciches o teu contrasinal?"
+
+#: .\grappelli\templates\admin\login.html:70
+#: .\grappelli\templates\registration\password_reset_complete.html:17
+#: .\templates\registration\password_reset_complete.html:9
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: .\grappelli\templates\admin\object_history.html:24
+#: .\grappelli\templates\reversion\object_history.html:13
+#: .\grappelli\templates\reversion\recover_list.html:22
+#, fuzzy
+msgid "Date/time"
+msgstr "Data"
+
+#: .\grappelli\templates\admin\object_history.html:26
+#: .\templates\files\file_detail.html:244 .\templates\files\file_log.html:21
+#: .\templates\glossary\glossary_log.html:21
+msgid "Action"
+msgstr "Acción"
+
+#: .\grappelli\templates\admin\object_history.html:32
+msgid "DATETIME_FORMAT"
+msgstr ""
+
+#: .\grappelli\templates\admin\object_history.html:36
+#, fuzzy
+msgid "Created object"
+msgstr "Últimos proxectos"
+
+#: .\grappelli\templates\admin\object_history.html:46
+#: .\grappelli\templates\reversion\object_history.html:34
+msgid ""
+"This object doesn't have a change history. It probably wasn't added via this "
+"admin site."
+msgstr ""
+
+#: .\grappelli\templates\admin\pagination.html:8
+#: .\grappelli\views\related.py:168
+#, fuzzy, python-format
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] "%(user)s escribió:"
+msgstr[1] "%(user)s escribió:"
+
+#: .\grappelli\templates\admin\pagination.html:13
+#: .\grappelli\templates\admin\pagination.html:15
+#, python-format
+msgid "%(full_result_count)s total"
+msgstr ""
+
+#: .\grappelli\templates\admin\pagination.html:27
+msgid "Show all"
+msgstr ""
+
+#: .\grappelli\templates\admin\submit_line.html:12
+msgid "Save as new"
+msgstr ""
+
+#: .\grappelli\templates\admin\submit_line.html:15
+msgid "Save and add another"
+msgstr ""
+
+#: .\grappelli\templates\admin\submit_line.html:18
+#, fuzzy
+msgid "Save and continue editing"
+msgstr "Gardar e enviar"
+
+#: .\grappelli\templates\admin\auth\user\change_password.html:15
+#: .\grappelli\templates\registration\password_change_done.html:7
+#: .\grappelli\templates\registration\password_change_form.html:7
+#: .\grappelli\templates\registration\password_change_form.html:10
+#: .\grappelli\templates\registration\password_change_form.html:15
+#: .\templates\authopenid\password_change_form.html:36
+msgid "Password change"
+msgstr "Modificar o contrasinal"
+
+#: .\grappelli\templates\admin\auth\user\change_password.html:24
+#, python-format
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr ""
+
+#: .\grappelli\templates\admin\auth\user\change_password.html:34
+#: .\grappelli\templates\registration\password_change_form.html:31
+#: .\userprofileapp\forms.py:31
+msgid "New password"
+msgstr "Novo contrasinal"
+
+#: .\grappelli\templates\admin\auth\user\change_password.html:46
+#: .\grappelli\templates\registration\password_change_form.html:38
+#, fuzzy
+msgid "Password (again)"
+msgstr "Modificar o contrasinal"
+
+#: .\grappelli\templates\admin\auth\user\change_password.html:50
+#: .\grappelli\templates\registration\password_reset_confirm.html:29
+msgid "Enter the same password as above, for verification."
+msgstr ""
+
+#: .\grappelli\templates\admin\constance\change_list.html:66
+msgid "Default"
+msgstr ""
+
+#: .\grappelli\templates\admin\constance\change_list.html:71
+msgid "Value"
+msgstr ""
+
+#: .\grappelli\templates\admin\constance\change_list.html:76
+msgid "Is modified"
+msgstr ""
+
+#: .\grappelli\templates\admin\edit_inline\stacked.html:10
+#: .\grappelli\templates\admin\edit_inline\stacked.html:54
+#: .\grappelli\templates\admin\edit_inline\tabular.html:91
+msgid "Add Item"
+msgstr ""
+
+#: .\grappelli\templates\admin\edit_inline\stacked.html:23
+#: .\grappelli\templates\admin\edit_inline\tabular.html:64
+#, fuzzy
+msgid "View on Site"
+msgstr "Ver consola"
+
+#: .\grappelli\templates\admin\edit_inline\stacked.html:25
+#: .\grappelli\templates\admin\edit_inline\tabular.html:66
+#, fuzzy
+msgid "Move Item"
+msgstr "Eliminar"
+
+#: .\grappelli\templates\admin\edit_inline\stacked.html:29
+#: .\grappelli\templates\admin\edit_inline\stacked.html:34
+#: .\grappelli\templates\admin\edit_inline\tabular.html:70
+#: .\grappelli\templates\admin\edit_inline\tabular.html:75
+#, fuzzy
+msgid "Delete Item"
+msgstr "Eliminar"
+
+#: .\grappelli\templates\admin\edit_inline\stacked.html:52
+#: .\grappelli\templates\admin\edit_inline\tabular.html:89
+#, fuzzy, python-format
+msgid "Add another %(verbose_name)s"
+msgstr "Engadir outro OpenID"
+
+#: .\grappelli\templates\admin\edit_inline\tabular.html:9
+#, fuzzy
+msgid "Add Another"
+msgstr "Engadir outro OpenID"
+
+#: .\grappelli\templates\admin\includes_grappelli\header.html:36
+msgid "Tests"
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:10
+#: .\grappelli\templates\admin_doc\bookmarklets.html:16
+#, fuzzy
+msgid "Bookmarklets"
+msgstr "Favoritos"
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:13
+msgid "Documentation bookmarklets"
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:18
+msgid ""
+"\n"
+"            <p>To install bookmarklets, drag the link to your bookmarks\n"
+"    toolbar, or right-click the link and add it to your bookmarks. Now you "
+"can\n"
+"    select the bookmarklet from any page in the site.  Note that some of "
+"these\n"
+"    bookmarklets require you to be viewing the site from a computer "
+"designated\n"
+"    as \"internal\" (talk to your system administrator if you aren't sure "
+"if\n"
+"    your computer is \"internal\").</p>\n"
+"        "
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:27
+msgid "Documentation for this page"
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:28
+msgid ""
+"Jumps you from any page to the documentation for the view that generates "
+"that page."
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:31
+msgid "Show object ID"
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:32
+msgid ""
+"Shows the content-type and unique ID for pages that represent a single "
+"object."
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:35
+msgid "Edit this object (current window)"
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:36
+msgid "Jumps to the admin page for pages that represent a single object."
+msgstr ""
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:39
+#, fuzzy
+msgid "Edit this object (new window)"
+msgstr "Editando proxecto %(name)s"
+
+#: .\grappelli\templates\admin_doc\bookmarklets.html:40
+msgid "As above, but opens the admin page in a new window."
+msgstr ""
+
+#: .\grappelli\templates\registration\logged_out.html:16
+#, fuzzy
+msgid "Log in again"
+msgstr "Iniciar sesión"
+
+#: .\grappelli\templates\registration\password_change_done.html:11
+#: .\grappelli\templates\registration\password_change_done.html:13
+#, fuzzy
+msgid "Password change successful"
+msgstr "Restablecemento do contrasinal correcto."
+
+#: .\grappelli\templates\registration\password_change_done.html:17
+#, fuzzy
+msgid "Your password was changed."
+msgstr "Contrasinal cambiado"
+
+#: .\grappelli\templates\registration\password_change_form.html:19
+#, fuzzy
+msgid ""
+"Please enter your old password, for security's sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+"Introduce o teu novo contrasinal dúas veces para verificar que as tecleaches "
+"ben."
+
+#: .\grappelli\templates\registration\password_change_form.html:24
+#: .\userprofileapp\forms.py:33
+msgid "Old password"
+msgstr "Antigo contrasinal"
+
+#: .\grappelli\templates\registration\password_change_form.html:47
+#: .\grappelli\templates\registration\password_reset_confirm.html:35
+#: .\templates\registration\password_reset_confirm.html:19
+msgid "Change my password"
+msgstr "Modificar o meu contrasinal"
+
+#: .\grappelli\templates\registration\password_reset_complete.html:5
+#: .\grappelli\templates\registration\password_reset_complete.html:12
+#: .\templates\registration\password_reset_complete.html:5
+#: .\templates\registration\password_reset_complete.html:7
+msgid "Password reset complete"
+msgstr "Restablecemento do contrasinal completo"
+
+#: .\grappelli\templates\registration\password_reset_complete.html:16
+#: .\templates\registration\password_reset_complete.html:8
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr "O teu contrasinal foi establecido. Xa podes iniciar sesión agora."
+
+#: .\grappelli\templates\registration\password_reset_confirm.html:5
+#: .\grappelli\templates\registration\password_reset_confirm.html:14
+#: .\templates\registration\password_reset_confirm.html:11
+msgid "Enter new password"
+msgstr "Introducir novo contrasinal"
+
+#: .\grappelli\templates\registration\password_reset_confirm.html:5
+#: .\grappelli\templates\registration\password_reset_confirm.html:43
+#: .\templates\registration\password_reset_confirm.html:27
+msgid "Password reset unsuccessful"
+msgstr "Erro no restablecemento do contrasinal"
+
+#: .\grappelli\templates\registration\password_reset_confirm.html:18
+#: .\templates\registration\password_reset_confirm.html:12
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+"Introduce o teu novo contrasinal dúas veces para verificar que as tecleaches "
+"ben."
+
+#: .\grappelli\templates\registration\password_reset_confirm.html:21
+#, fuzzy
+msgid "New password:"
+msgstr "Novo contrasinal"
+
+#: .\grappelli\templates\registration\password_reset_confirm.html:26
+#, fuzzy
+msgid "Confirm password:"
+msgstr "Modificar o meu contrasinal"
+
+#: .\grappelli\templates\registration\password_reset_confirm.html:47
+#, fuzzy
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+"A ligazón para o restablecemento do contrasinal non é válida, seguramente "
+"porque xa foi utilizada. Solicita un novo restablemento de contrasinal."
+
+#: .\grappelli\templates\registration\password_reset_done.html:5
+#: .\grappelli\templates\registration\password_reset_done.html:12
+#: .\templates\registration\password_reset_done.html:5
+#: .\templates\registration\password_reset_done.html:7
+msgid "Password reset successful"
+msgstr "Restablecemento do contrasinal correcto."
+
+#: .\grappelli\templates\registration\password_reset_done.html:16
+#, fuzzy
+msgid ""
+"We've emailed you instructions for setting your password. You should be "
+"receiving them shortly."
+msgstr ""
+"Acabamos de enviarche instrucións para establecer un novo contrasinal ao "
+"enderezo de correo que nos indicaches. Deberías recibilo axiña."
+
+#: .\grappelli\templates\registration\password_reset_done.html:17
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: .\grappelli\templates\registration\password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: .\grappelli\templates\registration\password_reset_email.html:4
+#, fuzzy
+msgid "Please go to the following page and choose a new password:"
+msgstr "Corrixe os seguintes erros e sobe o ficheiro de novo."
+
+#: .\grappelli\templates\registration\password_reset_email.html:8
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: .\grappelli\templates\registration\password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: .\grappelli\templates\registration\password_reset_email.html:12
+#, fuzzy, python-format
+msgid "The %(site_name)s team"
+msgstr "Ver %(filename)s"
+
+#: .\grappelli\templates\registration\password_reset_form.html:5
+#: .\grappelli\templates\registration\password_reset_form.html:13
+#: .\templates\registration\password_reset_form.html:5
+#: .\templates\registration\password_reset_form.html:10
+msgid "Password reset"
+msgstr "Restablecemento do contrasinal"
+
+#: .\grappelli\templates\registration\password_reset_form.html:17
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: .\grappelli\templates\registration\password_reset_form.html:20
+#, fuzzy
+msgid "Email address:"
+msgstr "Enderezo de correo-e"
+
+#: .\grappelli\templates\registration\password_reset_form.html:28
+#: .\templates\registration\password_reset_form.html:22
+msgid "Reset my password"
+msgstr "Restaurar o meu contrasinal."
+
+#: .\grappelli\templates\reversion\change_list.html:6
+#: .\grappelli\templates\reversion\recover_form.html:10
+#: .\grappelli\templates\reversion\recover_list.html:9
+#, fuzzy, python-format
+msgid "Recover deleted %(name)s"
+msgstr "Benvido/a a %(project)s"
+
+#: .\grappelli\templates\reversion\object_history.html:7
+msgid ""
+"Choose a date from the list below to revert to a previous version of this "
+"object."
+msgstr ""
+
+#: .\grappelli\templates\reversion\object_history.html:15
+#: .\templates\files\commit_queue.html:30
+#: .\templates\teams\team_detail.html:92
+msgid "Comment"
+msgstr "Comentario"
+
+#: .\grappelli\templates\reversion\recover_form.html:18
+msgid "Press the save button below to recover this version of the object."
+msgstr ""
+
+#: .\grappelli\templates\reversion\recover_list.html:16
+msgid ""
+"Choose a date from the list below to recover a deleted version of an object."
+msgstr ""
+
+#: .\grappelli\templates\reversion\recover_list.html:36
+msgid "There are no deleted objects to recover."
+msgstr ""
+
+#: .\grappelli\templates\reversion\revision_form.html:12
+#, python-format
+msgid "Revert %(verbose_name)s"
+msgstr ""
+
+#: .\grappelli\templates\reversion\revision_form.html:27
+msgid "Press the save button below to revert to this version of the object."
+msgstr ""
+
+#: .\grappelli\templates\smuggler\change_list.html:7
+msgid "Dump data"
+msgstr ""
+
+#: .\grappelli\templates\smuggler\change_list.html:11
+#: .\grappelli\templates\smuggler\load_data_form.html:7
+#: .\grappelli\templates\smuggler\load_data_form.html:28
+#: .\grappelli\templates\smuggler\load_data_form.html:34
+msgid "Load data"
+msgstr ""
+
+#: .\grappelli\templates\smuggler\load_data_form.html:49
+msgid "Data from your computer"
+msgstr ""
+
+#: .\grappelli\templates\smuggler\load_data_form.html:68
+#: .\grappelli\templates\smuggler\load_data_form.html:114
+msgid "Load"
+msgstr ""
+
+#: .\grappelli\templates\smuggler\load_data_form.html:71
+msgid "Load fixture and save on disk"
+msgstr ""
+
+#: .\grappelli\templates\smuggler\load_data_form.html:93
+#, python-format
+msgid "Data from %(smuggler_fixture_dir)s directory"
+msgstr ""
+
+#: .\grappelli\templates\smuggler\load_data_form.html:97
+#, fuzzy
+msgid "File name"
+msgstr "Ficheiro engadido"
+
+#: .\grappelli\templates\smuggler\load_data_form.html:98
+msgid "Size"
+msgstr ""
+
+#: .\grappelli\tests\test_switch.py:113 .\grappelli\tests\test_switch.py:172
+#: .\grappelli\views\switch.py:37 .\grappelli\views\switch.py:48
+msgid "Permission denied."
+msgstr ""
+
+#: .\grappelli\tests\test_switch.py:156 .\grappelli\views\switch.py:40
+#: .\grappelli\views\switch.py:51
+#, python-format
+msgid "%(name)s object with primary key %(key)r does not exist."
+msgstr ""
+
+#: .\grappelli\views\related.py:79 .\grappelli\views\related.py:108
+msgid "?"
 msgstr ""
 
 #: .\maintenancemode\models.py:11 .\projects\models.py:60
@@ -1082,43 +1954,95 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: .\news\templates\news\article_detail.html.py:9
-#: .\news\templates\news\latest.html.py:11
+#: .\news\templates\news\article_detail.html:9
+#: .\news\templates\news\latest.html:14
 msgid "Published on"
 msgstr "Publicado o"
 
-#: .\news\templates\news\article_detail.html.py:9
-#: .\news\templates\news\latest.html.py:11
-#: .\templates\files\commit_queue.html.py:29
-#: .\templates\teams\team_detail.html.py:91
+#: .\news\templates\news\article_detail.html:9
+#: .\news\templates\news\latest.html:14 .\templates\files\commit_queue.html:29
+#: .\templates\teams\team_detail.html:91
 msgid "by"
 msgstr "por"
 
-#: .\news\templates\news\editor.html.py:3
+#: .\news\templates\news\editor.html:3
 msgid "News"
 msgstr "Noticias"
 
-#: .\news\templates\news\editor.html.py:30
-#: .\templates\components\component_form.html.py:44
-#: .\templates\glossary\glossary_form.html.py:35
-#: .\templates\projects\project_form.html.py:49
-#: .\templates\registration\profile_box.html.py:54
-#: .\templates\releases\release_form.html.py:44
-#: .\templates\teams\team_admin.html.py:142
-msgid "Save"
-msgstr "Gardar"
-
-#: .\news\templates\news\editor.html.py:34
+#: .\news\templates\news\editor.html:34
 msgid "Article"
 msgstr "Artigo"
 
-#: .\news\templates\news\latest.html.py:4
+#: .\news\templates\news\latest.html:4
 msgid "Latest News"
 msgstr "Últimas noticias"
 
-#: .\news\templates\news\latest.html.py:10
+#: .\news\templates\news\latest.html:13
 msgid "(read more...)"
 msgstr "(ler máis...)"
+
+#: .\openidmigration\forms.py:25
+#: .\openidmigration\templates\openidmig\message.html:3
+#: .\openidmigration\templates\openidmig\token.html:3
+msgid "Migration Token"
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\message.html:11
+#, python-format
+msgid ""
+"We are moving to <a href=\"%(secondarysite)s%(userregister)s\" target="
+"\"_blank\">%(secondarysite)s</a>"
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\message.html:13
+msgid ""
+"As some openID providers (like google) doesn't support domain change, you'll "
+"need to perform an user migration process."
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\message.html:14
+#, python-format
+msgid ""
+"If you remember your local credentials, you can just go to <a href="
+"\"%(secondarysite)s%(userregister)s\" target=\"_blank\">%(secondarysite)s"
+"%(userregister)s</a><br/>\n"
+"sign in with your openID service and then link you accounts using your "
+"Vertaal's username and password."
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\message.html:16
+#, python-format
+msgid ""
+"If you don't remember, or never used your local credentials, or just wan't "
+"to make it simple, go <a href=\"%(migrationurl)s\">here</a> to get your "
+"migration token<br/>\n"
+"and then proceed to <a href=\"%(secondarysite)s%(userregister)s\" target="
+"\"_blank\">%(secondarysite)s</a> to link your account signing in with your "
+"openID service."
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\token.html:10
+msgid "Use the following migration token to link your account:"
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\token.html:12
+#, python-format
+msgid ""
+"Login to <a href=\"%(secondarysite)s%(userregister)s\" target=\"_blank\">"
+"%(secondarysite)s</a> using your openID service. Then use the provided token "
+"to link your account."
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\token.html:14
+msgid "Have in mind this token is temporal and for one use only."
+msgstr ""
+
+#: .\openidmigration\templates\openidmig\token.html:15
+msgid ""
+"If you fail to link you account while this site is up, you'll have to login "
+"using your local credentials and use password recovery tool in case you "
+"don't remember it."
+msgstr ""
 
 #: .\projects\forms.py:35 .\projects\models.py:66
 msgid "Repository URL"
@@ -1284,7 +2208,7 @@ msgstr ""
 msgid "Build complete"
 msgstr "Completado"
 
-#: .\registration\forms.py:27 .\userprofileapp\forms.py:31
+#: .\registration\forms.py:27 .\userprofileapp\forms.py:30
 msgid "E-mail"
 msgstr "Correo-e"
 
@@ -1292,11 +2216,11 @@ msgstr "Correo-e"
 msgid "The choosen username already exists."
 msgstr "O nome de usuario escollido xa existe."
 
-#: .\registration\forms.py:53 .\userprofileapp\forms.py:98
+#: .\registration\forms.py:53 .\userprofileapp\forms.py:96
 msgid "This field is required."
 msgstr "Este campo é obrigatorio."
 
-#: .\registration\forms.py:56 .\userprofileapp\forms.py:102
+#: .\registration\forms.py:56 .\userprofileapp\forms.py:100
 msgid "That e-mail address already have an associated user account."
 msgstr "Este enderezo de correo-e xa está asociado a unha conta de usuario."
 
@@ -1358,9 +2282,13 @@ msgstr ""
 msgid "The files could not be merged."
 msgstr "O ficheiro está bloqueado por outro usuario."
 
-#: .\releases\views.py:261
+#: .\releases\views.py:262
 msgid "Some files could not be merged."
 msgstr "Algúns ficheiros non puideron ser fusionados."
+
+#: .\releases\views.py:272
+msgid "You are about to submit the following files."
+msgstr "Estás a piques de enviar os seguintes ficheiros."
 
 #: .\rpc\views.py:44 .\rpc\views.py:50
 msgid "Session invalid or expired."
@@ -1379,16 +2307,16 @@ msgstr "O ficheiro non está bloqueado."
 msgid "Failed: [%s]."
 msgstr "Fallou:  [%s]."
 
-#: .\teams\models.py:28
+#: .\teams\models.py:33
 #, fuzzy
 msgid "Review all submits"
 msgstr "Gardar e enviar"
 
-#: .\teams\models.py:29
+#: .\teams\models.py:34
 msgid "Allow users to submit to repository"
 msgstr ""
 
-#: .\teams\models.py:191
+#: .\teams\models.py:197
 #, python-format
 msgid "<User: %(user)s - Team: %(project)s (%(language)s)>"
 msgstr ""
@@ -1398,7 +2326,7 @@ msgstr ""
 msgid "File submission"
 msgstr "Ficheiro enviado"
 
-#: .\teams\views.py:119 .\userprofileapp\views.py:174
+#: .\teams\views.py:119 .\userprofileapp\views.py:201
 msgid "Your message couldn't be delivered to one or more recipients."
 msgstr ""
 
@@ -1434,69 +2362,65 @@ msgstr "Solicitude para unirse ao equipo"
 msgid "Your request to join this team has been received."
 msgstr "Xa recibimos a súa solicitude para formar parte do equipo."
 
-#: .\templates\403.html.py:3 .\templates\403.html.py:7
+#: .\templates\403.html:3 .\templates\403.html.py:7
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: .\templates\403.html.py:10
+#: .\templates\403.html:10
 msgid "Sorry, you don't have enough permissions to access here."
 msgstr ""
 
-#: .\templates\404.html.py:5 .\templates\404.html.py:15
-msgid "Page not found"
-msgstr "Páxina non atopada"
-
-#: .\templates\404.html.py:8
+#: .\templates\404.html:8
 msgid "Not found"
 msgstr "Non atopado"
 
-#: .\templates\404.html.py:17
+#: .\templates\404.html:17
 #, python-format
 msgid ""
 "Looks like you followed a bad link. If you think it's our fault, please <a "
 "href='%(ticket_url)s'>let us know</a>."
 msgstr ""
 
-#: .\templates\404.html.py:19
+#: .\templates\404.html:19
 #, python-format
 msgid ""
 "Here's a link to the <a href=\"%(home)s\">homepage</a>. You know, just in "
 "case."
 msgstr ""
 
-#: .\templates\500.html.py:3 .\templates\500.html.py:7
+#: .\templates\500.html:3 .\templates\500.html.py:7
 msgid "Page unavailable"
 msgstr "Páxina non dispoñible"
 
-#: .\templates\500.html.py:9
+#: .\templates\500.html:9
 msgid "The <b>bad news</b> is that Vertaal has just encountered an error."
 msgstr ""
 
-#: .\templates\500.html.py:10
+#: .\templates\500.html:10
 msgid ""
 "The <b>good news</b> is that you've helped us find a bug, which we are now "
 "looking into."
 msgstr ""
 
-#: .\templates\500.html.py:12
+#: .\templates\500.html:12
 msgid "We're sorry, a server error occurred. Please wait a bit and try again."
 msgstr ""
 
-#: .\templates\500.html.py:15
+#: .\templates\500.html:15
 msgid "Sorry, and thanks for your help!"
 msgstr ""
 
-#: .\templates\503.html.py:3
+#: .\templates\503.html:3
 msgid "Under Maintenance"
 msgstr ""
 
-#: .\templates\503.html.py:8
+#: .\templates\503.html:8
 msgid ""
 "We are sorry, the system is currently under maintenance. Please try again "
 "later."
 msgstr ""
 
-#: .\templates\adsense.html.py:3
+#: .\templates\adsense.html:3
 msgid ""
 "Looks like you are blocking ads. In order to keep Vertaal running,  we felt "
 "the need to show you some ads, it would be nice if you could disable your "
@@ -1504,115 +2428,86 @@ msgid ""
 "click on them, it would be great :). Thank you."
 msgstr ""
 
-#: .\templates\auth.html.py:5
+#: .\templates\auth.html:5 .\templates\auth.html.py:14
 msgid "Welcome"
 msgstr "Benvido/a"
 
-#: .\templates\auth.html.py:5
-msgid "Profile settings"
-msgstr "Configuración do perfil"
-
-#: .\templates\auth.html.py:10 .\templates\authopenid\associate.html.py:16
-#: .\templates\authopenid\login.html.py:11
-#: .\templates\registration\login.html.py:3
-#: .\templates\registration\simple_login.html.py:3
-#: .\templates\registration\simple_login.html.py:17
+#: .\templates\auth.html:9 .\templates\auth.html.py:19
+#: .\templates\authopenid\associate.html:16
+#: .\templates\authopenid\login.html:11 .\templates\registration\login.html:3
+#: .\templates\registration\simple_login.html:3
+#: .\templates\registration\simple_login.html:17
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
-#: .\templates\auth.html.py:13
+#: .\templates\auth.html:14
+msgid "Profile settings"
+msgstr "Configuración do perfil"
+
+#: .\templates\auth.html:22
 msgid "Register"
 msgstr "Crear unha conta"
 
-#: .\templates\base.html.py:47
+#: .\templates\base.html:49
 msgid "Loading..."
 msgstr ""
 
-#: .\templates\base.html.py:75 .\templates\menu.html.py:22
-#: .\templates\components\component_base.html.py:4
-#: .\templates\contact\contact.html.py:7
-#: .\templates\files\commit_queue.html.py:5
-#: .\templates\files\file_base.html.py:4
-#: .\templates\files\file_diff.html.py:15
-#: .\templates\glossary\glossary_form.html.py:8
-#: .\templates\glossary\glossary_index.html.py:14
-#: .\templates\glossary\glossary_log.html.py:9
-#: .\templates\glossary\language_selection.html.py:22
-#: .\templates\languages\language_base.html.py:4
-#: .\templates\projects\project_base.html.py:4
-#: .\templates\projects\project_list.html.py:10
-#: .\templates\registration\profile.html.py:104
-#: .\templates\releases\release_base.html.py:4
-#: .\templates\teams\join.html.py:5 .\templates\teams\team_admin.html.py:88
-#: .\templates\teams\team_contact.html.py:21
-#: .\templates\teams\team_detail.html.py:5
-msgid "Home"
-msgstr "Inicio"
-
-#: .\templates\base.html.py:82
+#: .\templates\base.html:84
 msgid "The site is currenty in maintenance mode."
 msgstr ""
 
-#: .\templates\base.html.py:114
+#: .\templates\base.html:116
 msgid "Found a bug?"
 msgstr "Atopaches un erro?"
 
-#: .\templates\favs.html.py:5
+#: .\templates\favs.html:5
 msgid "Remove from bookmarks"
 msgstr "Eliminar de favoritos"
 
-#: .\templates\favs.html.py:8
+#: .\templates\favs.html:8
 msgid "Add to bookmarks"
 msgstr "Engadir a marcadores"
 
-#: .\templates\menu.html.py:5
+#: .\templates\menu.html:7
 msgid "My Profile"
 msgstr "O meu perfil"
 
-#: .\templates\menu.html.py:16 .\templates\files\commit_queue.html.py:3
-#: .\templates\files\commit_queue.html.py:6
-#: .\templates\files\file_diff.html.py:16
+#: .\templates\menu.html:18 .\templates\files\commit_queue.html:3
+#: .\templates\files\commit_queue.html:6 .\templates\files\file_diff.html:16
+#: .\templates\files\file_submit_confirm.html:6
 msgid "Submission Queue"
 msgstr "Cola de envíos"
 
-#: .\templates\menu.html.py:19 .\templates\glossary\glossary_form.html.py:9
-#: .\templates\glossary\glossary_index.html.py:3
-#: .\templates\glossary\glossary_index.html.py:15
-#: .\templates\glossary\glossary_index.html.py:32
-#: .\templates\glossary\glossary_log.html.py:3
-#: .\templates\glossary\glossary_log.html.py:10
-#: .\templates\glossary\language_selection.html.py:5
-#: .\templates\glossary\language_selection.html.py:23
-#: .\templates\glossary\language_selection.html.py:26
+#: .\templates\menu.html:21 .\templates\glossary\glossary_form.html:9
+#: .\templates\glossary\glossary_index.html:3
+#: .\templates\glossary\glossary_index.html:15
+#: .\templates\glossary\glossary_index.html:32
+#: .\templates\glossary\glossary_log.html:3
+#: .\templates\glossary\glossary_log.html:10
+#: .\templates\glossary\language_selection.html:5
+#: .\templates\glossary\language_selection.html:23
+#: .\templates\glossary\language_selection.html:26
 msgid "Glossary"
 msgstr "Glosario"
 
-#: .\templates\menu.html.py:20
-#: .\templates\languages\language_detail.html.py:12
-#: .\templates\languages\language_list.html.py:3
-#: .\templates\languages\language_list.html.py:6
-#: .\templates\languages\language_list.html.py:9
-#: .\templates\teams\join.html.py:6 .\templates\teams\team_admin.html.py:89
-#: .\templates\teams\team_contact.html.py:22
-#: .\templates\teams\team_detail.html.py:6
+#: .\templates\menu.html:22 .\templates\languages\language_detail.html:12
+#: .\templates\languages\language_list.html:3
+#: .\templates\languages\language_list.html:6
+#: .\templates\languages\language_list.html:9 .\templates\teams\join.html:6
+#: .\templates\teams\team_admin.html:89 .\templates\teams\team_contact.html:22
+#: .\templates\teams\team_detail.html:6
 msgid "Languages"
 msgstr "Idiomas"
 
-#: .\templates\menu.html.py:21 .\templates\components\component_base.html.py:5
-#: .\templates\files\file_base.html.py:5
-#: .\templates\projects\project_base.html.py:5
-#: .\templates\projects\project_list.html.py:11
-#: .\templates\projects\project_list.html.py:14
-#: .\templates\releases\release_base.html.py:5
+#: .\templates\menu.html:23 .\templates\components\component_base.html:5
+#: .\templates\files\file_base.html:5 .\templates\projects\project_base.html:5
+#: .\templates\projects\project_list.html:11
+#: .\templates\projects\project_list.html:14
+#: .\templates\releases\release_base.html:5
 msgid "Projects"
 msgstr "Proxectos"
 
-#: .\templates\menu.html.py:24
-#, fuzzy
-msgid "Administration"
-msgstr "Adición"
-
-#: .\templates\v2g_message.html.py:10
+#: .\templates\v2g_message.html:10
 #, python-format
 msgid ""
 "\n"
@@ -1657,279 +2552,268 @@ msgid ""
 "\"_blank\">here</a>\n"
 msgstr ""
 
-#: .\templates\admin\base_site.html.py:14
-#: .\templates\admin\base_site.html.py:17
-#, python-format
-msgid "%(site)s Admin"
-msgstr ""
-
-#: .\templates\admin\base_site.html.py:20
+#: .\templates\admin\base_site.html:8
 msgid "Site Index"
 msgstr ""
 
-#: .\templates\authopenid\associate.html.py:3
-#: .\templates\authopenid\associate.html.py:31
+#: .\templates\admin\auth\user\change_form.html:11
+#, fuzzy
+msgid "Send Password Reset"
+msgstr "Restablecemento do contrasinal"
+
+#: .\templates\authopenid\associate.html:3
+#: .\templates\authopenid\associate.html:31
 msgid "Add OpenID"
 msgstr "Engadir OpenID"
 
-#: .\templates\authopenid\associate.html.py:13
-#: .\templates\authopenid\login.html.py:8
+#: .\templates\authopenid\associate.html:13
+#: .\templates\authopenid\login.html:8
+#, python-brace-format
 msgid "Enter your {provider} {username}"
 msgstr "Introduza o {username} de {provider}"
 
-#: .\templates\authopenid\associate.html.py:14
-#: .\templates\authopenid\login.html.py:9
+#: .\templates\authopenid\associate.html:14
+#: .\templates\authopenid\login.html:9
 msgid "username"
 msgstr "nome de usuario"
 
-#: .\templates\authopenid\associate.html.py:15
-#: .\templates\authopenid\login.html.py:10
+#: .\templates\authopenid\associate.html:15
+#: .\templates\authopenid\login.html:10
 msgid "Select your OpenID provider"
 msgstr "Seleccione o seu provedor de OpenID"
 
-#: .\templates\authopenid\complete.html.py:4
+#: .\templates\authopenid\complete.html:4
 msgid "OpenID Registration"
 msgstr "Rexistro de OpenID"
 
-#: .\templates\authopenid\complete.html.py:10
+#: .\templates\authopenid\complete.html:10
 msgid "Your OpenID can now be associated with a new or existing membership."
 msgstr "O seu OpenID pode asociarse cunha conta xa existente ou cunha nova."
 
-#: .\templates\authopenid\complete.html.py:18
+#: .\templates\authopenid\complete.html:18
 msgid "Associate with a new account"
 msgstr "Asociar cunha conta nova."
 
-#: .\templates\authopenid\complete.html.py:25
+#: .\templates\authopenid\complete.html:25
 msgid "Create account"
 msgstr "Crear unha conta"
 
-#: .\templates\authopenid\complete.html.py:32
+#: .\templates\authopenid\complete.html:32
 msgid "Associate with an existing account"
 msgstr "Asociar cunha conta xa existente"
 
-#: .\templates\authopenid\complete.html.py:40
+#: .\templates\authopenid\complete.html:40
 msgid "Verify"
 msgstr "Verificar"
 
-#: .\templates\authopenid\failure.html.py:4
+#: .\templates\authopenid\complete.html:48
+#, fuzzy
+msgid "Migrate existing account"
+msgstr "Asociar cunha conta xa existente"
+
+#: .\templates\authopenid\complete.html:55
+msgid "Link"
+msgstr ""
+
+#: .\templates\authopenid\failure.html:4
 msgid "Failed"
 msgstr "Fallou"
 
-#: .\templates\authopenid\login.html.py:17
+#: .\templates\authopenid\login.html:17
 msgid "Sign in with your OpenID"
 msgstr "Iniciar sesión co seu OpnID"
 
-#: .\templates\authopenid\password_change_form.html.py:4
+#: .\templates\authopenid\password_change_form.html:4
 msgid "Password setup"
 msgstr "Configuración do contrasinal"
 
-#: .\templates\authopenid\password_change_form.html.py:21
+#: .\templates\authopenid\password_change_form.html:21
 msgid "Set your new password"
 msgstr "Establecer un novo contrasinal"
 
-#: .\templates\authopenid\password_change_form.html.py:28
-#: .\templates\authopenid\password_change_form.html.py:44
-#: .\templates\files\component_filter.html.py:82
-#: .\templates\files\file_list.html.py:115
+#: .\templates\authopenid\password_change_form.html:28
+#: .\templates\authopenid\password_change_form.html:44
+#: .\templates\files\component_filter.html:82
+#: .\templates\files\file_list.html:111
 msgid "Apply"
 msgstr "Aplicar"
 
-#: .\templates\authopenid\password_change_form.html.py:36
-msgid "Password change"
-msgstr "Modificar o contrasinal"
-
-#: .\templates\components\component_build_console.html.py:5
-#: .\templates\releases\release_build_console.html.py:5
+#: .\templates\components\component_build_console.html:5
+#: .\templates\releases\release_build_console.html:5
 msgid "Build log"
 msgstr "Rexistro da construción"
 
-#: .\templates\components\component_detail.html.py:15
-#: .\templates\files\submit_table.html.py:25
-#: .\templates\glossary\glossary_form.html.py:22
-#: .\templates\glossary\glossary_index.html.py:89
-#: .\templates\projects\project_detail.html.py:66
-#: .\templates\releases\release_detail.html.py:14
+#: .\templates\components\component_detail.html:15
+#: .\templates\files\submit_table.html:25
+#: .\templates\glossary\glossary_form.html:22
+#: .\templates\glossary\glossary_index.html:89
+#: .\templates\projects\project_detail.html:66
+#: .\templates\releases\release_detail.html:14
 msgid "Edit"
 msgstr "Editar"
 
-#: .\templates\components\component_detail.html.py:16
-#: .\templates\projects\project_list.html.py:17
-#: .\templates\releases\release_detail.html.py:15
-msgid "Add"
-msgstr "Engadir"
-
-#: .\templates\components\component_detail.html.py:34
-#: .\templates\files\commit_queue.html.py:27
-#: .\templates\files\file_submit_confirm.html.py:36
-#: .\templates\teams\team_detail.html.py:89
+#: .\templates\components\component_detail.html:34
+#: .\templates\files\commit_queue.html:27
+#: .\templates\files\file_submit_confirm_filelist.html:10
+#: .\templates\teams\team_detail.html:89
 msgid "Release"
 msgstr ""
 
-#: .\templates\components\component_detail.html.py:35
-#: .\templates\releases\release_detail.html.py:50
+#: .\templates\components\component_detail.html:35
+#: .\templates\releases\release_detail.html:50
 #, fuzzy
 msgid "Total"
 msgstr "Total:"
 
-#: .\templates\components\component_detail.html.py:36
-#: .\templates\releases\release_detail.html.py:51
+#: .\templates\components\component_detail.html:36
+#: .\templates\releases\release_detail.html:51
 #, fuzzy
 msgid "Untranslated"
 msgstr "Traducido"
 
-#: .\templates\components\component_detail.html.py:37
-#: .\templates\releases\release_detail.html.py:52
+#: .\templates\components\component_detail.html:37
+#: .\templates\releases\release_detail.html:52
 #, fuzzy
 msgid "Fuzzy"
 msgstr "Dubidoso:"
 
-#: .\templates\components\component_detail.html.py:38
-#: .\templates\releases\release_detail.html.py:53
+#: .\templates\components\component_detail.html:38
+#: .\templates\releases\release_detail.html:53
 msgid "Complete"
 msgstr "Completado"
 
-#: .\templates\components\component_form.html.py:6
+#: .\templates\components\component_form.html:6
 #, python-format
 msgid "Editing component %(name)s"
 msgstr "Editando compoñente %(name)s"
 
-#: .\templates\components\component_form.html.py:7
-#: .\templates\components\component_form.html.py:16
-#: .\templates\components\component_form.html.py:30
+#: .\templates\components\component_form.html:7
+#: .\templates\components\component_form.html:16
+#: .\templates\components\component_form.html:30
 msgid "New Component"
 msgstr "Novo compoñente"
 
-#: .\templates\components\component_form.html.py:41
-#: .\templates\glossary\glossary_form.html.py:32
-#: .\templates\projects\project_form.html.py:46
-#: .\templates\releases\release_form.html.py:41
+#: .\templates\components\component_form.html:41
+#: .\templates\glossary\glossary_form.html:32
+#: .\templates\projects\project_form.html:46
+#: .\templates\releases\release_form.html:41
 msgid "required"
 msgstr "requirido"
 
-#: .\templates\contact\contact.html.py:3 .\templates\contact\contact.html.py:8
-#: .\templates\contact\contact.html.py:16
-#: .\templates\teams\team_contact.html.py:3
-#: .\templates\teams\team_contact.html.py:25
-#: .\templates\teams\team_contact.html.py:35
-#: .\templates\teams\team_detail.html.py:24
+#: .\templates\contact\contact.html:3 .\templates\contact\contact.html.py:8
+#: .\templates\contact\contact.html:16 .\templates\teams\team_contact.html:3
+#: .\templates\teams\team_contact.html:25
+#: .\templates\teams\team_contact.html:35
+#: .\templates\teams\team_detail.html:24
 msgid "Contact"
 msgstr "Contacto"
 
-#: .\templates\contact\contact.html.py:27
-#: .\templates\registration\profile_contact_box.html.py:13
-#: .\templates\teams\team_contact.html.py:42
+#: .\templates\contact\contact.html:27
+#: .\templates\registration\profile_contact_box.html:13
+#: .\templates\teams\team_contact.html:42
 msgid "Send"
 msgstr "Enviar"
 
-#: .\templates\files\commit_queue.html.py:9
+#: .\templates\files\commit_queue.html:9
 msgid "Submission Queue Manager"
 msgstr "Xestor da cola de envío"
 
-#: .\templates\files\commit_queue.html.py:19
+#: .\templates\files\commit_queue.html:19
 #, fuzzy, python-format
 msgid "Submission Queue for Project %(projectname)s"
 msgstr "Cola de envíos para o Proxecto %(projectname)s - Equipo %(teamname)s"
 
-#: .\templates\files\commit_queue.html.py:25
-#: .\templates\files\file_list_table.html.py:17
-#: .\templates\files\file_submit_confirm.html.py:34
-#: .\templates\registration\profile_workarea_box.html.py:9
-#: .\templates\registration\profile_workarea_box.html.py:41
-#: .\templates\registration\profile_workarea_box.html.py:101
-#: .\templates\registration\profile_workarea_box.html.py:174
-#: .\templates\releases\release_merge.html.py:57
-#: .\templates\teams\team_detail.html.py:87
+#: .\templates\files\commit_queue.html:25
+#: .\templates\files\file_list_table.html:17
+#: .\templates\files\file_submit_confirm_filelist.html:8
+#: .\templates\registration\profile_workarea_box.html:9
+#: .\templates\registration\profile_workarea_box.html:41
+#: .\templates\registration\profile_workarea_box.html:101
+#: .\templates\registration\profile_workarea_box.html:174
+#: .\templates\releases\release_merge.html:57
+#: .\templates\teams\team_detail.html:87
 msgid "File"
 msgstr "Ficheiro"
 
-#: .\templates\files\commit_queue.html.py:26
-#: .\templates\files\file_list_table.html.py:18
-#: .\templates\files\file_submit_confirm.html.py:35
-#: .\templates\releases\release_merge.html.py:59
-#: .\templates\teams\team_detail.html.py:88
+#: .\templates\files\commit_queue.html:26
+#: .\templates\files\file_list_table.html:18
+#: .\templates\files\file_submit_confirm_filelist.html:9
+#: .\templates\releases\release_merge.html:59
+#: .\templates\teams\team_detail.html:88
 msgid "Component"
 msgstr "Compoñente"
 
-#: .\templates\files\commit_queue.html.py:28
-#: .\templates\registration\profile_workarea_box.html.py:102
-#: .\templates\teams\team_detail.html.py:90
+#: .\templates\files\commit_queue.html:28
+#: .\templates\registration\profile_workarea_box.html:102
+#: .\templates\teams\team_detail.html:90
 msgid "Submitted on"
 msgstr "Enviado o"
 
-#: .\templates\files\commit_queue.html.py:30
-#: .\templates\teams\team_detail.html.py:92
-msgid "Comment"
-msgstr "Comentario"
-
-#: .\templates\files\commit_queue.html.py:41
-#: .\templates\releases\release_merge.html.py:50
-#: .\templates\teams\team_detail.html.py:99
+#: .\templates\files\commit_queue.html:41
+#: .\templates\releases\release_merge.html:50
+#: .\templates\teams\team_detail.html:99
 msgid "Submit"
 msgstr "Enviar"
 
-#: .\templates\files\commit_queue.html.py:42
-#: .\templates\teams\team_admin.html.py:127
-#: .\templates\teams\team_detail.html.py:100
+#: .\templates\files\commit_queue.html:42
+#: .\templates\teams\team_admin.html:127
+#: .\templates\teams\team_detail.html:100
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: .\templates\files\commit_queue.html.py:50
+#: .\templates\files\commit_queue.html:50
 msgid "The queue is empty."
 msgstr "A cola está baleira."
 
-#: .\templates\files\component_filter.html.py:12
+#: .\templates\files\component_filter.html:12
 msgid "You cannot hide all components."
 msgstr "Non podes acochar todos os compoñentes."
 
-#: .\templates\files\component_filter.html.py:34
+#: .\templates\files\component_filter.html:34
 msgid "Components"
 msgstr "Compoñentes"
 
-#: .\templates\files\component_filter.html.py:53
-msgid "Filter"
-msgstr "Filtro"
-
-#: .\templates\files\component_filter.html.py:54
+#: .\templates\files\component_filter.html:54
 msgid "Uncheck to hide a component"
 msgstr "Desmarcar para acochar un compoñente"
 
-#: .\templates\files\component_filter.html.py:70
-#: .\templates\files\file_list.html.py:108
+#: .\templates\files\component_filter.html:70
+#: .\templates\files\file_list.html:104
 msgid "Hide fully translated files"
 msgstr "Acochar ficheiros traducidos"
 
-#: .\templates\files\component_filter.html.py:79
+#: .\templates\files\component_filter.html:79
 msgid "My files only"
 msgstr "Só os meus ficheiros"
 
-#: .\templates\files\file_detail.html.py:17
+#: .\templates\files\file_detail.html:17
 #, fuzzy, python-format
 msgid "Latest actions on %(filename)s"
 msgstr "Últimas accións no lanzamento %(release)s."
 
-#: .\templates\files\file_detail.html.py:71
+#: .\templates\files\file_detail.html:71
 #, fuzzy
 msgid "View"
 msgstr "Ver cambios"
 
-#: .\templates\files\file_detail.html.py:72
-#: .\templates\files\file_detail.html.py:189
-#: .\templates\files\file_detail.html.py:217
-#: .\templates\files\submit_table.html.py:21
+#: .\templates\files\file_detail.html:72
+#: .\templates\files\file_detail.html:190
+#: .\templates\files\file_detail.html:218
+#: .\templates\files\submit_table.html:21
 msgid "Download"
 msgstr "Descargar"
 
-#: .\templates\files\file_detail.html.py:77
+#: .\templates\files\file_detail.html:77
 #, fuzzy
 msgid "Edit online"
 msgstr "Editando"
 
-#: .\templates\files\file_detail.html.py:82
+#: .\templates\files\file_detail.html:82
 #, fuzzy
 msgid "Download POT file"
 msgstr "Descargar"
 
-#: .\templates\files\file_detail.html.py:91
+#: .\templates\files\file_detail.html:91
 #, python-format
 msgid ""
 "\n"
@@ -1942,7 +2826,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\files\file_detail.html.py:100
+#: .\templates\files\file_detail.html:100
 #, python-format
 msgid ""
 "\n"
@@ -1955,7 +2839,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\files\file_detail.html.py:108
+#: .\templates\files\file_detail.html:108
 #, python-format
 msgid ""
 "\n"
@@ -1968,7 +2852,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\files\file_detail.html.py:116
+#: .\templates\files\file_detail.html:116
 #, python-format
 msgid ""
 "\n"
@@ -1981,7 +2865,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\files\file_detail.html.py:124
+#: .\templates\files\file_detail.html:124
 #, python-format
 msgid ""
 "\n"
@@ -1994,138 +2878,123 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\files\file_detail.html.py:151
+#: .\templates\files\file_detail.html:151
 #, fuzzy
 msgid "The PO file differs from the source POT file."
 msgstr "O ficheiro PO é diferente do POT."
 
-#: .\templates\files\file_detail.html.py:151
+#: .\templates\files\file_detail.html:151
 msgid "Force merge"
 msgstr "Forzar fusión"
 
-#: .\templates\files\file_detail.html.py:160
+#: .\templates\files\file_detail.html:160
 #, fuzzy, python-format
 msgid "Source file updated on %(updated)s (%(since)s ago)"
 msgstr "actualizado o %(updated)s"
 
-#: .\templates\files\file_detail.html.py:168
+#: .\templates\files\file_detail.html:169
 #, fuzzy, python-format
 msgid "File last merged on %(updated)s (%(since)s ago)"
 msgstr "actualizado o %(updated)s"
 
-#: .\templates\files\file_detail.html.py:179
-#, python-format
+#: .\templates\files\file_detail.html:180
+#, fuzzy, python-format
 msgid ""
-"Repositoy revision <a href=\"%(viewurl)s\">%(rev)s</a> (updated %(updated)s "
-"- %(since)s ago)*"
-msgstr ""
+"Repositoy revision <a href=\"%(viewurl)s\" target=\"_blank\">%(rev)s</a> "
+"(updated %(updated)s - %(since)s ago)*"
+msgstr "(actualizado %(updated)s)"
 
-#: .\templates\files\file_detail.html.py:181
+#: .\templates\files\file_detail.html:182
 #, fuzzy, python-format
 msgid "Repositoy revision %(rev)s (updated %(updated)s - %(since)s ago)*"
 msgstr "(actualizado %(updated)s)"
 
-#: .\templates\files\file_detail.html.py:191
-#: .\templates\files\file_detail.html.py:193
+#: .\templates\files\file_detail.html:192
+#: .\templates\files\file_detail.html:194
 #, fuzzy, python-format
 msgid "Pending submit, in queue since %(created)s (%(since)s ago)"
 msgstr "en cola desde %(created)s"
 
-#: .\templates\files\file_detail.html.py:198
+#: .\templates\files\file_detail.html:199
 #, fuzzy
 msgid "(*) The information displayed is local and may be out dated."
 msgstr "A información amosada é local e pode estar sen actualizar."
 
-#: .\templates\files\file_detail.html.py:205
+#: .\templates\files\file_detail.html:206
 msgid "Click to open/close"
 msgstr ""
 
-#: .\templates\files\file_detail.html.py:205
+#: .\templates\files\file_detail.html:206
 #, fuzzy
 msgid "Submit History"
 msgstr "Enviado o"
 
-#: .\templates\files\file_detail.html.py:209
-#: .\templates\files\file_detail.html.py:244
-#: .\templates\files\file_log.html.py:22
-#: .\templates\glossary\glossary_log.html.py:22
+#: .\templates\files\file_detail.html:210
+#: .\templates\files\file_detail.html:245 .\templates\files\file_log.html:22
+#: .\templates\glossary\glossary_log.html:22
 msgid "Date"
 msgstr "Data"
 
-#: .\templates\files\file_detail.html.py:211
+#: .\templates\files\file_detail.html:212
 msgid "Status"
 msgstr "Estado"
 
-#: .\templates\files\file_detail.html.py:230
+#: .\templates\files\file_detail.html:231
 #, python-format
 msgid "Files older than %(days)s days are removed."
 msgstr ""
 
-#: .\templates\files\file_detail.html.py:240
+#: .\templates\files\file_detail.html:241
 #, fuzzy
 msgid "File History"
 msgstr "Ver historial"
 
-#: .\templates\files\file_detail.html.py:243
-#: .\templates\files\file_log.html.py:21
-#: .\templates\glossary\glossary_log.html.py:21
-msgid "Action"
-msgstr "Acción"
-
-#: .\templates\files\file_edit.html.py:8
+#: .\templates\files\file_edit.html:8
 #, python-format
 msgid "Edit %(fname)s "
 msgstr "Editar %(fname)s "
 
-#: .\templates\files\file_edit.html.py:31
+#: .\templates\files\file_edit.html:31
 msgid "Save and submit"
 msgstr "Gardar e enviar"
 
-#: .\templates\files\file_edit.html.py:32
-#: .\templates\files\file_submit_confirm.html.py:56
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: .\templates\files\file_edit.html.py:34
+#: .\templates\files\file_edit.html:34
 msgid "Editing:"
 msgstr "Editando:"
 
-#: .\templates\files\file_list.html.py:7
-#: .\templates\files\file_list.html.py:57
+#: .\templates\files\file_list.html:7 .\templates\files\file_list.html:53
 msgid "Latest updates"
 msgstr "Últimas actualizacións"
 
-#: .\templates\files\file_list.html.py:9
-#: .\templates\files\file_list.html.py:59
+#: .\templates\files\file_list.html:9 .\templates\files\file_list.html:55
 msgid "Latest updates for you"
 msgstr "Últimas actualizacións para ti"
 
-#: .\templates\files\file_list.html.py:17
-#: .\templates\files\file_list.html.py:70
+#: .\templates\files\file_list.html:17 .\templates\files\file_list.html:66
 msgid "Submission queue"
 msgstr "Cola de envíos"
 
-#: .\templates\files\file_list.html.py:77
+#: .\templates\files\file_list.html:73
 #, fuzzy
 msgid "Team:"
 msgstr "Equipos:"
 
-#: .\templates\files\file_list.html.py:81
-#: .\templates\glossary\glossary_index.html.py:19
-#: .\templates\glossary\language_selection.html.py:30
+#: .\templates\files\file_list.html:77
+#: .\templates\glossary\glossary_index.html:19
+#: .\templates\glossary\language_selection.html:30
 msgid "Project:"
 msgstr "Proxecto:"
 
-#: .\templates\files\file_list.html.py:112
+#: .\templates\files\file_list.html:108
 #, fuzzy
 msgid "Show my files only"
 msgstr "Só os meus ficheiros"
 
-#: .\templates\files\file_list.html.py:139
+#: .\templates\files\file_list.html:135
 msgid "Recent activity"
 msgstr ""
 
-#: .\templates\files\file_list.html.py:144
+#: .\templates\files\file_list.html:140
 #, python-format
 msgid ""
 "\n"
@@ -2134,92 +3003,92 @@ msgid ""
 "\t"
 msgstr ""
 
-#: .\templates\files\file_list_row.html.py:52
+#: .\templates\files\file_list_row.html:52
 #, python-format
 msgid "View %(filename)s"
 msgstr "Ver %(filename)s"
 
-#: .\templates\files\file_list_row.html.py:53
+#: .\templates\files\file_list_row.html:53
 #, python-format
 msgid "Download %(filename)s"
 msgstr "Descargar %(filename)s"
 
-#: .\templates\files\file_list_row.html.py:57
+#: .\templates\files\file_list_row.html:57
 #, python-format
 msgid "Edit %(filename)s"
 msgstr "Editar %(filename)s"
 
-#: .\templates\files\file_list_row.html.py:61
+#: .\templates\files\file_list_row.html:61
 msgid "Mark the file as Translated."
 msgstr "Marcar o ficheiro como Traducido."
 
-#: .\templates\files\file_list_row.html.py:65
+#: .\templates\files\file_list_row.html:65
 msgid "File translated. Mark as Reviewed."
 msgstr ""
 
-#: .\templates\files\file_list_row.html.py:69
+#: .\templates\files\file_list_row.html:69
 #, fuzzy
 msgid "File reviewed. Mark as Completed."
 msgstr "Marcar o ficheiro como Completado."
 
-#: .\templates\files\file_list_row.html.py:73
+#: .\templates\files\file_list_row.html:73
 #, fuzzy
 msgid "File completed."
 msgstr "Completado"
 
-#: .\templates\files\file_list_row.html.py:78
+#: .\templates\files\file_list_row.html:78
 msgid "Unlock the file when you finish working on it."
 msgstr "Desbloquea este ficheiro cando termines de traballar con el."
 
-#: .\templates\files\file_list_row.html.py:82
-#: .\templates\files\detail\detail_assignblock.html.py:109
+#: .\templates\files\file_list_row.html:82
+#: .\templates\files\detail\detail_assignblock.html:109
 msgid "Lock the file to notify others you're working on it."
 msgstr ""
 "Bloquea este ficheiro para notificar a outros que estás a traballar nel."
 
-#: .\templates\files\file_list_row.html.py:95
+#: .\templates\files\file_list_row.html:95
 #, fuzzy
 msgid "This file requires a merge."
 msgstr "Este campo é obrigatorio."
 
-#: .\templates\files\file_list_row.html.py:100
+#: .\templates\files\file_list_row.html:99
 msgid "This file has a pending submit. Click here if you want to download it."
 msgstr "Este ficheiro ten un envío pendente. Preme aquí para descargalo."
 
-#: .\templates\files\file_list_row.html.py:102
+#: .\templates\files\file_list_row.html:101
 msgid "This file is being edited"
 msgstr "Este ficheiro esta a ser editado"
 
-#: .\templates\files\file_list_row.html.py:114
+#: .\templates\files\file_list_row.html:112
 msgid "Total:"
 msgstr "Total:"
 
-#: .\templates\files\file_list_row.html.py:114
+#: .\templates\files\file_list_row.html:112
 msgid "Translated:"
 msgstr "Traducido:"
 
-#: .\templates\files\file_list_row.html.py:114
+#: .\templates\files\file_list_row.html:112
 #, fuzzy
 msgid "Untranslated:"
 msgstr "Traducido:"
 
-#: .\templates\files\file_list_row.html.py:114
+#: .\templates\files\file_list_row.html:112
 msgid "Fuzzy:"
 msgstr "Dubidoso:"
 
-#: .\templates\files\file_list_row.html.py:120
-#: .\templates\files\detail\detail_assignblock.html.py:56
+#: .\templates\files\file_list_row.html:118
+#: .\templates\files\detail\detail_assignblock.html:56
 msgid "Remove translator"
 msgstr "Quitar tradutor"
 
-#: .\templates\files\file_list_row.html.py:123
-#: .\templates\files\file_list_row.html.py:151
-#: .\templates\files\detail\detail_assignblock.html.py:59
-#: .\templates\files\detail\detail_assignblock.html.py:78
+#: .\templates\files\file_list_row.html:121
+#: .\templates\files\file_list_row.html:149
+#: .\templates\files\detail\detail_assignblock.html:59
+#: .\templates\files\detail\detail_assignblock.html:78
 msgid "(you)"
 msgstr "(ti)"
 
-#: .\templates\files\file_list_row.html.py:129
+#: .\templates\files\file_list_row.html:127
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -2227,24 +3096,24 @@ msgid ""
 "\t\t"
 msgstr "actualizado o %(updated)s"
 
-#: .\templates\files\file_list_row.html.py:136
-#: .\templates\files\file_list_row.html.py:138
-#: .\templates\files\detail\detail_assignblock.html.py:65
-#: .\templates\files\detail\detail_assignblock.html.py:67
+#: .\templates\files\file_list_row.html:134
+#: .\templates\files\file_list_row.html:136
+#: .\templates\files\detail\detail_assignblock.html:65
+#: .\templates\files\detail\detail_assignblock.html:67
 msgid "Assign translator"
 msgstr "Asignar tradutor"
 
-#: .\templates\files\file_list_row.html.py:141
-#: .\templates\files\file_list_row.html.py:169
+#: .\templates\files\file_list_row.html:139
+#: .\templates\files\file_list_row.html:167
 msgid "None"
 msgstr "Ningún"
 
-#: .\templates\files\file_list_row.html.py:148
-#: .\templates\files\detail\detail_assignblock.html.py:75
+#: .\templates\files\file_list_row.html:146
+#: .\templates\files\detail\detail_assignblock.html:75
 msgid "Remove reviewer"
 msgstr "Quitar revisor"
 
-#: .\templates\files\file_list_row.html.py:157
+#: .\templates\files\file_list_row.html:155
 #, python-format
 msgid ""
 "\n"
@@ -2252,69 +3121,98 @@ msgid ""
 "\t\t"
 msgstr ""
 
-#: .\templates\files\file_list_row.html.py:164
-#: .\templates\files\file_list_row.html.py:166
-#: .\templates\files\detail\detail_assignblock.html.py:84
-#: .\templates\files\detail\detail_assignblock.html.py:86
+#: .\templates\files\file_list_row.html:162
+#: .\templates\files\file_list_row.html:164
+#: .\templates\files\detail\detail_assignblock.html:84
+#: .\templates\files\detail\detail_assignblock.html:86
 msgid "Assign reviewer"
 msgstr "Asignar revisor"
 
-#: .\templates\files\file_list_table.html.py:19
+#: .\templates\files\file_list_table.html:19
 msgid "Progress"
 msgstr "Progreso"
 
-#: .\templates\files\file_list_table.html.py:21
+#: .\templates\files\file_list_table.html:21
 msgid "Translator"
 msgstr "Tradutor"
 
-#: .\templates\files\file_list_table.html.py:22
+#: .\templates\files\file_list_table.html:22
 msgid "Reviewer"
 msgstr "Revisor"
 
-#: .\templates\files\file_log.html.py:12
+#: .\templates\files\file_log.html:12
 #, python-format
 msgid "%(filename)s log"
 msgstr "Rexistro de %(filename)s"
 
-#: .\templates\files\file_log.html.py:57
-#: .\templates\glossary\glossary_log.html.py:52
+#: .\templates\files\file_log.html:57
+#: .\templates\glossary\glossary_log.html:52
 msgid "No actions registered yet"
 msgstr "Aínda non se rexistraron accións"
 
-#: .\templates\files\file_submit_confirm.html.py:3
+#: .\templates\files\file_submit_confirm.html:3
 msgid "Confirm action"
 msgstr "Confirmar acción"
 
-#: .\templates\files\file_submit_confirm.html.py:5
-#: .\templates\files\file_submit_confirm.html.py:55
-#: .\templates\teams\join.html.py:29
+#: .\templates\files\file_submit_confirm.html:7
+#: .\templates\files\file_submit_confirm.html:47
+#: .\templates\teams\join.html:29
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: .\templates\files\file_submit_confirm.html.py:17
+#: .\templates\files\file_submit_confirm.html:24
 msgid "Enter your repository credentials"
 msgstr "Introduce a túas credenciais do repositorio"
 
-#: .\templates\files\file_submit_confirm.html.py:37
-#: .\templates\registration\profile_workarea_box.html.py:130
-#: .\templates\registration\profile_workarea_box.html.py:152
-msgid "Project"
-msgstr "Proxecto"
+#: .\templates\files\file_submit_confirm.html:39
+#, python-format
+msgid ""
+"\n"
+"Ready to process 1 file\n"
+msgid_plural ""
+"\n"
+"Ready to process %(counter)s files\n"
+msgstr[0] ""
+msgstr[1] ""
 
-#: .\templates\files\file_submit_confirm.html.py:38
-#: .\templates\registration\profile_workarea_box.html.py:131
-#: .\templates\registration\profile_workarea_box.html.py:153
-#: .\templates\releases\release_detail.html.py:49
-msgid "Language"
-msgstr "Idioma"
+#: .\templates\files\file_submit_confirm.html:44
+#, fuzzy
+msgid "Show files"
+msgstr "Só os meus ficheiros"
 
-#: .\templates\files\file_submit_confirm.html.py:55
-#: .\templates\files\submit_table_upload.html.py:25
-#: .\templates\files\upload_box.html.py:29
+#: .\templates\files\file_submit_confirm.html:47
+#: .\templates\files\submit_table_upload.html:25
+#: .\templates\files\upload_box.html:29
 msgid "Please wait, this could take some time..."
 msgstr "Agarda, pode tardar un chisco..."
 
-#: .\templates\files\file_view.html.py:25
+#: .\templates\files\file_submit_confirm_filelist.html:11
+#: .\templates\registration\profile_workarea_box.html:130
+#: .\templates\registration\profile_workarea_box.html:152
+msgid "Project"
+msgstr "Proxecto"
+
+#: .\templates\files\file_submit_confirm_filelist.html:12
+#: .\templates\registration\profile_workarea_box.html:131
+#: .\templates\registration\profile_workarea_box.html:153
+#: .\templates\releases\release_detail.html:49
+msgid "Language"
+msgstr "Idioma"
+
+#: .\templates\files\file_submit_confirm_filelist.html:30
+#, python-format
+msgid ""
+"\n"
+"\t\t\t\t1 file in total\n"
+"\t\t\t\t"
+msgid_plural ""
+"\n"
+"\t\t\t\t%(total)s files in total\n"
+"\t\t\t\t"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\templates\files\file_view.html:25
 #, python-format
 msgid ""
 "You are viewing the uploaded version of this file. To view the original one, "
@@ -2323,61 +3221,61 @@ msgstr ""
 "Estás a ver a versión subida deste ficheiro. Para ver a orixinal, prema en "
 "<a href=\"%(view_url)s\">aquí</a>"
 
-#: .\templates\files\file_view.html.py:28
+#: .\templates\files\file_view.html:28
 #, python-format
 msgid ""
 "You are viewing the original version of this file. To view the uploaded one, "
 "click <a href=\"%(submit_url)s\">here</a>"
 msgstr ""
 
-#: .\templates\files\submit_table.html.py:7
+#: .\templates\files\submit_table.html:7
 #, python-format
 msgid "Team <a href=\"%(url)s\">%(teamname)s</a>"
 msgstr ""
 
-#: .\templates\files\submit_table.html.py:15
+#: .\templates\files\submit_table.html:15
 msgid "The file is in the submission queue"
 msgstr "O ficheiro está na cola de envíos"
 
-#: .\templates\files\submit_table.html.py:22
+#: .\templates\files\submit_table.html:22
 msgid "View Diff"
 msgstr "Ver cambios"
 
-#: .\templates\files\submit_table.html.py:23
+#: .\templates\files\submit_table.html:23
 #, fuzzy
 msgid "View Unified Diff"
 msgstr "Ver cambios"
 
-#: .\templates\files\submit_table.html.py:26
+#: .\templates\files\submit_table.html:26
 msgid "Upload New Version"
 msgstr ""
 
-#: .\templates\files\submit_table_upload.html.py:22
-#: .\templates\files\upload_box.html.py:21
+#: .\templates\files\submit_table_upload.html:22
+#: .\templates\files\upload_box.html:21
 #, fuzzy
 msgid "Both field are required"
 msgstr "Este campo é obrigatorio."
 
-#: .\templates\files\submit_table_upload.html.py:62
-#: .\templates\files\upload_box.html.py:62
+#: .\templates\files\submit_table_upload.html:62
+#: .\templates\files\upload_box.html:62
 msgid "Click to select a file"
 msgstr ""
 
-#: .\templates\files\submit_table_upload.html.py:64
-#: .\templates\files\upload_box.html.py:64
+#: .\templates\files\submit_table_upload.html:64
+#: .\templates\files\upload_box.html:64
 msgid "Upload"
 msgstr "Subir"
 
-#: .\templates\files\upload_box.html.py:54
+#: .\templates\files\upload_box.html:54
 #, fuzzy
 msgid "File Upload"
 msgstr "Ficheiro subido"
 
-#: .\templates\files\upload_box.html.py:55
+#: .\templates\files\upload_box.html:55
 msgid "(.po or .tar, .tgz without directories)"
 msgstr "(.po o .tar, .tgz sen directorios)"
 
-#: .\templates\files\upload_box.html.py:55
+#: .\templates\files\upload_box.html:55
 msgid ""
 "You can upload multiple files compressed into a tar. The tar file should not "
 "include directories."
@@ -2385,31 +3283,26 @@ msgstr ""
 "Podes subir varios ficheiros comprimidos nun tar. O arquivo tar non debe "
 "incluír directorios."
 
-#: .\templates\files\upload_failed.html.py:7
+#: .\templates\files\upload_failed.html:7
 msgid "Please, fix the following errors and upload the file again."
 msgstr "Corrixe os seguintes erros e sobe o ficheiro de novo."
 
-#: .\templates\files\upload_failed.html.py:14
-#: .\templates\releases\release_build_console.html.py:54
-msgid "Back"
-msgstr "Atrás"
-
-#: .\templates\files\detail\detail_assignblock.html.py:53
+#: .\templates\files\detail\detail_assignblock.html:53
 #, fuzzy
 msgid "Translator:"
 msgstr "Tradutor"
 
-#: .\templates\files\detail\detail_assignblock.html.py:72
+#: .\templates\files\detail\detail_assignblock.html:72
 #, fuzzy
 msgid "Reviewer:"
 msgstr "Revisor"
 
-#: .\templates\files\detail\detail_assignblock.html.py:96
+#: .\templates\files\detail\detail_assignblock.html:96
 #, fuzzy
 msgid "Unlock file."
 msgstr "Bloqueado"
 
-#: .\templates\files\detail\detail_assignblock.html.py:99
+#: .\templates\files\detail\detail_assignblock.html:99
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -2417,7 +3310,7 @@ msgid ""
 "\t\t"
 msgstr "actualizado o %(updated)s"
 
-#: .\templates\files\detail\detail_assignblock.html.py:103
+#: .\templates\files\detail\detail_assignblock.html:103
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -2425,65 +3318,65 @@ msgid ""
 "\t\t"
 msgstr "actualizado o %(updated)s"
 
-#: .\templates\files\detail\detail_assignblock.html.py:110
+#: .\templates\files\detail\detail_assignblock.html:110
 #, fuzzy
 msgid "File is unlocked."
 msgstr "O ficheiro non está bloqueado."
 
-#: .\templates\glossary\glossary_form.html.py:6
+#: .\templates\glossary\glossary_form.html:6
 msgid "Editing Glossary"
 msgstr "Editando o glosario"
 
-#: .\templates\glossary\glossary_form.html.py:10
+#: .\templates\glossary\glossary_form.html:10
 msgid "Editing"
 msgstr "Editando"
 
-#: .\templates\glossary\glossary_form.html.py:22
-#: .\templates\glossary\glossary_index.html.py:35
-#: .\templates\projects\project_form.html.py:28
+#: .\templates\glossary\glossary_form.html:22
+#: .\templates\glossary\glossary_index.html:35
+#: .\templates\projects\project_form.html:28
 msgid "New"
 msgstr "Novo"
 
-#: .\templates\glossary\glossary_index.html.py:25
-#: .\templates\glossary\language_selection.html.py:38
-#: .\templates\releases\release_populate.html.py:40
+#: .\templates\glossary\glossary_index.html:25
+#: .\templates\glossary\language_selection.html:38
+#: .\templates\releases\release_populate.html:40
 msgid "Language:"
 msgstr "Idioma:"
 
-#: .\templates\glossary\glossary_index.html.py:37
+#: .\templates\glossary\glossary_index.html:37
 #, fuzzy
 msgid "Download TBX"
 msgstr "Descargar"
 
-#: .\templates\glossary\glossary_index.html.py:77
-#: .\templates\releases\release_build_console.html.py:56
+#: .\templates\glossary\glossary_index.html:77
+#: .\templates\releases\release_build_console.html:56
 msgid "Go top"
 msgstr "Ir arriba"
 
-#: .\templates\glossary\glossary_index.html.py:98
+#: .\templates\glossary\glossary_index.html:98
 msgid "The database is empty :-("
 msgstr "A base de datos está baleira :-("
 
-#: .\templates\glossary\language_selection.html.py:45
+#: .\templates\glossary\language_selection.html:45
 msgid "Ok"
 msgstr "Aceptar"
 
-#: .\templates\languages\language_detail.html.py:5
+#: .\templates\languages\language_detail.html:5
 #, python-format
 msgid "Projects for %(language_name)s"
 msgstr "Proxectos para %(language_name)s"
 
-#: .\templates\languages\language_detail.html.py:22
-#: .\templates\teams\team_detail.html.py:11
+#: .\templates\languages\language_detail.html:22
+#: .\templates\teams\team_detail.html:11
 #, fuzzy
 msgid "Project Page"
 msgstr "Proxecto"
 
-#: .\templates\languages\language_detail.html.py:27
+#: .\templates\languages\language_detail.html:27
 msgid "No teams associated to this language"
 msgstr "Non hai equipos asociados con este idioma"
 
-#: .\templates\languages\language_detail.html.py:34
+#: .\templates\languages\language_detail.html:34
 #, python-format
 msgid ""
 "If the project you are looking for is not listed, there is no team for this "
@@ -2491,136 +3384,131 @@ msgid ""
 "\">contact us</a>."
 msgstr ""
 
-#: .\templates\languages\language_list.html.py:16
+#: .\templates\languages\language_list.html:16
 msgid "No languages registered yet."
 msgstr "Aínda non hai idiomas rexistrados."
 
-#: .\templates\languages\language_list.html.py:20
+#: .\templates\languages\language_list.html:20
 #, python-format
 msgid "Couldn't find your language? <a href=\"%(contact)s\">Let us know</a>!"
 msgstr ""
 
-#: .\templates\projects\project_detail.html.py:24
+#: .\templates\projects\project_detail.html:24
 #, fuzzy
 msgid "An error ocurred while removing this team"
 msgstr "Ocorreu un erro ao tentar fusionar o ficheiro. %s"
 
-#: .\templates\projects\project_detail.html.py:67
+#: .\templates\projects\project_detail.html:67
 msgid "Add Release"
 msgstr ""
 
-#: .\templates\projects\project_detail.html.py:68
+#: .\templates\projects\project_detail.html:68
 msgid "Add Component"
 msgstr "Engadir compoñente"
 
-#: .\templates\projects\project_detail.html.py:76
+#: .\templates\projects\project_detail.html:76
 msgid "Repository:"
 msgstr "Repositorio:"
 
-#: .\templates\projects\project_detail.html.py:81
+#: .\templates\projects\project_detail.html:81
 #, fuzzy
 msgid "Repository View URL:"
 msgstr "URL do repositorio"
 
-#: .\templates\projects\project_detail.html.py:93
+#: .\templates\projects\project_detail.html:93
 msgid "Maintainer:"
 msgid_plural "Maintainers:"
 msgstr[0] "Mantedor:"
 msgstr[1] "Mantedores:"
 
-#: .\templates\projects\project_detail.html.py:114
+#: .\templates\projects\project_detail.html:114
 msgid "Releases:"
 msgstr ""
 
-#: .\templates\projects\project_detail.html.py:117
-#: .\templates\projects\project_list_entry.html.py:3
-#: .\templates\projects\project_list_entry.html.py:9
+#: .\templates\projects\project_detail.html:117
+#: .\templates\projects\project_list_entry.html:3
+#: .\templates\projects\project_list_entry.html:9
 #, fuzzy
 msgid "Disabled."
 msgstr "Desactivado"
 
-#: .\templates\projects\project_detail.html.py:126
+#: .\templates\projects\project_detail.html:126
 msgid "Components:"
 msgstr "Compoñentes:"
 
-#: .\templates\projects\project_detail.html.py:140
+#: .\templates\projects\project_detail.html:140
 msgid "Teams:"
 msgstr "Equipos:"
 
-#: .\templates\projects\project_detail.html.py:156
+#: .\templates\projects\project_detail.html:156
 #, fuzzy
 msgid "Remove team"
 msgstr "Eliminar"
 
-#: .\templates\projects\project_detail.html.py:162
+#: .\templates\projects\project_detail.html:162
 msgid "No teams associated with this project."
 msgstr "non hai equipos asociados con este proxecto."
 
-#: .\templates\projects\project_form.html.py:5
+#: .\templates\projects\project_form.html:5
 #, python-format
 msgid "Editing project %(name)s"
 msgstr "Editando proxecto %(name)s"
 
-#: .\templates\projects\project_form.html.py:6
-#: .\templates\projects\project_form.html.py:15
+#: .\templates\projects\project_form.html:6
+#: .\templates\projects\project_form.html:15
 msgid "New Project"
 msgstr "Novo proxecto"
 
-#: .\templates\projects\project_latests.html.py:2
+#: .\templates\projects\project_latests.html:2
 msgid "Latest Projects"
 msgstr "Últimos proxectos"
 
-#: .\templates\projects\project_list.html.py:4
+#: .\templates\projects\project_list.html:4
 msgid "Project List"
 msgstr "Listaxe de proxectos"
 
-#: .\templates\registration\captcha.html.py:3
+#: .\templates\registration\captcha.html:3
 msgid "Prove you're human:"
 msgstr ""
 
-#: .\templates\registration\login.html.py:11
-#: .\templates\registration\login.html.py:18
+#: .\templates\registration\drop_account.html:3
+#, fuzzy
+msgid "Drop account"
+msgstr "Crear unha conta"
+
+#: .\templates\registration\drop_account.html:9
+msgid "ATTENTION: your are about to remove your account."
+msgstr ""
+
+#: .\templates\registration\drop_account.html:10
+msgid "All related information will be removed. This process can't be undone."
+msgstr ""
+
+#: .\templates\registration\drop_account.html:16
+#, fuzzy
+msgid "Enter your password twice to confirm."
+msgstr "confirmación de restablecemento do contrasinal"
+
+#: .\templates\registration\drop_account.html:25
+#, fuzzy
+msgid "Repeat Password:"
+msgstr "Restaurar o meu contrasinal."
+
+#: .\templates\registration\drop_account.html:30
+#, fuzzy
+msgid "Drop my account"
+msgstr "Crear unha conta"
+
+#: .\templates\registration\login.html:11
+#: .\templates\registration\login.html:18
 msgid "Your username and password didn't match. Please try again."
 msgstr "O teu nome de usuario e o contrasinal non coinciden. Téntao de novo."
 
-#: .\templates\registration\password_reset_complete.html.py:5
-#: .\templates\registration\password_reset_complete.html.py:7
-msgid "Password reset complete"
-msgstr "Restablecemento do contrasinal completo"
-
-#: .\templates\registration\password_reset_complete.html.py:8
-msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "O teu contrasinal foi establecido. Xa podes iniciar sesión agora."
-
-#: .\templates\registration\password_reset_complete.html.py:9
-msgid "Log in"
-msgstr "Iniciar sesión"
-
-#: .\templates\registration\password_reset_confirm.html.py:5
+#: .\templates\registration\password_reset_confirm.html:5
 msgid "Password reset confirm"
 msgstr "confirmación de restablecemento do contrasinal"
 
-#: .\templates\registration\password_reset_confirm.html.py:11
-msgid "Enter new password"
-msgstr "Introducir novo contrasinal"
-
-#: .\templates\registration\password_reset_confirm.html.py:12
-msgid ""
-"Please enter your new password twice so we can verify you typed it in "
-"correctly."
-msgstr ""
-"Introduce o teu novo contrasinal dúas veces para verificar que as tecleaches "
-"ben."
-
-#: .\templates\registration\password_reset_confirm.html.py:19
-msgid "Change my password"
-msgstr "Modificar o meu contrasinal"
-
-#: .\templates\registration\password_reset_confirm.html.py:27
-msgid "Password reset unsuccessful"
-msgstr "Erro no restablecemento do contrasinal"
-
-#: .\templates\registration\password_reset_confirm.html.py:28
+#: .\templates\registration\password_reset_confirm.html:28
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
@@ -2628,12 +3516,7 @@ msgstr ""
 "A ligazón para o restablecemento do contrasinal non é válida, seguramente "
 "porque xa foi utilizada. Solicita un novo restablemento de contrasinal."
 
-#: .\templates\registration\password_reset_done.html.py:5
-#: .\templates\registration\password_reset_done.html.py:7
-msgid "Password reset successful"
-msgstr "Restablecemento do contrasinal correcto."
-
-#: .\templates\registration\password_reset_done.html.py:8
+#: .\templates\registration\password_reset_done.html:8
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
@@ -2641,145 +3524,147 @@ msgstr ""
 "Acabamos de enviarche instrucións para establecer un novo contrasinal ao "
 "enderezo de correo que nos indicaches. Deberías recibilo axiña."
 
-#: .\templates\registration\password_reset_form.html.py:5
-#: .\templates\registration\password_reset_form.html.py:10
-msgid "Password reset"
-msgstr "Restablecemento do contrasinal"
-
-#: .\templates\registration\password_reset_form.html.py:11
+#: .\templates\registration\password_reset_form.html:11
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
 msgstr ""
 
-#: .\templates\registration\password_reset_form.html.py:22
-msgid "Reset my password"
-msgstr "Restaurar o meu contrasinal."
-
-#: .\templates\registration\profile.html.py:3
+#: .\templates\registration\profile.html:3
 msgid "User Profile"
 msgstr "Perfil de usuario"
 
-#: .\templates\registration\profile.html.py:105
-#: .\templates\registration\profile_box.html.py:19
+#: .\templates\registration\profile.html:19
+#: .\templates\registration\profile_box.html:19
 msgid "Profile"
 msgstr "Perfil"
 
-#: .\templates\registration\profile.html.py:111
+#: .\templates\registration\profile.html:25
 msgid "Settings"
 msgstr "Configuración"
 
-#: .\templates\registration\profile.html.py:112
+#: .\templates\registration\profile.html:26
 msgid "Workpanel"
 msgstr "Panel de traballo"
 
-#: .\templates\registration\profile.html.py:114
+#: .\templates\registration\profile.html:28
 #, fuzzy
 msgid "Notification"
 msgstr "Confirmar acción"
 
-#: .\templates\registration\profile_box.html.py:29
+#: .\templates\registration\profile_box.html:29
 #, python-format
 msgid ""
 "You are logged in with OpenID. Click <a href=\"%(change_pass_url)s\">here</"
 "a> to setup a local password."
 msgstr ""
 
-#: .\templates\registration\profile_box.html.py:39
+#: .\templates\registration\profile_box.html:39
 msgid "OpenID URLs:"
 msgstr "URLs de OpenID:"
 
-#: .\templates\registration\profile_box.html.py:49
+#: .\templates\registration\profile_box.html:50
+msgid "Link Token:"
+msgstr ""
+
+#: .\templates\registration\profile_box.html:57
+#, fuzzy
+msgid "Create"
+msgstr "Crear unha conta"
+
+#: .\templates\registration\profile_box.html:63
 msgid "Add another OpenID"
 msgstr "Engadir outro OpenID"
 
-#: .\templates\registration\profile_box.html.py:65
+#: .\templates\registration\profile_box.html:68
+#, fuzzy
+msgid "Drop Account"
+msgstr "Crear unha conta"
+
+#: .\templates\registration\profile_box.html:80
 msgid "Bookmarks"
 msgstr "Favoritos"
 
-#: .\templates\registration\profile_box.html.py:73
-#: .\templates\registration\profile_box.html.py:76
+#: .\templates\registration\profile_box.html:88
+#: .\templates\registration\profile_box.html:91
 msgid "Set as startup page"
 msgstr "Establecer páxina de inicio"
 
-#: .\templates\registration\profile_box.html.py:74
-#: .\templates\registration\profile_box.html.py:77
+#: .\templates\registration\profile_box.html:89
+#: .\templates\registration\profile_box.html:92
 msgid "Unset startup page"
 msgstr ""
 
-#: .\templates\registration\profile_contact_box.html.py:6
+#: .\templates\registration\profile_contact_box.html:6
 msgid "Mass Notification"
 msgstr ""
 
-#: .\templates\registration\profile_workarea_box.html.py:5
+#: .\templates\registration\profile_workarea_box.html:5
 #, fuzzy
 msgid "You are translator of:"
 msgstr "Es o tradutor de:"
 
-#: .\templates\registration\profile_workarea_box.html.py:10
-#: .\templates\registration\profile_workarea_box.html.py:42
+#: .\templates\registration\profile_workarea_box.html:10
+#: .\templates\registration\profile_workarea_box.html:42
 msgid "Last update"
 msgstr "Última actualización"
 
-#: .\templates\registration\profile_workarea_box.html.py:37
+#: .\templates\registration\profile_workarea_box.html:37
 #, fuzzy
 msgid "You are reviewer of:"
 msgstr "Es o revisor de:"
 
-#: .\templates\registration\profile_workarea_box.html.py:97
+#: .\templates\registration\profile_workarea_box.html:97
 #, fuzzy
 msgid "Pending Submission Queue"
 msgstr "Cola de envíos"
 
-#: .\templates\registration\profile_workarea_box.html.py:109
+#: .\templates\registration\profile_workarea_box.html:109
 msgid ""
 "This file is locked, which means it won't be submitted. It looks like you "
 "forgot to save the changes after editing it."
 msgstr ""
 
-#: .\templates\registration\profile_workarea_box.html.py:126
+#: .\templates\registration\profile_workarea_box.html:126
 msgid "You are the coordinator of the following team:"
 msgid_plural "You are the coordinator of the following teams:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\registration\profile_workarea_box.html.py:148
+#: .\templates\registration\profile_workarea_box.html:148
 msgid "You are member of the following team:"
 msgid_plural "You are member of the following teams:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\registration\profile_workarea_box.html.py:170
+#: .\templates\registration\profile_workarea_box.html:170
 msgid "Locked Files"
 msgstr "Ficheiros bloqueados"
 
-#: .\templates\registration\profile_workarea_box.html.py:175
+#: .\templates\registration\profile_workarea_box.html:175
 msgid "Locked on"
 msgstr "Bloqueado en"
 
-#: .\templates\registration\register.html.py:3
-#: .\templates\registration\register_box.html.py:6
-#: .\templates\registration\register_box.html.py:18
+#: .\templates\registration\register.html:3
+#: .\templates\registration\register_box.html:6
+#: .\templates\registration\register_box.html:18
 msgid "Sign up"
 msgstr "Crear conta"
 
-#: .\templates\registration\simple_login.html.py:8
-msgid "Username:"
+#: .\templates\registration\simple_login.html:8
+#, fuzzy
+msgid "Username/e-mail:"
 msgstr "Nome de usuario:"
 
-#: .\templates\registration\simple_login.html.py:12
-msgid "Password:"
-msgstr "Contrasinal:"
-
-#: .\templates\registration\simple_login.html.py:20
+#: .\templates\registration\simple_login.html:20
 msgid "Lost your password?"
 msgstr "Esqueciches o teu contrasinal?"
 
-#: .\templates\registration\user_query_response.html.py:8
+#: .\templates\registration\user_query_response.html:8
 msgid "User matching query does not exist."
 msgstr ""
 
-#: .\templates\registration\welcome.mail.py:2
+#: .\templates\registration\welcome.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -2807,88 +3692,88 @@ msgid ""
 "%(home)s\n"
 msgstr ""
 
-#: .\templates\releases\release_detail.html.py:16
-#: .\templates\releases\release_detail.html.py:29
-#: .\templates\releases\release_populate.html.py:13
+#: .\templates\releases\release_detail.html:16
+#: .\templates\releases\release_detail.html:29
+#: .\templates\releases\release_populate.html:13
 msgid "Populate"
 msgstr ""
 
-#: .\templates\releases\release_detail.html.py:18
+#: .\templates\releases\release_detail.html:18
 msgid "Build cache"
 msgstr "Construír caché"
 
-#: .\templates\releases\release_detail.html.py:20
+#: .\templates\releases\release_detail.html:20
 msgid "View console"
 msgstr "Ver consola"
 
-#: .\templates\releases\release_detail.html.py:23
-#: .\templates\releases\release_detail.html.py:30
+#: .\templates\releases\release_detail.html:23
+#: .\templates\releases\release_detail.html:30
 msgid "POT Merge"
 msgstr "Fusionar POT"
 
-#: .\templates\releases\release_detail.html.py:39
+#: .\templates\releases\release_detail.html:39
 msgid "Branch:"
 msgstr "Galla:"
 
-#: .\templates\releases\release_form.html.py:6
+#: .\templates\releases\release_form.html:6
 #, python-format
 msgid "Editing release %(name)s"
 msgstr ""
 
-#: .\templates\releases\release_form.html.py:7
-#: .\templates\releases\release_form.html.py:16
-#: .\templates\releases\release_form.html.py:30
+#: .\templates\releases\release_form.html:7
+#: .\templates\releases\release_form.html:16
+#: .\templates\releases\release_form.html:30
 msgid "New Release"
 msgstr ""
 
-#: .\templates\releases\release_merge.html.py:7
+#: .\templates\releases\release_merge.html:7
 msgid "Merge"
 msgstr "Fusionar"
 
-#: .\templates\releases\release_merge.html.py:33
+#: .\templates\releases\release_merge.html:33
 msgid "The process could take some time, are you sure?"
 msgstr "O proceso pode tardar un chisco, estás seguro?"
 
-#: .\templates\releases\release_merge.html.py:58
+#: .\templates\releases\release_merge.html:58
 msgid "Team"
 msgstr "Equipo"
 
-#: .\templates\releases\release_merge.html.py:81
+#: .\templates\releases\release_merge.html:81
 msgid "There is no need to merge any files."
 msgstr "Non é preciso fusionar ningún ficheiro."
 
-#: .\templates\releases\release_populate.html.py:6
+#: .\templates\releases\release_populate.html:6
 #, python-format
 msgid "Populate release %(name)s"
 msgstr ""
 
-#: .\templates\releases\release_populate.html.py:21
+#: .\templates\releases\release_populate.html:21
 msgid "Copy all the assignations from the selected release."
 msgstr ""
 
-#: .\templates\releases\release_populate.html.py:31
+#: .\templates\releases\release_populate.html:31
 msgid "Populate from:"
 msgstr ""
 
-#: .\templates\releases\release_populate.html.py:59
+#: .\templates\releases\release_populate.html:59
 msgid "Start"
 msgstr "Iniciar"
 
-#: .\templates\releases\release_populate.html.py:61
+#: .\templates\releases\release_populate.html:61
 msgid "The process could take some time to perform. Please be patient."
 msgstr ""
 
-#: .\templates\teams\join.html.py:3 .\templates\teams\join.html.py:9
-#: .\templates\teams\join.html.py:22
+#: .\templates\teams\join.html:3 .\templates\teams\join.html.py:9
+#: .\templates\teams\join.html:22
 msgid "Join"
 msgstr "Unirse"
 
-#: .\templates\teams\join.html.py:15
+#: .\templates\teams\join.html:15
 #, python-format
 msgid "Join the team %(teamname)s (%(projectname)s)\" "
 msgstr "Forma parte do equipo %(teamname)s (%(projectname)s)\" "
 
-#: .\templates\teams\join.html.py:23
+#: .\templates\teams\join.html:23
 #, python-format
 msgid ""
 "You are about to send a request to join<br/>the <b>%(teamname)s</b> team of "
@@ -2897,7 +3782,7 @@ msgstr ""
 "Está a piques de enviar unha solicitude para formar parte do <br/>equipo <b>"
 "%(teamname)s</b> para o proxecto <b>%(projectname)s</b>."
 
-#: .\templates\teams\join.mail.py:2
+#: .\templates\teams\join.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -2931,7 +3816,7 @@ msgstr ""
 "O equipo de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\teams\join_accept.mail.py:2
+#: .\templates\teams\join_accept.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -2958,7 +3843,7 @@ msgstr ""
 "O equipo de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\teams\join_reject.mail.py:2
+#: .\templates\teams\join_reject.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -2988,126 +3873,125 @@ msgstr ""
 "O equipo de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\teams\team_admin.html.py:3
-#: .\templates\teams\team_admin.html.py:92
-#: .\templates\teams\team_detail.html.py:23
+#: .\templates\teams\team_admin.html:3 .\templates\teams\team_admin.html:92
+#: .\templates\teams\team_detail.html:23
 msgid "Manage"
 msgstr "Xestionar"
 
-#: .\templates\teams\team_admin.html.py:101
+#: .\templates\teams\team_admin.html:101
 msgid "Join requests:"
 msgstr "Solicitudes:"
 
-#: .\templates\teams\team_admin.html.py:106
+#: .\templates\teams\team_admin.html:106
 msgid "Request date"
 msgstr "Data de solicitude"
 
-#: .\templates\teams\team_admin.html.py:126
+#: .\templates\teams\team_admin.html:126
 msgid "Accept"
 msgstr "Aceptar"
 
-#: .\templates\teams\team_admin.html.py:151
+#: .\templates\teams\team_admin.html:151
 msgid "only a maintainer can remove users from the coordinators group."
 msgstr "Só os mantedores poden eliminar usuarios do grupo de coordinadores."
 
-#: .\templates\teams\team_admin.html.py:154
+#: .\templates\teams\team_admin.html:154
 #, fuzzy
 msgid "Autocommit is enabled for this project."
 msgstr "Desmarcar para desactivar este proxecto"
 
-#: .\templates\teams\team_admin.html.py:156
+#: .\templates\teams\team_admin.html:156
 msgid ""
 "Users with submit permissions must already have repository write access."
 msgstr ""
 
-#: .\templates\teams\team_admin.html.py:162
+#: .\templates\teams\team_admin.html:162
 msgid "Type 3 or more letters and press ENTER"
 msgstr "Introduza 3 ou máis letras e prema INTRO"
 
-#: .\templates\teams\team_admin_table.html.py:6
+#: .\templates\teams\team_admin_table.html:6
 msgid "Group"
 msgstr "Grupo"
 
-#: .\templates\teams\team_admin_table.html.py:8
+#: .\templates\teams\team_admin_table.html:8
 msgid "Last Activity"
 msgstr ""
 
-#: .\templates\teams\team_admin_table.html.py:17
+#: .\templates\teams\team_admin_table.html:17
 msgid "Coordinator"
 msgstr "Coordinador"
 
-#: .\templates\teams\team_admin_table.html.py:28
-#: .\templates\teams\team_admin_table.html.py:58
-#: .\templates\teams\team_admin_table.html.py:90
+#: .\templates\teams\team_admin_table.html:28
+#: .\templates\teams\team_admin_table.html:58
+#: .\templates\teams\team_admin_table.html:90
 #, fuzzy, python-format
 msgid "%(time)s ago"
 msgstr "Rexistro de %(filename)s"
 
-#: .\templates\teams\team_admin_table.html.py:34
+#: .\templates\teams\team_admin_table.html:34
 #, fuzzy
 msgid "Remove coordinator"
 msgstr "Eliminar tradutor"
 
-#: .\templates\teams\team_admin_table.html.py:47
+#: .\templates\teams\team_admin_table.html:47
 #, fuzzy
 msgid "Committer"
 msgstr "Comentario"
 
-#: .\templates\teams\team_admin_table.html.py:62
-#: .\templates\teams\team_admin_table.html.py:94
+#: .\templates\teams\team_admin_table.html:62
+#: .\templates\teams\team_admin_table.html:94
 msgid "Set as coordinator"
 msgstr ""
 
-#: .\templates\teams\team_admin_table.html.py:63
+#: .\templates\teams\team_admin_table.html:63
 msgid "Remove submit grants"
 msgstr ""
 
-#: .\templates\teams\team_admin_table.html.py:65
-#: .\templates\teams\team_admin_table.html.py:97
+#: .\templates\teams\team_admin_table.html:65
+#: .\templates\teams\team_admin_table.html:97
 msgid "This user can update the glossary. Disallow."
 msgstr ""
 
-#: .\templates\teams\team_admin_table.html.py:67
-#: .\templates\teams\team_admin_table.html.py:99
+#: .\templates\teams\team_admin_table.html:67
+#: .\templates\teams\team_admin_table.html:99
 msgid "This user cannot update the glossary. Allow."
 msgstr ""
 
-#: .\templates\teams\team_admin_table.html.py:79
+#: .\templates\teams\team_admin_table.html:79
 msgid "Member"
 msgstr "Membro"
 
-#: .\templates\teams\team_admin_table.html.py:95
+#: .\templates\teams\team_admin_table.html:95
 msgid "Add repository submit grants"
 msgstr ""
 
-#: .\templates\teams\team_contact.html.py:12
+#: .\templates\teams\team_contact.html:12
 #, fuzzy
 msgid "Please select an user"
 msgstr "Por favor, selecciona un ficheiro para subir."
 
-#: .\templates\teams\team_detail.html.py:28
+#: .\templates\teams\team_detail.html:28
 msgid "Join this team"
 msgstr "Unirse a este equipo"
 
-#: .\templates\teams\team_detail.html.py:37
+#: .\templates\teams\team_detail.html:37
 msgid "Coordinator:"
 msgid_plural "Coordinators:"
 msgstr[0] "Coordinador"
 msgstr[1] "Coordinadores"
 
-#: .\templates\teams\team_detail.html.py:57
+#: .\templates\teams\team_detail.html:57
 msgid "Members:"
 msgstr "Membros:"
 
-#: .\templates\teams\team_detail.html.py:79
+#: .\templates\teams\team_detail.html:79
 msgid "Submission Queue:"
 msgstr "Cola de envíos:"
 
-#: .\templates\teams\team_detail.html.py:107
+#: .\templates\teams\team_detail.html:107
 msgid "No files submitted"
 msgstr "Non hai ficheiros enviados"
 
-#: .\templates\updater\commitfail.mail.py:2
+#: .\templates\updater\commitfail.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -3118,9 +4002,9 @@ msgid ""
 "%(error)s\n"
 msgstr ""
 
-#: .\templates\updater\commitfail.mail.py:10
-#: .\templates\updater\confirmcommit.mail.py:10
-#: .\templates\updater\queuestatus.mail.py:10
+#: .\templates\updater\commitfail.mail:10
+#: .\templates\updater\confirmcommit.mail:10
+#: .\templates\updater\queuestatus.mail:10
 #, python-format
 msgid ""
 " \n"
@@ -3135,17 +4019,7 @@ msgstr ""
 "O equipo de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\updater\confirmcommit.mail.py:2
-#: .\templates\updater\queuestatus.mail.py:2
-#: .\templates\updater\unread_messages.mail.py:2
-msgid ""
-"\n"
-"Hello,\n"
-msgstr ""
-"\n"
-"Ola,\n"
-
-#: .\templates\updater\confirmcommit.mail.py:4
+#: .\templates\updater\confirmcommit.mail:4
 msgid ""
 "\n"
 "The file below was sent to the repository:"
@@ -3155,7 +4029,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\updater\new_messages.mail.py:2
+#: .\templates\updater\new_messages.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -3171,7 +4045,7 @@ msgid ""
 "%(home)s\n"
 msgstr ""
 
-#: .\templates\updater\pot_changed.mail.py:2
+#: .\templates\updater\pot_changed.mail:2
 #, python-format
 msgid ""
 "\n"
@@ -3188,7 +4062,7 @@ msgid ""
 "%(home)s\n"
 msgstr ""
 
-#: .\templates\updater\queuestatus.mail.py:4
+#: .\templates\updater\queuestatus.mail:4
 #, python-format
 msgid ""
 "\n"
@@ -3199,85 +4073,72 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\templates\updater\unread_messages.mail.py:4
-#, python-format
-msgid ""
-"\n"
-"There is one unread message in your profile."
-msgid_plural ""
-"\n"
-"There are %(counter)s unread messages in your profile."
-msgstr[0] ""
-msgstr[1] ""
-
-#: .\templates\updater\unread_messages.mail.py:8
-msgid "Latest messages:"
-msgstr "Últimas mensaxes:"
-
-#: .\templates\updater\unread_messages.mail.py:14
-#, fuzzy, python-format
-msgid ""
-"\n"
-"Go to %(pmhome)s to check your messages.\n"
-" \n"
-"Sincerely,\n"
-"\n"
-"The %(product_name)s team\n"
-"%(home)s\n"
+#: .\userprofileapp\admin.py:46
+msgid "Personal info"
 msgstr ""
-" \n"
-"Atentamente,\n"
-"\n"
-"O equipo de %(product_name)s\n"
-"%(home)s\n"
 
-#: .\userprofileapp\forms.py:27
+#: .\userprofileapp\admin.py:47
+#, fuzzy
+msgid "Permissions"
+msgstr "Ficheiro enviado"
+
+#: .\userprofileapp\admin.py:50
+msgid "Important dates"
+msgstr ""
+
+#: .\userprofileapp\admin.py:90
+#, fuzzy
+msgid "Password reset link sent."
+msgstr "Restablecemento do contrasinal completo"
+
+#: .\userprofileapp\admin.py:93
+#, fuzzy
+msgid "Error ocurred while sending password reset link."
+msgstr "Ocorreu un erro ao tentar fusionar o ficheiro. %s"
+
+#: .\userprofileapp\forms.py:26
 msgid "<Browser defined>"
 msgstr ""
 
 #: .\userprofileapp\forms.py:32
-msgid "New password"
-msgstr "Novo contrasinal"
-
-#: .\userprofileapp\forms.py:33
 msgid "New password confirmation"
 msgstr "Confirmación do novo contrasinal"
 
 #: .\userprofileapp\forms.py:34
-msgid "Old password"
-msgstr "Antigo contrasinal"
-
-#: .\userprofileapp\forms.py:35
 msgid "Time Zone"
 msgstr "Fuso horario"
 
-#: .\userprofileapp\forms.py:36
+#: .\userprofileapp\forms.py:35
 msgid "Preferred language"
 msgstr "Idioma preferido"
 
-#: .\userprofileapp\forms.py:59
+#: .\userprofileapp\forms.py:58
 msgid "Please, type the new password."
 msgstr ""
 
-#: .\userprofileapp\forms.py:73
+#: .\userprofileapp\forms.py:71
 msgid "Please, type your current password."
 msgstr ""
 
-#: .\userprofileapp\forms.py:77
+#: .\userprofileapp\forms.py:75
 msgid "Your old password is incorrect. Please enter it again."
 msgstr ""
 
-#: .\userprofileapp\forms.py:85
+#: .\userprofileapp\forms.py:83
 msgid "You must confirm the new password."
 msgstr ""
 
-#: .\userprofileapp\forms.py:89
+#: .\userprofileapp\forms.py:87
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: .\userprofileapp\views.py:99
+#: .\userprofileapp\views.py:107
 msgid "Profile updated."
 msgstr "Perfil actualizado."
+
+#: .\userprofileapp\views.py:169
+msgid "The information provided is invalid."
+msgstr ""
 
 #: .\versioncontrol\manager.py:92
 msgid "Files submitted"
@@ -3322,55 +4183,106 @@ msgid ""
 "administrator."
 msgstr ""
 
-#: .\versioncontrol\manager.py:375
+#: .\versioncontrol\manager.py:381
 #, fuzzy, python-format
 msgid "Processing %s"
 msgstr "Configuración do perfil"
 
-#: .\versioncontrol\manager.py:449 .\versioncontrol\manager.py:498
+#: .\versioncontrol\manager.py:455 .\versioncontrol\manager.py:504
 #, python-format
 msgid "Update statistics for %s"
 msgstr ""
 
-#: .\versioncontrol\manager.py:454
+#: .\versioncontrol\manager.py:460
 #, python-format
 msgid "Language %s complete."
 msgstr ""
 
-#: .\versioncontrol\manager.py:478
+#: .\versioncontrol\manager.py:484
 msgid "Starting POT processing"
 msgstr ""
 
-#: .\versioncontrol\manager.py:503 .\versioncontrol\lib\types\svn.py:107
+#: .\versioncontrol\manager.py:509 .\versioncontrol\lib\types\svn.py:107
 msgid "Completed."
 msgstr ""
 
 #: .\versioncontrol\lib\types\filesystem.py:45
-#: .\versioncontrol\lib\types\hg.py:109 .\versioncontrol\lib\types\svn.py:157
+#: .\versioncontrol\lib\types\hg.py:109
+#: .\versioncontrol\lib\types\subversion.py:128
+#: .\versioncontrol\lib\types\svn.py:157
 #, python-format
 msgid "Initializing repository %s"
 msgstr ""
 
 #: .\versioncontrol\lib\types\filesystem.py:54
-#: .\versioncontrol\lib\types\hg.py:135 .\versioncontrol\lib\types\svn.py:188
+#: .\versioncontrol\lib\types\hg.py:135
+#: .\versioncontrol\lib\types\subversion.py:162
+#: .\versioncontrol\lib\types\svn.py:188
 #, python-format
 msgid "Updating repository %s"
 msgstr ""
 
 #: .\versioncontrol\lib\types\filesystem.py:70
-#: .\versioncontrol\lib\types\hg.py:149 .\versioncontrol\lib\types\svn.py:231
+#: .\versioncontrol\lib\types\hg.py:149
+#: .\versioncontrol\lib\types\subversion.py:208
+#: .\versioncontrol\lib\types\svn.py:231
 msgid "Checking in"
 msgstr ""
 
+#: .\versioncontrol\lib\types\subversion.py:83
 #: .\versioncontrol\lib\types\svn.py:105
 #, python-format
 msgid "At revision %s."
 msgstr ""
 
+#: .\versioncontrol\lib\types\subversion.py:117
 #: .\versioncontrol\lib\types\svn.py:146
 #, python-format
 msgid "URL has changed. Relocate from %(prior)s to %(actual)s"
 msgstr ""
+
+#~ msgid "The file will be unlocked once submitted."
+#~ msgstr "O ficheiro desbloquerase despois do seu envío."
+
+#~ msgid "This file is already locked by someone else."
+#~ msgstr "Este ficheiro xa está bloqueado por outro usuario."
+
+#~ msgid "The file has a pending submit. Cannot be released right now."
+#~ msgstr "O ficheiro ten un envío pendente. Non pode ser liberado agora."
+
+#, fuzzy
+#~ msgid "This file already has an assigned translator."
+#~ msgstr "O ficheiro xa ten un tradutor asignado."
+
+#, fuzzy
+#~ msgid "This file already has an assigned reviewer."
+#~ msgstr "O ficheiro xa ten un revisor asignado."
+
+#~ msgid "Your file was added to the submission queue."
+#~ msgstr "O ficheiro engadíuse á cola de envíos."
+
+#~ msgid "The file is locked by another user."
+#~ msgstr "O ficheiro está bloqueado por outro usuario."
+
+#, fuzzy
+#~ msgid "You are not assigned to this file."
+#~ msgstr "Non pertence a este equipo."
+
+#~ msgid "The file is now locked on your name."
+#~ msgstr "O ficheiro foi bloqueado ao teu nome."
+
+#~ msgid "You are editing the uploaded version of this file."
+#~ msgstr "Estás editando a versión subida deste ficheiro."
+
+#, fuzzy
+#~ msgid "The file was added to the queue for later processing."
+#~ msgid_plural "The files were added to the queue for later processing."
+#~ msgstr[0] "Engadíuse de novo o ficheiro á cola de envíos."
+#~ msgstr[1] "Engadíuse de novo o ficheiro á cola de envíos."
+
+#, fuzzy
+#~ msgid "Failed. Reason: %s"
+#~ msgstr "Fallou. Motivo: %s."
 
 #~ msgid "POT file:"
 #~ msgstr "Ficheiro POT:"
@@ -3396,10 +4308,6 @@ msgstr ""
 #~ "escritura no repositorio. Este permiso non se limita ao equipo, senón que "
 #~ "o usuario poderá enviar ficheiros de todos os equipos aos que pertenza. "
 #~ "Os coordinadores están autorizados de xeito predeterminado."
-
-#, fuzzy
-#~ msgid "Submit failed. Reason: %s"
-#~ msgstr "Fallou. Motivo: %s."
 
 #~ msgid ""
 #~ "There is already more than one account registered with that username. "
@@ -3450,9 +4358,6 @@ msgstr ""
 
 #~ msgid "Are you sure?"
 #~ msgstr "Está seguro?"
-
-#~ msgid "Vertaal site admin"
-#~ msgstr "Sitio de administración de Vertaal"
 
 #~ msgid "Trans."
 #~ msgstr "Trad."
