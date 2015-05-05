@@ -119,7 +119,7 @@ class Blowfish:
     def __init__ (self, key):
 
         if not key or len (key) < 8 or len (key) > 56:
-            raise RuntimeError, "Attempted to initialize Blowfish cipher with key of invalid length: %s" % len (key)
+            raise RuntimeError, "Attempted to initialize Blowfish cipher with key of invalid length: %s (min: 8, max: 56)" % len (key)
 
         self.p_boxes = [
             0x243F6A88, 0x85A308D3, 0x13198A2E, 0x03707344,
