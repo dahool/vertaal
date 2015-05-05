@@ -16,10 +16,11 @@ PAGINATION_DEFAULT_PAGINATION = int(os.environ.get('VERTAAL_OPT_PAGINATION_DEFAU
 SHOW_LATEST_PROJECTS = int(os.environ.get('VERTAAL_OPT_SHOW_LATEST_PROJECTS', 8))
 LOG_EXCEPTION_DB = optbool(os.environ.get('VERTAAL_OPT_LOG_EXCEPTION_DB', True))
 AUTO_UNLOCK_BUILD = int(os.environ.get('VERTAAL_OPT_AUTO_UNLOCK_BUILD', 30)) # in minutes
-BACKUP_CLEAN_AGE = int(os.environ.get('VERTAAL_OPT_BACKUP_CLEAN_AGE', 30)) # in days
+BACKUP_CLEAN_AGE = int(os.environ.get('VERTAAL_OPT_BACKUP_CLEAN_AGE', 15)) # in days
 
 MSGFMT_DEVMODE = optbool(os.environ.get('VERTAAL_OPT_MSGFMT_DEVMODE', True))
 DEFERRED_SUBMIT = optbool(os.environ.get('VERTAAL_OPT_DEFERRED_SUBMIT', False))
+DEFERRED_SUBMIT_RUNNING = optbool(os.environ.get('VERTAAL_OPT_DEFERRED_SUBMIT_RUNNING', True))
 ADSENSE_SEGMENT = optbool(os.environ.get('VERTAAL_OPT_ADSENSE_SEGMENT', True))
 SUBMIT_OFFLINE = optbool(os.environ.get('VERTAAL_OPT_SUBMIT_OFFLINE', False))
 DISABLE_ADSENSE = optbool(os.environ.get('VERTAAL_OPT_DISABLE_ADSENSE', False))

@@ -51,13 +51,21 @@ from files.potutils import extract_creation_date
 import logging
 logger = logging.getLogger('vertaal.vcs')
 
+class SubmitException(Exception):
+    
+    files = []
+    
+    def __init__(self, message, files = []):
+        super(SubmitException, self).__init__(message)
+        self.files = files
+    
 class LockRepo(Lock):
     
     def __init__(self, project_slug, release_slug,
                         component_slug, lang_code):
         name = "_".join([project_slug, release_slug, component_slug, lang_code] )
         super(LockRepo, self).__init__(name=name, timeout=15, delay=0.5)
-    
+        
 class SubmitClient():
     
     def __init__(self, files, current_user, user, pword, message=''):
@@ -108,6 +116,8 @@ class SubmitClient():
         logger.debug("init")
         releases = {}
         exceps = []
+        failedSubmits = []
+        
         for smfile in self.files:
             c = {}
             f = []
@@ -250,6 +260,7 @@ class SubmitClient():
                             raise LockException(msg)
                         
                         self.__unlock_submits(component)
+                        failedSubmits.extend([smfile for smfile in component])
                         exceps.append(msg)
                     except Exception, e:
                         logger.error(e)
@@ -265,8 +276,9 @@ class SubmitClient():
                             self.__unlock_submits(component)
                             exceps.append(str(e))
                         
-            if len(exceps)>0:
-                raise Exception("\n".join(exceps))
+            if len(exceps)>0 or len(failedSubmits) > 0:
+                #raise Exception("\n".join(exceps))
+                raise SubmitException("\n".join(exceps), failedSubmits)
                         
         finally:
             #thread.start_new_thread(self.__process_notifications, ())

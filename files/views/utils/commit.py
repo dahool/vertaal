@@ -24,7 +24,7 @@ from django.contrib import messages
 from django.utils.encoding import smart_unicode
 
 from deferredsubmit import handler as deferredhandler
-from versioncontrol.manager import SubmitClient
+from versioncontrol.manager import SubmitClient, SubmitException
 from django.conf import settings
 
 import logging
@@ -39,6 +39,17 @@ def __perform_commit(**kw):
                         'Files submitted.', len(submits))
         if request is not None:
             messages.success(request, message=msg)
+    except SubmitException, se:
+        logger.error(se)
+        if request is not None:
+            messages.error(request, message=_("Submit failed. Reason: %s") % smart_unicode(e))
+        else:
+            if len(se.files) > 0 and deferredhandler.deferred_running:
+                logger.info("%d files added to deferred handler because they were locked at this moment" % len(se.files))
+                deferredhandler.add_submits(se.files, user, repo_user, repo_pass, message)
+            else:
+                kw['user'].email_user("Submit failed", message=smart_unicode(e))
+        return False
     except Exception, e:
         logger.error(e)
         logger.error(traceback.format_exc())

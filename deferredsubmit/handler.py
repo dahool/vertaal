@@ -27,6 +27,7 @@ import logging
 logger = logging.getLogger('vertaal.deferredsubmit')
 
 deferred_enabled = getattr(settings,'DEFERRED_SUBMIT', False)
+deferred_running = getattr(settings,'DEFERRED_SUBMIT_RUNNING', False)
 
 def add_submit(filesubmit, user, repo_user, repo_pwd, msg):
     try:
