@@ -26,11 +26,12 @@ from releases.models import Release
 from languages.models import Language
 from teams.models import Team
 from files.models import POFile, POFileLog
+from files.lib.handlers import find_in_files
 
 import logging
 logger = logging.getLogger('vertaal.files')
 
-def get_file_list(request, component=None, release=None, language=None):
+def get_file_list(request, component=None, release=None, language=None, search=None):
     q = POFile.objects.filter()
     res = {}
     res['cookjar'] = {}
@@ -95,8 +96,12 @@ def get_file_list(request, component=None, release=None, language=None):
                 res['onlySelf'] = 'true'
     
     q = q.select_related('release','potfile','component').prefetch_related('locks','submits','assigns__translate','assigns__review')
-    res['file_list']=q
-    res['last_actions'] = POFileLog.objects.last_actions(res['release'],10,res['language'])
+    
+    if search is not None and search.strip() <> '':
+        res['file_list']=find_in_files(search, q)
+    else:
+        res['file_list']=q
+        res['last_actions'] = POFileLog.objects.last_actions(res['release'],10,res['language'])
 
     return res
 

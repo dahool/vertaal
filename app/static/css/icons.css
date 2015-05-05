@@ -189,3 +189,6 @@
 .go-back {
 	background-image: url(../images/icons/arrow_left.png);
 }
+.button-clear {
+	background-image: url(../images/icons/arrow_clear.png);
+}

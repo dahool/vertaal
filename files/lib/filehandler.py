@@ -79,9 +79,11 @@ class POFileHandler():
     def get_content(self, update = False):
         if update:
             self.update_repo()
-        filef = file(self.get_file_path(), 'rU')
-        file_content = filef.read()
-        filef.close()
+        with open(self.get_file_path(), 'rU') as filef:
+            file_content = filef.read()
+        #filef = file(self.get_file_path(), 'rU')
+        #file_content = filef.read()
+        #filef.close()
         return file_content
 
 class POTFileHandler(POFileHandler):

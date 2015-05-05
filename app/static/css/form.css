@@ -27,7 +27,7 @@ input[readonly]:focus, textarea[readonly]:focus, select[readonly]:focus {
 	border: 1px solid #B5B8C8;
 }
 
-.error input, .error textarea, .error select {
+.error input, .error textarea, .error select, .error-field {
 	background:#FFFFFF url(../images/form/invalid_line.gif) repeat-x scroll center bottom;
 	border:1px solid #DD7870;	
 }

@@ -27,9 +27,10 @@ from django.db.models import Q
 from django.contrib import messages
 from djangopm.utils import send_pm
 from django.conf import settings
+from django.http.response import HttpResponseBadRequest
 
 from common.middleware.exceptions import Http403
-from djangoutils.render.shortcuts import XMLResponse
+from djangoutils.render.shortcuts import XMLResponse, JSONResponse
 from common.i18n import set_user_language
 from common.view.decorators import render
 
@@ -261,7 +262,13 @@ def toggle_mark(request, slug):
 def list_files(request, component=None, release=None, language=None, filter = False):
     logger.debug('list_files %s - %s - %s ' % (component, release, language))
     
-    res = get_file_list(request, component, release, language)
+    search = None
+    if request.method == "POST":
+        search = request.POST.get('searchTerm', None)
+        if search and len(search.strip()) < 8:
+            return JSONResponse({'message': _('Search term must be at least 8 characters long.')})
+            
+    res = get_file_list(request, component, release, language, search)
     
     cook = res.pop('cookjar',None)
     

@@ -281,3 +281,19 @@ def process_merge(pofile, user):
         raise Exception, _('An error occurred while performing file merge. %s' % ";".join(out)) 
 
     return add_submit(pofile, user, new_file, _('Merged.'), merge=False)
+
+def find_in_file(searchTerm, pofile):
+    try:
+        file_content = pofile.handler.get_content()
+        return (file_content.decode('utf8').find(searchTerm) >= 0)
+    except Exception, e:
+        logger.error(e)
+    return False
+    
+def find_in_files(searchTerm, pofiles):
+    logger.debug("Searching for '%s' in %s" % (searchTerm, pofiles))
+    matching_files = []
+    for pofile in pofiles:
+        if find_in_file(searchTerm, pofile):
+            matching_files.append(pofile)
+    return matching_files

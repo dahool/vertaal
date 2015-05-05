@@ -90,17 +90,21 @@ function add_comment(name, url) {
 	$("#comment_text").text(interpolate(gettext('Unlocking file %s'), [name]));
 	$("#lock_comment").dialog('open');
 }
-function load_component(url,replace) {
+function load_component(url,replace, postData) {
     if (replace==undefined) replace = false;
-    $.post(url, function(data) {
-        $(data).find('tbody').each(function() {
-            if (replace) {
-                $("#filestabs").find('tbody').html($(this).html());
-            } else {
-                $("#filestabs").find('tbody').append($(this).html());
-            }
-        });
-        $("#filestabs").find('table').trigger("update");
+    $.post(url, postData, function(data, status, xhr) {
+        if (xhr.hasOwnProperty('responseJSON')) {
+            show_ok_dialog(data.message);
+        } else {
+            $(data).find('tbody').each(function() {
+                if (replace) {
+                    $("#filestabs").find('tbody').html($(this).html());
+                } else {
+                    $("#filestabs").find('tbody').append($(this).html());
+                }
+            });
+            $("#filestabs").find('table').trigger("update");
+        }
     });    
 }
 function hide_component(name) {

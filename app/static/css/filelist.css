@@ -1,0 +1,15 @@
+#file_list_toolbox {
+    display: block;
+}
+#component_list {
+    float: left;
+}
+#file_search_box {
+    float: right;
+}
+#file_list_search {
+    width: 40em;
+}
+#filestabs {
+    clear: both;
+}    

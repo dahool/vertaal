@@ -17,6 +17,7 @@
 <link rel="alternate" type="application/rss+xml" title="{% trans "Submission queue" %}" href="{% url 'language_project_queue_feed' release.project.slug language.code %}">
 {% endif %}
 {% endifsetting %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/filelist.css" />
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.metadata.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.json.js"></script>
@@ -39,6 +40,23 @@ $(document).ready(function(){
     check_filter_button();
     $("#component_list").show();
     $("#filestabs").show('fast', function(){load_component(RELOAD_LIST_FILES_URL, true)});
+    $("#file_list_search").on('keypress', function(e){
+        if (e.which == 13) {
+            value = $.trim($("#file_list_search").val());
+            if (value.length < $("#file_list_search").attr('minlength')) {
+                $("#file_list_search").addClass('error-field');
+            } else {
+                $("#file_list_search").removeClass('error-field');
+                load_component(RELOAD_LIST_FILES_URL, true, {'searchTerm': value});
+            }
+            return false;
+        }
+    });
+    $("#file_search_clear").on('click', function(){
+        $("#file_list_search").val('');
+        $("#file_list_search").removeClass('error-field');
+        load_component(RELOAD_LIST_FILES_URL, true)
+    });
 }); 
 --></script>
 {% endblock %}
@@ -116,6 +134,7 @@ $(document).ready(function(){
 {% endif %}
 
 <br/>
+<div id="file_list_toolbox">
 <div id="component_list" style="display: none;">
 {% with release.project.components.all as components %}
 	{% for component in components|dictsort:"pk" %}
@@ -124,7 +143,11 @@ $(document).ready(function(){
 	{% endfor %}
 {% endwith %}
 </div>
-
+<div id="file_search_box">
+    <input type="text" id="file_list_search" placeholder="{% trans "Search in files" %}" autocomplete="off" minlength="8" title="{% trans "Search term must be at least 8 characters long." %}">
+    <span id="file_search_clear" class="nodecoration_icon action_icon2 link button-clear" title="{% trans "Clear search results" %}"></span>
+</div>
+</div>
 <div id="filestabs" class="ui-widget-content ui-corner-all" style="display: none;">
 {% include "files/file_list_table.html" %}
 </div>
