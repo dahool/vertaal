@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-17 20:15-0300\n"
-"PO-Revision-Date: 2015-03-16 19:13+0100\n"
+"PO-Revision-Date: 2015-05-08 12:12+0200\n"
 "Last-Translator: Antoine Belvire <antoine.belvire@laposte.net>\n"
 "Language-Team: français <opensuse-fr@opensuse.org>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: .\app\management\commands\messagecheck.py:72
 #: .\djangopm\management\commands\pmnotification.py:51
@@ -303,12 +303,10 @@ msgid "User"
 msgstr "Utilisateur"
 
 #: .\django_authopenid\models.py:90
-#, fuzzy
 msgid "User association"
 msgstr "Association utilisateur"
 
 #: .\django_authopenid\models.py:91
-#, fuzzy
 msgid "User associations"
 msgstr "Associations utilisateur"
 
@@ -318,9 +316,8 @@ msgid "The OpenID %s was invalid"
 msgstr "L'OpenID %s était invalide"
 
 #: .\django_authopenid\views.py:407
-#, fuzzy
 msgid "Invalid or expired token"
-msgstr "Session invalide ou ayant expirée."
+msgstr "Jeton invalide ou ayant expiré"
 
 #: .\django_authopenid\views.py:514
 msgid "Password changed"
@@ -939,18 +936,18 @@ msgid "Please, select one or more files."
 msgstr "Veuillez sélectionner un ou plusieurs fichiers."
 
 #: .\files\views\filesubmit.py:152
-#, fuzzy, python-format
+#, python-format
 msgid "You are about to reject 1 file"
 msgid_plural "You are about to reject %(count)s files"
-msgstr[0] "Vous êtes sur le point de rejeter les fichiers suivants."
-msgstr[1] "Vous êtes sur le point de rejeter les fichiers suivants."
+msgstr[0] "Vous êtes sur le point de rejeter 1 fichier"
+msgstr[1] "Vous êtes sur le point de rejeter %(count)s fichiers"
 
 #: .\files\views\filesubmit.py:163
-#, fuzzy, python-format
+#, python-format
 msgid "You are about to submit 1 file"
 msgid_plural "You are about to submit %(count)s files"
-msgstr[0] "Vous êtes sur le point d'envoyer les fichiers suivants."
-msgstr[1] "Vous êtes sur le point d'envoyer les fichiers suivants."
+msgstr[0] "Vous êtes sur le point d'envoyer 1 fichier"
+msgstr[1] "Vous êtes sur le point d'envoyer %(count)s fichiers"
 
 #: .\files\views\filesubmit.py:213
 msgid "Complete the form and try again."
@@ -977,24 +974,26 @@ msgstr[0] "Fichier envoyé."
 msgstr[1] "Fichiers envoyés."
 
 #: .\files\views\utils\commit.py:46
-#, fuzzy, python-format
+#, python-format
 msgid "Submit failed. Reason: %s"
-msgstr "Échec. Raison : %s"
+msgstr "L'envoi a échoué. Raison : %s"
 
 #: .\files\views\utils\commit.py:55
-#, fuzzy
 msgid "File added to the queue for further processing."
 msgid_plural "Files added to the queue for further processing."
-msgstr[0] "Le fichier a été ajouté dans la file en attente de traitement."
-msgstr[1] "Les fichiers ont été ajoutés dans la file en attente de traitement."
+msgstr[0] "Fichier ajouté dans la file en attente de traitement."
+msgstr[1] "Fichiers ajoutés dans la file en attente de traitement."
 
 #: .\files\views\utils\commit.py:70
-#, fuzzy
 msgid "The file is being processed. You'll be notified once completed."
 msgid_plural ""
 "The files are being processed. You'll be notified once completed."
-msgstr[0] "Le fichier est en train d'être traité. Il ne peut pas être modifié."
-msgstr[1] "Le fichier est en train d'être traité. Il ne peut pas être modifié."
+msgstr[0] ""
+"Le fichier est en train d'être traité. Vous serez averti(e) une fois le "
+"processus terminé."
+msgstr[1] ""
+"Les fichiers sont en train d'être traités. Vous serez averti(e) une fois le "
+"processus terminé."
 
 #: .\files\views\utils\list.py:41
 msgid "This component is read only."
@@ -1042,37 +1041,34 @@ msgstr "Désolé, l'export n'est pas encore disponible."
 
 #: .\grappelli\dashboard\dashboards.py:95
 msgid "Dashboard"
-msgstr ""
+msgstr "Tableau de bord"
 
 #: .\grappelli\dashboard\dashboards.py:139
 msgid "Quick links"
-msgstr ""
+msgstr "Liens rapides"
 
 #: .\grappelli\dashboard\dashboards.py:142
 msgid "Return to site"
-msgstr ""
+msgstr "Retourner au site"
 
 #: .\grappelli\dashboard\dashboards.py:143
 #: .\grappelli\templates\admin\base.html:86
 #: .\grappelli\templates\admin\auth\user\change_password.html:11
 #: .\grappelli\templates\admin\auth\user\change_password.html:57
 #: .\grappelli\templates\admin\includes_grappelli\header.html:21
-#, fuzzy
 msgid "Change password"
-msgstr "Changer mon mot de passe"
+msgstr "Changer de mot de passe"
 
 #: .\grappelli\dashboard\dashboards.py:145
 #: .\grappelli\templates\admin\base.html:89
 #: .\grappelli\templates\admin\includes_grappelli\header.html:30
-#, fuzzy
 msgid "Log out"
 msgstr "Se déconnecter"
 
 #: .\grappelli\dashboard\dashboards.py:151
 #: .\grappelli\dashboard\modules.py:214
-#, fuzzy
 msgid "Applications"
-msgstr "Action"
+msgstr "Applications"
 
 #: .\grappelli\dashboard\dashboards.py:157 .\templates\menu.html:26
 msgid "Administration"
@@ -1081,38 +1077,36 @@ msgstr "Administration"
 #: .\grappelli\dashboard\dashboards.py:162
 #: .\grappelli\dashboard\modules.py:290
 #: .\grappelli\templates\admin\index.html:76
-#, fuzzy
 msgid "Recent Actions"
-msgstr "Activité récente"
+msgstr "Actions récentes"
 
 #: .\grappelli\dashboard\dashboards.py:166
-#, fuzzy
 msgid "Latest Django News"
-msgstr "Dernières nouvelles"
+msgstr "Dernières nouvelles Django"
 
 #: .\grappelli\dashboard\dashboards.py:173
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 #: .\grappelli\dashboard\dashboards.py:176
 msgid "Django documentation"
-msgstr ""
+msgstr "Documentation Django"
 
 #: .\grappelli\dashboard\dashboards.py:181
 msgid "Django \"django-users\" mailing list"
-msgstr ""
+msgstr "Liste de diffusion \"django-users\" de Django"
 
 #: .\grappelli\dashboard\dashboards.py:186
 msgid "Django irc channel"
-msgstr ""
+msgstr "Canal irc de Django"
 
 #: .\grappelli\dashboard\modules.py:188
 msgid "Links"
-msgstr ""
+msgstr "Liens"
 
 #: .\grappelli\dashboard\modules.py:350
 msgid "RSS Feed"
-msgstr ""
+msgstr "Flux RSS"
 
 #: .\grappelli\dashboard\templates\admin\index.html:25
 #: .\grappelli\templates\admin\500.html:9
@@ -1179,7 +1173,7 @@ msgstr "Ajouter"
 #: .\grappelli\dashboard\templates\grappelli\dashboard\modules\recent_actions.html:18
 #, fuzzy
 msgid "None Available"
-msgstr "Page indisponible"
+msgstr "Aucun disponible"
 
 #: .\grappelli\templates\admin\404.html:7
 #: .\grappelli\templates\admin\404.html:11 .\templates\404.html:5
@@ -1189,29 +1183,32 @@ msgstr "Page introuvable"
 
 #: .\grappelli\templates\admin\404.html:12
 msgid "We're sorry, but the requested page could not be found."
-msgstr ""
+msgstr "Nous sommes désolés mais la page demandée ne peut être trouvée."
 
 #: .\grappelli\templates\admin\500.html:10
 msgid "Server error"
-msgstr ""
+msgstr "Erreur du serveur"
 
 #: .\grappelli\templates\admin\500.html:15
 msgid "Server error (500)"
-msgstr ""
+msgstr "Erreur du serveur (500)"
 
 #: .\grappelli\templates\admin\500.html:19
 msgid "Server Error <em>(500)</em>"
-msgstr ""
+msgstr "Erreur du serveur <em>(500)</em>"
 
 #: .\grappelli\templates\admin\500.html:20
 msgid ""
 "There's been an error. It's been reported to the site administrators via e-"
 "mail and should be fixed shortly. Thanks for your patience."
 msgstr ""
+"Il y a eu une erreur. Elle a été rapportée aux administrateurs du site par "
+"courriel et devrait être corrigée rapidement. Merci pour votre patience."
 
 #: .\grappelli\templates\admin\actions.html:10
+#, fuzzy
 msgid "Click here to select the objects across all pages"
-msgstr ""
+msgstr "Cliquez ici pour sélectionner les objets à travers toutes les pages"
 
 #: .\grappelli\templates\admin\actions.html:10
 #, python-format
@@ -1219,52 +1216,49 @@ msgid "Select all %(total_count)s %(module_name)s"
 msgstr ""
 
 #: .\grappelli\templates\admin\actions.html:11
-#, fuzzy
 msgid "Clear selection"
-msgstr "Veuillez sélectionner un utilisateur"
+msgstr "Effacer la sélection"
 
 #: .\grappelli\templates\admin\app_index.html:13
 #, python-format
 msgid "<li>%(name)s</li>"
-msgstr ""
+msgstr "<li>%(name)s</li>"
 
 #: .\grappelli\templates\admin\app_index.html:38
 #: .\grappelli\templates\admin\index.html:59
-#, fuzzy
 msgid "You don´t have permission to edit anything."
-msgstr "Désolé, vous n'avez pas la permission d'accéder à ceci."
+msgstr "Vous n'avez pas la permission d'éditer quoi que ce soit."
 
 #: .\grappelli\templates\admin\base.html:97
 #: .\grappelli\templates\admin\includes_grappelli\header.html:41
 #: .\grappelli\templates\admin_doc\bookmarklets.html:9
 msgid "Documentation"
-msgstr ""
+msgstr "Documentation"
 
 #: .\grappelli\templates\admin\base_site.html:4
+#, fuzzy
 msgid "Django site admin"
-msgstr ""
+msgstr "Site d'administration Django"
 
 #: .\grappelli\templates\admin\change_form.html:124
 #: .\grappelli\templates\admin\edit_inline\stacked.html:8
 msgid "Open All Items"
-msgstr ""
+msgstr "Ouvrir tous les éléments"
 
 #: .\grappelli\templates\admin\change_form.html:125
 #: .\grappelli\templates\admin\edit_inline\stacked.html:9
 msgid "Close All Items"
-msgstr ""
+msgstr "Fermer tous les éléments"
 
 #: .\grappelli\templates\admin\change_form.html:149
 #: .\grappelli\templates\admin\object_history.html:13
 #: .\grappelli\templates\reversion\revision_form.html:11
-#, fuzzy
 msgid "History"
-msgstr "Historique du fichier"
+msgstr "Historique"
 
 #: .\grappelli\templates\admin\change_form.html:150
-#, fuzzy
 msgid "View on site"
-msgstr "Voir la console"
+msgstr "Voir sur le site"
 
 #: .\grappelli\templates\admin\change_form.html:168
 #: .\grappelli\templates\admin\change_list.html:218
@@ -1272,25 +1266,23 @@ msgstr "Voir la console"
 #: .\grappelli\templates\admin\login.html:32
 #: .\grappelli\templates\admin\auth\user\change_password.html:27
 #: .\grappelli\templates\smuggler\load_data_form.html:45
-#, fuzzy
 msgid "Please correct the error below."
-msgstr "Veuillez corriger les erreurs suivantes et réessayer."
+msgstr "Veuillez corriger l'erreur suivante."
 
 #: .\grappelli\templates\admin\change_form.html:168
 #: .\grappelli\templates\admin\change_list.html:218
 #: .\grappelli\templates\admin\change_list_filter_sidebar.html:229
 #: .\grappelli\templates\admin\login.html:32
 #: .\grappelli\templates\admin\auth\user\change_password.html:27
-#, fuzzy
 msgid "Please correct the errors below."
-msgstr "Veuillez corriger les erreurs suivantes et réessayer."
+msgstr "Veuillez corriger les erreurs suivantes."
 
 #: .\grappelli\templates\admin\change_list.html:155
 #: .\grappelli\templates\admin\change_list_filter_sidebar.html:168
 #: .\grappelli\templates\smuggler\change_list.html:15
-#, fuzzy, python-format
+#, python-format
 msgid "Add %(name)s"
-msgstr "Éditer %(fname)s "
+msgstr "Ajouter %(name)s"
 
 #: .\grappelli\templates\admin\change_list.html:184
 #: .\grappelli\templates\admin\change_list_filter_sidebar.html:183
@@ -1314,7 +1306,7 @@ msgstr "Sauvegarder"
 #: .\grappelli\templates\admin\change_list_results.html:19
 #, fuzzy
 msgid "Toggle sorting"
-msgstr "Paramètres du profil"
+msgstr "Basculer le sens du tri"
 
 #: .\grappelli\templates\admin\change_list_results.html:20
 #, python-format
@@ -1324,20 +1316,19 @@ msgstr ""
 #: .\grappelli\templates\admin\change_list_results.html:21
 #, fuzzy
 msgid "Remove from sorting"
-msgstr "Supprimer des signets"
+msgstr "Supprimer du tri"
 
 #: .\grappelli\templates\admin\csv_export_selected_confirmation.html:12
 msgid "Export selection as CSV"
-msgstr ""
+msgstr "Exporter la sélection au format CSV"
 
 #: .\grappelli\templates\admin\csv_export_selected_confirmation.html:31
 msgid "Export following fields:"
-msgstr ""
+msgstr "Exporter les champs suivants :"
 
 #: .\grappelli\templates\admin\csv_export_selected_confirmation.html:34
-#, fuzzy
 msgid "Select all"
-msgstr "Répondre à tous"
+msgstr "Tout sélectionner"
 
 #: .\grappelli\templates\admin\csv_export_selected_confirmation.html:54
 #: .\templates\files\upload_failed.html:14
@@ -1347,7 +1338,7 @@ msgstr "Retour"
 
 #: .\grappelli\templates\admin\csv_export_selected_confirmation.html:55
 msgid "Export"
-msgstr ""
+msgstr "Exporter"
 
 #: .\grappelli\templates\admin\delete_confirmation.html:27
 #, python-format
@@ -1382,11 +1373,11 @@ msgstr "Annuler"
 #: .\grappelli\templates\admin\delete_confirmation.html:52
 #: .\grappelli\templates\admin\delete_selected_confirmation.html:58
 msgid "Yes, I'm sure"
-msgstr ""
+msgstr "Oui, je suis sûr(e)"
 
 #: .\grappelli\templates\admin\delete_selected_confirmation.html:16
 msgid "Delete multiple objects"
-msgstr ""
+msgstr "Supprimer plusieurs objets"
 
 #: .\grappelli\templates\admin\delete_selected_confirmation.html:26
 #, python-format
@@ -1414,21 +1405,20 @@ msgstr ""
 #: .\grappelli\templates\admin\filter_listing.html:3
 #, python-format
 msgid "%(filter_title)s"
-msgstr ""
+msgstr "%(filter_title)s"
 
 #: .\grappelli\templates\admin\index.html:65
 msgid "Custom Views"
 msgstr ""
 
 #: .\grappelli\templates\admin\index.html:78
-#, fuzzy
 msgid "My Actions"
-msgstr "Action"
+msgstr "Mes actions"
 
 #: .\grappelli\templates\admin\index.html:81
 #, fuzzy
 msgid "None available"
-msgstr "Page indisponible"
+msgstr "Aucun disponible"
 
 #: .\grappelli\templates\admin\invalid_setup.html:16
 msgid ""
@@ -1436,10 +1426,13 @@ msgid ""
 "database tables have been created, and make sure the database is readable by "
 "the appropriate user."
 msgstr ""
+"Quelque chose cloche dans l'installation de votre base de données. Vérifiez "
+"que les tables ont été créées et que la base de données est lisible par "
+"l'utilisateur approprié."
 
 #: .\grappelli\templates\admin\login.html:26
 msgid "Login"
-msgstr ""
+msgstr "Connexion"
 
 #: .\grappelli\templates\admin\login.html:54
 #: .\templates\registration\drop_account.html:21
@@ -1448,9 +1441,8 @@ msgid "Password:"
 msgstr "Mot de passe :"
 
 #: .\grappelli\templates\admin\login.html:63
-#, fuzzy
 msgid "Forgotten your password or username?"
-msgstr "Mot de passe oublié ?"
+msgstr "Mot de passe ou nom d'utilisateur oublié ?"
 
 #: .\grappelli\templates\admin\login.html:70
 #: .\grappelli\templates\registration\password_reset_complete.html:17
@@ -1461,9 +1453,8 @@ msgstr "Se connecter"
 #: .\grappelli\templates\admin\object_history.html:24
 #: .\grappelli\templates\reversion\object_history.html:13
 #: .\grappelli\templates\reversion\recover_list.html:22
-#, fuzzy
 msgid "Date/time"
-msgstr "Date"
+msgstr "Date/heure"
 
 #: .\grappelli\templates\admin\object_history.html:26
 #: .\templates\files\file_detail.html:244 .\templates\files\file_log.html:21
@@ -1472,28 +1463,31 @@ msgid "Action"
 msgstr "Action"
 
 #: .\grappelli\templates\admin\object_history.html:32
+#, fuzzy
 msgid "DATETIME_FORMAT"
-msgstr ""
+msgstr "FORMAT_DATE"
 
 #: .\grappelli\templates\admin\object_history.html:36
-#, fuzzy
 msgid "Created object"
-msgstr "Projet %s créé"
+msgstr "Objet créé"
 
 #: .\grappelli\templates\admin\object_history.html:46
 #: .\grappelli\templates\reversion\object_history.html:34
+#, fuzzy
 msgid ""
 "This object doesn't have a change history. It probably wasn't added via this "
 "admin site."
 msgstr ""
+"Cet objet n'a pas d'historique de changements. Il n'a probablement pas été "
+"ajouté via le site d'administration."
 
 #: .\grappelli\templates\admin\pagination.html:8
 #: .\grappelli\views\related.py:168
-#, fuzzy, python-format
+#, python-format
 msgid "%(counter)s result"
 msgid_plural "%(counter)s results"
-msgstr[0] "%(user)s a écrit :"
-msgstr[1] "%(user)s a écrit :"
+msgstr[0] "%(counter)s résultat"
+msgstr[1] "%(counter)s résultats"
 
 #: .\grappelli\templates\admin\pagination.html:13
 #: .\grappelli\templates\admin\pagination.html:15
@@ -1503,20 +1497,20 @@ msgstr ""
 
 #: .\grappelli\templates\admin\pagination.html:27
 msgid "Show all"
-msgstr ""
+msgstr "Afficher tout"
 
 #: .\grappelli\templates\admin\submit_line.html:12
+#, fuzzy
 msgid "Save as new"
-msgstr ""
+msgstr "Sauvegarder en tant que nouveau"
 
 #: .\grappelli\templates\admin\submit_line.html:15
 msgid "Save and add another"
 msgstr ""
 
 #: .\grappelli\templates\admin\submit_line.html:18
-#, fuzzy
 msgid "Save and continue editing"
-msgstr "Sauvegarder et envoyer"
+msgstr "Sauvegarder et continuer l'édition"
 
 #: .\grappelli\templates\admin\auth\user\change_password.html:15
 #: .\grappelli\templates\registration\password_change_done.html:7
@@ -1531,6 +1525,8 @@ msgstr "Changement de mot de passe"
 #, python-format
 msgid "Enter a new password for the user <strong>%(username)s</strong>."
 msgstr ""
+"Saisissez un nouveau mot de passe pour l'utilisateur <strong>%(username)s</"
+"strong>."
 
 #: .\grappelli\templates\admin\auth\user\change_password.html:34
 #: .\grappelli\templates\registration\password_change_form.html:31
@@ -1540,44 +1536,43 @@ msgstr "Nouveau mot de passe"
 
 #: .\grappelli\templates\admin\auth\user\change_password.html:46
 #: .\grappelli\templates\registration\password_change_form.html:38
-#, fuzzy
 msgid "Password (again)"
-msgstr "Changement de mot de passe"
+msgstr "Mot de passe (encore)"
 
 #: .\grappelli\templates\admin\auth\user\change_password.html:50
 #: .\grappelli\templates\registration\password_reset_confirm.html:29
 msgid "Enter the same password as above, for verification."
-msgstr ""
+msgstr "Saisissez le même mot de passe qu'au-dessus, pour vérification."
 
 #: .\grappelli\templates\admin\constance\change_list.html:66
 msgid "Default"
-msgstr ""
+msgstr "Par défaut"
 
 #: .\grappelli\templates\admin\constance\change_list.html:71
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: .\grappelli\templates\admin\constance\change_list.html:76
 msgid "Is modified"
-msgstr ""
+msgstr "Est modifié"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:10
 #: .\grappelli\templates\admin\edit_inline\stacked.html:54
 #: .\grappelli\templates\admin\edit_inline\tabular.html:91
+#, fuzzy
 msgid "Add Item"
-msgstr ""
+msgstr "Ajouter élément"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:23
 #: .\grappelli\templates\admin\edit_inline\tabular.html:64
-#, fuzzy
 msgid "View on Site"
-msgstr "Voir la console"
+msgstr "Voir sur le site"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:25
 #: .\grappelli\templates\admin\edit_inline\tabular.html:66
 #, fuzzy
 msgid "Move Item"
-msgstr "Supprimer l'équipe"
+msgstr "Déplacer élément"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:29
 #: .\grappelli\templates\admin\edit_inline\stacked.html:34
@@ -1585,26 +1580,25 @@ msgstr "Supprimer l'équipe"
 #: .\grappelli\templates\admin\edit_inline\tabular.html:75
 #, fuzzy
 msgid "Delete Item"
-msgstr "Supprimer"
+msgstr "Supprimer élément"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:52
 #: .\grappelli\templates\admin\edit_inline\tabular.html:89
 #, fuzzy, python-format
 msgid "Add another %(verbose_name)s"
-msgstr "Ajouter un autre OpenID"
+msgstr "Ajouter un autre %(verbose_name)s"
 
 #: .\grappelli\templates\admin\edit_inline\tabular.html:9
 #, fuzzy
 msgid "Add Another"
-msgstr "Ajouter un autre OpenID"
+msgstr "Ajouter un autre"
 
 #: .\grappelli\templates\admin\includes_grappelli\header.html:36
 msgid "Tests"
-msgstr ""
+msgstr "Tests"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:10
 #: .\grappelli\templates\admin_doc\bookmarklets.html:16
-#, fuzzy
 msgid "Bookmarklets"
 msgstr "Signets"
 
@@ -1630,7 +1624,7 @@ msgstr ""
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:27
 msgid "Documentation for this page"
-msgstr ""
+msgstr "Documentation pour cette page"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:28
 msgid ""
@@ -1640,7 +1634,7 @@ msgstr ""
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:31
 msgid "Show object ID"
-msgstr ""
+msgstr "Afficher l'ID de l'objet"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:32
 msgid ""
@@ -1650,45 +1644,43 @@ msgstr ""
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:35
 msgid "Edit this object (current window)"
-msgstr ""
+msgstr "Éditer cet objet (fenêtre actuelle)"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:36
 msgid "Jumps to the admin page for pages that represent a single object."
 msgstr ""
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:39
-#, fuzzy
 msgid "Edit this object (new window)"
-msgstr "Édition du projet %(name)s"
+msgstr "Éditer cet objet (nouvelle fenêtre)"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:40
 msgid "As above, but opens the admin page in a new window."
 msgstr ""
+"Comme au-dessus, mais ouvre la page d'administration dans une nouvelle "
+"fenêtre."
 
 #: .\grappelli\templates\registration\logged_out.html:16
-#, fuzzy
 msgid "Log in again"
-msgstr "Se connecter"
+msgstr "Se reconnecter"
 
 #: .\grappelli\templates\registration\password_change_done.html:11
 #: .\grappelli\templates\registration\password_change_done.html:13
-#, fuzzy
 msgid "Password change successful"
-msgstr "Succès de la réinitialisation du mot de passe"
+msgstr "Succès du changement de mot de passe"
 
 #: .\grappelli\templates\registration\password_change_done.html:17
-#, fuzzy
 msgid "Your password was changed."
-msgstr "Le mot de passe a été modifié"
+msgstr "Votre mot de passe a été changé."
 
 #: .\grappelli\templates\registration\password_change_form.html:19
-#, fuzzy
 msgid ""
 "Please enter your old password, for security's sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
 msgstr ""
-"Veuillez saisir votre nouveau mot de passe deux fois afin que nous puissions "
-"vérifier que vous l'avez tapé correctement."
+"Veuillez saisir votre ancien mot de passe, pour des raisons de sécurité, "
+"puis votre nouveau mot de passe deux fois afin que nous puissions vérifier "
+"que vous l'avez tapé correctement."
 
 #: .\grappelli\templates\registration\password_change_form.html:24
 #: .\userprofileapp\forms.py:33
@@ -1737,22 +1729,19 @@ msgstr ""
 "vérifier que vous l'avez tapé correctement."
 
 #: .\grappelli\templates\registration\password_reset_confirm.html:21
-#, fuzzy
 msgid "New password:"
-msgstr "Nouveau mot de passe"
+msgstr "Nouveau mot de passe :"
 
 #: .\grappelli\templates\registration\password_reset_confirm.html:26
-#, fuzzy
 msgid "Confirm password:"
-msgstr "Changer mon mot de passe"
+msgstr "Confirmez le mot de passe :"
 
 #: .\grappelli\templates\registration\password_reset_confirm.html:47
-#, fuzzy
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
-"Le lien de réinitialisation du mot de passe est invalide, probablement parce "
+"Le lien de réinitialisation du mot de passe est invalide, peut-être parce "
 "qu'il a déjà été utilisé. Veuillez demander une nouvelle réinitialisation du "
 "mot de passe."
 
@@ -1764,20 +1753,21 @@ msgid "Password reset successful"
 msgstr "Succès de la réinitialisation du mot de passe"
 
 #: .\grappelli\templates\registration\password_reset_done.html:16
-#, fuzzy
 msgid ""
 "We've emailed you instructions for setting your password. You should be "
 "receiving them shortly."
 msgstr ""
-"Nous vous avons envoyé un courriel, à l'adresse que vous avez indiquée, avec "
-"les instructions pour définir votre mot de passe. Vous devriez le recevoir "
-"sous peu."
+"Nous vous avons envoyé par courriel les instructions pour définir votre mot "
+"de passe. Vous devriez les recevoir sous peu."
 
 #: .\grappelli\templates\registration\password_reset_done.html:17
 msgid ""
 "If you don't receive an email, please make sure you've entered the address "
 "you registered with, and check your spam folder."
 msgstr ""
+"Si vous ne recevez pas de courriel, veuillez vous assurer que vous avez "
+"entré l'adresse avec laquelle vous vous êtes enregistré(e), et vérifiez "
+"votre dossier de pourriels."
 
 #: .\grappelli\templates\registration\password_reset_email.html:2
 #, python-format
@@ -1785,24 +1775,27 @@ msgid ""
 "You're receiving this email because you requested a password reset for your "
 "user account at %(site_name)s."
 msgstr ""
+"Vous recevez ce courriel car vous avez demandé un réinitialisation du mot de "
+"passe de votre compte utilisateur sur %(site_name)s."
 
 #: .\grappelli\templates\registration\password_reset_email.html:4
-#, fuzzy
 msgid "Please go to the following page and choose a new password:"
-msgstr "Veuillez corriger les erreurs suivantes et réessayer."
+msgstr ""
+"Veuillez vous rendre sur la page suivante et choisir un nouveau mot de "
+"passe :"
 
 #: .\grappelli\templates\registration\password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
-msgstr ""
+msgstr "Votre nom d'utilisateur, au cas où vous l'auriez oublié :"
 
 #: .\grappelli\templates\registration\password_reset_email.html:10
 msgid "Thanks for using our site!"
-msgstr ""
+msgstr "Merci d'utiliser notre site !"
 
 #: .\grappelli\templates\registration\password_reset_email.html:12
-#, fuzzy, python-format
+#, python-format
 msgid "The %(site_name)s team"
-msgstr "Voir %(filename)s"
+msgstr "L'équipe de %(site_name)s"
 
 #: .\grappelli\templates\registration\password_reset_form.html:5
 #: .\grappelli\templates\registration\password_reset_form.html:13
@@ -1812,7 +1805,6 @@ msgid "Password reset"
 msgstr "Mot de passe réinitialisé"
 
 #: .\grappelli\templates\registration\password_reset_form.html:17
-#, fuzzy
 msgid ""
 "Forgotten your password? Enter your email address below, and we'll email "
 "instructions for setting a new one."
@@ -1821,9 +1813,8 @@ msgstr ""
 "et nous vous enverrons un courriel d'instructions pour en définir un nouveau."
 
 #: .\grappelli\templates\registration\password_reset_form.html:20
-#, fuzzy
 msgid "Email address:"
-msgstr "Adresse mail"
+msgstr "Adresse mail :"
 
 #: .\grappelli\templates\registration\password_reset_form.html:28
 #: .\templates\registration\password_reset_form.html:22
@@ -1835,13 +1826,15 @@ msgstr "Réinitialiser mon mot de passe"
 #: .\grappelli\templates\reversion\recover_list.html:9
 #, fuzzy, python-format
 msgid "Recover deleted %(name)s"
-msgstr "Peupler la version %(name)s"
+msgstr "Récupérer %(name)s supprimés"
 
 #: .\grappelli\templates\reversion\object_history.html:7
 msgid ""
 "Choose a date from the list below to revert to a previous version of this "
 "object."
 msgstr ""
+"Choisissez une date dans la liste ci-dessous pour revenir à une version "
+"précédente de cet objet."
 
 #: .\grappelli\templates\reversion\object_history.html:15
 #: .\templates\files\commit_queue.html:30
@@ -1857,10 +1850,12 @@ msgstr ""
 msgid ""
 "Choose a date from the list below to recover a deleted version of an object."
 msgstr ""
+"Choisissez une date dans la liste ci-dessous pour récupérer une version "
+"supprimée d'un objet."
 
 #: .\grappelli\templates\reversion\recover_list.html:36
 msgid "There are no deleted objects to recover."
-msgstr ""
+msgstr "Il n'y a pas d'objet supprimé à récupérer."
 
 #: .\grappelli\templates\reversion\revision_form.html:12
 #, python-format
@@ -1884,12 +1879,12 @@ msgstr ""
 
 #: .\grappelli\templates\smuggler\load_data_form.html:49
 msgid "Data from your computer"
-msgstr ""
+msgstr "Données depuis votre ordinateur"
 
 #: .\grappelli\templates\smuggler\load_data_form.html:68
 #: .\grappelli\templates\smuggler\load_data_form.html:114
 msgid "Load"
-msgstr ""
+msgstr "Charger"
 
 #: .\grappelli\templates\smuggler\load_data_form.html:71
 msgid "Load fixture and save on disk"
@@ -1901,18 +1896,17 @@ msgid "Data from %(smuggler_fixture_dir)s directory"
 msgstr ""
 
 #: .\grappelli\templates\smuggler\load_data_form.html:97
-#, fuzzy
 msgid "File name"
-msgstr "Fichier assigné"
+msgstr "Nom de fichier"
 
 #: .\grappelli\templates\smuggler\load_data_form.html:98
 msgid "Size"
-msgstr ""
+msgstr "Taille"
 
 #: .\grappelli\tests\test_switch.py:113 .\grappelli\tests\test_switch.py:172
 #: .\grappelli\views\switch.py:37 .\grappelli\views\switch.py:48
 msgid "Permission denied."
-msgstr ""
+msgstr "Permission refusée."
 
 #: .\grappelli\tests\test_switch.py:156 .\grappelli\views\switch.py:40
 #: .\grappelli\views\switch.py:51
@@ -1922,7 +1916,7 @@ msgstr ""
 
 #: .\grappelli\views\related.py:79 .\grappelli\views\related.py:108
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: .\maintenancemode\models.py:11 .\projects\models.py:60
 #: .\releases\models.py:78
@@ -1988,7 +1982,7 @@ msgstr "(lire plus...)"
 #: .\openidmigration\templates\openidmig\message.html:3
 #: .\openidmigration\templates\openidmig\token.html:3
 msgid "Migration Token"
-msgstr ""
+msgstr "Jeton de migration"
 
 #: .\openidmigration\templates\openidmig\message.html:11
 #, python-format
@@ -1996,6 +1990,8 @@ msgid ""
 "We are moving to <a href=\"%(secondarysite)s%(userregister)s\" target="
 "\"_blank\">%(secondarysite)s</a>"
 msgstr ""
+"Nous sommes en train de migrer vers <a href=\"%(secondarysite)s"
+"%(userregister)s\" target=\"_blank\">%(secondarysite)s</a>"
 
 #: .\openidmigration\templates\openidmig\message.html:13
 msgid ""
@@ -2004,7 +2000,7 @@ msgid ""
 msgstr ""
 
 #: .\openidmigration\templates\openidmig\message.html:14
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "If you remember your local credentials, you can just go to <a href="
 "\"%(secondarysite)s%(userregister)s\" target=\"_blank\">%(secondarysite)s"
@@ -2012,6 +2008,11 @@ msgid ""
 "sign in with your openID service and then link you accounts using your "
 "Vertaal's username and password."
 msgstr ""
+"Si vous ne vous souvenez plus de vos informations de connexion locales, vous "
+"pouvez vous rendre sur <a href=\"%(secondarysite)s%(userregister)s\" target="
+"\"_blank\">%(secondarysite)s%(userregister)s</a><br/>\n"
+"vous connecter avec votre service openID et ensuite lier vos comptes en "
+"utilisant votre nom d'utilisateur et votre mot de passe Vertaal."
 
 #: .\openidmigration\templates\openidmig\message.html:16
 #, python-format
@@ -2026,7 +2027,7 @@ msgstr ""
 
 #: .\openidmigration\templates\openidmig\token.html:10
 msgid "Use the following migration token to link your account:"
-msgstr ""
+msgstr "Utilisez le jeton de migration suivant pour lier votre compte :"
 
 #: .\openidmigration\templates\openidmig\token.html:12
 #, python-format
@@ -2038,14 +2039,19 @@ msgstr ""
 
 #: .\openidmigration\templates\openidmig\token.html:14
 msgid "Have in mind this token is temporal and for one use only."
-msgstr ""
+msgstr "Ayez à l'esprit que ce jeton est temporaire et à usage unique."
 
 #: .\openidmigration\templates\openidmig\token.html:15
+#, fuzzy
 msgid ""
 "If you fail to link you account while this site is up, you'll have to login "
 "using your local credentials and use password recovery tool in case you "
 "don't remember it."
 msgstr ""
+"Si vous ne liez pas votre compte pendant que ce site est encore actif, vous "
+"aurez à vous connecter en utilisant vos informations de connexion locales, "
+"voire à utiliser l'outil de récupération de mot de passe, si vous ne vous "
+"souvenez plus de celui-ci."
 
 #: .\projects\forms.py:35 .\projects\models.py:66
 msgid "Repository URL"
@@ -2322,7 +2328,7 @@ msgid "Allow users to submit to repository"
 msgstr "Autoriser les utilisateurs à envoyer ('submit') vers le depôt"
 
 #: .\teams\models.py:197
-#, fuzzy, python-format
+#, python-format
 msgid "<User: %(user)s - Team: %(project)s (%(language)s)>"
 msgstr "<Utilisateur : %(user)s - Équipe : %(project)s (%(language)s)>"
 
@@ -2581,7 +2587,7 @@ msgstr "Index du site"
 #: .\templates\admin\auth\user\change_form.html:11
 #, fuzzy
 msgid "Send Password Reset"
-msgstr "Mot de passe réinitialisé"
+msgstr "Envoyer réinitialisation mot de passe"
 
 #: .\templates\authopenid\associate.html:3
 #: .\templates\authopenid\associate.html:31
@@ -2631,13 +2637,12 @@ msgid "Verify"
 msgstr "Vérifier"
 
 #: .\templates\authopenid\complete.html:48
-#, fuzzy
 msgid "Migrate existing account"
-msgstr "Associer avec un compte existant"
+msgstr "Migrer un compte existant"
 
 #: .\templates\authopenid\complete.html:55
 msgid "Link"
-msgstr ""
+msgstr "Lien"
 
 #: .\templates\authopenid\failure.html:4
 msgid "Failed"
@@ -2648,7 +2653,6 @@ msgid "Sign in with your OpenID"
 msgstr "Se connecter avec un OpenID"
 
 #: .\templates\authopenid\password_change_form.html:4
-#, fuzzy
 msgid "Password setup"
 msgstr "Configuration du mot de passe"
 
@@ -2833,7 +2837,7 @@ msgid "Download POT file"
 msgstr "Télécharger le fichier POT"
 
 #: .\templates\files\file_detail.html:91
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "\t\t\t<span>Source Total:</span> %(counter)s string\n"
@@ -2947,16 +2951,16 @@ msgstr ""
 "Fichier fusionné pour la dernière fois le %(updated)s (il y a %(since)s)"
 
 #: .\templates\files\file_detail.html:180
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Repositoy revision <a href=\"%(viewurl)s\" target=\"_blank\">%(rev)s</a> "
 "(updated %(updated)s - %(since)s ago)*"
 msgstr ""
-"Révision du dépôt <a href=\"%(viewurl)s\">%(rev)s</a> (mis à jour "
-"%(updated)s - il y a %(since)s)*"
+"Révision du dépôt <a href=\"%(viewurl)s\" target=\"_blank\">%(rev)s</a> (mis "
+"à jour %(updated)s - il y a %(since)s)*"
 
 #: .\templates\files\file_detail.html:182
-#, fuzzy, python-format
+#, python-format
 msgid "Repositoy revision %(rev)s (updated %(updated)s - %(since)s ago)*"
 msgstr "Révision du dépôt %(rev)s (mis à jour %(updated)s - il y a %(since)s)*"
 
@@ -3162,7 +3166,6 @@ msgstr "Aucun"
 
 #: .\templates\files\file_list_row.html:146
 #: .\templates\files\detail\detail_assignblock.html:75
-#, fuzzy
 msgid "Remove reviewer"
 msgstr "Enlever le relecteur"
 
@@ -3230,12 +3233,15 @@ msgid_plural ""
 "\n"
 "Ready to process %(counter)s files\n"
 msgstr[0] ""
+"\n"
+"Prêt à traiter 1 fichier\n"
 msgstr[1] ""
+"\n"
+"Prêt à traiter %(counter)s fichiers\n"
 
 #: .\templates\files\file_submit_confirm.html:44
-#, fuzzy
 msgid "Show files"
-msgstr "Afficher seulement mes fichiers"
+msgstr "Afficher les fichiers"
 
 #: .\templates\files\file_submit_confirm.html:47
 #: .\templates\files\submit_table_upload.html:25
@@ -3267,7 +3273,13 @@ msgid_plural ""
 "\t\t\t\t%(total)s files in total\n"
 "\t\t\t\t"
 msgstr[0] ""
+"\n"
+"\t\t\t\t1 fichier au total\n"
+"\t\t\t\t"
 msgstr[1] ""
+"\n"
+"\t\t\t\t%(total)s fichiers au total\n"
+"\t\t\t\t"
 
 #: .\templates\files\file_view.html:25
 #, python-format
@@ -3472,7 +3484,6 @@ msgid "Repository:"
 msgstr "Dépôt :"
 
 #: .\templates\projects\project_detail.html:81
-#, fuzzy
 msgid "Repository View URL:"
 msgstr "URL d'affichage du dépôt :"
 
@@ -3531,31 +3542,30 @@ msgid "Prove you're human:"
 msgstr "Prouvez que vous êtes un humain :"
 
 #: .\templates\registration\drop_account.html:3
-#, fuzzy
 msgid "Drop account"
-msgstr "Créer un compte"
+msgstr "Supprimer le compte"
 
 #: .\templates\registration\drop_account.html:9
 msgid "ATTENTION: your are about to remove your account."
-msgstr ""
+msgstr "ATTENTION : vous êtes sur le point de supprimer votre compte."
 
 #: .\templates\registration\drop_account.html:10
 msgid "All related information will be removed. This process can't be undone."
 msgstr ""
+"Toutes les informations relatives seront supprimées. Ce processus est "
+"irréversible."
 
 #: .\templates\registration\drop_account.html:16
 msgid "Enter your password twice to confirm."
-msgstr ""
+msgstr "Saisissez votre mot de passe deux fois pour confirmer."
 
 #: .\templates\registration\drop_account.html:25
-#, fuzzy
 msgid "Repeat Password:"
-msgstr "Réinitialiser mon mot de passe"
+msgstr "Répétez le mot de passe :"
 
 #: .\templates\registration\drop_account.html:30
-#, fuzzy
 msgid "Drop my account"
-msgstr "Créer un compte"
+msgstr "Supprimer mon compte"
 
 #: .\templates\registration\login.html:11
 #: .\templates\registration\login.html:18
@@ -3633,18 +3643,16 @@ msgid "Link Token:"
 msgstr ""
 
 #: .\templates\registration\profile_box.html:57
-#, fuzzy
 msgid "Create"
-msgstr "Créé"
+msgstr "Créer"
 
 #: .\templates\registration\profile_box.html:63
 msgid "Add another OpenID"
 msgstr "Ajouter un autre OpenID"
 
 #: .\templates\registration\profile_box.html:68
-#, fuzzy
 msgid "Drop Account"
-msgstr "Créer un compte"
+msgstr "Supprimer le compte"
 
 #: .\templates\registration\profile_box.html:80
 msgid "Bookmarks"
@@ -3661,7 +3669,6 @@ msgid "Unset startup page"
 msgstr "Ne plus définir comme page de démarrage"
 
 #: .\templates\registration\profile_contact_box.html:6
-#, fuzzy
 msgid "Mass Notification"
 msgstr "Notification de masse"
 
@@ -3718,9 +3725,8 @@ msgid "Sign up"
 msgstr "S'inscrire"
 
 #: .\templates\registration\simple_login.html:8
-#, fuzzy
 msgid "Username/e-mail:"
-msgstr "Nom d'utilisateur :"
+msgstr "Nom d'utilisateur/e-mail :"
 
 #: .\templates\registration\simple_login.html:20
 msgid "Lost your password?"
@@ -3798,7 +3804,6 @@ msgstr "Voir la console"
 
 #: .\templates\releases\release_detail.html:23
 #: .\templates\releases\release_detail.html:30
-#, fuzzy
 msgid "POT Merge"
 msgstr "Fusion POT"
 
@@ -3971,9 +3976,8 @@ msgid "Manage"
 msgstr "Gérer"
 
 #: .\templates\teams\team_admin.html:101
-#, fuzzy
 msgid "Join requests:"
-msgstr "Demande d'inscription :"
+msgstr "Demandes d'inscription :"
 
 #: .\templates\teams\team_admin.html:106
 msgid "Request date"
@@ -4025,7 +4029,6 @@ msgid "%(time)s ago"
 msgstr "Il y a %(time)s"
 
 #: .\templates\teams\team_admin_table.html:34
-#, fuzzy
 msgid "Remove coordinator"
 msgstr "Supprimer le coordinateur"
 
@@ -4035,7 +4038,6 @@ msgstr ""
 
 #: .\templates\teams\team_admin_table.html:62
 #: .\templates\teams\team_admin_table.html:94
-#, fuzzy
 msgid "Set as coordinator"
 msgstr "Nommer comme coordinateur"
 
@@ -4181,8 +4183,8 @@ msgstr ""
 "\n"
 "Bonjour,\n"
 "\n"
-"Les fichiers suivants pourrait nécessiter une fusion, parce que les fichiers "
-"POT ont été récemment mis à jour :\n"
+"Les fichiers suivants pourraient nécessiter une fusion, parce que les "
+"fichiers POT ont récemment été mis à jour :\n"
 "\n"
 "%(files)s\n"
 "\n"
@@ -4208,26 +4210,25 @@ msgstr[1] ""
 
 #: .\userprofileapp\admin.py:46
 msgid "Personal info"
-msgstr ""
+msgstr "Informations personnelles"
 
 #: .\userprofileapp\admin.py:47
-#, fuzzy
 msgid "Permissions"
-msgstr "Envoi de fichier"
+msgstr "Permissions"
 
 #: .\userprofileapp\admin.py:50
 msgid "Important dates"
-msgstr ""
+msgstr "Dates importantes"
 
 #: .\userprofileapp\admin.py:90
-#, fuzzy
 msgid "Password reset link sent."
-msgstr "Réinitialisation du mot de passe terminée"
+msgstr "Lien de réinitialisation du mot de passe envoyé."
 
 #: .\userprofileapp\admin.py:93
-#, fuzzy
 msgid "Error ocurred while sending password reset link."
-msgstr "Une erreur est survenue lors de la suppression de cette équipe"
+msgstr ""
+"Une erreur est survenue lors de l'envoi du lien de réinitialisation du mot "
+"de passe."
 
 #: .\userprofileapp\forms.py:26
 #, fuzzy
@@ -4272,7 +4273,7 @@ msgstr "Profil mis à jour."
 
 #: .\userprofileapp\views.py:169
 msgid "The information provided is invalid."
-msgstr ""
+msgstr "Les informations fournies sont invalides."
 
 #: .\versioncontrol\manager.py:92
 msgid "Files submitted"
@@ -4379,9 +4380,9 @@ msgstr "À la révision %s."
 
 #: .\versioncontrol\lib\types\subversion.py:117
 #: .\versioncontrol\lib\types\svn.py:146
-#, fuzzy, python-format
+#, python-format
 msgid "URL has changed. Relocate from %(prior)s to %(actual)s"
-msgstr "L'URL a changé. Déplacement de %(prior)s à %(actual)s"
+msgstr "L'URL a changé. Déplacement de %(prior)s vers %(actual)s"
 
 #~ msgid "The file will be unlocked once submitted."
 #~ msgstr "Le fichier sera déverrouillé une fois envoyé."
