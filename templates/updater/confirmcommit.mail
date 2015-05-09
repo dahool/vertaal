@@ -1,15 +1,12 @@
 {% load i18n settingstag extendtags %}{% captureas product_name %}{% setting "PROJECT_NAME" %}{% endcaptureas %}{% urlfull 'home' as home %}
-{% blocktrans %}
-Hello,
+{% blocktrans %}Hello,
 {% endblocktrans %}{% blocktrans count files|length as counter %}
 The file below was sent to the repository:{% plural %}
 The following files were sent to the repository:{% endblocktrans %}
 
 {% for file in files %}{{ file }}
 {% endfor %}
-{% blocktrans %} 
-Sincerely,
+{% blocktrans %}Sincerely,
 
 The {{ product_name }} team
-{{ home }}
-{% endblocktrans %}
+{{ home }}{% endblocktrans %}

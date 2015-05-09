@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-09 12:13-0300\n"
+"POT-Creation-Date: 2015-05-09 12:45-0300\n"
 "PO-Revision-Date: 2015-03-17 20:21-0300\n"
 "Last-Translator: Sergio Gabriel Teves <gabriel@opensuse.org>\n"
 "Language-Team: Spanish <webmaster@vertaal.com.ar>\n"
@@ -517,9 +517,6 @@ msgid "Mailbox empty."
 msgstr ""
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:2
-#: .\templates\updater\confirmcommit.mail:2
-#: .\templates\updater\queuestatus.mail:2
-#: .\templates\updater\unread_messages.mail:2
 msgid ""
 "\n"
 "Hello,\n"
@@ -528,7 +525,7 @@ msgstr ""
 "Hola,\n"
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:4
-#: .\templates\updater\unread_messages.mail:4
+#: .\templates\updater\unread_messages.mail:3
 #, python-format
 msgid ""
 "\n"
@@ -544,12 +541,11 @@ msgstr[1] ""
 "Hay %(counter)s mensajes sin leer en tu perfil."
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:8
-#: .\templates\updater\unread_messages.mail:8
+#: .\templates\updater\unread_messages.mail:7
 msgid "Latest messages:"
 msgstr "Ultimos mensajes:"
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:14
-#: .\templates\updater\unread_messages.mail:14
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -4090,34 +4086,41 @@ msgid "No files submitted"
 msgstr "No hay archivos enviados"
 
 #: .\templates\updater\commitfail.mail:2
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"\n"
 "Hello,\n"
 "\n"
 "The following error ocurred while submitting your files.\n"
 "\n"
 "%(error)s\n"
-msgstr ""
-
-#: .\templates\updater\commitfail.mail:10
-#: .\templates\updater\confirmcommit.mail:10
-#: .\templates\updater\queuestatus.mail:10
-#, python-format
-msgid ""
-" \n"
+"\n"
 "Sincerely,\n"
 "\n"
 "The %(product_name)s team\n"
-"%(home)s\n"
+"%(home)s"
 msgstr ""
-" \n"
+"\n"
+"Hola,\n"
+"\n"
+"Los siguientes archivos fueron actualizados:\n"
+"\n"
+"%(files)s\n"
+"\n"
 "Atentamente,\n"
 "\n"
 "El equipo de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\updater\confirmcommit.mail:4
+#: .\templates\updater\confirmcommit.mail:2
+#: .\templates\updater\queuestatus.mail:2
+#: .\templates\updater\unread_messages.mail:2
+#, fuzzy
+msgid "Hello,\n"
+msgstr ""
+"\n"
+"Hola,\n"
+
+#: .\templates\updater\confirmcommit.mail:3
 msgid ""
 "\n"
 "The file below was sent to the repository:"
@@ -4131,10 +4134,24 @@ msgstr[1] ""
 "\n"
 "Los archivos indicados fueron enviados al repositorio:"
 
-#: .\templates\updater\new_messages.mail:2
-#, python-format
+#: .\templates\updater\confirmcommit.mail:9
+#: .\templates\updater\queuestatus.mail:8
+#, fuzzy, python-format
 msgid ""
+"Sincerely,\n"
 "\n"
+"The %(product_name)s team\n"
+"%(home)s"
+msgstr ""
+" \n"
+"Atentamente,\n"
+"\n"
+"El equipo de %(product_name)s\n"
+"%(home)s\n"
+
+#: .\templates\updater\new_messages.mail:2
+#, fuzzy, python-format
+msgid ""
 "Hello,\n"
 "\n"
 "The following files have been updated:\n"
@@ -4144,7 +4161,7 @@ msgid ""
 "Sincerely,\n"
 "\n"
 "The %(product_name)s team\n"
-"%(home)s\n"
+"%(home)s"
 msgstr ""
 "\n"
 "Hola,\n"
@@ -4159,9 +4176,8 @@ msgstr ""
 "%(home)s\n"
 
 #: .\templates\updater\pot_changed.mail:2
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"\n"
 "Hello,\n"
 "\n"
 "The following files could require a merge, because the POT files were "
@@ -4172,7 +4188,7 @@ msgid ""
 "Sincerely,\n"
 "\n"
 "The %(product_name)s team\n"
-"%(home)s\n"
+"%(home)s"
 msgstr ""
 "\n"
 "Hola,\n"
@@ -4187,7 +4203,7 @@ msgstr ""
 "El equipo de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\updater\queuestatus.mail:4
+#: .\templates\updater\queuestatus.mail:3
 #, python-format
 msgid ""
 "\n"
@@ -4201,6 +4217,25 @@ msgstr[0] ""
 msgstr[1] ""
 "\n"
 "La cola de envíos contiene %(counter)s archivos pendientes:"
+
+#: .\templates\updater\unread_messages.mail:13
+#, fuzzy, python-format
+msgid ""
+"\n"
+"Go to %(pmhome)s to check your messages.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"The %(product_name)s team\n"
+"%(home)s"
+msgstr ""
+"\n"
+"Inicia sesión para comprobar tus mensajes.\n"
+" \n"
+"Atentamente,\n"
+"\n"
+"El equipo de %(product_name)s\n"
+"%(home)s\n"
 
 #: .\userprofileapp\admin.py:46
 msgid "Personal info"

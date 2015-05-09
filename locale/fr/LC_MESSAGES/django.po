@@ -8,17 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-09 12:13-0300\n"
-"PO-Revision-Date: 2015-05-08 12:12+0200\n"
-"Last-Translator: Antoine Belvire <antoine.belvire@laposte.net>\n"
+"POT-Creation-Date: 2015-05-09 12:45-0300\n"
+"PO-Revision-Date: 2015-05-09 12:48-0300\n"
+"Last-Translator: Sergio Gabriel Teves <gabriel@opensuse.org>\n"
 "Language-Team: français <opensuse-fr@opensuse.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 1.6.9\n"
 
 #: .\app\management\commands\messagecheck.py:72
 #: .\djangopm\management\commands\pmnotification.py:51
@@ -502,9 +501,6 @@ msgid "Mailbox empty."
 msgstr "Boîte mail vide."
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:2
-#: .\templates\updater\confirmcommit.mail:2
-#: .\templates\updater\queuestatus.mail:2
-#: .\templates\updater\unread_messages.mail:2
 msgid ""
 "\n"
 "Hello,\n"
@@ -513,7 +509,7 @@ msgstr ""
 "Bonjour,\n"
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:4
-#: .\templates\updater\unread_messages.mail:4
+#: .\templates\updater\unread_messages.mail:3
 #, python-format
 msgid ""
 "\n"
@@ -529,12 +525,11 @@ msgstr[1] ""
 "Il y a %(counter)s messages non lus dans votre profil."
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:8
-#: .\templates\updater\unread_messages.mail:8
+#: .\templates\updater\unread_messages.mail:7
 msgid "Latest messages:"
 msgstr "Derniers messages :"
 
 #: .\djangopm\templates\djangopm\mail\unread_messages.mail:14
-#: .\templates\updater\unread_messages.mail:14
 #, python-format
 msgid ""
 "\n"
@@ -2240,7 +2235,7 @@ msgstr "Cette adresse mail a déjà un compte utilisateur associé."
 #: .\registration\views.py:55
 #, python-format
 msgid "Welcome to %(project)s"
-msgstr "Bienvenue chez %(projet)s"
+msgstr "Bienvenue chez %(project)s"
 
 #: .\registration\views.py:57
 msgid "You can now sign in with the choosen username and password."
@@ -3301,7 +3296,7 @@ msgid ""
 "click <a href=\"%(view_url)s\">here</a>"
 msgstr ""
 "Vous êtes en train de lire la version téléversée de ce fichier. Pour voir la "
-"version originale, cliquez <a href=\"%(submit_url)s\">ici</a>"
+"version originale, cliquez <a href=\"%(view_url)s\">ici</a>"
 
 #: .\templates\files\file_view.html:28
 #, python-format
@@ -3799,7 +3794,7 @@ msgstr ""
 "Cordialement,\n"
 "\n"
 "L'équipe de %(product_name)s\n"
-"%(home)s"
+"%(home)s\n"
 
 #: .\templates\releases\release_detail.html:16
 #: .\templates\releases\release_detail.html:29
@@ -4103,14 +4098,18 @@ msgid "No files submitted"
 msgstr "Aucun fichier envoyé"
 
 #: .\templates\updater\commitfail.mail:2
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"\n"
 "Hello,\n"
 "\n"
 "The following error ocurred while submitting your files.\n"
 "\n"
 "%(error)s\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"The %(product_name)s team\n"
+"%(home)s"
 msgstr ""
 "\n"
 "Bonjour,\n"
@@ -4119,24 +4118,16 @@ msgstr ""
 "\n"
 "%(error)s\n"
 
-#: .\templates\updater\commitfail.mail:10
-#: .\templates\updater\confirmcommit.mail:10
-#: .\templates\updater\queuestatus.mail:10
-#, python-format
-msgid ""
-" \n"
-"Sincerely,\n"
-"\n"
-"The %(product_name)s team\n"
-"%(home)s\n"
+#: .\templates\updater\confirmcommit.mail:2
+#: .\templates\updater\queuestatus.mail:2
+#: .\templates\updater\unread_messages.mail:2
+#, fuzzy
+msgid "Hello,\n"
 msgstr ""
 "\n"
-"Cordialement,\n"
-"\n"
-"L'équipe de %(product_name)s\n"
-"%(home)s\n"
+"Bonjour,\n"
 
-#: .\templates\updater\confirmcommit.mail:4
+#: .\templates\updater\confirmcommit.mail:3
 msgid ""
 "\n"
 "The file below was sent to the repository:"
@@ -4150,10 +4141,24 @@ msgstr[1] ""
 "\n"
 "Les fichiers suivants ont été envoyés au dépôt :"
 
-#: .\templates\updater\new_messages.mail:2
-#, python-format
+#: .\templates\updater\confirmcommit.mail:9
+#: .\templates\updater\queuestatus.mail:8
+#, fuzzy, python-format
 msgid ""
+"Sincerely,\n"
 "\n"
+"The %(product_name)s team\n"
+"%(home)s"
+msgstr ""
+"\n"
+"Cordialement,\n"
+"\n"
+"L'équipe de %(product_name)s\n"
+"%(home)s"
+
+#: .\templates\updater\new_messages.mail:2
+#, fuzzy, python-format
+msgid ""
 "Hello,\n"
 "\n"
 "The following files have been updated:\n"
@@ -4163,7 +4168,7 @@ msgid ""
 "Sincerely,\n"
 "\n"
 "The %(product_name)s team\n"
-"%(home)s\n"
+"%(home)s"
 msgstr ""
 "\n"
 "Bonjour,\n"
@@ -4178,9 +4183,8 @@ msgstr ""
 "%(home)s\n"
 
 #: .\templates\updater\pot_changed.mail:2
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"\n"
 "Hello,\n"
 "\n"
 "The following files could require a merge, because the POT files were "
@@ -4191,7 +4195,7 @@ msgid ""
 "Sincerely,\n"
 "\n"
 "The %(product_name)s team\n"
-"%(home)s\n"
+"%(home)s"
 msgstr ""
 "\n"
 "Bonjour,\n"
@@ -4206,7 +4210,7 @@ msgstr ""
 "L'équipe de %(product_name)s\n"
 "%(home)s\n"
 
-#: .\templates\updater\queuestatus.mail:4
+#: .\templates\updater\queuestatus.mail:3
 #, python-format
 msgid ""
 "\n"
@@ -4220,6 +4224,25 @@ msgstr[0] ""
 msgstr[1] ""
 "\n"
 "La file d'envoi contient les %(counter)s fichiers en attente suivants :"
+
+#: .\templates\updater\unread_messages.mail:13
+#, fuzzy, python-format
+msgid ""
+"\n"
+"Go to %(pmhome)s to check your messages.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"The %(product_name)s team\n"
+"%(home)s"
+msgstr ""
+"\n"
+"Rendez-vous sur %(pmhome)s pour relever vos messages.\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"L'équipe de %(product_name)s\n"
+"%(home)s\n"
 
 #: .\userprofileapp\admin.py:46
 msgid "Personal info"
@@ -4304,7 +4327,7 @@ msgid ""
 "ticket [%(url)s]"
 msgstr ""
 "Le système n'a pas été capable de trouver le fichier d'id %(id)s. Veuillez "
-"ouvrir un ticket [%(urls)s]"
+"ouvrir un ticket [%(url)s]"
 
 #: .\versioncontrol\manager.py:228
 #, python-format
