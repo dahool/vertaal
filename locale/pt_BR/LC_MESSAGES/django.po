@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-17 20:15-0300\n"
+"POT-Creation-Date: 2015-05-09 12:13-0300\n"
 "PO-Revision-Date: 2010-09-28 16:19-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <opensuse-pt@opensuse.org>\n"
@@ -84,7 +84,7 @@ msgid "Component:"
 msgstr "Componente:"
 
 #: .\appfeeds\templates\feeds\commit_queue_description.html:3
-#: .\templates\files\file_list.html:81
+#: .\templates\files\file_list.html:99
 msgid "Release:"
 msgstr "Versão:"
 
@@ -147,7 +147,7 @@ msgstr ""
 msgid "Files changed"
 msgstr "Arquivos alterados"
 
-#: .\common\notification.py:78 .\files\views\filelist.py:248
+#: .\common\notification.py:78 .\files\views\filelist.py:249
 #, python-format
 msgid "File %s ready for review."
 msgstr "O arquivo %s está pronto para revisão."
@@ -237,7 +237,7 @@ msgstr ""
 msgid "Your message has been sent."
 msgstr "Sua mensagem foi enviada."
 
-#: .\deferredsubmit\handler.py:125
+#: .\deferredsubmit\handler.py:126
 #, fuzzy
 msgid "File submit failed"
 msgstr "Arquivo enviado"
@@ -584,7 +584,7 @@ msgstr "Você está tentando enviar um arquivo vazio."
 #: .\files\forms.py:44 .\files\forms.py:47 .\glossary\forms.py:31
 #: .\glossary\models.py:47 .\templates\files\file_detail.html:247
 #: .\templates\files\file_detail.html:298 .\templates\files\file_edit.html:24
-#: .\templates\files\file_list.html:162 .\templates\files\file_log.html:24
+#: .\templates\files\file_list.html:185 .\templates\files\file_log.html:24
 #: .\templates\files\submit_table_upload.html:68
 #: .\templates\files\upload_box.html:68
 #: .\templates\glossary\glossary_index.html:82 .\versioncontrol\forms.py:25
@@ -750,8 +750,8 @@ msgid "The file %(filename)s is locked by %(username)s."
 msgstr "O arquivo agora está bloqueado por você."
 
 #: .\files\views\filehandling.py:183 .\files\views\filehandling.py:274
-#: .\files\views\filelist.py:62 .\files\views\filelist.py:106
-#: .\files\views\filelist.py:219
+#: .\files\views\filelist.py:63 .\files\views\filelist.py:107
+#: .\files\views\filelist.py:220
 msgid "You are not a member of this team."
 msgstr "Você não é um membro desta equipe."
 
@@ -819,106 +819,110 @@ msgstr "Arquivo POT não encontrado."
 msgid "File merged and added to the submission queue."
 msgstr "Arquivo combinado e adicionado a fila de envio."
 
-#: .\files\views\filelist.py:55 .\files\views\filelist.py:99
-#: .\files\views\filelist.py:212
+#: .\files\views\filelist.py:56 .\files\views\filelist.py:100
+#: .\files\views\filelist.py:213
 msgid "File not found."
 msgstr "Arquivo não encontrado."
 
-#: .\files\views\filelist.py:58 .\files\views\filelist.py:102
-#: .\files\views\filelist.py:215
+#: .\files\views\filelist.py:59 .\files\views\filelist.py:103
+#: .\files\views\filelist.py:216
 msgid "Sorry, you are not supposed to change anything on a disabled component."
 msgstr "Desculpe, você não deveria alterar nada em um componente desabilitado."
 
-#: .\files\views\filelist.py:70
+#: .\files\views\filelist.py:71
 #, fuzzy, python-format
 msgid "%s will be automatically unlocked once submitted."
 msgstr "O arquivo será desbloqueado quando for enviado."
 
-#: .\files\views\filelist.py:78
+#: .\files\views\filelist.py:79
 #, fuzzy, python-format
 msgid "Unlocked %s"
 msgstr "Desbloqueado"
 
-#: .\files\views\filelist.py:80
+#: .\files\views\filelist.py:81
 #, fuzzy, python-format
 msgid "%s is already locked."
 msgstr "O arquivo já está bloqueado por alguém."
 
-#: .\files\views\filelist.py:83
+#: .\files\views\filelist.py:84
 #, fuzzy, python-format
 msgid "Locked %s"
 msgstr "Bloqueado"
 
-#: .\files\views\filelist.py:121 .\files\views\filelist.py:135
+#: .\files\views\filelist.py:122 .\files\views\filelist.py:136
 #, fuzzy, python-format
 msgid "%s has a pending submit. Cannot be released right now."
 msgstr "O arquivo tem um envio pendente. Ele não pode ser lançado agora."
 
-#: .\files\views\filelist.py:125 .\files\views\filelist.py:139
+#: .\files\views\filelist.py:126 .\files\views\filelist.py:140
 #, python-format
 msgid "Removed %s"
 msgstr "Removido %s"
 
-#: .\files\views\filelist.py:126
+#: .\files\views\filelist.py:127
 #, fuzzy, python-format
 msgid "%s translator removed."
 msgstr "Atribuir tradutor"
 
-#: .\files\views\filelist.py:129 .\files\views\filelist.py:143
-#: .\files\views\filelist.py:250 .\files\views\filesubmit.py:129
+#: .\files\views\filelist.py:130 .\files\views\filelist.py:144
+#: .\files\views\filelist.py:251 .\files\views\filesubmit.py:129
 #: .\files\views\filesubmit.py:136 .\files\views\filesubmit.py:140
 #: .\files\views\filesubmit.py:319
 msgid "You are not authorized to perform this action."
 msgstr "Você não está autorizado a executar esta ação."
 
-#: .\files\views\filelist.py:140
+#: .\files\views\filelist.py:141
 #, fuzzy, python-format
 msgid "%s reviewer removed."
 msgstr "Arquivo removido"
 
-#: .\files\views\filelist.py:163
+#: .\files\views\filelist.py:164
 #, fuzzy, python-format
 msgid "%s already has an assigned translator."
 msgstr "Este arquivo já tem um tradutor atribuído."
 
-#: .\files\views\filelist.py:170 .\files\views\filelist.py:185
+#: .\files\views\filelist.py:171 .\files\views\filelist.py:186
 #, fuzzy
 msgid "File assigned"
 msgstr "Arquivo adicionado"
 
-#: .\files\views\filelist.py:170
+#: .\files\views\filelist.py:171
 #, python-format
 msgid "You had been designated as translator of %(file)s"
 msgstr "Você foi designado como tradutor do %(file)s"
 
-#: .\files\views\filelist.py:171
+#: .\files\views\filelist.py:172
 #, fuzzy, python-format
 msgid "Translator set for %s."
 msgstr "Tradutor"
 
-#: .\files\views\filelist.py:173 .\files\views\filelist.py:188
+#: .\files\views\filelist.py:174 .\files\views\filelist.py:189
 #, python-format
 msgid "Assigned to %s"
 msgstr "Atribuido a %s"
 
-#: .\files\views\filelist.py:178
+#: .\files\views\filelist.py:179
 #, fuzzy, python-format
 msgid "%s already has an assigned reviewer."
 msgstr "Este arquivo já tem um revisor atribuído."
 
-#: .\files\views\filelist.py:185
+#: .\files\views\filelist.py:186
 #, python-format
 msgid "You had been designated as reviewer of %(file)s"
 msgstr "Você foi designado como revisor do %(file)s"
 
-#: .\files\views\filelist.py:186
+#: .\files\views\filelist.py:187
 #, python-format
 msgid "Reviewer set for %s."
 msgstr ""
 
-#: .\files\views\filelist.py:192
+#: .\files\views\filelist.py:193
 msgid "Sorry, the translator and the reviewer cannot be the same user."
 msgstr "Desculpe, o tradutor e revisor não pode ser o mesmo usuário."
+
+#: .\files\views\filelist.py:269 .\templates\files\file_list.html:147
+msgid "Search term must be at least 8 characters long."
+msgstr ""
 
 #: .\files\views\filesubmit.py:73 .\files\views\filesubmit.py:341
 msgid "Your file was uploaded and added to the submission queue."
@@ -979,19 +983,19 @@ msgid_plural "Files submitted."
 msgstr[0] "Arquivo enviado"
 msgstr[1] "Arquivo enviado"
 
-#: .\files\views\utils\commit.py:46
+#: .\files\views\utils\commit.py:45 .\files\views\utils\commit.py:57
 #, fuzzy, python-format
 msgid "Submit failed. Reason: %s"
 msgstr "Falhou. Motivo: %s"
 
-#: .\files\views\utils\commit.py:55
+#: .\files\views\utils\commit.py:66
 #, fuzzy
 msgid "File added to the queue for further processing."
 msgid_plural "Files added to the queue for further processing."
 msgstr[0] "O  arquivo foi adicionado de volta a fila de envio."
 msgstr[1] "O  arquivo foi adicionado de volta a fila de envio."
 
-#: .\files\views\utils\commit.py:70
+#: .\files\views\utils\commit.py:81
 #, fuzzy
 msgid "The file is being processed. You'll be notified once completed."
 msgid_plural ""
@@ -999,7 +1003,7 @@ msgid_plural ""
 msgstr[0] "Este arquivo está sendo editado"
 msgstr[1] "Este arquivo está sendo editado"
 
-#: .\files\views\utils\list.py:41
+#: .\files\views\utils\list.py:42
 msgid "This component is read only."
 msgstr "Este componente é somente leitura"
 
@@ -2688,7 +2692,7 @@ msgstr "Configure sua nova senha"
 #: .\templates\authopenid\password_change_form.html:28
 #: .\templates\authopenid\password_change_form.html:44
 #: .\templates\files\component_filter.html:82
-#: .\templates\files\file_list.html:111
+#: .\templates\files\file_list.html:129
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -2832,7 +2836,7 @@ msgid "Uncheck to hide a component"
 msgstr "Desmarque para ocultar um componente"
 
 #: .\templates\files\component_filter.html:70
-#: .\templates\files\file_list.html:104
+#: .\templates\files\file_list.html:122
 msgid "Hide fully translated files"
 msgstr "Ocultar os arquivos completamente traduzidos"
 
@@ -3015,39 +3019,48 @@ msgstr "Salvar e enviar"
 msgid "Editing:"
 msgstr "Editando:"
 
-#: .\templates\files\file_list.html:7 .\templates\files\file_list.html:53
+#: .\templates\files\file_list.html:7 .\templates\files\file_list.html:71
 msgid "Latest updates"
 msgstr "Últimas atualizações"
 
-#: .\templates\files\file_list.html:9 .\templates\files\file_list.html:55
+#: .\templates\files\file_list.html:9 .\templates\files\file_list.html:73
 msgid "Latest updates for you"
 msgstr "Últimas atualizações para você"
 
-#: .\templates\files\file_list.html:17 .\templates\files\file_list.html:66
+#: .\templates\files\file_list.html:17 .\templates\files\file_list.html:84
 msgid "Submission queue"
 msgstr "Fila de envio"
 
-#: .\templates\files\file_list.html:73
+#: .\templates\files\file_list.html:91
 #, fuzzy
 msgid "Team:"
 msgstr "Equipes:"
 
-#: .\templates\files\file_list.html:77
+#: .\templates\files\file_list.html:95
 #: .\templates\glossary\glossary_index.html:19
 #: .\templates\glossary\language_selection.html:30
 msgid "Project:"
 msgstr "Projeto:"
 
-#: .\templates\files\file_list.html:108
+#: .\templates\files\file_list.html:126
 #, fuzzy
 msgid "Show my files only"
 msgstr "Apenas meus arquivos"
 
-#: .\templates\files\file_list.html:135
+#: .\templates\files\file_list.html:147
+#, fuzzy
+msgid "Search in files"
+msgstr "Apenas meus arquivos"
+
+#: .\templates\files\file_list.html:148
+msgid "Clear search results"
+msgstr ""
+
+#: .\templates\files\file_list.html:158
 msgid "Recent activity"
 msgstr "Atividade recente"
 
-#: .\templates\files\file_list.html:140
+#: .\templates\files\file_list.html:163
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -4260,16 +4273,16 @@ msgstr "Perfil atualizado."
 msgid "The information provided is invalid."
 msgstr ""
 
-#: .\versioncontrol\manager.py:92
+#: .\versioncontrol\manager.py:100
 msgid "Files submitted"
 msgstr "Arquivos enviados"
 
-#: .\versioncontrol\manager.py:188
+#: .\versioncontrol\manager.py:198
 #, fuzzy, python-format
 msgid "An error occurred while merging %(filename)s. %(error)s"
 msgstr "Ocorreu um erro ao fazer a combinação de arquivos. %s"
 
-#: .\versioncontrol\manager.py:197
+#: .\versioncontrol\manager.py:207
 #, python-format
 msgid ""
 "The system was unable to find the file id %(id)s. Please open a support "
@@ -4278,17 +4291,17 @@ msgstr ""
 "O sistema não conseguiu encontrar o ID de arquivo %(id)s. Por favor, abra um "
 "relatório de erro em [%(url)s]"
 
-#: .\versioncontrol\manager.py:218
+#: .\versioncontrol\manager.py:228
 #, python-format
 msgid "%(message)s (Committed revision %(revision)s)"
 msgstr "%(message)s (Enviado na revisão %(revision)s)"
 
-#: .\versioncontrol\manager.py:220
+#: .\versioncontrol\manager.py:230
 #, python-format
 msgid "Committed revision %s"
 msgstr "Enviado na revisão %s"
 
-#: .\versioncontrol\manager.py:248
+#: .\versioncontrol\manager.py:258
 #, fuzzy, python-format
 msgid ""
 "Component %(component)s is locked for language %(lang)s. Please try again in "
@@ -4297,11 +4310,11 @@ msgstr ""
 "O componente %(component)s está bloqueado para o idioma %(lang)s. Por favor, "
 "tente novamente em alguns minutos"
 
-#: .\versioncontrol\manager.py:259
+#: .\versioncontrol\manager.py:270
 msgid "Authentication error. Check your username and password."
 msgstr "Erro de autenticação. Verifique seu nome de usuário e senha."
 
-#: .\versioncontrol\manager.py:263
+#: .\versioncontrol\manager.py:274
 msgid ""
 "SSL Validation error. If the problem persist contact the repository "
 "administrator."
@@ -4309,26 +4322,26 @@ msgstr ""
 "Erro de validação SSL. Se o problema persistir, contate o administrador do "
 "repositório."
 
-#: .\versioncontrol\manager.py:381
+#: .\versioncontrol\manager.py:393
 #, python-format
 msgid "Processing %s"
 msgstr "Processando %s"
 
-#: .\versioncontrol\manager.py:455 .\versioncontrol\manager.py:504
+#: .\versioncontrol\manager.py:467 .\versioncontrol\manager.py:516
 #, python-format
 msgid "Update statistics for %s"
 msgstr "Atualizar estatísticas para %s"
 
-#: .\versioncontrol\manager.py:460
+#: .\versioncontrol\manager.py:472
 #, python-format
 msgid "Language %s complete."
 msgstr "Idioma %s concluído."
 
-#: .\versioncontrol\manager.py:484
+#: .\versioncontrol\manager.py:496
 msgid "Starting POT processing"
 msgstr "Iniciando o processamento do POT "
 
-#: .\versioncontrol\manager.py:509 .\versioncontrol\lib\types\svn.py:107
+#: .\versioncontrol\manager.py:521 .\versioncontrol\lib\types\svn.py:107
 msgid "Completed."
 msgstr "Concluído."
 
