@@ -285,7 +285,7 @@ def process_merge(pofile, user):
 def find_in_file(searchTerm, pofile):
     try:
         file_content = pofile.handler.get_content()
-        return (file_content.decode('utf8').find(searchTerm) >= 0)
+        return (file_content.decode('utf8').lower().find(searchTerm.lower()) >= 0)
     except Exception, e:
         logger.error(e)
     return False
