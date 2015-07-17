@@ -829,6 +829,10 @@ class POFileSubmit(models.Model):
         self.log_message = log_message
         self.enabled = True
         self.locked = False
+    
+    @property
+    def filename(self):
+        return self.file.path
         
     @property
     def handler(self):
