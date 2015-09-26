@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: Vertaal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-05-09 12:45-0300\n"
-"PO-Revision-Date: 2015-05-09 12:48-0300\n"
-"Last-Translator: Sergio Gabriel Teves <gabriel@opensuse.org>\n"
+"PO-Revision-Date: 2015-08-26 22:05+0200\n"
+"Last-Translator: Antoine Belvire <antoine.belvire@laposte.net>\n"
 "Language-Team: français <opensuse-fr@opensuse.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: .\app\management\commands\messagecheck.py:72
 #: .\djangopm\management\commands\pmnotification.py:51
@@ -912,7 +912,7 @@ msgstr ""
 
 #: .\files\views\filelist.py:269 .\templates\files\file_list.html:147
 msgid "Search term must be at least 8 characters long."
-msgstr ""
+msgstr "Le terme recherché doit être d'au moins 8 caractères."
 
 #: .\files\views\filesubmit.py:73 .\files\views\filesubmit.py:341
 msgid "Your file was uploaded and added to the submission queue."
@@ -1064,8 +1064,7 @@ msgstr "Changer de mot de passe"
 msgid "Log out"
 msgstr "Se déconnecter"
 
-#: .\grappelli\dashboard\dashboards.py:151
-#: .\grappelli\dashboard\modules.py:214
+#: .\grappelli\dashboard\dashboards.py:151 .\grappelli\dashboard\modules.py:214
 msgid "Applications"
 msgstr "Applications"
 
@@ -1073,8 +1072,7 @@ msgstr "Applications"
 msgid "Administration"
 msgstr "Administration"
 
-#: .\grappelli\dashboard\dashboards.py:162
-#: .\grappelli\dashboard\modules.py:290
+#: .\grappelli\dashboard\dashboards.py:162 .\grappelli\dashboard\modules.py:290
 #: .\grappelli\templates\admin\index.html:76
 msgid "Recent Actions"
 msgstr "Actions récentes"
@@ -1170,7 +1168,6 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: .\grappelli\dashboard\templates\grappelli\dashboard\modules\recent_actions.html:18
-#, fuzzy
 msgid "None Available"
 msgstr "Aucun disponible"
 
@@ -1205,14 +1202,13 @@ msgstr ""
 "courriel et devrait être corrigée rapidement. Merci pour votre patience."
 
 #: .\grappelli\templates\admin\actions.html:10
-#, fuzzy
 msgid "Click here to select the objects across all pages"
 msgstr "Cliquez ici pour sélectionner les objets à travers toutes les pages"
 
 #: .\grappelli\templates\admin\actions.html:10
 #, python-format
 msgid "Select all %(total_count)s %(module_name)s"
-msgstr ""
+msgstr "Sélectionner tous les %(total_count)s %(module_name)s"
 
 #: .\grappelli\templates\admin\actions.html:11
 msgid "Clear selection"
@@ -1235,7 +1231,6 @@ msgid "Documentation"
 msgstr "Documentation"
 
 #: .\grappelli\templates\admin\base_site.html:4
-#, fuzzy
 msgid "Django site admin"
 msgstr "Site d'administration Django"
 
@@ -1303,17 +1298,15 @@ msgid "Save"
 msgstr "Sauvegarder"
 
 #: .\grappelli\templates\admin\change_list_results.html:19
-#, fuzzy
 msgid "Toggle sorting"
 msgstr "Basculer le sens du tri"
 
 #: .\grappelli\templates\admin\change_list_results.html:20
 #, python-format
 msgid "Sorting priority: %(priority_number)s"
-msgstr ""
+msgstr "Priorité du tri : %(priority_number)s"
 
 #: .\grappelli\templates\admin\change_list_results.html:21
-#, fuzzy
 msgid "Remove from sorting"
 msgstr "Supprimer du tri"
 
@@ -1346,6 +1339,9 @@ msgid ""
 "related objects, but your account doesn't have permission to delete the "
 "following types of objects:"
 msgstr ""
+"De la suppression de %(object_name)s « %(escaped_object)s » résulterait la "
+"suppression d'objets liés, mais votre compte n'a pas l'autorisation de "
+"supprimer les types d'objet suivants :"
 
 #: .\grappelli\templates\admin\delete_confirmation.html:35
 #, python-format
@@ -1353,6 +1349,8 @@ msgid ""
 "Deleting the %(object_name)s '%(escaped_object)s' would require deleting the "
 "following protected related objects:"
 msgstr ""
+"La suppression des %(object_name)s « %(escaped_object)s » entraînerait la "
+"suppression des objets liés protégés suivants :"
 
 #: .\grappelli\templates\admin\delete_confirmation.html:45
 #, python-format
@@ -1360,6 +1358,8 @@ msgid ""
 "Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? "
 "All of the following related items will be deleted:"
 msgstr ""
+"Êtes-vous sûr(e) de vouloir supprimer le %(object_name)s "
+"« %(escaped_object)s » ? Tous les items liés suivants seront supprimés :"
 
 #: .\grappelli\templates\admin\delete_confirmation.html:51
 #: .\grappelli\templates\admin\delete_selected_confirmation.html:57
@@ -1385,6 +1385,9 @@ msgid ""
 "objects, but your account doesn't have permission to delete the following "
 "types of objects:"
 msgstr ""
+"De la suppression des %(objects_name)s sélectionnés résultera la suppression "
+"d'objets liés, mais votre compte n'a pas l'autorisation de supprimer les "
+"types d'objets suivants :"
 
 #: .\grappelli\templates\admin\delete_selected_confirmation.html:34
 #, python-format
@@ -1392,6 +1395,8 @@ msgid ""
 "Deleting the selected %(objects_name)s would require deleting the following "
 "protected related objects:"
 msgstr ""
+"La suppression des %(objects_name)s sélectionnés entraînerait la suppression "
+"des objets liés protégés suivants :"
 
 #: .\grappelli\templates\admin\delete_selected_confirmation.html:44
 #, python-format
@@ -1399,6 +1404,8 @@ msgid ""
 "Are you sure you want to delete the selected %(objects_name)s? All of the "
 "following objects and their related items will be deleted:"
 msgstr ""
+"Êtes-vous sûr(e) de vouloir supprimer les %(objects_name)s ? Tous les objets "
+"suivants et leurs items relatifs seront supprimés :"
 
 #: .\grappelli\templates\admin\filter.html:4
 #: .\grappelli\templates\admin\filter_listing.html:3
@@ -1408,14 +1415,13 @@ msgstr "%(filter_title)s"
 
 #: .\grappelli\templates\admin\index.html:65
 msgid "Custom Views"
-msgstr ""
+msgstr "Vues personnalisées"
 
 #: .\grappelli\templates\admin\index.html:78
 msgid "My Actions"
 msgstr "Mes actions"
 
 #: .\grappelli\templates\admin\index.html:81
-#, fuzzy
 msgid "None available"
 msgstr "Aucun disponible"
 
@@ -1472,7 +1478,6 @@ msgstr "Objet créé"
 
 #: .\grappelli\templates\admin\object_history.html:46
 #: .\grappelli\templates\reversion\object_history.html:34
-#, fuzzy
 msgid ""
 "This object doesn't have a change history. It probably wasn't added via this "
 "admin site."
@@ -1492,20 +1497,19 @@ msgstr[1] "%(counter)s résultats"
 #: .\grappelli\templates\admin\pagination.html:15
 #, python-format
 msgid "%(full_result_count)s total"
-msgstr ""
+msgstr "%(full_result_count)s au total"
 
 #: .\grappelli\templates\admin\pagination.html:27
 msgid "Show all"
 msgstr "Afficher tout"
 
 #: .\grappelli\templates\admin\submit_line.html:12
-#, fuzzy
 msgid "Save as new"
 msgstr "Sauvegarder en tant que nouveau"
 
 #: .\grappelli\templates\admin\submit_line.html:15
 msgid "Save and add another"
-msgstr ""
+msgstr "Sauvegarder et ajouter un autre"
 
 #: .\grappelli\templates\admin\submit_line.html:18
 msgid "Save and continue editing"
@@ -1558,7 +1562,6 @@ msgstr "Est modifié"
 #: .\grappelli\templates\admin\edit_inline\stacked.html:10
 #: .\grappelli\templates\admin\edit_inline\stacked.html:54
 #: .\grappelli\templates\admin\edit_inline\tabular.html:91
-#, fuzzy
 msgid "Add Item"
 msgstr "Ajouter élément"
 
@@ -1569,7 +1572,6 @@ msgstr "Voir sur le site"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:25
 #: .\grappelli\templates\admin\edit_inline\tabular.html:66
-#, fuzzy
 msgid "Move Item"
 msgstr "Déplacer élément"
 
@@ -1577,18 +1579,16 @@ msgstr "Déplacer élément"
 #: .\grappelli\templates\admin\edit_inline\stacked.html:34
 #: .\grappelli\templates\admin\edit_inline\tabular.html:70
 #: .\grappelli\templates\admin\edit_inline\tabular.html:75
-#, fuzzy
 msgid "Delete Item"
 msgstr "Supprimer élément"
 
 #: .\grappelli\templates\admin\edit_inline\stacked.html:52
 #: .\grappelli\templates\admin\edit_inline\tabular.html:89
-#, fuzzy, python-format
+#, python-format
 msgid "Add another %(verbose_name)s"
 msgstr "Ajouter un autre %(verbose_name)s"
 
 #: .\grappelli\templates\admin\edit_inline\tabular.html:9
-#, fuzzy
 msgid "Add Another"
 msgstr "Ajouter un autre"
 
@@ -1603,7 +1603,7 @@ msgstr "Signets"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:13
 msgid "Documentation bookmarklets"
-msgstr ""
+msgstr "Signets de documentation"
 
 #: .\grappelli\templates\admin_doc\bookmarklets.html:18
 msgid ""
@@ -1823,7 +1823,7 @@ msgstr "Réinitialiser mon mot de passe"
 #: .\grappelli\templates\reversion\change_list.html:6
 #: .\grappelli\templates\reversion\recover_form.html:10
 #: .\grappelli\templates\reversion\recover_list.html:9
-#, fuzzy, python-format
+#, python-format
 msgid "Recover deleted %(name)s"
 msgstr "Récupérer %(name)s supprimés"
 
@@ -1836,8 +1836,7 @@ msgstr ""
 "précédente de cet objet."
 
 #: .\grappelli\templates\reversion\object_history.html:15
-#: .\templates\files\commit_queue.html:30
-#: .\templates\teams\team_detail.html:92
+#: .\templates\files\commit_queue.html:30 .\templates\teams\team_detail.html:92
 msgid "Comment"
 msgstr "Commentaire"
 
@@ -1874,7 +1873,7 @@ msgstr ""
 #: .\grappelli\templates\smuggler\load_data_form.html:28
 #: .\grappelli\templates\smuggler\load_data_form.html:34
 msgid "Load data"
-msgstr ""
+msgstr "Charger les données"
 
 #: .\grappelli\templates\smuggler\load_data_form.html:49
 msgid "Data from your computer"
@@ -1892,7 +1891,7 @@ msgstr ""
 #: .\grappelli\templates\smuggler\load_data_form.html:93
 #, python-format
 msgid "Data from %(smuggler_fixture_dir)s directory"
-msgstr ""
+msgstr "Données du dossier %(smuggler_fixture_dir)s"
 
 #: .\grappelli\templates\smuggler\load_data_form.html:97
 msgid "File name"
@@ -1911,7 +1910,7 @@ msgstr "Permission refusée."
 #: .\grappelli\views\switch.py:51
 #, python-format
 msgid "%(name)s object with primary key %(key)r does not exist."
-msgstr ""
+msgstr "L'objet %(name)s avec la clé primaire %(key)r n'existe pas."
 
 #: .\grappelli\views\related.py:79 .\grappelli\views\related.py:108
 msgid "?"
@@ -1997,9 +1996,12 @@ msgid ""
 "As some openID providers (like google) doesn't support domain change, you'll "
 "need to perform an user migration process."
 msgstr ""
+"Comme certains fournisseurs d'openID (comme Google) ne supportent pas le "
+"changement de domaine, vous devrez suivre un processus de migration "
+"d'utilisateur."
 
 #: .\openidmigration\templates\openidmig\message.html:14
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "If you remember your local credentials, you can just go to <a href="
 "\"%(secondarysite)s%(userregister)s\" target=\"_blank\">%(secondarysite)s"
@@ -2023,6 +2025,12 @@ msgid ""
 "\"_blank\">%(secondarysite)s</a> to link your account signing in with your "
 "openID service."
 msgstr ""
+"Si vous ne vous souvenez pas ou n'avez jamais utilisé vos informations de "
+"connexion locales, rendez-vous  <a href=\"%(migrationurl)s\">ici</a> pour "
+"obtenir votre jeton de migration<br/>\n"
+"puis continuez sur <a href=\"%(secondarysite)s%(userregister)s\" target="
+"\"_blank\">%(secondarysite)s</a> pour lier votre compte en vous connectant "
+"avec votre service openID."
 
 #: .\openidmigration\templates\openidmig\token.html:10
 msgid "Use the following migration token to link your account:"
@@ -2041,7 +2049,6 @@ msgid "Have in mind this token is temporal and for one use only."
 msgstr "Ayez à l'esprit que ce jeton est temporaire et à usage unique."
 
 #: .\openidmigration\templates\openidmig\token.html:15
-#, fuzzy
 msgid ""
 "If you fail to link you account while this site is up, you'll have to login "
 "using your local credentials and use password recovery tool in case you "
@@ -2095,7 +2102,6 @@ msgid "Description"
 msgstr "Description"
 
 #: .\projects\models.py:59
-#, fuzzy
 msgid "Check to hide this project from the list view"
 msgstr "Cocher pour masquer ce projet dans la liste"
 
@@ -2584,23 +2590,20 @@ msgid "Site Index"
 msgstr "Index du site"
 
 #: .\templates\admin\auth\user\change_form.html:11
-#, fuzzy
 msgid "Send Password Reset"
-msgstr "Envoyer réinitialisation mot de passe"
+msgstr "Envoyer la réinitialisation du mot de passe"
 
 #: .\templates\authopenid\associate.html:3
 #: .\templates\authopenid\associate.html:31
 msgid "Add OpenID"
 msgstr "Ajouter un OpenID"
 
-#: .\templates\authopenid\associate.html:13
-#: .\templates\authopenid\login.html:8
+#: .\templates\authopenid\associate.html:13 .\templates\authopenid\login.html:8
 #, python-brace-format
 msgid "Enter your {provider} {username}"
-msgstr ""
+msgstr "Entrez votre {provider} {username}"
 
-#: .\templates\authopenid\associate.html:14
-#: .\templates\authopenid\login.html:9
+#: .\templates\authopenid\associate.html:14 .\templates\authopenid\login.html:9
 msgid "username"
 msgstr "nom d'utilisateur"
 
@@ -2728,8 +2731,7 @@ msgstr "requis"
 #: .\templates\contact\contact.html:3 .\templates\contact\contact.html.py:8
 #: .\templates\contact\contact.html:16 .\templates\teams\team_contact.html:3
 #: .\templates\teams\team_contact.html:25
-#: .\templates\teams\team_contact.html:35
-#: .\templates\teams\team_detail.html:24
+#: .\templates\teams\team_contact.html:35 .\templates\teams\team_detail.html:24
 msgid "Contact"
 msgstr "Contact"
 
@@ -2780,8 +2782,7 @@ msgstr "Envoyé le"
 msgid "Submit"
 msgstr "Envoyer"
 
-#: .\templates\files\commit_queue.html:42
-#: .\templates\teams\team_admin.html:127
+#: .\templates\files\commit_queue.html:42 .\templates\teams\team_admin.html:127
 #: .\templates\teams\team_detail.html:100
 msgid "Reject"
 msgstr "Rejeter"
@@ -2820,8 +2821,7 @@ msgstr "Dernières actions sur %(filename)s"
 msgid "View"
 msgstr "Voir"
 
-#: .\templates\files\file_detail.html:72
-#: .\templates\files\file_detail.html:190
+#: .\templates\files\file_detail.html:72 .\templates\files\file_detail.html:190
 #: .\templates\files\file_detail.html:218
 #: .\templates\files\submit_table.html:21
 msgid "Download"
@@ -3040,13 +3040,12 @@ msgid "Show my files only"
 msgstr "Afficher seulement mes fichiers"
 
 #: .\templates\files\file_list.html:147
-#, fuzzy
 msgid "Search in files"
-msgstr "Afficher les fichiers"
+msgstr "Chercher dans les fichiers"
 
 #: .\templates\files\file_list.html:148
 msgid "Clear search results"
-msgstr ""
+msgstr "Effacer les résultats de la recherche"
 
 #: .\templates\files\file_list.html:158
 msgid "Recent activity"
@@ -3163,7 +3162,6 @@ msgstr ""
 #: .\templates\files\file_list_row.html:136
 #: .\templates\files\detail\detail_assignblock.html:65
 #: .\templates\files\detail\detail_assignblock.html:67
-#, fuzzy
 msgid "Assign translator"
 msgstr "Assigner à un traducteur"
 
@@ -3192,7 +3190,6 @@ msgstr ""
 #: .\templates\files\file_list_row.html:164
 #: .\templates\files\detail\detail_assignblock.html:84
 #: .\templates\files\detail\detail_assignblock.html:86
-#, fuzzy
 msgid "Assign reviewer"
 msgstr "Assigner à un relecteur"
 
@@ -3213,8 +3210,7 @@ msgstr "Relecteur"
 msgid "%(filename)s log"
 msgstr "Journal de %(filename)s"
 
-#: .\templates\files\file_log.html:57
-#: .\templates\glossary\glossary_log.html:52
+#: .\templates\files\file_log.html:57 .\templates\glossary\glossary_log.html:52
 msgid "No actions registered yet"
 msgstr "Aucune action enregistrée pour le moment"
 
@@ -3223,8 +3219,7 @@ msgid "Confirm action"
 msgstr "Confirmer l'action"
 
 #: .\templates\files\file_submit_confirm.html:7
-#: .\templates\files\file_submit_confirm.html:47
-#: .\templates\teams\join.html:29
+#: .\templates\files\file_submit_confirm.html:47 .\templates\teams\join.html:29
 msgid "Confirm"
 msgstr "Confirmer"
 
@@ -3648,7 +3643,7 @@ msgstr "URL OpenID :"
 
 #: .\templates\registration\profile_box.html:50
 msgid "Link Token:"
-msgstr ""
+msgstr "Jeton du lien :"
 
 #: .\templates\registration\profile_box.html:57
 msgid "Create"
@@ -4002,7 +3997,6 @@ msgstr ""
 "coordinateurs."
 
 #: .\templates\teams\team_admin.html:154
-#, fuzzy
 msgid "Autocommit is enabled for this project."
 msgstr "L'autocommit est activé pour ce projet."
 
@@ -4098,7 +4092,7 @@ msgid "No files submitted"
 msgstr "Aucun fichier envoyé"
 
 #: .\templates\updater\commitfail.mail:2
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Hello,\n"
 "\n"
@@ -4111,21 +4105,22 @@ msgid ""
 "The %(product_name)s team\n"
 "%(home)s"
 msgstr ""
-"\n"
 "Bonjour,\n"
 "\n"
-"L'erreur suivante est apparue pendant l'envoi de vos fichiers.\n"
+"L'erreur suivante est survenue pendant l'envoi de vos fichiers.\n"
 "\n"
 "%(error)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"L'équipe de %(product_name)s\n"
+"%(home)s"
 
 #: .\templates\updater\confirmcommit.mail:2
 #: .\templates\updater\queuestatus.mail:2
 #: .\templates\updater\unread_messages.mail:2
-#, fuzzy
 msgid "Hello,\n"
-msgstr ""
-"\n"
-"Bonjour,\n"
+msgstr "Bonjour,\n"
 
 #: .\templates\updater\confirmcommit.mail:3
 msgid ""
@@ -4143,21 +4138,20 @@ msgstr[1] ""
 
 #: .\templates\updater\confirmcommit.mail:9
 #: .\templates\updater\queuestatus.mail:8
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Sincerely,\n"
 "\n"
 "The %(product_name)s team\n"
 "%(home)s"
 msgstr ""
-"\n"
 "Cordialement,\n"
 "\n"
 "L'équipe de %(product_name)s\n"
 "%(home)s"
 
 #: .\templates\updater\new_messages.mail:2
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Hello,\n"
 "\n"
@@ -4170,7 +4164,6 @@ msgid ""
 "The %(product_name)s team\n"
 "%(home)s"
 msgstr ""
-"\n"
 "Bonjour,\n"
 "\n"
 "Les fichiers suivants ont été mis à jour :\n"
@@ -4183,7 +4176,7 @@ msgstr ""
 "%(home)s\n"
 
 #: .\templates\updater\pot_changed.mail:2
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Hello,\n"
 "\n"
@@ -4197,7 +4190,6 @@ msgid ""
 "The %(product_name)s team\n"
 "%(home)s"
 msgstr ""
-"\n"
 "Bonjour,\n"
 "\n"
 "Les fichiers suivants pourraient nécessiter une fusion, parce que les "
@@ -4226,7 +4218,7 @@ msgstr[1] ""
 "La file d'envoi contient les %(counter)s fichiers en attente suivants :"
 
 #: .\templates\updater\unread_messages.mail:13
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Go to %(pmhome)s to check your messages.\n"
@@ -4242,7 +4234,7 @@ msgstr ""
 "Cordialement,\n"
 "\n"
 "L'équipe de %(product_name)s\n"
-"%(home)s\n"
+"%(home)s"
 
 #: .\userprofileapp\admin.py:46
 msgid "Personal info"
@@ -4267,7 +4259,6 @@ msgstr ""
 "de passe."
 
 #: .\userprofileapp\forms.py:26
-#, fuzzy
 msgid "<Browser defined>"
 msgstr "<Défini par le navigateur>"
 
@@ -4419,39 +4410,3 @@ msgstr "À la révision %s."
 #, python-format
 msgid "URL has changed. Relocate from %(prior)s to %(actual)s"
 msgstr "L'URL a changé. Déplacement de %(prior)s vers %(actual)s"
-
-#~ msgid "The file will be unlocked once submitted."
-#~ msgstr "Le fichier sera déverrouillé une fois envoyé."
-
-#~ msgid "This file is already locked by someone else."
-#~ msgstr "Ce fichier est déjà verrouillé par quelqu'un d'autre."
-
-#~ msgid "The file has a pending submit. Cannot be released right now."
-#~ msgstr ""
-#~ "Le fichier a un envoi en attente. Ne peut pas être libéré maintenant."
-
-#~ msgid "This file already has an assigned translator."
-#~ msgstr "Ce fichier a déjà un traducteur assigné."
-
-#~ msgid "This file already has an assigned reviewer."
-#~ msgstr "Ce fichier a déjà un relecteur assigné."
-
-#~ msgid "Your file was added to the submission queue."
-#~ msgstr "Votre fichier a été ajouté à la file d'envoi."
-
-#~ msgid "The file is locked by another user."
-#~ msgstr "Ce fichier est verrouillé par un autre utilisateur."
-
-#~ msgid "You are not assigned to this file."
-#~ msgstr "Ce fichier ne vous a pas été assigné."
-
-#~ msgid "The file is now locked on your name."
-#~ msgstr "Ce fichier est maintenant verrouillé à votre nom."
-
-#~ msgid "You are editing the uploaded version of this file."
-#~ msgstr "Vous êtes en train de modifier la version téléversée de ce fichier."
-
-#~ msgid "The file was added to the queue for later processing."
-#~ msgid_plural "The files were added to the queue for later processing."
-#~ msgstr[0] "Le fichier a été ajouté à la file en attente de traitement."
-#~ msgstr[1] "Les fichiers ont été ajoutés à la file en attente de traitement."
